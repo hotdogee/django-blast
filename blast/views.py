@@ -31,8 +31,10 @@ def create(request):
         file_prefix = path.join(settings.MEDIA_ROOT, uuid4().hex)
         query_filename = file_prefix + '.in'
         asn_filename = file_prefix + '.asn'
-        #if platform == 'win32':
+        bin_name = 'bin_linux'
+        if platform == 'win32':
             #query_filename = query_filename.replace('/','\\')
+            bin_name = 'bin_win'
         # write query to file
         if 'query-file' in request.FILES:
             with open(query_filename, 'wb+') as query_f:
@@ -45,16 +47,17 @@ def create(request):
         db_list = ' '.join(request.POST.getlist('db-name'))
         # check if program is in list for security
         if request.POST['program'] in ['blastn', 'tblastn', 'tblastx', 'blastp', 'blastx']:
-            program_path = path.join(settings.PROJECT_ROOT, 'blast', 'bin', request.POST['program'])
+            program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
             #args = [program_path, '-query', query_filename, '-db', db_list, '-html']
             args = [program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']
             # run blast process
             result = subprocess.check_output(args)
             # convert to multiple formats
-            blast_formatter_path = path.join(settings.PROJECT_ROOT, 'blast', 'bin', 'blast_formatter')
+            blast_formatter_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'blast_formatter')
             for ext, outfmt in blast_out_ext.items():
                 args = [blast_formatter_path, '-archive', asn_filename, '-outfmt', outfmt, '-out', file_prefix + ext]
                 subprocess.check_output(args)
+            # parse csv
             result = []
             with open(file_prefix + '.csv', 'r') as f:
                 cr = csv.reader(f)
