@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>{% load staticfiles %}
+<head>
+	<title>Sortable Table using Polymer Web Components</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<script type="text/javascript" src="{% static 'blast/components/platform/platform.js' %}"></script>
+	<link rel="import" href="{% static 'blast/components/sortable-table/sortable-table.html' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+    <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
+	<style>
+		sortable-table { width: 100%; }
+	</style>
+</head>
+<body unresolved>
+    <sortable-table id="results-table" columns='["qseqid","sseqid","evalue","qlen","slen","length","nident","mismatch","positive","gapopen","gaps","qstart","qend","sstart","send","bitscore","qcovs"]'>
+    {{ results|safe }}
+    </sortable-table>
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
+    <script src="{% static 'app/scripts/respond.js' %}"></script>
+    <script src="{% static 'app/scripts/blast-results.js' %}"></script>
+</body>
+</html>

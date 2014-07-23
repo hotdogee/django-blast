@@ -1,0 +1,7 @@
+types
+WeakSet
+_C
+_InstanceType
+abstractmethod
+abstractproperty
+ABCMeta

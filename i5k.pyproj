@@ -1,0 +1,529 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Name>i5k</Name>
+    <RootNamespace>i5k</RootNamespace>
+    <InterpreterId>{9af7db9d-dee0-47a6-a3c1-58568e866fa3}</InterpreterId>
+    <InterpreterVersion>2.7</InterpreterVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>b392edde-641a-40af-9df7-8dcb2686e6a5</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>manage.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Django launcher</LaunchProvider>
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="blast\models.py" />
+    <Compile Include="blast\tests.py" />
+    <Compile Include="blast\urls.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="blast\views.py" />
+    <Compile Include="blast\__init__.py" />
+    <Compile Include="app\forms.py" />
+    <Compile Include="app\models.py" />
+    <Compile Include="app\tests.py" />
+    <Compile Include="app\views.py" />
+    <Compile Include="app\__init__.py" />
+    <Compile Include="manage.py" />
+    <Compile Include="i5k\__init__.py" />
+    <Compile Include="i5k\settings.py" />
+    <Compile Include="i5k\urls.py" />
+    <Compile Include="i5k\wsgi.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\" />
+    <Folder Include="blast\" />
+    <Folder Include="blast\bin\" />
+    <Folder Include="blast\static\" />
+    <Folder Include="blast\static\blast\components\" />
+    <Folder Include="blast\static\blast\components\core-ajax\" />
+    <Folder Include="blast\static\blast\components\core-collapse\" />
+    <Folder Include="blast\static\blast\components\core-component-page\" />
+    <Folder Include="blast\static\blast\components\core-drawer-panel\" />
+    <Folder Include="blast\static\blast\components\core-header-panel\" />
+    <Folder Include="blast\static\blast\components\core-icon-button\" />
+    <Folder Include="blast\static\blast\components\core-iconset-svg\" />
+    <Folder Include="blast\static\blast\components\core-iconset\" />
+    <Folder Include="blast\static\blast\components\core-icons\" />
+    <Folder Include="blast\static\blast\components\core-icons\iconsets\" />
+    <Folder Include="blast\static\blast\components\core-icon\" />
+    <Folder Include="blast\static\blast\components\core-item\" />
+    <Folder Include="blast\static\blast\components\core-layout\" />
+    <Folder Include="blast\static\blast\components\core-localstorage\" />
+    <Folder Include="blast\static\blast\components\core-media-query\" />
+    <Folder Include="blast\static\blast\components\core-menu\" />
+    <Folder Include="blast\static\blast\components\core-meta\" />
+    <Folder Include="blast\static\blast\components\core-overlay\" />
+    <Folder Include="blast\static\blast\components\core-pages\" />
+    <Folder Include="blast\static\blast\components\core-scaffold\" />
+    <Folder Include="blast\static\blast\components\core-selection\" />
+    <Folder Include="blast\static\blast\components\core-selector\" />
+    <Folder Include="blast\static\blast\components\core-toolbar\" />
+    <Folder Include="blast\static\blast\components\core-tooltip\" />
+    <Folder Include="blast\static\blast\components\core-transition\" />
+    <Folder Include="blast\static\blast\components\font-roboto\" />
+    <Folder Include="blast\static\blast\components\paper-button\" />
+    <Folder Include="blast\static\blast\components\paper-focusable\" />
+    <Folder Include="blast\static\blast\components\paper-icon-button\" />
+    <Folder Include="blast\static\blast\components\paper-ripple\" />
+    <Folder Include="blast\static\blast\components\paper-shadow\" />
+    <Folder Include="blast\static\blast\components\paper-tabs\" />
+    <Folder Include="blast\static\blast\components\platform\" />
+    <Folder Include="blast\static\blast\components\polymer\" />
+    <Folder Include="blast\static\blast\components\qp-stuff\" />
+    <Folder Include="blast\static\blast\components\qp-stuff\font-roboto2\" />
+    <Folder Include="blast\static\blast\components\qp-stuff\paper-button\" />
+    <Folder Include="blast\static\blast\components\qp-stuff\paper-focusable\" />
+    <Folder Include="blast\static\blast\components\qp-stuff\paper-icon-button\" />
+    <Folder Include="blast\static\blast\components\qp-stuff\paper-ripple\" />
+    <Folder Include="blast\static\blast\components\qp-stuff\paper-shadow\" />
+    <Folder Include="blast\static\blast\components\qp-stuff\paper-tabs\" />
+    <Folder Include="blast\static\blast\components\sortable-table\" />
+    <Folder Include="blast\static\blast\css\" />
+    <Folder Include="blast\static\blast\" />
+    <Folder Include="blast\static\blast\scripts\" />
+    <Folder Include="blast\templates\" />
+    <Folder Include="app\static\" />
+    <Folder Include="app\static\app\" />
+    <Folder Include="app\static\app\content\" />
+    <Folder Include="app\static\app\fonts\" />
+    <Folder Include="app\static\app\scripts\" />
+    <Folder Include="app\templates\" />
+    <Folder Include="app\templates\app\" />
+    <Folder Include="blast\templates\blast\" />
+    <Folder Include="i5k\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="blast\bin\blastdbcheck.exe" />
+    <Content Include="blast\bin\blastdbcmd.exe" />
+    <Content Include="blast\bin\blastdb_aliastool.exe" />
+    <Content Include="blast\bin\blastn.exe" />
+    <Content Include="blast\bin\blastp.exe" />
+    <Content Include="blast\bin\blastx.exe" />
+    <Content Include="blast\bin\blast_formatter.exe" />
+    <Content Include="blast\bin\convert2blastmask.exe" />
+    <Content Include="blast\bin\deltablast.exe" />
+    <Content Include="blast\bin\dustmasker.exe" />
+    <Content Include="blast\static\blast\components\core-ajax\.bower.json" />
+    <Content Include="blast\static\blast\components\core-ajax\bower.json" />
+    <Content Include="blast\static\blast\components\core-ajax\core-ajax.html" />
+    <Content Include="blast\static\blast\components\core-ajax\core-xhr.html" />
+    <Content Include="blast\static\blast\components\core-ajax\demo.html" />
+    <Content Include="blast\static\blast\components\core-ajax\index.html" />
+    <Content Include="blast\static\blast\components\core-ajax\README.md" />
+    <Content Include="blast\static\blast\components\core-collapse\.bower.json" />
+    <Content Include="blast\static\blast\components\core-collapse\bower.json" />
+    <Content Include="blast\static\blast\components\core-collapse\core-collapse.css" />
+    <Content Include="blast\static\blast\components\core-collapse\core-collapse.html" />
+    <Content Include="blast\static\blast\components\core-collapse\demo.html" />
+    <Content Include="blast\static\blast\components\core-collapse\index.html" />
+    <Content Include="blast\static\blast\components\core-collapse\README.md" />
+    <Content Include="blast\static\blast\components\core-component-page\.bower.json" />
+    <Content Include="blast\static\blast\components\core-component-page\bowager-logo.png" />
+    <Content Include="blast\static\blast\components\core-component-page\bower.json" />
+    <Content Include="blast\static\blast\components\core-component-page\core-component-page.html" />
+    <Content Include="blast\static\blast\components\core-component-page\demo.html" />
+    <Content Include="blast\static\blast\components\core-component-page\index.html" />
+    <Content Include="blast\static\blast\components\core-component-page\README.md" />
+    <Content Include="blast\static\blast\components\core-drawer-panel\.bower.json" />
+    <Content Include="blast\static\blast\components\core-drawer-panel\bower.json" />
+    <Content Include="blast\static\blast\components\core-drawer-panel\core-drawer-panel.css" />
+    <Content Include="blast\static\blast\components\core-drawer-panel\core-drawer-panel.html" />
+    <Content Include="blast\static\blast\components\core-drawer-panel\demo.html" />
+    <Content Include="blast\static\blast\components\core-drawer-panel\index.html" />
+    <Content Include="blast\static\blast\components\core-drawer-panel\metadata.html" />
+    <Content Include="blast\static\blast\components\core-drawer-panel\README.md" />
+    <Content Include="blast\static\blast\components\core-header-panel\.bower.json" />
+    <Content Include="blast\static\blast\components\core-header-panel\bower.json" />
+    <Content Include="blast\static\blast\components\core-header-panel\core-header-panel.css" />
+    <Content Include="blast\static\blast\components\core-header-panel\core-header-panel.html" />
+    <Content Include="blast\static\blast\components\core-header-panel\demo.html" />
+    <Content Include="blast\static\blast\components\core-header-panel\index.html" />
+    <Content Include="blast\static\blast\components\core-header-panel\metadata.html" />
+    <Content Include="blast\static\blast\components\core-header-panel\README.md" />
+    <Content Include="blast\static\blast\components\core-icon-button\.bower.json" />
+    <Content Include="blast\static\blast\components\core-icon-button\bower.json" />
+    <Content Include="blast\static\blast\components\core-icon-button\core-icon-button.css" />
+    <Content Include="blast\static\blast\components\core-icon-button\core-icon-button.html" />
+    <Content Include="blast\static\blast\components\core-icon-button\demo.html" />
+    <Content Include="blast\static\blast\components\core-icon-button\index.html" />
+    <Content Include="blast\static\blast\components\core-icon-button\metadata.html" />
+    <Content Include="blast\static\blast\components\core-icon-button\README.md" />
+    <Content Include="blast\static\blast\components\core-iconset-svg\.bower.json" />
+    <Content Include="blast\static\blast\components\core-iconset-svg\bower.json" />
+    <Content Include="blast\static\blast\components\core-iconset-svg\core-iconset-svg.html" />
+    <Content Include="blast\static\blast\components\core-iconset-svg\demo.html" />
+    <Content Include="blast\static\blast\components\core-iconset-svg\index.html" />
+    <Content Include="blast\static\blast\components\core-iconset-svg\README.md" />
+    <Content Include="blast\static\blast\components\core-iconset-svg\svg-sample-icons.html" />
+    <Content Include="blast\static\blast\components\core-iconset\.bower.json" />
+    <Content Include="blast\static\blast\components\core-iconset\bower.json" />
+    <Content Include="blast\static\blast\components\core-iconset\core-iconset.html" />
+    <Content Include="blast\static\blast\components\core-iconset\demo.html" />
+    <Content Include="blast\static\blast\components\core-iconset\index.html" />
+    <Content Include="blast\static\blast\components\core-iconset\my-icons.png" />
+    <Content Include="blast\static\blast\components\core-iconset\README.md" />
+    <Content Include="blast\static\blast\components\core-icons\.bower.json" />
+    <Content Include="blast\static\blast\components\core-icons\bower.json" />
+    <Content Include="blast\static\blast\components\core-icons\core-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\demo.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\av-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\communication-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\device-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\hardware-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\image-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\maps-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\notification-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\png-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\iconsets\social-icons.html" />
+    <Content Include="blast\static\blast\components\core-icons\index.html" />
+    <Content Include="blast\static\blast\components\core-icons\README.md" />
+    <Content Include="blast\static\blast\components\core-icon\.bower.json" />
+    <Content Include="blast\static\blast\components\core-icon\bower.json" />
+    <Content Include="blast\static\blast\components\core-icon\core-icon.css" />
+    <Content Include="blast\static\blast\components\core-icon\core-icon.html" />
+    <Content Include="blast\static\blast\components\core-icon\demo.html" />
+    <Content Include="blast\static\blast\components\core-icon\index.html" />
+    <Content Include="blast\static\blast\components\core-icon\metadata.html" />
+    <Content Include="blast\static\blast\components\core-icon\README.md" />
+    <Content Include="blast\static\blast\components\core-item\.bower.json" />
+    <Content Include="blast\static\blast\components\core-item\bower.json" />
+    <Content Include="blast\static\blast\components\core-item\core-item.css" />
+    <Content Include="blast\static\blast\components\core-item\core-item.html" />
+    <Content Include="blast\static\blast\components\core-item\demo.html" />
+    <Content Include="blast\static\blast\components\core-item\index.html" />
+    <Content Include="blast\static\blast\components\core-item\metadata.html" />
+    <Content Include="blast\static\blast\components\core-item\README.md" />
+    <Content Include="blast\static\blast\components\core-layout\.bower.json" />
+    <Content Include="blast\static\blast\components\core-layout\bower.json" />
+    <Content Include="blast\static\blast\components\core-layout\core-layout-host.css" />
+    <Content Include="blast\static\blast\components\core-layout\core-layout.css" />
+    <Content Include="blast\static\blast\components\core-layout\core-layout.html" />
+    <Content Include="blast\static\blast\components\core-layout\demo-body.html" />
+    <Content Include="blast\static\blast\components\core-layout\demo-css.html" />
+    <Content Include="blast\static\blast\components\core-layout\demo-parent.html" />
+    <Content Include="blast\static\blast\components\core-layout\demo.html" />
+    <Content Include="blast\static\blast\components\core-layout\index.html" />
+    <Content Include="blast\static\blast\components\core-layout\metadata.html" />
+    <Content Include="blast\static\blast\components\core-layout\README.md" />
+    <Content Include="blast\static\blast\components\core-localstorage\.bower.json" />
+    <Content Include="blast\static\blast\components\core-localstorage\bower.json" />
+    <Content Include="blast\static\blast\components\core-localstorage\core-localstorage.html" />
+    <Content Include="blast\static\blast\components\core-localstorage\demo.html" />
+    <Content Include="blast\static\blast\components\core-localstorage\index.html" />
+    <Content Include="blast\static\blast\components\core-localstorage\README.md" />
+    <Content Include="blast\static\blast\components\core-media-query\.bower.json" />
+    <Content Include="blast\static\blast\components\core-media-query\bower.json" />
+    <Content Include="blast\static\blast\components\core-media-query\core-media-query.html" />
+    <Content Include="blast\static\blast\components\core-media-query\demo.html" />
+    <Content Include="blast\static\blast\components\core-media-query\index.html" />
+    <Content Include="blast\static\blast\components\core-media-query\README.md" />
+    <Content Include="blast\static\blast\components\core-menu\.bower.json" />
+    <Content Include="blast\static\blast\components\core-menu\bower.json" />
+    <Content Include="blast\static\blast\components\core-menu\core-menu.css" />
+    <Content Include="blast\static\blast\components\core-menu\core-menu.html" />
+    <Content Include="blast\static\blast\components\core-menu\core-submenu.css" />
+    <Content Include="blast\static\blast\components\core-menu\core-submenu.html" />
+    <Content Include="blast\static\blast\components\core-menu\demo.html" />
+    <Content Include="blast\static\blast\components\core-menu\index.html" />
+    <Content Include="blast\static\blast\components\core-menu\metadata.html" />
+    <Content Include="blast\static\blast\components\core-menu\README.md" />
+    <Content Include="blast\static\blast\components\core-meta\.bower.json" />
+    <Content Include="blast\static\blast\components\core-meta\bower.json" />
+    <Content Include="blast\static\blast\components\core-meta\core-meta.html" />
+    <Content Include="blast\static\blast\components\core-meta\demo.html" />
+    <Content Include="blast\static\blast\components\core-meta\index.html" />
+    <Content Include="blast\static\blast\components\core-meta\README.md" />
+    <Content Include="blast\static\blast\components\core-overlay\.bower.json" />
+    <Content Include="blast\static\blast\components\core-overlay\bower.json" />
+    <Content Include="blast\static\blast\components\core-overlay\core-key-helper.html" />
+    <Content Include="blast\static\blast\components\core-overlay\core-overlay-layer.html" />
+    <Content Include="blast\static\blast\components\core-overlay\core-overlay.html" />
+    <Content Include="blast\static\blast\components\core-overlay\demo.html" />
+    <Content Include="blast\static\blast\components\core-overlay\index.html" />
+    <Content Include="blast\static\blast\components\core-overlay\README.md" />
+    <Content Include="blast\static\blast\components\core-pages\.bower.json" />
+    <Content Include="blast\static\blast\components\core-pages\bower.json" />
+    <Content Include="blast\static\blast\components\core-pages\core-pages.css" />
+    <Content Include="blast\static\blast\components\core-pages\core-pages.html" />
+    <Content Include="blast\static\blast\components\core-pages\demo.html" />
+    <Content Include="blast\static\blast\components\core-pages\index.html" />
+    <Content Include="blast\static\blast\components\core-pages\metadata.html" />
+    <Content Include="blast\static\blast\components\core-pages\README.md" />
+    <Content Include="blast\static\blast\components\core-scaffold\.bower.json" />
+    <Content Include="blast\static\blast\components\core-scaffold\bower.json" />
+    <Content Include="blast\static\blast\components\core-scaffold\core-scaffold.html" />
+    <Content Include="blast\static\blast\components\core-scaffold\demo.html" />
+    <Content Include="blast\static\blast\components\core-scaffold\index.html" />
+    <Content Include="blast\static\blast\components\core-scaffold\metadata.html" />
+    <Content Include="blast\static\blast\components\core-scaffold\README.md" />
+    <Content Include="blast\static\blast\components\core-selection\.bower.json" />
+    <Content Include="blast\static\blast\components\core-selection\bower.json" />
+    <Content Include="blast\static\blast\components\core-selection\core-selection.html" />
+    <Content Include="blast\static\blast\components\core-selection\demo.html" />
+    <Content Include="blast\static\blast\components\core-selection\index.html" />
+    <Content Include="blast\static\blast\components\core-selection\README.md" />
+    <Content Include="blast\static\blast\components\core-selector\.bower.json" />
+    <Content Include="blast\static\blast\components\core-selector\bower.json" />
+    <Content Include="blast\static\blast\components\core-selector\core-selector.html" />
+    <Content Include="blast\static\blast\components\core-selector\demo.html" />
+    <Content Include="blast\static\blast\components\core-selector\index.html" />
+    <Content Include="blast\static\blast\components\core-selector\metadata.html" />
+    <Content Include="blast\static\blast\components\core-selector\README.md" />
+    <Content Include="blast\static\blast\components\core-toolbar\.bower.json" />
+    <Content Include="blast\static\blast\components\core-toolbar\bower.json" />
+    <Content Include="blast\static\blast\components\core-toolbar\core-toolbar.css" />
+    <Content Include="blast\static\blast\components\core-toolbar\core-toolbar.html" />
+    <Content Include="blast\static\blast\components\core-toolbar\demo.html" />
+    <Content Include="blast\static\blast\components\core-toolbar\index.html" />
+    <Content Include="blast\static\blast\components\core-toolbar\metadata.html" />
+    <Content Include="blast\static\blast\components\core-toolbar\README.md" />
+    <Content Include="blast\static\blast\components\core-tooltip\.bower.json" />
+    <Content Include="blast\static\blast\components\core-tooltip\bower.json" />
+    <Content Include="blast\static\blast\components\core-tooltip\core-tooltip.css" />
+    <Content Include="blast\static\blast\components\core-tooltip\core-tooltip.html" />
+    <Content Include="blast\static\blast\components\core-tooltip\demo.html" />
+    <Content Include="blast\static\blast\components\core-tooltip\index.html" />
+    <Content Include="blast\static\blast\components\core-tooltip\metadata.html" />
+    <Content Include="blast\static\blast\components\core-tooltip\README.md" />
+    <Content Include="blast\static\blast\components\core-transition\.bower.json" />
+    <Content Include="blast\static\blast\components\core-transition\bower.json" />
+    <Content Include="blast\static\blast\components\core-transition\core-transition-css.html" />
+    <Content Include="blast\static\blast\components\core-transition\core-transition-overlay.css" />
+    <Content Include="blast\static\blast\components\core-transition\core-transition.html" />
+    <Content Include="blast\static\blast\components\core-transition\index.html" />
+    <Content Include="blast\static\blast\components\core-transition\README.md" />
+    <Content Include="blast\static\blast\components\font-roboto\.bower.json" />
+    <Content Include="blast\static\blast\components\font-roboto\roboto.html" />
+    <Content Include="blast\static\blast\components\paper-button\.bower.json" />
+    <Content Include="blast\static\blast\components\paper-button\bower.json" />
+    <Content Include="blast\static\blast\components\paper-button\demo.html" />
+    <Content Include="blast\static\blast\components\paper-button\index.html" />
+    <Content Include="blast\static\blast\components\paper-button\metadata.html" />
+    <Content Include="blast\static\blast\components\paper-button\paper-button.css" />
+    <Content Include="blast\static\blast\components\paper-button\paper-button.html" />
+    <Content Include="blast\static\blast\components\paper-button\README.md" />
+    <Content Include="blast\static\blast\components\paper-focusable\.bower.json" />
+    <Content Include="blast\static\blast\components\paper-focusable\bower.json" />
+    <Content Include="blast\static\blast\components\paper-focusable\paper-focusable.html" />
+    <Content Include="blast\static\blast\components\paper-focusable\README.md" />
+    <Content Include="blast\static\blast\components\paper-icon-button\.bower.json" />
+    <Content Include="blast\static\blast\components\paper-icon-button\bower.json" />
+    <Content Include="blast\static\blast\components\paper-icon-button\demo.html" />
+    <Content Include="blast\static\blast\components\paper-icon-button\index.html" />
+    <Content Include="blast\static\blast\components\paper-icon-button\paper-icon-button.css" />
+    <Content Include="blast\static\blast\components\paper-icon-button\paper-icon-button.html" />
+    <Content Include="blast\static\blast\components\paper-icon-button\pulse-ink.css" />
+    <Content Include="blast\static\blast\components\paper-icon-button\README.md" />
+    <Content Include="blast\static\blast\components\paper-ripple\.bower.json" />
+    <Content Include="blast\static\blast\components\paper-ripple\bower.json" />
+    <Content Include="blast\static\blast\components\paper-ripple\demo.html" />
+    <Content Include="blast\static\blast\components\paper-ripple\index.html" />
+    <Content Include="blast\static\blast\components\paper-ripple\paper-ripple.html" />
+    <Content Include="blast\static\blast\components\paper-ripple\raw.html" />
+    <Content Include="blast\static\blast\components\paper-ripple\README.md" />
+    <Content Include="blast\static\blast\components\paper-shadow\.bower.json" />
+    <Content Include="blast\static\blast\components\paper-shadow\bower.json" />
+    <Content Include="blast\static\blast\components\paper-shadow\demo.html" />
+    <Content Include="blast\static\blast\components\paper-shadow\index.html" />
+    <Content Include="blast\static\blast\components\paper-shadow\metadata.html" />
+    <Content Include="blast\static\blast\components\paper-shadow\paper-shadow.css" />
+    <Content Include="blast\static\blast\components\paper-shadow\paper-shadow.html" />
+    <Content Include="blast\static\blast\components\paper-shadow\README.md" />
+    <Content Include="blast\static\blast\components\paper-tabs\.bower.json" />
+    <Content Include="blast\static\blast\components\paper-tabs\bower.json" />
+    <Content Include="blast\static\blast\components\paper-tabs\demo.html" />
+    <Content Include="blast\static\blast\components\paper-tabs\index.html" />
+    <Content Include="blast\static\blast\components\paper-tabs\metadata.html" />
+    <Content Include="blast\static\blast\components\paper-tabs\paper-tab.css" />
+    <Content Include="blast\static\blast\components\paper-tabs\paper-tab.html" />
+    <Content Include="blast\static\blast\components\paper-tabs\paper-tabs.css" />
+    <Content Include="blast\static\blast\components\paper-tabs\paper-tabs.html" />
+    <Content Include="blast\static\blast\components\paper-tabs\README.md" />
+    <Content Include="blast\static\blast\components\platform\.bower.json" />
+    <Content Include="blast\static\blast\components\platform\bower.json" />
+    <Content Include="blast\static\blast\components\platform\build.log" />
+    <Content Include="blast\static\blast\components\platform\platform.js" />
+    <Content Include="blast\static\blast\components\platform\platform.js.map" />
+    <Content Include="blast\static\blast\components\platform\README.md" />
+    <Content Include="blast\static\blast\components\polymer\.bower.json" />
+    <Content Include="blast\static\blast\components\polymer\bower.json" />
+    <Content Include="blast\static\blast\components\polymer\build.log" />
+    <Content Include="blast\static\blast\components\polymer\layout.html" />
+    <Content Include="blast\static\blast\components\polymer\polymer.html" />
+    <Content Include="blast\static\blast\components\polymer\polymer.js" />
+    <Content Include="blast\static\blast\components\polymer\polymer.js.map" />
+    <Content Include="blast\static\blast\components\polymer\README.md" />
+    <Content Include="blast\static\blast\components\qp-stuff\font-roboto2\.bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\font-roboto2\roboto2.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-button\.bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-button\bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-button\demo.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-button\index.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-button\metadata.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-button\paper-button.css" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-button\paper-button.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-button\README.md" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-focusable\.bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-focusable\bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-focusable\paper-focusable.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-focusable\README.md" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-icon-button\.bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-icon-button\bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-icon-button\demo.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-icon-button\index.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-icon-button\paper-icon-button.css" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-icon-button\paper-icon-button.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-icon-button\pulse-ink.css" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-icon-button\README.md" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-ripple\.bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-ripple\bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-ripple\demo.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-ripple\index.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-ripple\paper-ripple.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-ripple\raw.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-ripple\README.md" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-shadow\.bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-shadow\bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-shadow\demo.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-shadow\index.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-shadow\metadata.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-shadow\paper-shadow.css" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-shadow\paper-shadow.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-shadow\README.md" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\.bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\bower.json" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\demo.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\index.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\metadata.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\paper-tab.css" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\paper-tab.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\paper-tabs.css" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\paper-tabs.html" />
+    <Content Include="blast\static\blast\components\qp-stuff\paper-tabs\README.md" />
+    <Content Include="blast\static\blast\components\sortable-table\sortable-table.html" />
+    <Content Include="blast\static\blast\css\main.css" />
+    <Content Include="blast\static\blast\scripts\blast-results.js" />
+    <Content Include="blast\static\blast\scripts\blast-multi.js" />
+    <Content Include="blast\static\blast\scripts\jquery-1.11.1.min.js" />
+    <Content Include="blast\static\blast\scripts\jquery.hoverIntent.minified.js" />
+    <Content Include="blast\templates\blast\results.html" />
+    <Content Include="blast\templates\blast\main.html" />
+    <Content Include="blast\bin\makeblastdb.exe" />
+    <Content Include="blast\bin\makembindex.exe" />
+    <Content Include="blast\bin\makeprofiledb.exe" />
+    <Content Include="blast\bin\psiblast.exe" />
+    <Content Include="blast\bin\rpsblast.exe" />
+    <Content Include="blast\bin\rpstblastn.exe" />
+    <Content Include="blast\bin\segmasker.exe" />
+    <Content Include="blast\bin\tblastn.exe" />
+    <Content Include="blast\bin\tblastx.exe" />
+    <Content Include="blast\bin\windowmasker.exe" />
+    <Content Include="requirements.txt" />
+    <Content Include="db.sqlite3" />
+    <Content Include="app\static\app\content\bootstrap.css" />
+    <Content Include="app\static\app\content\bootstrap.min.css" />
+    <Content Include="app\static\app\content\site.css" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="app\static\app\scripts\bootstrap.js" />
+    <Content Include="app\static\app\scripts\bootstrap.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.map" />
+    <Content Include="app\static\app\scripts\jquery.validate-vsdoc.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.min.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="app\static\app\scripts\modernizr-2.6.2.js" />
+    <Content Include="app\static\app\scripts\respond.js" />
+    <Content Include="app\static\app\scripts\respond.min.js" />
+    <Content Include="app\static\app\scripts\_references.js" />
+    <Content Include="app\templates\app\about.html" />
+    <Content Include="app\templates\app\contact.html" />
+    <Content Include="app\templates\app\index.html" />
+    <Content Include="app\templates\app\layout.html" />
+    <Content Include="app\templates\app\login.html" />
+    <Content Include="app\templates\app\loginpartial.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="readme.mht">
+      <SubType>WebBrowser</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env\">
+      <Id>{9af7db9d-dee0-47a6-a3c1-58568e866fa3}</Id>
+      <BaseInterpreter>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</BaseInterpreter>
+      <Version>2.7</Version>
+      <Description>env (Python 2.7)</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <LibraryPath>Lib\</LibraryPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X86</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
