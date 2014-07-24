@@ -54,14 +54,14 @@ def create(request):
             #args = [program_path, '-query', query_filename, '-db', db_list, '-html']
             args = [program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']
             # run blast process
-            result = subprocess.check_output(args)
+            subprocess.Popen(args).wait()
             # convert to multiple formats
             blast_formatter_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'blast_formatter')
             for ext, outfmt in blast_out_ext.items():
                 args = [blast_formatter_path, '-archive', asn_filename, '-outfmt', outfmt, '-out', file_prefix + ext]
                 if ext == '.html':
                     args.append('-html')
-                subprocess.check_output(args)
+                subprocess.Popen(args).wait()
             return redirect('blast:retrieve', task_id)
         else:
             raise Http404
