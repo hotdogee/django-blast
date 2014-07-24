@@ -7,20 +7,41 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<script type="text/javascript" src="{% static 'blast/components/platform/platform.js' %}"></script>
 	<link rel="import" href="{% static 'blast/components/sortable-table/sortable-table.html' %}">
+    <link rel="import" href="{% static 'blast/components/core-splitter/core-splitter.html' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
 	<style>
 		sortable-table { width: 100%; }
 	</style>
 </head>
-<body unresolved>
-    <sortable-table id="results-table" columns='["qseqid","sseqid","evalue","qlen","slen","length","nident","mismatch","positive","gapopen","gaps","qstart","qend","sstart","send","bitscore","qcovs"]'>
-    {{ results|safe }}
-    </sortable-table>
-    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+<body unresolved fullbleed style="overflow: hidden;">
+    <div vertical layout style="height: 100%;">
+        <div horizontal layout style="height: 30%;">
+            <div style="width: 50%;">
+                <canvas id="query-canvas" width="1000" height="400" style="width: 100%; height: 100%;"></canvas>
+            </div>
+            <core-splitter direction="left" disableSelection></core-splitter>
+            <div style="width: 50%;">
+                <canvas id="subject-canvas" width="1000" height="400" style="width: 100%; height: 100%;"></canvas>
+            </div>
+        </div>
+        <core-splitter direction="up" disableSelection></core-splitter>
+        <div horizontal layout style="height: 70%;">
+            <div flex style="overflow: auto;">
+                <sortable-table id="results-table" columns='["qseqid","sseqid","evalue","qlen","slen","length","nident","mismatch","positive","gapopen","gaps","qstart","qend","sstart","send","bitscore","qcovs"]'>
+                {{ results|safe }}
+                </sortable-table>
+            </div>
+            <core-splitter direction="right" allowOverflow disableSelection></core-splitter>
+            <div style="width: 750px; height: 100%; overflow: auto;">
+                {{ results_detail|safe }}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'blast/scripts/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'blast/scripts/scribl.1.1.4.min.js' %}"></script>
     <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
     <script src="{% static 'app/scripts/respond.js' %}"></script>
-    <script src="{% static 'app/scripts/blast-results.js' %}"></script>
+    <script src="{% static 'blast/scripts/blast-results.js' %}"></script>
 </body>
 </html>
