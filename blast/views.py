@@ -62,7 +62,7 @@ def create(request):
                 if ext == '.html':
                     args.append('-html')
                 subprocess.check_output(args)
-            return redirect('retrieve', task_id=task_id)
+            return redirect('blast:retrieve', task_id)
         else:
             raise Http404
 
