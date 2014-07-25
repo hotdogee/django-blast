@@ -1,0 +1,564 @@
+Blast4-archive ::= {
+  request {
+    ident "2.2.29+",
+    body queue-search {
+      program "blastn",
+      service "megablast",
+      queries bioseq-set {
+        seq-set {
+          seq {
+            id {
+              local str "Query_1"
+            },
+            descr {
+              user {
+                type str "CFastaReader",
+                data {
+                  {
+                    label str "DefLine",
+                    data str ">Contig1"
+                  }
+                }
+              },
+              title "Contig1"
+            },
+            inst {
+              repr raw,
+              mol na,
+              length 150,
+              seq-data ncbi2na '75332226EC80E7D58CC28D19FAC33AB51EF507FA2C04C3
+EFF36CCCB1E22FFB95726EEF88B830'H
+            }
+          },
+          seq {
+            id {
+              local str "Query_2"
+            },
+            descr {
+              user {
+                type str "CFastaReader",
+                data {
+                  {
+                    label str "DefLine",
+                    data str ">Contig2"
+                  }
+                }
+              },
+              title "Contig2"
+            },
+            inst {
+              repr raw,
+              mol na,
+              length 150,
+              seq-data ncbi2na '03F5188C26383517A600ED7FFE968FF061F21E41874698
+C578622ADA9EB5D0512DC31881E090'H
+            }
+          }
+        }
+      },
+      subject database "Agla_Btl03082013.genome_new_ids.fa
+ Aros01112013-genome_new_ids.fa Ccap01172013-genome_new_ids.fa
+ Clec_Bbug02212013.genome_new_ids.fa diaci1.1_new_ids.fa
+ Edan07162013.scaffolds_new_ids.fa Eaff_11172013.genome_new_ids.fa
+ Focc_FINAL.scaffolds_new_ids.fa Lful_Scha04012013-genome_new_ids.fa
+ Ldec.genome.10062013_new_ids.fa Ofas.scaffolds_new_ids.fa
+ Oabi11242013.genome_new_ids.fa Pven10162013.scaffolds_new_ids.fa
+ Ptep01282013.genome_new_ids.fa Tpre_FINAL.scaffolds_new_ids.fa",
+      algorithm-options {
+        {
+          name "EvalueThreshold",
+          value cutoff e-value { 1, 10, 1 }
+        },
+        {
+          name "MaskAtHash",
+          value boolean TRUE
+        },
+        {
+          name "DustFilteringLevel",
+          value integer 20
+        },
+        {
+          name "DustFilteringWindow",
+          value integer 64
+        },
+        {
+          name "DustFilteringLinker",
+          value integer 1
+        },
+        {
+          name "UngappedMode",
+          value boolean FALSE
+        },
+        {
+          name "HitlistSize",
+          value integer 500
+        },
+        {
+          name "EffectiveSearchSpace",
+          value big-integer 1190737781068
+        }
+      }
+    }
+  },
+  results {
+    alignments {
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 150
+          },
+          {
+            id str "e_value",
+            value real { 225960974937102, 10, -86 }
+          },
+          {
+            id str "bit_score",
+            value real { 278117742084399, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 150
+          }
+        },
+        segs denseg {
+          dim 2,
+          numseg 1,
+          ids {
+            local str "Query_1",
+            general {
+              db "Cimex_lectularius",
+              tag str "cimlec_Scaffold1"
+            }
+          },
+          starts {
+            0,
+            900
+          },
+          lens {
+            150
+          },
+          strands {
+            plus,
+            plus
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 40
+          },
+          {
+            id str "e_value",
+            value real { 318197301214664, 10, -25 }
+          },
+          {
+            id str "bit_score",
+            value real { 749862803272326, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 58
+          }
+        },
+        segs denseg {
+          dim 2,
+          numseg 1,
+          ids {
+            local str "Query_1",
+            general {
+              db "Cimex_lectularius",
+              tag str "cimlec_Scaffold5"
+            }
+          },
+          starts {
+            83,
+            11158053
+          },
+          lens {
+            67
+          },
+          strands {
+            plus,
+            plus
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 34
+          },
+          {
+            id str "e_value",
+            value real { 688776169557769, 10, -22 }
+          },
+          {
+            id str "bit_score",
+            value real { 639063824132054, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 38
+          }
+        },
+        segs denseg {
+          dim 2,
+          numseg 1,
+          ids {
+            local str "Query_1",
+            general {
+              db "Cimex_lectularius",
+              tag str "cimlec_Scaffold7"
+            }
+          },
+          starts {
+            110,
+            12020616
+          },
+          lens {
+            40
+          },
+          strands {
+            plus,
+            plus
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 28
+          },
+          {
+            id str "e_value",
+            value real { 149093851500212, 10, -18 }
+          },
+          {
+            id str "bit_score",
+            value real { 528264844991782, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 28
+          }
+        },
+        segs denseg {
+          dim 2,
+          numseg 1,
+          ids {
+            local str "Query_1",
+            general {
+              db "Cimex_lectularius",
+              tag str "cimlec_Scaffold52"
+            }
+          },
+          starts {
+            122,
+            4975049
+          },
+          lens {
+            28
+          },
+          strands {
+            plus,
+            plus
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 28
+          },
+          {
+            id str "e_value",
+            value real { 149093851500212, 10, -18 }
+          },
+          {
+            id str "bit_score",
+            value real { 528264844991782, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 28
+          }
+        },
+        segs denseg {
+          dim 2,
+          numseg 1,
+          ids {
+            local str "Query_1",
+            general {
+              db "Cimex_lectularius",
+              tag str "cimlec_Scaffold19"
+            }
+          },
+          starts {
+            0,
+            2449049
+          },
+          lens {
+            28
+          },
+          strands {
+            minus,
+            plus
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 150
+          },
+          {
+            id str "e_value",
+            value real { 225960974937102, 10, -86 }
+          },
+          {
+            id str "bit_score",
+            value real { 278117742084399, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 150
+          }
+        },
+        segs denseg {
+          dim 2,
+          numseg 1,
+          ids {
+            local str "Query_2",
+            general {
+              db "Cimex_lectularius",
+              tag str "cimlec_Scaffold1"
+            }
+          },
+          starts {
+            0,
+            368650
+          },
+          lens {
+            150
+          },
+          strands {
+            plus,
+            plus
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 113
+          },
+          {
+            id str "e_value",
+            value real { 836026613753582, 10, -66 }
+          },
+          {
+            id str "bit_score",
+            value real { 209791704947897, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 138
+          }
+        },
+        segs denseg {
+          dim 2,
+          numseg 3,
+          ids {
+            local str "Query_2",
+            general {
+              db "Cimex_lectularius",
+              tag str "cimlec_Scaffold62"
+            }
+          },
+          starts {
+            71,
+            2033365,
+            -1,
+            2033443,
+            0,
+            2033444
+          },
+          lens {
+            78,
+            1,
+            71
+          },
+          strands {
+            minus,
+            plus,
+            minus,
+            plus,
+            minus,
+            plus
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 112
+          },
+          {
+            id str "e_value",
+            value real { 30068865306593, 10, -64 }
+          },
+          {
+            id str "bit_score",
+            value real { 20794505529556, 10, -11 }
+          },
+          {
+            id str "num_ident",
+            value int 137
+          }
+        },
+        segs denseg {
+          dim 2,
+          numseg 3,
+          ids {
+            local str "Query_2",
+            general {
+              db "Cimex_lectularius",
+              tag str "cimlec_Scaffold55"
+            }
+          },
+          starts {
+            30,
+            930544,
+            28,
+            -1,
+            0,
+            930663
+          },
+          lens {
+            119,
+            2,
+            28
+          },
+          strands {
+            minus,
+            plus,
+            minus,
+            plus,
+            minus,
+            plus
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 94
+          },
+          {
+            id str "e_value",
+            value real { 304973358702821, 10, -55 }
+          },
+          {
+            id str "bit_score",
+            value real { 174705361553478, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 108
+          }
+        },
+        segs denseg {
+          dim 2,
+          numseg 5,
+          ids {
+            local str "Query_2",
+            general {
+              db "Cimex_lectularius",
+              tag str "cimlec_Scaffold118"
+            }
+          },
+          starts {
+            0,
+            250842,
+            -1,
+            250882,
+            40,
+            250883,
+            -1,
+            250888,
+            45,
+            250890
+          },
+          lens {
+            40,
+            1,
+            5,
+            2,
+            66
+          },
+          strands {
+            plus,
+            plus,
+            plus,
+            plus,
+            plus,
+            plus,
+            plus,
+            plus,
+            plus,
+            plus
+          }
+        }
+      }
+    },
+    masks {
+    },
+    ka-blocks {
+      {
+        lambda { 133270576282382, 10, -14 },
+        k { 620991117264207, 10, -15 },
+        h { 112409184650115, 10, -14 },
+        gapped FALSE
+      },
+      {
+        lambda { 128, 10, -2 },
+        k { 46, 10, -2 },
+        h { 85, 10, -2 },
+        gapped TRUE
+      }
+    },
+    search-stats {
+      "Effective search space: 1190737781068",
+      "Effective search space used: 1190737781068",
+      "Length adjustment: 29"
+    }
+  }
+}

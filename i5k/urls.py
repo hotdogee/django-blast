@@ -37,5 +37,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # BLAST
-    url(r'^blast/', include('blast.urls', namespace='blast')),
+    url(r'^newblast/', include('blast.urls', namespace='blast')),
 )
