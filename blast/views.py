@@ -12,15 +12,17 @@ import subprocess
 import json
 import csv
 
+blast_out_col_types = [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int, int, int]
+blast_out_col_name_str = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe'
+blast_out_col_names = blast_out_col_name_str.split()
 blast_out_ext = {}
 blast_out_ext['.0'] = '0'
 blast_out_ext['.html'] = '0'
 blast_out_ext['.1'] = '1'
 blast_out_ext['.3'] = '3'
 blast_out_ext['.xml'] = '5'
-blast_out_ext['.tsv'] = '6 qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs'
-blast_out_ext['.csv'] = '10 qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs'
-blast_out_col_types = [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int]
+blast_out_ext['.tsv'] = '6 ' + blast_out_col_name_str
+blast_out_ext['.csv'] = '10 ' + blast_out_col_name_str
 
 def create(request):
     #return HttpResponse("BLAST Page: create.")
@@ -71,11 +73,11 @@ def retrieve(request, task_id='1'):
     try:
         # parse csv
         file_prefix = path.join(settings.MEDIA_ROOT, task_id)
-        results = []
+        results_data = []
         with open(file_prefix + '.csv', 'r') as f:
             cr = csv.reader(f)
             for row in cr:
-                results.append(tuple(convert(value) for convert, value in zip(blast_out_col_types, row)))
+                results_data.append(tuple(convert(value) for convert, value in zip(blast_out_col_types, row)))
         # detail results
         results_detail = ''
         with open(file_prefix + '.html', 'r') as f:
@@ -85,7 +87,8 @@ def retrieve(request, task_id='1'):
             'blast/results.html',
             RequestContext(request,
             {
-                'results': json.dumps(results),
+                'results_col_names': json.dumps(blast_out_col_names),
+                'results_data': json.dumps(results_data),
                 'results_detail': results_detail,
             })
         )

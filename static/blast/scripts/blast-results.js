@@ -3,28 +3,13 @@
     // Prepare Data //
     //////////////////
     // convert arrays to objects
-    var results_db = _.map(results_data, function (row) { return _.object(results_col_names, row); });
+    var results_db = _.map(results_data, function (row) { return _.object(results_col, row); });
     ///////////////////
     // Results Table //
     ///////////////////
-    // Calculate dataTables_scrollBody height
-    function calcDataTableHeight() {
-        return $('#table-panel').height() - $('.ui-corner-tr').outerHeight() - $('.ui-corner-br').outerHeight() - $('.dataTables_scrollHead').outerHeight();
-    };
-    $(window).resize(function () {
-        $('.dataTables_scrollBody').css('height', calcDataTableHeight());
+    $('#example').dataTable({
+        'data': results_data
     });
-    $('#horizontal-splitter').on('track', function () {
-        //console.log('on-track: ' + calcDataTableHeight());
-        $('.dataTables_scrollBody').css('height', calcDataTableHeight());
-    });
-    $('#results-table').dataTable({
-        'scrollX': '100%',
-        'scrollY': '200px',
-        'data': results_data,
-        'columns': _.map(results_col_names, function (name) { return { 'title': name }; })
-    });
-    $('.dataTables_scrollBody').css('height', calcDataTableHeight());
     /////////////////////
     // Alignment Graph //
     /////////////////////
