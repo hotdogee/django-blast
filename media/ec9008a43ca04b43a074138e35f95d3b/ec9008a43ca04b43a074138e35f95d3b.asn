@@ -1,0 +1,4237 @@
+Blast4-archive ::= {
+  request {
+    ident "2.2.29+",
+    body queue-search {
+      program "tblastn",
+      service "plain",
+      queries bioseq-set {
+        seq-set {
+          seq {
+            id {
+              local str "Query_1"
+            },
+            descr {
+              user {
+                type str "CFastaReader",
+                data {
+                  {
+                    label str "DefLine",
+                    data str ">gi|5524211|gb|AAD44166.1| cytochrome b [Elephas
+ maximus maximus]"
+                  }
+                }
+              },
+              title "gi|5524211|gb|AAD44166.1| cytochrome b [Elephas maximus
+ maximus]"
+            },
+            inst {
+              repr raw,
+              mol aa,
+              length 284,
+              seq-data ncbieaa "LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQ
+MSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDS
+DKIPFHPYYTIKDFLGLLILILLLLLLALLSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLA
+LFLSIVILGLMPFLHTSKHRSMMLRPLSQALFWTLTMDLLTLTWIGSQPVEYPYTIIGQMASILYFSIILAFLPIAGX
+IENY"
+            }
+          }
+        }
+      },
+      subject database "Aros01112013-genome_new_ids.fa
+ Ccap01172013-genome_new_ids.fa Clec_Bbug02212013.genome_new_ids.fa",
+      algorithm-options {
+        {
+          name "EvalueThreshold",
+          value cutoff e-value { 1, 10, 1 }
+        },
+        {
+          name "DbGeneticCode",
+          value integer 1
+        },
+        {
+          name "UngappedMode",
+          value boolean FALSE
+        },
+        {
+          name "SumStatistics",
+          value boolean TRUE
+        },
+        {
+          name "LongestIntronLength",
+          value integer 0
+        },
+        {
+          name "MaskAtHash",
+          value boolean FALSE
+        },
+        {
+          name "SegFilteringWindow",
+          value integer 12
+        },
+        {
+          name "SegFilteringLocut",
+          value real { 22, 10, -1 }
+        },
+        {
+          name "SegFilteringHicut",
+          value real { 25, 10, -1 }
+        },
+        {
+          name "WordThreshold",
+          value integer 13
+        },
+        {
+          name "WindowSize",
+          value integer 40
+        },
+        {
+          name "HitlistSize",
+          value integer 500
+        },
+        {
+          name "CompositionBasedStats",
+          value integer 2
+        },
+        {
+          name "SmithWatermanMode",
+          value boolean FALSE
+        },
+        {
+          name "EffectiveSearchSpace",
+          value big-integer 69211174240
+        }
+      }
+    }
+  },
+  results {
+    alignments {
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 704
+          },
+          {
+            id str "e_value",
+            value real { 381449755382763, 10, -95 }
+          },
+          {
+            id str "bit_score",
+            value real { 275788733725861, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 142
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 198
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold138"
+              }
+            },
+            loc {
+              int {
+                from 0,
+                to 19,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 112612,
+                to 112671,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold138"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold138"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 112672,
+                to 112677,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold138"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold138"
+              }
+            },
+            loc {
+              int {
+                from 20,
+                to 118,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 112678,
+                to 112974,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold138"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold138"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 112975,
+                to 112980,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold138"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold138"
+              }
+            },
+            loc {
+              int {
+                from 119,
+                to 282,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 112981,
+                to 113472,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold138"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 704
+          },
+          {
+            id str "e_value",
+            value real { 415680328286402, 10, -95 }
+          },
+          {
+            id str "bit_score",
+            value real { 275788733725861, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 142
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 198
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold141"
+              }
+            },
+            loc {
+              int {
+                from 0,
+                to 19,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 75876,
+                to 75935,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold141"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold141"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 75870,
+                to 75875,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold141"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold141"
+              }
+            },
+            loc {
+              int {
+                from 20,
+                to 118,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 75573,
+                to 75869,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold141"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold141"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 75567,
+                to 75572,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold141"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold141"
+              }
+            },
+            loc {
+              int {
+                from 119,
+                to 282,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 75075,
+                to 75566,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold141"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 671
+          },
+          {
+            id str "e_value",
+            value real { 993087657742404, 10, -91 }
+          },
+          {
+            id str "bit_score",
+            value real { 263077147720588, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 137
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 195
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold191"
+              }
+            },
+            loc {
+              int {
+                from 1,
+                to 22,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 41552,
+                to 41617,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold191"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold191"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 41618,
+                to 41623,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold191"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold191"
+              }
+            },
+            loc {
+              int {
+                from 23,
+                to 111,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 41624,
+                to 41890,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold191"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold191"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 41891,
+                to 41893,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold191"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold191"
+              }
+            },
+            loc {
+              int {
+                from 112,
+                to 282,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 41894,
+                to 42406,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold191"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 656
+          },
+          {
+            id str "e_value",
+            value real { 891885062682489, 10, -89 }
+          },
+          {
+            id str "bit_score",
+            value real { 257299154081828, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 135
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 198
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold49"
+              }
+            },
+            loc {
+              int {
+                from 0,
+                to 163,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3260942,
+                to 3261433,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold49"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold49"
+              }
+            },
+            loc {
+              int {
+                from 164,
+                to 164,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold49"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold49"
+              }
+            },
+            loc {
+              int {
+                from 165,
+                to 267,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3261434,
+                to 3261742,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold49"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 636
+          },
+          {
+            id str "e_value",
+            value real { 410669028163844, 10, -86 }
+          },
+          {
+            id str "bit_score",
+            value real { 249595162563481, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 146
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 192
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Athalia_rosae",
+                tag str "athros_Scaffold130"
+              }
+            },
+            loc {
+              int {
+                from 2,
+                to 271,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 62473,
+                to 63282,
+                strand plus,
+                id general {
+                  db "Athalia_rosae",
+                  tag str "athros_Scaffold130"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 81
+          },
+          {
+            id str "e_value",
+            value real { 12803748073784, 10, -13 }
+          },
+          {
+            id str "bit_score",
+            value real { 358093979293496, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 18
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 29
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Athalia_rosae",
+                tag str "athros_Scaffold130"
+              }
+            },
+            loc {
+              int {
+                from 213,
+                to 268,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 64323,
+                to 64490,
+                strand plus,
+                id general {
+                  db "Athalia_rosae",
+                  tag str "athros_Scaffold130"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 619
+          },
+          {
+            id str "e_value",
+            value real { 809324850111167, 10, -84 }
+          },
+          {
+            id str "bit_score",
+            value real { 243046769772886, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 142
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 194
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Athalia_rosae",
+                tag str "athros_Scaffold134"
+              }
+            },
+            loc {
+              int {
+                from 0,
+                to 268,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 52166,
+                to 52972,
+                strand minus,
+                id general {
+                  db "Athalia_rosae",
+                  tag str "athros_Scaffold134"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 588
+          },
+          {
+            id str "e_value",
+            value real { 10296328397961, 10, -78 }
+          },
+          {
+            id str "bit_score",
+            value real { 231105582919448, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 122
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 173
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold4"
+              }
+            },
+            loc {
+              int {
+                from 29,
+                to 267,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 13504446,
+                to 13505162,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold4"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 361
+          },
+          {
+            id str "sum_n",
+            value int 2
+          },
+          {
+            id str "e_value",
+            value real { 770256171894994, 10, -65 }
+          },
+          {
+            id str "bit_score",
+            value real { 143665279186209, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 72
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 99
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523321.1"
+              }
+            },
+            loc {
+              int {
+                from 15,
+                to 26,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 1092412,
+                to 1092447,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523321.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523321.1"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 1092403,
+                to 1092411,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523321.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523321.1"
+              }
+            },
+            loc {
+              int {
+                from 27,
+                to 136,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 1092073,
+                to 1092402,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523321.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 197
+          },
+          {
+            id str "sum_n",
+            value int 2
+          },
+          {
+            id str "e_value",
+            value real { 770256171894994, 10, -65 }
+          },
+          {
+            id str "bit_score",
+            value real { 804925487357626, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 39
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 53
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523321.1"
+              }
+            },
+            loc {
+              int {
+                from 162,
+                to 226,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 1091802,
+                to 1091996,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523321.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 421
+          },
+          {
+            id str "e_value",
+            value real { 127242741465338, 10, -57 }
+          },
+          {
+            id str "bit_score",
+            value real { 16677725374125, 10, -11 }
+          },
+          {
+            id str "num_ident",
+            value int 98
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 130
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Athalia_rosae",
+                tag str "athros_Scaffold241"
+              }
+            },
+            loc {
+              int {
+                from 67,
+                to 260,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3572,
+                to 4153,
+                strand minus,
+                id general {
+                  db "Athalia_rosae",
+                  tag str "athros_Scaffold241"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 400
+          },
+          {
+            id str "e_value",
+            value real { 773120436289887, 10, -55 }
+          },
+          {
+            id str "bit_score",
+            value real { 158688062646985, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 88
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 129
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523376.1"
+              }
+            },
+            loc {
+              int {
+                from 62,
+                to 181,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 299819,
+                to 300178,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523376.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523376.1"
+              }
+            },
+            loc {
+              int {
+                from 182,
+                to 183,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523376.1"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523376.1"
+              }
+            },
+            loc {
+              int {
+                from 184,
+                to 267,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 299567,
+                to 299818,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523376.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 277
+          },
+          {
+            id str "e_value",
+            value real { 607862705114341, 10, -39 }
+          },
+          {
+            id str "bit_score",
+            value real { 111308514809151, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 55
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 78
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523376.1"
+              }
+            },
+            loc {
+              int {
+                from 0,
+                to 100,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 300061,
+                to 300363,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523376.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 383
+          },
+          {
+            id str "e_value",
+            value real { 14071390966784, 10, -51 }
+          },
+          {
+            id str "bit_score",
+            value real { 15213966985639, 10, -11 }
+          },
+          {
+            id str "num_ident",
+            value int 84
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 116
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Athalia_rosae",
+                tag str "athros_Scaffold67"
+              }
+            },
+            loc {
+              int {
+                from 97,
+                to 268,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 13528,
+                to 14043,
+                strand plus,
+                id general {
+                  db "Athalia_rosae",
+                  tag str "athros_Scaffold67"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 274
+          },
+          {
+            id str "e_value",
+            value real { 145836401146492, 10, -38 }
+          },
+          {
+            id str "bit_score",
+            value real { 110152916081399, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 62
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 83
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Athalia_rosae",
+                tag str "athros_Scaffold67"
+              }
+            },
+            loc {
+              int {
+                from 0,
+                to 98,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 8605,
+                to 8901,
+                strand plus,
+                id general {
+                  db "Athalia_rosae",
+                  tag str "athros_Scaffold67"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 378
+          },
+          {
+            id str "e_value",
+            value real { 534425980657472, 10, -52 }
+          },
+          {
+            id str "bit_score",
+            value real { 150213671976804, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 84
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 125
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            },
+            loc {
+              int {
+                from 77,
+                to 133,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 208460,
+                to 208630,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523732.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            },
+            loc {
+              int {
+                from 134,
+                to 135,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            },
+            loc {
+              int {
+                from 136,
+                to 219,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 208208,
+                to 208459,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523732.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            },
+            loc {
+              int {
+                from 220,
+                to 221,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            },
+            loc {
+              int {
+                from 222,
+                to 234,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 208169,
+                to 208207,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523732.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            },
+            loc {
+              int {
+                from 235,
+                to 236,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            },
+            loc {
+              int {
+                from 237,
+                to 266,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 208079,
+                to 208168,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523732.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 169
+          },
+          {
+            id str "e_value",
+            value real { 148192475787448, 10, -25 }
+          },
+          {
+            id str "bit_score",
+            value real { 697069606100767, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 35
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 51
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523732.1"
+              }
+            },
+            loc {
+              int {
+                from 24,
+                to 90,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 208584,
+                to 208784,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523732.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 266
+          },
+          {
+            id str "sum_n",
+            value int 2
+          },
+          {
+            id str "e_value",
+            value real { 542188765850342, 10, -48 }
+          },
+          {
+            id str "bit_score",
+            value real { 10707131947406, 10, -11 }
+          },
+          {
+            id str "num_ident",
+            value int 65
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 105
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523928.1"
+              }
+            },
+            loc {
+              int {
+                from 46,
+                to 136,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 29566,
+                to 29838,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523928.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523928.1"
+              }
+            },
+            loc {
+              int {
+                from 137,
+                to 182,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523928.1"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523928.1"
+              }
+            },
+            loc {
+              int {
+                from 183,
+                to 231,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 29839,
+                to 29985,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523928.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 145
+          },
+          {
+            id str "sum_n",
+            value int 2
+          },
+          {
+            id str "e_value",
+            value real { 542188765850342, 10, -48 }
+          },
+          {
+            id str "bit_score",
+            value real { 604621707880602, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 26
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 40
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523928.1"
+              }
+            },
+            loc {
+              int {
+                from 0,
+                to 48,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 29423,
+                to 29569,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523928.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 222
+          },
+          {
+            id str "e_value",
+            value real { 487352111385712, 10, -32 }
+          },
+          {
+            id str "bit_score",
+            value real { 901225381336964, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 50
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 73
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            },
+            loc {
+              int {
+                from 157,
+                to 250,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 38434,
+                to 38715,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold66"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            },
+            loc {
+              int {
+                from 251,
+                to 251,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            },
+            loc {
+              int {
+                from 252,
+                to 267,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 38716,
+                to 38763,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold66"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 151
+          },
+          {
+            id str "e_value",
+            value real { 26956832965669, 10, -22 }
+          },
+          {
+            id str "bit_score",
+            value real { 627733682435643, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 29
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 50
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            },
+            loc {
+              int {
+                from 70,
+                to 88,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 37935,
+                to 37991,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold66"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            },
+            loc {
+              int {
+                from 89,
+                to 89,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            },
+            loc {
+              int {
+                from 90,
+                to 136,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 37992,
+                to 38132,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold66"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 119
+          },
+          {
+            id str "e_value",
+            value real { 317606349410405, 10, -19 }
+          },
+          {
+            id str "bit_score",
+            value real { 50446981814209, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 29
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 45
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            },
+            loc {
+              int {
+                from 24,
+                to 62,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 37805,
+                to 37921,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold66"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            },
+            loc {
+              int {
+                from 63,
+                to 64,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold66"
+              }
+            },
+            loc {
+              int {
+                from 65,
+                to 89,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 37922,
+                to 37996,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold66"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 213
+          },
+          {
+            id str "e_value",
+            value real { 555776620886681, 10, -31 }
+          },
+          {
+            id str "bit_score",
+            value real { 866557419504402, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 43
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 60
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004524533.1"
+              }
+            },
+            loc {
+              int {
+                from 154,
+                to 216,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 237837,
+                to 238025,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004524533.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004524533.1"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 237822,
+                to 237836,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004524533.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004524533.1"
+              }
+            },
+            loc {
+              int {
+                from 217,
+                to 233,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 237771,
+                to 237821,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004524533.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 88
+          },
+          {
+            id str "e_value",
+            value real { 188584457240976, 10, -15 }
+          },
+          {
+            id str "bit_score",
+            value real { 385057949607711, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 18
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 30
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004524533.1"
+              }
+            },
+            loc {
+              int {
+                from 72,
+                to 110,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 226748,
+                to 226864,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004524533.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 205
+          },
+          {
+            id str "e_value",
+            value real { 566257157779314, 10, -30 }
+          },
+          {
+            id str "bit_score",
+            value real { 835741453431014, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 43
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 57
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523902.1"
+              }
+            },
+            loc {
+              int {
+                from 154,
+                to 213,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 2526496,
+                to 2526675,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523902.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523902.1"
+              }
+            },
+            loc {
+              int {
+                from 214,
+                to 215,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523902.1"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523902.1"
+              }
+            },
+            loc {
+              int {
+                from 216,
+                to 227,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 2526676,
+                to 2526711,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523902.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 197
+          },
+          {
+            id str "e_value",
+            value real { 46418888691658, 10, -28 }
+          },
+          {
+            id str "bit_score",
+            value real { 804925487357626, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 40
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 50
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523847.1"
+              }
+            },
+            loc {
+              int {
+                from 33,
+                to 89,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3650889,
+                to 3651059,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523847.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 192
+          },
+          {
+            id str "e_value",
+            value real { 210751411908117, 10, -28 }
+          },
+          {
+            id str "bit_score",
+            value real { 785665508561758, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 36
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 52
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold12"
+              }
+            },
+            loc {
+              int {
+                from 50,
+                to 114,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 8073500,
+                to 8073694,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold12"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 88
+          },
+          {
+            id str "e_value",
+            value real { 182183209522051, 10, -15 }
+          },
+          {
+            id str "bit_score",
+            value real { 385057949607711, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 21
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 35
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold12"
+              }
+            },
+            loc {
+              int {
+                from 165,
+                to 218,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 9663815,
+                to 9663976,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold12"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 152
+          },
+          {
+            id str "e_value",
+            value real { 179588372200826, 10, -23 }
+          },
+          {
+            id str "bit_score",
+            value real { 631585678194817, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 30
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 38
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold6"
+              }
+            },
+            loc {
+              int {
+                from 157,
+                to 201,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 12256559,
+                to 12256693,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold6"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 149
+          },
+          {
+            id str "e_value",
+            value real { 504853018617496, 10, -23 }
+          },
+          {
+            id str "bit_score",
+            value real { 620029690917296, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 33
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 43
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523925.1"
+              }
+            },
+            loc {
+              int {
+                from 39,
+                to 95,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 2476325,
+                to 2476495,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523925.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 102
+          },
+          {
+            id str "sum_n",
+            value int 2
+          },
+          {
+            id str "e_value",
+            value real { 150515681479523, 10, -21 }
+          },
+          {
+            id str "bit_score",
+            value real { 43898589023614, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 21
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 24
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523309.1"
+              }
+            },
+            loc {
+              int {
+                from 177,
+                to 205,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 1150275,
+                to 1150361,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523309.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 77
+          },
+          {
+            id str "sum_n",
+            value int 2
+          },
+          {
+            id str "e_value",
+            value real { 150515681479523, 10, -21 }
+          },
+          {
+            id str "bit_score",
+            value real { 342685996256802, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 15
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 20
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523309.1"
+              }
+            },
+            loc {
+              int {
+                from 162,
+                to 185,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 1150229,
+                to 1150300,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523309.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 136
+          },
+          {
+            id str "e_value",
+            value real { 247687741712661, 10, -21 }
+          },
+          {
+            id str "bit_score",
+            value real { 56995374604804, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 29
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 44
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold32"
+              }
+            },
+            loc {
+              int {
+                from 154,
+                to 179,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 2925562,
+                to 2925639,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold32"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold32"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 2925556,
+                to 2925561,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold32"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold32"
+              }
+            },
+            loc {
+              int {
+                from 180,
+                to 182,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 2925547,
+                to 2925555,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold32"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold32"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 2925532,
+                to 2925546,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold32"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold32"
+              }
+            },
+            loc {
+              int {
+                from 183,
+                to 204,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 2925466,
+                to 2925531,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold32"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 134
+          },
+          {
+            id str "e_value",
+            value real { 369237104135105, 10, -21 }
+          },
+          {
+            id str "bit_score",
+            value real { 562249754529693, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 28
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 41
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold21"
+              }
+            },
+            loc {
+              int {
+                from 70,
+                to 71,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 7985385,
+                to 7985390,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold21"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold21"
+              }
+            },
+            loc {
+              int {
+                from 72,
+                to 74,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold21"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold21"
+              }
+            },
+            loc {
+              int {
+                from 75,
+                to 83,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 7985391,
+                to 7985417,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold21"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold21"
+              }
+            },
+            loc {
+              int {
+                from 84,
+                to 84,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold21"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold21"
+              }
+            },
+            loc {
+              int {
+                from 85,
+                to 129,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 7985418,
+                to 7985552,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold21"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 134
+          },
+          {
+            id str "e_value",
+            value real { 41163764520972, 10, -20 }
+          },
+          {
+            id str "bit_score",
+            value real { 562249754529693, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 25
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 41
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523714.1"
+              }
+            },
+            loc {
+              int {
+                from 24,
+                to 72,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 1702699,
+                to 1702845,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523714.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 123
+          },
+          {
+            id str "e_value",
+            value real { 898138323204293, 10, -20 }
+          },
+          {
+            id str "bit_score",
+            value real { 519877801178785, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 25
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 36
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004524279.1"
+              }
+            },
+            loc {
+              int {
+                from 63,
+                to 107,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 60562,
+                to 60696,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004524279.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 105
+          },
+          {
+            id str "e_value",
+            value real { 141009886727283, 10, -17 }
+          },
+          {
+            id str "bit_score",
+            value real { 450541877513661, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 20
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 31
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold9"
+              }
+            },
+            loc {
+              int {
+                from 118,
+                to 168,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 6519007,
+                to 6519159,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold9"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 102
+          },
+          {
+            id str "e_value",
+            value real { 318904851170589, 10, -17 }
+          },
+          {
+            id str "bit_score",
+            value real { 43898589023614, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 18
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 30
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004524234.1"
+              }
+            },
+            loc {
+              int {
+                from 0,
+                to 35,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 905101,
+                to 905208,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004524234.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 99
+          },
+          {
+            id str "e_value",
+            value real { 859291162061705, 10, -17 }
+          },
+          {
+            id str "bit_score",
+            value real { 42742990295862, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 18
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 22
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004522866.1"
+              }
+            },
+            loc {
+              int {
+                from 157,
+                to 182,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 4068188,
+                to 4068265,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004522866.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 97
+          },
+          {
+            id str "e_value",
+            value real { 145358135943391, 10, -16 }
+          },
+          {
+            id str "bit_score",
+            value real { 419725911440273, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 21
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 32
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold50"
+              }
+            },
+            loc {
+              int {
+                from 37,
+                to 78,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3183353,
+                to 3183478,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold50"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 95
+          },
+          {
+            id str "e_value",
+            value real { 282792791514232, 10, -16 }
+          },
+          {
+            id str "bit_score",
+            value real { 412021919921926, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 30
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 46
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold50"
+              }
+            },
+            loc {
+              int {
+                from 11,
+                to 43,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3183465,
+                to 3183563,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold50"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold50"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 3183459,
+                to 3183464,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold50"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold50"
+              }
+            },
+            loc {
+              int {
+                from 44,
+                to 90,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3183318,
+                to 3183458,
+                strand minus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold50"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 88
+          },
+          {
+            id str "e_value",
+            value real { 180562006749363, 10, -15 }
+          },
+          {
+            id str "bit_score",
+            value real { 385057949607711, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 16
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 26
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523858.1"
+              }
+            },
+            loc {
+              int {
+                from 88,
+                to 117,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 145162,
+                to 145251,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523858.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 85
+          },
+          {
+            id str "e_value",
+            value real { 471793967029431, 10, -15 }
+          },
+          {
+            id str "bit_score",
+            value real { 37350196233019, 10, -12 }
+          },
+          {
+            id str "num_ident",
+            value int 14
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 26
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold114"
+              }
+            },
+            loc {
+              int {
+                from 62,
+                to 95,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 838698,
+                to 838799,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold114"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 60
+          },
+          {
+            id str "sum_n",
+            value int 2
+          },
+          {
+            id str "e_value",
+            value real { 133185630454575, 10, -14 }
+          },
+          {
+            id str "bit_score",
+            value real { 277202068350852, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 12
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 22
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold23"
+              }
+            },
+            loc {
+              int {
+                from 154,
+                to 183,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 5353233,
+                to 5353322,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold23"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 55
+          },
+          {
+            id str "sum_n",
+            value int 2
+          },
+          {
+            id str "e_value",
+            value real { 133185630454575, 10, -14 }
+          },
+          {
+            id str "bit_score",
+            value real { 257942089554984, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 11
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 12
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold23"
+              }
+            },
+            loc {
+              int {
+                from 182,
+                to 195,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 5353313,
+                to 5353354,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold23"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 78
+          },
+          {
+            id str "e_value",
+            value real { 252932650558753, 10, -14 }
+          },
+          {
+            id str "bit_score",
+            value real { 346537992015976, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 15
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 28
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004524527.1"
+              }
+            },
+            loc {
+              int {
+                from 222,
+                to 267,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 10221,
+                to 10358,
+                strand minus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004524527.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 76
+          },
+          {
+            id str "e_value",
+            value real { 531832575295728, 10, -14 }
+          },
+          {
+            id str "bit_score",
+            value real { 338834000497628, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 18
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 25
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold44"
+              }
+            },
+            loc {
+              int {
+                from 165,
+                to 185,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3576465,
+                to 3576527,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold44"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold44"
+              }
+            },
+            loc {
+              empty local str "Query_1",
+              int {
+                from 3576528,
+                to 3576551,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold44"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Cimex_lectularius",
+                tag str "cimlec_Scaffold44"
+              }
+            },
+            loc {
+              int {
+                from 186,
+                to 197,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3576552,
+                to 3576587,
+                strand plus,
+                id general {
+                  db "Cimex_lectularius",
+                  tag str "cimlec_Scaffold44"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        type partial,
+        dim 2,
+        score {
+          {
+            id str "score",
+            value int 76
+          },
+          {
+            id str "e_value",
+            value real { 565202089690961, 10, -14 }
+          },
+          {
+            id str "bit_score",
+            value real { 338834000497628, 10, -13 }
+          },
+          {
+            id str "num_ident",
+            value int 19
+          },
+          {
+            id str "comp_adjustment_method",
+            value int 2
+          },
+          {
+            id str "num_positives",
+            value int 44
+          }
+        },
+        segs std {
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523880.1"
+              }
+            },
+            loc {
+              int {
+                from 2,
+                to 6,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3454918,
+                to 3454932,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523880.1"
+                }
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523880.1"
+              }
+            },
+            loc {
+              int {
+                from 7,
+                to 9,
+                strand unknown,
+                id local str "Query_1"
+              },
+              empty general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523880.1"
+              }
+            }
+          },
+          {
+            dim 2,
+            ids {
+              local str "Query_1",
+              general {
+                db "Ceratitis_capitata",
+                tag str "cercap_NW_004523880.1"
+              }
+            },
+            loc {
+              int {
+                from 10,
+                to 74,
+                strand unknown,
+                id local str "Query_1"
+              },
+              int {
+                from 3454933,
+                to 3455127,
+                strand plus,
+                id general {
+                  db "Ceratitis_capitata",
+                  tag str "cercap_NW_004523880.1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    masks {
+      {
+        locations {
+          packed-int {
+            {
+              from 138,
+              to 153,
+              id local str "Query_1"
+            },
+            {
+              from 235,
+              to 244,
+              id local str "Query_1"
+            }
+          }
+        },
+        frame notset
+      }
+    },
+    ka-blocks {
+      {
+        lambda { 327505938484236, 10, -15 },
+        k { 143329546844576, 10, -15 },
+        h { 472118281449686, 10, -15 },
+        gapped FALSE
+      },
+      {
+        lambda { 267, 10, -3 },
+        k { 41, 10, -3 },
+        h { 14, 10, -2 },
+        gapped TRUE
+      }
+    },
+    search-stats {
+      "Effective search space: 69211174240",
+      "Effective search space used: 69211174240",
+      "Length adjustment: 124"
+    }
+  }
+}
