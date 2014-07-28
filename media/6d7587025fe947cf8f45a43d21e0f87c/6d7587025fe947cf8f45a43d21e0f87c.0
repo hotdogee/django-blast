@@ -1,0 +1,671 @@
+TBLASTN 2.2.29+
+
+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro A.
+Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J.
+Lipman (1997), "Gapped BLAST and PSI-BLAST: a new generation of
+protein database search programs", Nucleic Acids Res. 25:3389-3402.
+
+
+
+Database: Anoplophora glabripennis Scaffolds; Ceratitis capitata Scaffolds
+           12,296 sequences; 1,192,485,685 total letters
+
+
+
+Query= gi|5524211|gb|AAD44166.1| cytochrome b [Elephas maximus maximus]
+
+Length=284
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+gnl|Anoplophora_glabripennis|anogla_Scaffold526                         281   5e-83
+gnl|Anoplophora_glabripennis|anogla_Scaffold1107                        218   2e-61
+gnl|Ceratitis_capitata|cercap_NW_004523321.1                            143   7e-51
+gnl|Anoplophora_glabripennis|anogla_Scaffold727                         159   4e-41
+gnl|Ceratitis_capitata|cercap_NW_004523376.1                            158   7e-41
+gnl|Ceratitis_capitata|cercap_NW_004523732.1                            150   5e-38
+gnl|Ceratitis_capitata|cercap_NW_004523928.1                            107   5e-34
+gnl|Anoplophora_glabripennis|anogla_Scaffold786                         128   2e-30
+gnl|Anoplophora_glabripennis|anogla_Scaffold17                          117   9e-27
+gnl|Anoplophora_glabripennis|anogla_Scaffold128                         116   2e-26
+gnl|Anoplophora_glabripennis|anogla_Scaffold296                       97.4    2e-20
+gnl|Anoplophora_glabripennis|anogla_Scaffold511                       88.6    1e-17
+gnl|Ceratitis_capitata|cercap_NW_004524533.1                          86.7    5e-17
+gnl|Anoplophora_glabripennis|anogla_Scaffold125                       79.7    2e-16
+gnl|Ceratitis_capitata|cercap_NW_004523902.1                          83.6    5e-16
+gnl|Ceratitis_capitata|cercap_NW_004523847.1                          80.5    4e-15
+gnl|Ceratitis_capitata|cercap_NW_004523925.1                          62.0    5e-09
+gnl|Anoplophora_glabripennis|anogla_Scaffold59                        51.2    2e-08
+gnl|Ceratitis_capitata|cercap_NW_004523309.1                          43.9    1e-07
+gnl|Ceratitis_capitata|cercap_NW_004523714.1                          56.2    4e-07
+gnl|Anoplophora_glabripennis|anogla_Scaffold9                         51.2    7e-07
+gnl|Ceratitis_capitata|cercap_NW_004524279.1                          52.0    8e-06
+gnl|Anoplophora_glabripennis|anogla_Scaffold1201                      44.7    0.002
+gnl|Ceratitis_capitata|cercap_NW_004524234.1                          43.9    0.003
+gnl|Anoplophora_glabripennis|anogla_Scaffold116                       43.1    0.006
+gnl|Ceratitis_capitata|cercap_NW_004522866.1                          42.7    0.008
+gnl|Ceratitis_capitata|cercap_NW_004523858.1                          38.5    0.17 
+gnl|Anoplophora_glabripennis|anogla_Scaffold1                         38.1    0.24 
+gnl|Anoplophora_glabripennis|anogla_Scaffold36                        36.2    0.94 
+gnl|Ceratitis_capitata|cercap_NW_004524527.1                          34.7    2.3  
+gnl|Ceratitis_capitata|cercap_NW_004523880.1                          33.9    5.2  
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold526 
+Length=428188
+
+ Score =   281 bits (718),  Expect = 5e-83, Method: Compositional matrix adjust.
+ Identities = 155/268 (58%), Positives = 201/268 (75%), Gaps = 0/268 (0%)
+ Frame = +3
+
+Query  1       LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFS  60
+               +CLY HIGR IYY SY   ET   G+ +  I + TAF+GYVLP GQ+SF GATVITNL S
+Sbjct  405810  ICLYIHIGRGIYYRSYNSIET*IIGVTIFFIVIGTAFLGYVLP*GQISF*GATVITNLLS  405989
+
+Query  61      AIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGL  120
+               AIPY+GT +V+ + GGF+VD ATL RFF  HF+LPF ++AL  +HL  LH+TGSNNPLG 
+Sbjct  405990  AIPYLGTIIVQ*V*GGFAVDNATLTRFFTLHFLLPFIIIALVNIHLLLLHQTGSNNPLGT  406169
+
+Query  121     TSDSDKIPFHPYYTIKDFlgllilillllllallSPDMLGDPDNHMPADPLNTPLHIKPE  180
+                 + DKI FHPY++ KD +G+LI+ ++LL+L L +P +LGDPDN +PA+PL TP+HI+PE
+Sbjct  406170  NRNLDKITFHPYFSYKDIVGILIISIVLLILTLNNPYLLGDPDNFIPANPLVTPVHIQPE  406349
+
+Query  181     WYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMMLRPLSQALFWtltmd  240
+                YFLFAYAILRS+PNKLGGVLAL +SI IL  +PF +  K       P+++ LF +L   
+Sbjct  406350  *YFLFAYAILRSIPNKLGGVLALVISIAILYTLPFSNKKKILRNQFYPINKILF*SLFTI  406529
+
+Query  241     lltltWIGSQPVEYPYTIIGQMASILYF  268
+               ++ LT IG++PVE PY I+GQ+ +ILYF
+Sbjct  406530  IILLT*IGARPVEDPYIIVGQILTILYF  406613
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold1107 
+Length=182650
+
+ Score =   218 bits (555),  Expect = 2e-61, Method: Compositional matrix adjust.
+ Identities = 117/196 (60%), Positives = 149/196 (76%), Gaps = 0/196 (0%)
+ Frame = -1
+
+Query  31      ITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAF  90
+               I + TAF+GYVLP GQ+SF GA V TNL SAIPY+GT +V  I GGF++D ATL RFF  
+Sbjct  101395  IVIGTAFLGYVLP*GQISF*GAAVNTNLLSAIPYLGTTIVRRI*GGFAIDNATLTRFFTL  101216
+
+Query  91      HFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFlgllililllll  150
+               HF+LPF + AL  +HL FLH+TGSNNPLG   + DKIPFHPY++ KD +G+LI+ + LL+
+Sbjct  101215  HFLLPFIITALVIIHLLFLHQTGSNNPLGTNRNLDKIPFHPYFSYKDIVGILIISIALLI  101036
+
+Query  151     lallSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVIL  210
+               L L +P +L DP+N +PA+PL TP+HI+PE YFLFAYAILRS+PNKLGGVLAL +SI IL
+Sbjct  101035  LTLSNPYLLRDPENFIPANPLITPVHIQPE*YFLFAYAILRSIPNKLGGVLALVISIAIL  100856
+
+Query  211     GLMPFLHTSKHRSMML  226
+                 +P  +    +  +L
+Sbjct  100855  YTLPLTNKKNIKKSIL  100808
+
+
+ Score = 37.4 bits (85),  Expect = 0.36, Method: Compositional matrix adjust.
+ Identities = 22/51 (43%), Positives = 34/51 (67%), Gaps = 0/51 (0%)
+ Frame = -2
+
+Query  218     TSKHRSMMLRPLSQALFWtltmdlltltWIGSQPVEYPYTIIGQMASILYF  268
+               T K       P+++ LF +L   ++ LT IG++PVE PYT++GQ+ +ILYF
+Sbjct  100836  TKKILRNQFYPINKILF*SLFTTIILLT*IGARPVEDPYTLVGQILTILYF  100684
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523321.1 
+Length=1367420
+
+ Score =   143 bits (361),  Expect(2) = 7e-51, Method: Compositional matrix adjust.
+ Identities = 72/125 (58%), Positives = 95/125 (76%), Gaps = 3/125 (2%)
+ Frame = -2
+
+Query  16       YLYSETWNTGIM---LLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEW  72
+                Y+  E + T ++    LL+ + TAF+GYVLP GQ+SF GATVITNL SAIPY+G ++V+ 
+Sbjct  1092448  YM*DEEFTTDLIYSHRLLLVITTAFIGYVLP*GQISF*GATVITNLLSAIPYLGIDVVQ*  1092269
+
+Query  73       IWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPY  132
+                +  GF+VD A L RFF FHFILPF ++A+  +HL FL++TGSNNP+GL S+ DKI FHPY
+Sbjct  1092268  V*RGFAVDNAILTRFFTFHFILPFIVLAITLIHLLFLNQTGSNNPIGLNSNIDKILFHPY  1092089
+
+Query  133      YTIKD  137
+                +T KD
+Sbjct  1092088  FTFKD  1092074
+
+
+ Score = 80.5 bits (197),  Expect(2) = 7e-51, Method: Compositional matrix adjust.
+ Identities = 39/65 (60%), Positives = 50/65 (77%), Gaps = 0/65 (0%)
+ Frame = -3
+
+Query  163      DNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHR  222
+                DN +P++ L TP+HI+PE YFLF YAILRS+PNKLGGV+AL LSI IL ++PF +  K R
+Sbjct  1091997  DNFIPSNHLVTPVHIQPE*YFLFVYAILRSIPNKLGGVIALVLSIAILAILPFYNLRKFR  1091818
+
+Query  223      SMMLR  227
+                 +  R
+Sbjct  1091817  GIPTR  1091803
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold727 
+Length=93105
+
+ Score =   159 bits (402),  Expect = 4e-41, Method: Compositional matrix adjust.
+ Identities = 94/179 (53%), Positives = 125/179 (70%), Gaps = 1/179 (1%)
+ Frame = -1
+
+Query  1      LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFS  60
+              L LY++  RNI      ++   N       I + TAF+GYVLP GQ+SF GATVITNL S
+Sbjct  81789  LSLYSYWTRNIL*-ILQFNRNLNNWSNYFFIVIGTAFLGYVLP*GQISF*GATVITNLLS  81613
+
+Query  61     AIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGL  120
+              AIPY+GT +V+ + GGF+VD ATL RFF  HF+LPF ++AL  ++L FLH+T SNNPLG 
+Sbjct  81612  AIPYLGTIIVQ*V*GGFAVDNATLTRFFTLHFLLPFIIIALVIIYLLFLHQTASNNPLGT  81433
+
+Query  121    TSDSDKIPFHPYYTIKDFlgllilillllllallSPDMLGDPDNHMPADPLNTPLHIKP  179
+                + DKIPFHPY++ KD +G+LI+ + LL+L L +P +LGDPDN +PA+P    +  KP
+Sbjct  81432  NRNLDKIPFHPYFSYKDIVGILIISIALLILTLNNPYLLGDPDNFIPANPYYYSISRKP  81256
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523376.1 
+Length=353493
+
+ Score =   158 bits (400),  Expect = 7e-41, Method: Compositional matrix adjust.
+ Identities = 95/206 (46%), Positives = 136/206 (66%), Gaps = 2/206 (1%)
+ Frame = -2
+
+Query  63      PYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTS  122
+               P +    V+ + GGF+VD A +N    F F       +   +HL FLH+TGSNNP+GL S
+Sbjct  300179  PILRNLFVQ*V*GGFAVDNAKINSILHFPFYSSIYRFSNTLIHLLFLHQTGSNNPIGLNS  300000
+
+Query  123     DSDKIPFHPYYTIKDFlgllilillllllallSPDMLGDPDNHMPADPLNTPLHIKPEWY  182
+               + DKIPFHPY+T KD +G +I+I+ L+LL L++P +LGDPDN +PA+PL TP+HI+P+ Y
+Sbjct  299999  NIDKIPFHPYFTFKDIVGFIIIIIALILLTLINPYLLGDPDNFIPANPLVTPVHIQPD*Y  299820
+
+Query  183     FLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMMLRPLSQALFWtltmdll  242
+                 FAYAILRS PNKLGGV+AL LSI IL ++PF +  K R +   P ++ LF  + + ++
+Sbjct  299819  --FAYAILRSNPNKLGGVIALVLSIAILAILPFYNLRKFRGIQFYPTNKILF*IIVVTVI  299646
+
+Query  243     tltWIGSQPVEYPYTIIGQMASILYF  268
+                    G + V   Y +  Q+ +++YF
+Sbjct  299645  LFI*TGERSVAESYVLPDQILTVIYF  299568
+
+
+ Score =   111 bits (277),  Expect = 6e-25, Method: Compositional matrix adjust.
+ Identities = 55/101 (54%), Positives = 72/101 (71%), Gaps = 0/101 (0%)
+ Frame = -3
+
+Query  1       LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFS  60
+               +C+Y H+GR IYYGSYL++ T   G+++L + +ATAF+GYVLP GQ+SF GATVITNL S
+Sbjct  300364  ICIYLHVGRGIYYGSYLFTPT*LIGVLILFLVIATAFIGYVLP*GQISF*GATVITNLLS  300185
+
+Query  61      AIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVAL  101
+               AIPY+G  L      G  +    L RFF FHFIL F ++A+
+Sbjct  300184  AIPYLGIYLFNEFEEGLQLITQKLTRFFTFHFILRFIVLAI  300062
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523732.1 
+Length=239761
+
+ Score =   150 bits (378),  Expect = 5e-38, Method: Compositional matrix adjust.
+ Identities = 92/190 (48%), Positives = 133/190 (70%), Gaps = 6/190 (3%)
+ Frame = -3
+
+Query  78      SVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKD  137
+                + KAT   F+ FHFI PF ++A+  +HL FLH+T SNNP+GL+S+ DKIPFHPY+T   
+Sbjct  208631  DLQKATFTLFYTFHFIPPFIVLAITLIHLLFLHQT*SNNPIGLSSNIDKIPFHPYFT--S  208458
+
+Query  138     FlgllilillllllallSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKL  197
+                +G +I+++ L LL+L+ P +LGDPDN  PA+ L TP+HI+PE YFLF   ILRS+PNKL
+Sbjct  208457  MVGFVIIVIPLFLLSLIKPYLLGDPDNFTPANRLVTPVHIQPE*YFLFP*PILRSIPNKL  208278
+
+Query  198     GGVLALFLSIVILGLMPFLHTSKHRSMMLRPLSQALFWtltmdlltltWIGSQPVEYPYT  257
+                GV+AL LSI I  ++PF +  K   +   P+++ LF   + + + LT IG++PV  PY 
+Sbjct  208277  RGVIALVLSIAIPAILPFYNLRK--GIQFYPINKILFR--SSNFILLT*IGARPVGEPYV  208110
+
+Query  258     IIGQMASILY  267
+               + GQ+ +++Y
+Sbjct  208109  LTGQVLTVIY  208080
+
+
+ Score = 69.7 bits (169),  Expect = 1e-11, Method: Compositional matrix adjust.
+ Identities = 35/67 (52%), Positives = 48/67 (72%), Gaps = 0/67 (0%)
+ Frame = -2
+
+Query  25      GIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATL  84
+               G+++L + +ATAF+GYVLP GQ+S  GATVITNL  AI Y+G NLV+ + GGF+      
+Sbjct  208785  GVLVLFLVIATAFIGYVLP*GQISILGATVITNLLLAISYLGINLVQ*V*GGFAESNIHS  208606
+
+Query  85      NRFFAFH  91
+                 +F+FH
+Sbjct  208605  ILYFSFH  208585
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523928.1 
+Length=38119
+
+ Score =   107 bits (266),  Expect(2) = 5e-34, Method: Compositional matrix adjust.
+ Identities = 65/186 (35%), Positives = 95/186 (51%), Gaps = 46/186 (25%)
+ Frame = +2
+
+Query  47     MSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHL  106
+              +SF GAT+IT L SAIPY+G ++V+ +   F+V+K T    F  +FILPF ++A+   HL
+Sbjct  29567  ISF*GATIITFLLSAIPYLGIDVVQ*V*ERFAVEKTTFTPLFTSYFILPFIVLAITLNHL  29746
+
+Query  107    TFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFlgllilillllllallSPDMLGDPDNHM  166
+               FLH+TGSN   G++++ DKIPFHPY+ IKD                             
+Sbjct  29747  LFLHQTGSNKQNGISTNIDKIPFHPYFIIKD-----------------------------  29839
+
+Query  167    PADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMML  226
+                               +  +    ++PN LG V+AL LSI IL ++PF +  K R + L
+Sbjct  29840  -----------------IVGFITTITIPNILGEVIALVLSIAILAILPFYNLRKFRGIQL  29968
+
+Query  227    RPLSQA  232
+                +S+ 
+Sbjct  29969  YSISKV  29986
+
+
+ Score = 60.5 bits (145),  Expect(2) = 5e-34, Method: Compositional matrix adjust.
+ Identities = 26/49 (53%), Positives = 39/49 (80%), Gaps = 0/49 (0%)
+ Frame = +3
+
+Query  1      LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSF  49
+              +C+Y H+GR IYYGSYL++ T   G+++L + +ATAF+GYVLP GQ+ +
+Sbjct  29424  ICIYLHVGRGIYYGSYLFAPT*LIGVLILFLVIATAFIGYVLP*GQILY  29570
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold786 
+Length=165379
+
+ Score =   128 bits (321),  Expect = 2e-30, Method: Compositional matrix adjust.
+ Identities = 66/111 (59%), Positives = 81/111 (73%), Gaps = 0/111 (0%)
+ Frame = -1
+
+Query  6      HIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYI  65
+              HIGR IYY SY    T  T + +  I + TAF+GYVLP GQ+SF GATVITNL SAIPY+
+Sbjct  37831  HIGRGIYYRSYNLINT*ITVVTIFFIVIETAFLGYVLP*GQISF*GATVITNLLSAIPYL  37652
+
+Query  66     GTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNN  116
+               T +V+ + GGF+VD ATL RF   HF+LPF ++AL  +HL FLH+TGSNN
+Sbjct  37651  ETPIVQ*V*GGFAVDNATLTRFLTLHFLLPFIIIALVIIHLLFLHQTGSNN  37499
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold17 
+Length=2144227
+
+ Score =   117 bits (292),  Expect = 9e-27, Method: Compositional matrix adjust.
+ Identities = 59/96 (61%), Positives = 71/96 (74%), Gaps = 0/96 (0%)
+ Frame = -1
+
+Query  1       LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFS  60
+               +CLY HIGR IYY SY   ET   G+ +  I + TAF+ YVLP GQ+SF GATVITNL S
+Sbjct  391414  ICLYIHIGRGIYYRSYNIIET*IIGVTIFFIVIGTAFLSYVLP*GQISF*GATVITNLLS  391235
+
+Query  61      AIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPF  96
+               AIPY+GT +V+ + GGF+VD ATL RFF  HF+LPF
+Sbjct  391234  AIPYLGTIIVQ*V*GGFAVDNATLTRFFTLHFLLPF  391127
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold128 
+Length=889015
+
+ Score =   116 bits (290),  Expect = 2e-26, Method: Compositional matrix adjust.
+ Identities = 59/111 (53%), Positives = 76/111 (68%), Gaps = 0/111 (0%)
+ Frame = +1
+
+Query  1       LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFS  60
+               +C+Y HIGR IYY SY   ET   G+ +  I + T F+GYVLP GQ S  GATVITNL S
+Sbjct  838237  ICIYIHIGRGIYYRSYNLIET*IIGVTIFFIVI*TVFVGYVLP*GQTSL*GATVITNLLS  838416
+
+Query  61      AIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHE  111
+                IPY+GT +V+ + GG +VD ATL RFF  HF+LPF +VAL  ++ +  +E
+Sbjct  838417  GIPYLGTTIVQ*VGGGIAVDNATLTRFFTLHFLLPFVIVALVIINFSQTNE  838569
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold296 
+Length=676954
+
+ Score = 97.4 bits (241),  Expect = 2e-20, Method: Compositional matrix adjust.
+ Identities = 56/102 (55%), Positives = 69/102 (68%), Gaps = 1/102 (1%)
+ Frame = +1
+
+Query  1     LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFS  60
+             +C+Y HIGR IYY SY   ET    + +  I + T F+GYVLP GQ SF GATVITNL S
+Sbjct  796   ICIYIHIGRGIYYRSYNLIET*II*VTIFFIVIGTVFVGYVLP*GQTSF*GATVITNLLS  975
+
+Query  61    AIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALA  102
+             AIPY+GT +V+ +    +VD ATL R F  HF+LPF +VAL 
+Sbjct  976   AIPYLGTTIVQLVGL*IAVDDATLTR-FTLHFLLPFVIVALV  1098
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold511 
+Length=235843
+
+ Score = 88.6 bits (218),  Expect = 1e-17, Method: Compositional matrix adjust.
+ Identities = 39/63 (62%), Positives = 48/63 (76%), Gaps = 0/63 (0%)
+ Frame = +3
+
+Query  75     GGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYT  134
+              GGF+V+ ATL RFF  HF+LPF ++AL  +HL FLH+TGS NPLG   D DKI FHPY++
+Sbjct  84669  GGFAVNNATLTRFFTLHFLLPFIIIALVFIHLLFLHQTGSTNPLGTNRDLDKITFHPYFS  84848
+
+Query  135    IKD  137
+               KD
+Sbjct  84849  YKD  84857
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004524533.1 
+Length=809008
+
+ Score = 86.7 bits (213),  Expect = 5e-17, Method: Compositional matrix adjust.
+ Identities = 43/85 (51%), Positives = 59/85 (69%), Gaps = 5/85 (6%)
+ Frame = -2
+
+Query  155     SPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMP  214
+               +P ++ D DN  P + +   +HI+PE YFLFAYAILRS+PNKLGGV+AL LSI IL ++P
+Sbjct  238026  NPYLVEDTDNFTPVNSIAAAVHIQPEGYFLFAYAILRSIPNKLGGVIALVLSIAILAILP  237847
+
+Query  215     FLH-----TSKHRSMMLRPLSQALF  234
+               F +     T+K R +   PL++ LF
+Sbjct  237846  FYNYHLIITNKFRGIQFYPLNKILF  237772
+
+
+ Score = 38.5 bits (88),  Expect = 0.17, Method: Compositional matrix adjust.
+ Identities = 18/39 (46%), Positives = 25/39 (64%), Gaps = 0/39 (0%)
+ Frame = -3
+
+Query  73      IWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHE  111
+               + G F+VD ATL   F  +FILPF ++AL  + L F H+
+Sbjct  226865  VCGAFAVDSATLTPCFTSYFILPFIVLALTLIQLLF*HQ  226749
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold125 
+Length=866178
+
+ Score = 79.7 bits (195),  Expect(2) = 2e-16, Method: Compositional matrix adjust.
+ Identities = 51/91 (56%), Positives = 64/91 (70%), Gaps = 6/91 (7%)
+ Frame = -2
+
+Query  108     FLHETGSNNPLGLTSDSDKIPFHPYYTIKDFlgllilillllllallSPDMLGDPDNHMP  167
+               FLH+TGSNNPLG   +SDKIPFHPY+  K  +G+LI+ + LL L      + GDPDN + 
+Sbjct  493466  FLHQTGSNNPLGTNRNSDKIPFHPYFFYKGIVGILIITIALLTLTFY---LSGDPDNFIR  493296
+
+Query  168     ADPLN---TPLHIKPEWYFLFAYAILRSVPN  195
+               A+PL     P+HI+ E YFLFA AILRS+PN
+Sbjct  493295  ANPLVIIIIPVHIQSE*YFLFANAILRSIPN  493203
+
+
+ Score = 29.3 bits (64),  Expect(2) = 2e-16, Method: Compositional matrix adjust.
+ Identities = 12/22 (55%), Positives = 15/22 (68%), Gaps = 0/22 (0%)
+ Frame = -1
+
+Query  85      NRFFAFHFILPFTMVALAGVHL  106
+                RFF  HF+LP  +VAL  +HL
+Sbjct  493533  TRFFTLHFLLPLIIVALVIIHL  493468
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523902.1 
+Length=5665586
+
+ Score = 83.6 bits (205),  Expect = 5e-16, Method: Compositional matrix adjust.
+ Identities = 43/74 (58%), Positives = 53/74 (72%), Gaps = 2/74 (3%)
+ Frame = +2
+
+Query  155      SPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMP  214
+                +P +LG PDN +PA+ L TP+HI+PE YFLFAYAILRS+PNKLG V+AL LSI IL ++P
+Sbjct  2526497  NPYLLGGPDNFIPANSLVTPVHIQPE*YFLFAYAILRSIPNKLGEVIALILSIAILAILP  2526676
+
+Query  215      FLHTSKHRSMMLRP  228
+                    S       RP
+Sbjct  2526677  --SPSSANQFRFRP  2526712
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523847.1 
+Length=5474809
+
+ Score = 80.5 bits (197),  Expect = 4e-15, Method: Compositional matrix adjust.
+ Identities = 40/57 (70%), Positives = 48/57 (84%), Gaps = 0/57 (0%)
+ Frame = -2
+
+Query  34       ATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAF  90
+                +TAF+GYVLP GQ+SF GATVITNL SAIPY+G +LV+ + GGF+VD ATL RFF F
+Sbjct  3651060  STAFIGYVLP*GQISF*GATVITNLLSAIPYLGIDLVQ*V*GGFAVDNATLTRFFTF  3650890
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523925.1 
+Length=4118346
+
+ Score = 62.0 bits (149),  Expect = 5e-09, Method: Compositional matrix adjust.
+ Identities = 33/57 (58%), Positives = 41/57 (72%), Gaps = 0/57 (0%)
+ Frame = -2
+
+Query  40       YVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPF  96
+                +VL    +SF GATVITNL SAIPY+G +LV+ + GGF+VD ATL RF    +I PF
+Sbjct  2476496  HVLMGEHISF*GATVITNLLSAIPYLGIDLVQ*V*GGFAVDNATLTRFM*HSYIQPF  2476326
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold59 
+Length=1770912
+
+ Score = 51.2 bits (121),  Expect(2) = 2e-08, Method: Compositional matrix adjust.
+ Identities = 25/39 (64%), Positives = 31/39 (79%), Gaps = 0/39 (0%)
+ Frame = -2
+
+Query  31      ITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNL  69
+               I + TAF+GYVLP  Q+SF G T+ITNL SAIPY+GT +
+Sbjct  309677  IVVKTAFLGYVLP*RQISF*GGTLITNLLSAIPYLGTTM  309561
+
+
+ Score = 29.6 bits (65),  Expect(2) = 2e-08, Method: Compositional matrix adjust.
+ Identities = 15/31 (48%), Positives = 20/31 (65%), Gaps = 0/31 (0%)
+ Frame = -3
+
+Query  1       LCLYTHIGRNIYYGSYLYSETWNTGIMLLLI  31
+               +CLY +I R IYYGSY   ET   G+ + L+
+Sbjct  309766  ICLYIYIERGIYYGSYNLIET*IIGVTIFLL  309674
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523309.1 
+Length=10453798
+
+ Score = 43.9 bits (102),  Expect(2) = 1e-07, Method: Compositional matrix adjust.
+ Identities = 21/29 (72%), Positives = 23/29 (79%), Gaps = 0/29 (0%)
+ Frame = +1
+
+Query  178      KPEWYFLFAYAILRSVPNKLGGVLALFLS  206
+                 P   F FAYAILRS+PNKLGGV+AL LS
+Sbjct  1150276  NPNDIFYFAYAILRSIPNKLGGVIALVLS  1150362
+
+
+ Score = 34.3 bits (77),  Expect(2) = 1e-07, Method: Compositional matrix adjust.
+ Identities = 15/24 (63%), Positives = 19/24 (79%), Gaps = 0/24 (0%)
+ Frame = +3
+
+Query  163      DNHMPADPLNTPLHIKPEWYFLFA  186
+                DN +PA+PL TP+HI+ E YFLF 
+Sbjct  1150230  DNFIPANPLVTPVHIQSE*YFLFC  1150301
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523714.1 
+Length=5701487
+
+ Score = 56.2 bits (134),  Expect = 4e-07, Method: Compositional matrix adjust.
+ Identities = 25/49 (51%), Positives = 39/49 (80%), Gaps = 0/49 (0%)
+ Frame = +2
+
+Query  25       GIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWI  73
+                G+++L + ++TAF+GYVLP G+++F  +TVITNL S IPY G +LV+ +
+Sbjct  1702700  GVLILFLVISTAFIGYVLP*GKITFRRSTVITNLLSTIPY*GIDLVQGV  1702846
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold9 
+Length=2226624
+
+ Score = 51.2 bits (121),  Expect(2) = 7e-07, Method: Compositional matrix adjust.
+ Identities = 26/43 (60%), Positives = 32/43 (74%), Gaps = 0/43 (0%)
+ Frame = -3
+
+Query  27      MLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNL  69
+               + L I + TAF+GYVLP GQ+SF G TVITNL  AI Y+GT +
+Sbjct  698236  LFLFIVIGTAFLGYVLP*GQISF*GVTVITNLL*AISYLGTTI  698108
+
+
+ Score = 24.6 bits (52),  Expect(2) = 7e-07, Method: Compositional matrix adjust.
+ Identities = 13/28 (46%), Positives = 17/28 (61%), Gaps = 0/28 (0%)
+ Frame = -2
+
+Query  1       LCLYTHIGRNIYYGSYLYSETWNTGIML  28
+               +CL+ HIG  IYY SY   ET   G+ +
+Sbjct  698315  ICLFIHIG*GIYYRSYNLIET*IIGVTI  698232
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004524279.1 
+Length=4395057
+
+ Score = 52.0 bits (123),  Expect = 8e-06, Method: Compositional matrix adjust.
+ Identities = 25/45 (56%), Positives = 32/45 (71%), Gaps = 0/45 (0%)
+ Frame = -3
+
+Query  64     YIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTF  108
+              Y+G   +  I GGF+VD ATL RFF FHFILPF ++A+  +HL F
+Sbjct  60697  YLGE*NILLIKGGFAVDNATLTRFFTFHFILPFIVLAITLIHLLF  60563
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold1201 
+Length=80649
+
+ Score = 44.7 bits (104),  Expect = 0.002, Method: Compositional matrix adjust.
+ Identities = 22/44 (50%), Positives = 28/44 (64%), Gaps = 0/44 (0%)
+ Frame = -3
+
+Query  178   KPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKH  221
+             + E   L    I RS+PNKLGGVLAL +SI IL  +PF +  K+
+Sbjct  2455  QSETILLLLLVIFRSIPNKLGGVLALVISIAILYTLPFTNKKKY  2324
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004524234.1 
+Length=1086424
+
+ Score = 43.9 bits (102),  Expect = 0.003, Method: Compositional matrix adjust.
+ Identities = 18/36 (50%), Positives = 28/36 (78%), Gaps = 0/36 (0%)
+ Frame = -1
+
+Query  1       LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATA  36
+               +C+Y H+GR IYYGSYL++ T   G+++L + +ATA
+Sbjct  905209  ICIYLHVGRGIYYGSYLFTPT*LIGVLILFLVIATA  905102
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold116 
+Length=1234590
+
+ Score = 43.1 bits (100),  Expect = 0.006, Method: Compositional matrix adjust.
+ Identities = 24/45 (53%), Positives = 28/45 (62%), Gaps = 1/45 (2%)
+ Frame = -3
+
+Query  9       RNIYYGSY-LYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGA  52
+               R IYYGSY L   +  TG+ +  I M T F+GYVLP  QMS  GA
+Sbjct  847936  RGIYYGSYNLIETSIITGVTIFFIVMGTTFLGYVLP*EQMSI*GA  847802
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004522866.1 
+Length=8115852
+
+ Score = 42.7 bits (99),  Expect = 0.008, Method: Compositional matrix adjust.
+ Identities = 18/26 (69%), Positives = 22/26 (85%), Gaps = 0/26 (0%)
+ Frame = +3
+
+Query  158      MLGDPDNHMPADPLNTPLHIKPEWYF  183
+                +LGDPDN +PA+PL TP+HI PE YF
+Sbjct  4068189  LLGDPDNFIPANPLVTPVHILPE*YF  4068266
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523858.1 
+Length=1550589
+
+ Score = 38.5 bits (88),  Expect = 0.17, Method: Compositional matrix adjust.
+ Identities = 16/30 (53%), Positives = 24/30 (80%), Gaps = 0/30 (0%)
+ Frame = +2
+
+Query  89      AFHFILPFTMVALAGVHLTFLHETGSNNPL  118
+                ++FILP  ++A+  +HL FLH+TGSNNP+
+Sbjct  145163  KYNFILPIIVLAITLIHL*FLHQTGSNNPI  145252
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold1 
+Length=5510682
+
+ Score = 38.1 bits (87),  Expect = 0.24, Method: Compositional matrix adjust.
+ Identities = 15/22 (68%), Positives = 19/22 (86%), Gaps = 0/22 (0%)
+ Frame = +2
+
+Query  159      LGDPDNHMPADPLNTPLHIKPE  180
+                L DPDN +PA+PL TP+HI+PE
+Sbjct  3854045  LRDPDNFIPANPLVTPVHIQPE  3854110
+
+
+>gnl|Anoplophora_glabripennis|anogla_Scaffold36 
+Length=1449386
+
+ Score = 36.2 bits (82),  Expect = 0.94, Method: Compositional matrix adjust.
+ Identities = 16/21 (76%), Positives = 19/21 (90%), Gaps = 0/21 (0%)
+ Frame = +1
+
+Query  168     ADPLNTPLHIKPEWYFLFAYA  188
+               A+PL TP+HI+PE YFLFAYA
+Sbjct  831559  ANPLVTPIHIQPE*YFLFAYA  831621
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004524527.1 
+Length=10972
+
+ Score = 34.7 bits (78),  Expect = 2.3, Method: Compositional matrix adjust.
+ Identities = 17/46 (37%), Positives = 32/46 (70%), Gaps = 0/46 (0%)
+ Frame = -2
+
+Query  223    SMMLRPLSQALFWtltmdlltltWIGSQPVEYPYTIIGQMASILYF  268
+              +M + PL++ LF    + ++ LT IG++P E P+ +IGQ+ +++YF
+Sbjct  10359  TMKMYPLNKTLF*ITEVTVILLT*IGARPFEEPFVLIGQILTVIYF  10222
+
+
+>gnl|Ceratitis_capitata|cercap_NW_004523880.1 
+Length=4038739
+
+ Score = 33.9 bits (76),  Expect = 5.2, Method: Compositional matrix adjust.
+ Identities = 19/73 (26%), Positives = 39/73 (53%), Gaps = 3/73 (4%)
+ Frame = +2
+
+Query  3        LYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAI  62
+                L+T+I   + +G + Y   + +G+++ ++ + T+ MG++LP  Q       V   + SAI
+Sbjct  3454919  LFTNI---LDFGKFNYFLIFISGMVMAVVLLETSSMGFILPIAQCDLHLTNVDKGVLSAI  3455089
+
+Query  63       PYIGTNLVEWIWG  75
+                 ++G      +WG
+Sbjct  3455090  SFLGIISSSHLWG  3455128
+
+
+
+Lambda      K        H
+   0.328    0.143    0.472 
+
+Gapped
+Lambda      K        H
+   0.267   0.0410    0.140 
+
+Effective search space used: 63355283840
+
+
+  Database: Anoplophora glabripennis Scaffolds
+    Posted date:  Apr 30, 2014  1:53 PM
+  Number of letters in database: 707,712,193
+  Number of sequences in database:  10,473
+
+  Database: Ceratitis capitata Scaffolds
+    Posted date:  Jun 26, 2014  10:11 AM
+  Number of letters in database: 484,773,492
+  Number of sequences in database:  1,823
+
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Neighboring words threshold: 13
+Window for multiple hits: 40

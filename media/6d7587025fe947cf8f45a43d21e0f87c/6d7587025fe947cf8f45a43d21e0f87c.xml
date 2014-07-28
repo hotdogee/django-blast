@@ -1,0 +1,1100 @@
+<?xml version="1.0"?>
+<!DOCTYPE BlastOutput PUBLIC "-//NCBI//NCBI BlastOutput/EN" "http://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.dtd">
+<BlastOutput>
+  <BlastOutput_program>tblastn</BlastOutput_program>
+  <BlastOutput_version>TBLASTN 2.2.29+</BlastOutput_version>
+  <BlastOutput_reference>Stephen F. Altschul, Thomas L. Madden, Alejandro A. Sch&amp;auml;ffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), &quot;Gapped BLAST and PSI-BLAST: a new generation of protein database search programs&quot;, Nucleic Acids Res. 25:3389-3402.</BlastOutput_reference>
+  <BlastOutput_db>Agla_Btl03082013.genome_new_ids.fa Ccap01172013-genome_new_ids.fa</BlastOutput_db>
+  <BlastOutput_query-ID>Query_1</BlastOutput_query-ID>
+  <BlastOutput_query-def>gi|5524211|gb|AAD44166.1| cytochrome b [Elephas maximus maximus]</BlastOutput_query-def>
+  <BlastOutput_query-len>284</BlastOutput_query-len>
+  <BlastOutput_param>
+    <Parameters>
+      <Parameters_matrix>BLOSUM62</Parameters_matrix>
+      <Parameters_expect>10</Parameters_expect>
+      <Parameters_gap-open>11</Parameters_gap-open>
+      <Parameters_gap-extend>1</Parameters_gap-extend>
+      <Parameters_filter>L;</Parameters_filter>
+    </Parameters>
+  </BlastOutput_param>
+<BlastOutput_iterations>
+<Iteration>
+  <Iteration_iter-num>1</Iteration_iter-num>
+  <Iteration_query-ID>Query_1</Iteration_query-ID>
+  <Iteration_query-def>gi|5524211|gb|AAD44166.1| cytochrome b [Elephas maximus maximus]</Iteration_query-def>
+  <Iteration_query-len>284</Iteration_query-len>
+<Iteration_hits>
+<Hit>
+  <Hit_num>1</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold526</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold526</Hit_accession>
+  <Hit_len>428188</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>281.182</Hsp_bit-score>
+      <Hsp_score>718</Hsp_score>
+      <Hsp_evalue>4.56965e-83</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>268</Hsp_query-to>
+      <Hsp_hit-from>405810</Hsp_hit-from>
+      <Hsp_hit-to>406613</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>3</Hsp_hit-frame>
+      <Hsp_identity>155</Hsp_identity>
+      <Hsp_positive>201</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>268</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFXXXXXXXXXXXXXXXXSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMMLRPLSQALFWXXXXXXXXXXWIGSQPVEYPYTIIGQMASILYF</Hsp_qseq>
+      <Hsp_hseq>ICLYIHIGRGIYYRSYNSIET*IIGVTIFFIVIGTAFLGYVLP*GQISF*GATVITNLLSAIPYLGTIIVQ*V*GGFAVDNATLTRFFTLHFLLPFIIIALVNIHLLLLHQTGSNNPLGTNRNLDKITFHPYFSYKDIVGILIISIVLLILTLNNPYLLGDPDNFIPANPLVTPVHIQPE*YFLFAYAILRSIPNKLGGVLALVISIAILYTLPFSNKKKILRNQFYPINKILF*SLFTIIILLT*IGARPVEDPYIIVGQILTILYF</Hsp_hseq>
+      <Hsp_midline>+CLY HIGR IYY SY   ET   G+ +  I + TAF+GYVLP GQ+SF GATVITNL SAIPY+GT +V+ + GGF+VD ATL RFF  HF+LPF ++AL  +HL  LH+TGSNNPLG   + DKI FHPY++ KD +G+LI+ ++LL+L L +P +LGDPDN +PA+PL TP+HI+PE YFLFAYAILRS+PNKLGGVLAL +SI IL  +PF +  K       P+++ LF +L   ++ LT IG++PVE PY I+GQ+ +ILYF</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>2</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold1107</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold1107</Hit_accession>
+  <Hit_len>182650</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>218.394</Hsp_bit-score>
+      <Hsp_score>555</Hsp_score>
+      <Hsp_evalue>2.18808e-61</Hsp_evalue>
+      <Hsp_query-from>31</Hsp_query-from>
+      <Hsp_query-to>226</Hsp_query-to>
+      <Hsp_hit-from>100808</Hsp_hit-from>
+      <Hsp_hit-to>101395</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-1</Hsp_hit-frame>
+      <Hsp_identity>117</Hsp_identity>
+      <Hsp_positive>149</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>196</Hsp_align-len>
+      <Hsp_qseq>ITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFXXXXXXXXXXXXXXXXSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMML</Hsp_qseq>
+      <Hsp_hseq>IVIGTAFLGYVLP*GQISF*GAAVNTNLLSAIPYLGTTIVRRI*GGFAIDNATLTRFFTLHFLLPFIITALVIIHLLFLHQTGSNNPLGTNRNLDKIPFHPYFSYKDIVGILIISIALLILTLSNPYLLRDPENFIPANPLITPVHIQPE*YFLFAYAILRSIPNKLGGVLALVISIAILYTLPLTNKKNIKKSIL</Hsp_hseq>
+      <Hsp_midline>I + TAF+GYVLP GQ+SF GA V TNL SAIPY+GT +V  I GGF++D ATL RFF  HF+LPF + AL  +HL FLH+TGSNNPLG   + DKIPFHPY++ KD +G+LI+ + LL+L L +P +L DP+N +PA+PL TP+HI+PE YFLFAYAILRS+PNKLGGVLAL +SI IL  +P  +    +  +L</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>37.3502</Hsp_bit-score>
+      <Hsp_score>85</Hsp_score>
+      <Hsp_evalue>0.359963</Hsp_evalue>
+      <Hsp_query-from>218</Hsp_query-from>
+      <Hsp_query-to>268</Hsp_query-to>
+      <Hsp_hit-from>100684</Hsp_hit-from>
+      <Hsp_hit-to>100836</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>22</Hsp_identity>
+      <Hsp_positive>34</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>51</Hsp_align-len>
+      <Hsp_qseq>TSKHRSMMLRPLSQALFWXXXXXXXXXXWIGSQPVEYPYTIIGQMASILYF</Hsp_qseq>
+      <Hsp_hseq>TKKILRNQFYPINKILF*SLFTTIILLT*IGARPVEDPYTLVGQILTILYF</Hsp_hseq>
+      <Hsp_midline>T K       P+++ LF +L   ++ LT IG++PVE PYT++GQ+ +ILYF</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>3</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523321.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523321.1</Hit_accession>
+  <Hit_len>1367420</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>143.665</Hsp_bit-score>
+      <Hsp_score>361</Hsp_score>
+      <Hsp_evalue>7.05086e-51</Hsp_evalue>
+      <Hsp_query-from>16</Hsp_query-from>
+      <Hsp_query-to>137</Hsp_query-to>
+      <Hsp_hit-from>1092074</Hsp_hit-from>
+      <Hsp_hit-to>1092448</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>72</Hsp_identity>
+      <Hsp_positive>95</Hsp_positive>
+      <Hsp_gaps>3</Hsp_gaps>
+      <Hsp_align-len>125</Hsp_align-len>
+      <Hsp_qseq>YLYSETWNTGIM---LLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKD</Hsp_qseq>
+      <Hsp_hseq>YM*DEEFTTDLIYSHRLLLVITTAFIGYVLP*GQISF*GATVITNLLSAIPYLGIDVVQ*V*RGFAVDNAILTRFFTFHFILPFIVLAITLIHLLFLNQTGSNNPIGLNSNIDKILFHPYFTFKD</Hsp_hseq>
+      <Hsp_midline>Y+  E + T ++    LL+ + TAF+GYVLP GQ+SF GATVITNL SAIPY+G ++V+ +  GF+VD A L RFF FHFILPF ++A+  +HL FL++TGSNNP+GL S+ DKI FHPY+T KD</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>80.4925</Hsp_bit-score>
+      <Hsp_score>197</Hsp_score>
+      <Hsp_evalue>7.05086e-51</Hsp_evalue>
+      <Hsp_query-from>163</Hsp_query-from>
+      <Hsp_query-to>227</Hsp_query-to>
+      <Hsp_hit-from>1091803</Hsp_hit-from>
+      <Hsp_hit-to>1091997</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-3</Hsp_hit-frame>
+      <Hsp_identity>39</Hsp_identity>
+      <Hsp_positive>50</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>65</Hsp_align-len>
+      <Hsp_qseq>DNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMMLR</Hsp_qseq>
+      <Hsp_hseq>DNFIPSNHLVTPVHIQPE*YFLFVYAILRSIPNKLGGVIALVLSIAILAILPFYNLRKFRGIPTR</Hsp_hseq>
+      <Hsp_midline>DN +P++ L TP+HI+PE YFLF YAILRS+PNKLGGV+AL LSI IL ++PF +  K R +  R</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>4</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold727</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold727</Hit_accession>
+  <Hit_len>93105</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>159.458</Hsp_bit-score>
+      <Hsp_score>402</Hsp_score>
+      <Hsp_evalue>3.60042e-41</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>179</Hsp_query-to>
+      <Hsp_hit-from>81256</Hsp_hit-from>
+      <Hsp_hit-to>81789</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-1</Hsp_hit-frame>
+      <Hsp_identity>94</Hsp_identity>
+      <Hsp_positive>125</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>179</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFXXXXXXXXXXXXXXXXSPDMLGDPDNHMPADPLNTPLHIKP</Hsp_qseq>
+      <Hsp_hseq>LSLYSYWTRNIL*-ILQFNRNLNNWSNYFFIVIGTAFLGYVLP*GQISF*GATVITNLLSAIPYLGTIIVQ*V*GGFAVDNATLTRFFTLHFLLPFIIIALVIIYLLFLHQTASNNPLGTNRNLDKIPFHPYFSYKDIVGILIISIALLILTLNNPYLLGDPDNFIPANPYYYSISRKP</Hsp_hseq>
+      <Hsp_midline>L LY++  RNI      ++   N       I + TAF+GYVLP GQ+SF GATVITNL SAIPY+GT +V+ + GGF+VD ATL RFF  HF+LPF ++AL  ++L FLH+T SNNPLG   + DKIPFHPY++ KD +G+LI+ + LL+L L +P +LGDPDN +PA+P    +  KP</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>5</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523376.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523376.1</Hit_accession>
+  <Hit_len>353493</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>158.688</Hsp_bit-score>
+      <Hsp_score>400</Hsp_score>
+      <Hsp_evalue>7.0967e-41</Hsp_evalue>
+      <Hsp_query-from>63</Hsp_query-from>
+      <Hsp_query-to>268</Hsp_query-to>
+      <Hsp_hit-from>299568</Hsp_hit-from>
+      <Hsp_hit-to>300179</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>95</Hsp_identity>
+      <Hsp_positive>136</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>206</Hsp_align-len>
+      <Hsp_qseq>PYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFXXXXXXXXXXXXXXXXSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMMLRPLSQALFWXXXXXXXXXXWIGSQPVEYPYTIIGQMASILYF</Hsp_qseq>
+      <Hsp_hseq>PILRNLFVQ*V*GGFAVDNAKINSILHFPFYSSIYRFSNTLIHLLFLHQTGSNNPIGLNSNIDKIPFHPYFTFKDIVGFIIIIIALILLTLINPYLLGDPDNFIPANPLVTPVHIQPD*Y--FAYAILRSNPNKLGGVIALVLSIAILAILPFYNLRKFRGIQFYPTNKILF*IIVVTVILFI*TGERSVAESYVLPDQILTVIYF</Hsp_hseq>
+      <Hsp_midline>P +    V+ + GGF+VD A +N    F F       +   +HL FLH+TGSNNP+GL S+ DKIPFHPY+T KD +G +I+I+ L+LL L++P +LGDPDN +PA+PL TP+HI+P+ Y  FAYAILRS PNKLGGV+AL LSI IL ++PF +  K R +   P ++ LF  + + ++     G + V   Y +  Q+ +++YF</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>111.309</Hsp_bit-score>
+      <Hsp_score>277</Hsp_score>
+      <Hsp_evalue>5.57975e-25</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>101</Hsp_query-to>
+      <Hsp_hit-from>300062</Hsp_hit-from>
+      <Hsp_hit-to>300364</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-3</Hsp_hit-frame>
+      <Hsp_identity>55</Hsp_identity>
+      <Hsp_positive>72</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>101</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVAL</Hsp_qseq>
+      <Hsp_hseq>ICIYLHVGRGIYYGSYLFTPT*LIGVLILFLVIATAFIGYVLP*GQISF*GATVITNLLSAIPYLGIYLFNEFEEGLQLITQKLTRFFTFHFILRFIVLAI</Hsp_hseq>
+      <Hsp_midline>+C+Y H+GR IYYGSYL++ T   G+++L + +ATAF+GYVLP GQ+SF GATVITNL SAIPY+G  L      G  +    L RFF FHFIL F ++A+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>6</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523732.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523732.1</Hit_accession>
+  <Hit_len>239761</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>150.214</Hsp_bit-score>
+      <Hsp_score>378</Hsp_score>
+      <Hsp_evalue>4.90565e-38</Hsp_evalue>
+      <Hsp_query-from>78</Hsp_query-from>
+      <Hsp_query-to>267</Hsp_query-to>
+      <Hsp_hit-from>208080</Hsp_hit-from>
+      <Hsp_hit-to>208631</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-3</Hsp_hit-frame>
+      <Hsp_identity>92</Hsp_identity>
+      <Hsp_positive>133</Hsp_positive>
+      <Hsp_gaps>6</Hsp_gaps>
+      <Hsp_align-len>190</Hsp_align-len>
+      <Hsp_qseq>SVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFXXXXXXXXXXXXXXXXSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMMLRPLSQALFWXXXXXXXXXXWIGSQPVEYPYTIIGQMASILY</Hsp_qseq>
+      <Hsp_hseq>DLQKATFTLFYTFHFIPPFIVLAITLIHLLFLHQT*SNNPIGLSSNIDKIPFHPYFT--SMVGFVIIVIPLFLLSLIKPYLLGDPDNFTPANRLVTPVHIQPE*YFLFP*PILRSIPNKLRGVIALVLSIAIPAILPFYNLRK--GIQFYPINKILFR--SSNFILLT*IGARPVGEPYVLTGQVLTVIY</Hsp_hseq>
+      <Hsp_midline> + KAT   F+ FHFI PF ++A+  +HL FLH+T SNNP+GL+S+ DKIPFHPY+T    +G +I+++ L LL+L+ P +LGDPDN  PA+ L TP+HI+PE YFLF   ILRS+PNKL GV+AL LSI I  ++PF +  K   +   P+++ LF   + + + LT IG++PV  PY + GQ+ +++Y</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>69.707</Hsp_bit-score>
+      <Hsp_score>169</Hsp_score>
+      <Hsp_evalue>1.3603e-11</Hsp_evalue>
+      <Hsp_query-from>25</Hsp_query-from>
+      <Hsp_query-to>91</Hsp_query-to>
+      <Hsp_hit-from>208585</Hsp_hit-from>
+      <Hsp_hit-to>208785</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>35</Hsp_identity>
+      <Hsp_positive>48</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>67</Hsp_align-len>
+      <Hsp_qseq>GIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFH</Hsp_qseq>
+      <Hsp_hseq>GVLVLFLVIATAFIGYVLP*GQISILGATVITNLLLAISYLGINLVQ*V*GGFAESNIHSILYFSFH</Hsp_hseq>
+      <Hsp_midline>G+++L + +ATAF+GYVLP GQ+S  GATVITNL  AI Y+G NLV+ + GGF+        +F+FH</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>7</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523928.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523928.1</Hit_accession>
+  <Hit_len>38119</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>107.071</Hsp_bit-score>
+      <Hsp_score>266</Hsp_score>
+      <Hsp_evalue>4.96315e-34</Hsp_evalue>
+      <Hsp_query-from>47</Hsp_query-from>
+      <Hsp_query-to>232</Hsp_query-to>
+      <Hsp_hit-from>29567</Hsp_hit-from>
+      <Hsp_hit-to>29986</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>2</Hsp_hit-frame>
+      <Hsp_identity>65</Hsp_identity>
+      <Hsp_positive>95</Hsp_positive>
+      <Hsp_gaps>46</Hsp_gaps>
+      <Hsp_align-len>186</Hsp_align-len>
+      <Hsp_qseq>MSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFXXXXXXXXXXXXXXXXSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMMLRPLSQA</Hsp_qseq>
+      <Hsp_hseq>ISF*GATIITFLLSAIPYLGIDVVQ*V*ERFAVEKTTFTPLFTSYFILPFIVLAITLNHLLFLHQTGSNKQNGISTNIDKIPFHPYFIIKD----------------------------------------------IVGFITTITIPNILGEVIALVLSIAILAILPFYNLRKFRGIQLYSISKV</Hsp_hseq>
+      <Hsp_midline>+SF GAT+IT L SAIPY+G ++V+ +   F+V+K T    F  +FILPF ++A+   HL FLH+TGSN   G++++ DKIPFHPY+ IKD                                              +  +    ++PN LG V+AL LSI IL ++PF +  K R + L  +S+ </Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>60.4622</Hsp_bit-score>
+      <Hsp_score>145</Hsp_score>
+      <Hsp_evalue>4.96315e-34</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>49</Hsp_query-to>
+      <Hsp_hit-from>29424</Hsp_hit-from>
+      <Hsp_hit-to>29570</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>3</Hsp_hit-frame>
+      <Hsp_identity>26</Hsp_identity>
+      <Hsp_positive>39</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>49</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSF</Hsp_qseq>
+      <Hsp_hseq>ICIYLHVGRGIYYGSYLFAPT*LIGVLILFLVIATAFIGYVLP*GQILY</Hsp_hseq>
+      <Hsp_midline>+C+Y H+GR IYYGSYL++ T   G+++L + +ATAF+GYVLP GQ+ +</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>8</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold786</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold786</Hit_accession>
+  <Hit_len>165379</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>128.257</Hsp_bit-score>
+      <Hsp_score>321</Hsp_score>
+      <Hsp_evalue>1.62187e-30</Hsp_evalue>
+      <Hsp_query-from>6</Hsp_query-from>
+      <Hsp_query-to>116</Hsp_query-to>
+      <Hsp_hit-from>37499</Hsp_hit-from>
+      <Hsp_hit-to>37831</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-1</Hsp_hit-frame>
+      <Hsp_identity>66</Hsp_identity>
+      <Hsp_positive>81</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>111</Hsp_align-len>
+      <Hsp_qseq>HIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNN</Hsp_qseq>
+      <Hsp_hseq>HIGRGIYYRSYNLINT*ITVVTIFFIVIETAFLGYVLP*GQISF*GATVITNLLSAIPYLETPIVQ*V*GGFAVDNATLTRFLTLHFLLPFIIIALVIIHLLFLHQTGSNN</Hsp_hseq>
+      <Hsp_midline>HIGR IYY SY    T  T + +  I + TAF+GYVLP GQ+SF GATVITNL SAIPY+ T +V+ + GGF+VD ATL RF   HF+LPF ++AL  +HL FLH+TGSNN</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>9</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold17</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold17</Hit_accession>
+  <Hit_len>2144227</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>117.087</Hsp_bit-score>
+      <Hsp_score>292</Hsp_score>
+      <Hsp_evalue>8.90664e-27</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>96</Hsp_query-to>
+      <Hsp_hit-from>391127</Hsp_hit-from>
+      <Hsp_hit-to>391414</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-1</Hsp_hit-frame>
+      <Hsp_identity>59</Hsp_identity>
+      <Hsp_positive>71</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>96</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPF</Hsp_qseq>
+      <Hsp_hseq>ICLYIHIGRGIYYRSYNIIET*IIGVTIFFIVIGTAFLSYVLP*GQISF*GATVITNLLSAIPYLGTIIVQ*V*GGFAVDNATLTRFFTLHFLLPF</Hsp_hseq>
+      <Hsp_midline>+CLY HIGR IYY SY   ET   G+ +  I + TAF+ YVLP GQ+SF GATVITNL SAIPY+GT +V+ + GGF+VD ATL RFF  HF+LPF</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>10</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold128</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold128</Hit_accession>
+  <Hit_len>889015</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>116.316</Hsp_bit-score>
+      <Hsp_score>290</Hsp_score>
+      <Hsp_evalue>1.57297e-26</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>111</Hsp_query-to>
+      <Hsp_hit-from>838237</Hsp_hit-from>
+      <Hsp_hit-to>838569</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>1</Hsp_hit-frame>
+      <Hsp_identity>59</Hsp_identity>
+      <Hsp_positive>76</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>111</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHE</Hsp_qseq>
+      <Hsp_hseq>ICIYIHIGRGIYYRSYNLIET*IIGVTIFFIVI*TVFVGYVLP*GQTSL*GATVITNLLSGIPYLGTTIVQ*VGGGIAVDNATLTRFFTLHFLLPFVIVALVIINFSQTNE</Hsp_hseq>
+      <Hsp_midline>+C+Y HIGR IYY SY   ET   G+ +  I + T F+GYVLP GQ S  GATVITNL S IPY+GT +V+ + GG +VD ATL RFF  HF+LPF +VAL  ++ +  +E</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>11</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold296</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold296</Hit_accession>
+  <Hit_len>676954</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>97.4413</Hsp_bit-score>
+      <Hsp_score>241</Hsp_score>
+      <Hsp_evalue>1.75956e-20</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>102</Hsp_query-to>
+      <Hsp_hit-from>796</Hsp_hit-from>
+      <Hsp_hit-to>1098</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>1</Hsp_hit-frame>
+      <Hsp_identity>56</Hsp_identity>
+      <Hsp_positive>69</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>102</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALA</Hsp_qseq>
+      <Hsp_hseq>ICIYIHIGRGIYYRSYNLIET*II*VTIFFIVIGTVFVGYVLP*GQTSF*GATVITNLLSAIPYLGTTIVQLVGL*IAVDDATLTR-FTLHFLLPFVIVALV</Hsp_hseq>
+      <Hsp_midline>+C+Y HIGR IYY SY   ET    + +  I + T F+GYVLP GQ SF GATVITNL SAIPY+GT +V+ +    +VD ATL R F  HF+LPF +VAL </Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>12</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold511</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold511</Hit_accession>
+  <Hit_len>235843</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>88.5817</Hsp_bit-score>
+      <Hsp_score>218</Hsp_score>
+      <Hsp_evalue>1.32355e-17</Hsp_evalue>
+      <Hsp_query-from>75</Hsp_query-from>
+      <Hsp_query-to>137</Hsp_query-to>
+      <Hsp_hit-from>84669</Hsp_hit-from>
+      <Hsp_hit-to>84857</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>3</Hsp_hit-frame>
+      <Hsp_identity>39</Hsp_identity>
+      <Hsp_positive>48</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>63</Hsp_align-len>
+      <Hsp_qseq>GGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKD</Hsp_qseq>
+      <Hsp_hseq>GGFAVNNATLTRFFTLHFLLPFIIIALVFIHLLFLHQTGSTNPLGTNRDLDKITFHPYFSYKD</Hsp_hseq>
+      <Hsp_midline>GGF+V+ ATL RFF  HF+LPF ++AL  +HL FLH+TGS NPLG   D DKI FHPY++ KD</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>13</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004524533.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004524533.1</Hit_accession>
+  <Hit_len>809008</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>86.6557</Hsp_bit-score>
+      <Hsp_score>213</Hsp_score>
+      <Hsp_evalue>5.10164e-17</Hsp_evalue>
+      <Hsp_query-from>155</Hsp_query-from>
+      <Hsp_query-to>234</Hsp_query-to>
+      <Hsp_hit-from>237772</Hsp_hit-from>
+      <Hsp_hit-to>238026</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>43</Hsp_identity>
+      <Hsp_positive>59</Hsp_positive>
+      <Hsp_gaps>5</Hsp_gaps>
+      <Hsp_align-len>85</Hsp_align-len>
+      <Hsp_qseq>SPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLH-----TSKHRSMMLRPLSQALF</Hsp_qseq>
+      <Hsp_hseq>NPYLVEDTDNFTPVNSIAAAVHIQPEGYFLFAYAILRSIPNKLGGVIALVLSIAILAILPFYNYHLIITNKFRGIQFYPLNKILF</Hsp_hseq>
+      <Hsp_midline>+P ++ D DN  P + +   +HI+PE YFLFAYAILRS+PNKLGGV+AL LSI IL ++PF +     T+K R +   PL++ LF</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>38.5058</Hsp_bit-score>
+      <Hsp_score>88</Hsp_score>
+      <Hsp_evalue>0.173107</Hsp_evalue>
+      <Hsp_query-from>73</Hsp_query-from>
+      <Hsp_query-to>111</Hsp_query-to>
+      <Hsp_hit-from>226749</Hsp_hit-from>
+      <Hsp_hit-to>226865</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-3</Hsp_hit-frame>
+      <Hsp_identity>18</Hsp_identity>
+      <Hsp_positive>25</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>39</Hsp_align-len>
+      <Hsp_qseq>IWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHE</Hsp_qseq>
+      <Hsp_hseq>VCGAFAVDSATLTPCFTSYFILPFIVLALTLIQLLF*HQ</Hsp_hseq>
+      <Hsp_midline>+ G F+VD ATL   F  +FILPF ++AL  + L F H+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>14</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold125</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold125</Hit_accession>
+  <Hit_len>866178</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>79.7221</Hsp_bit-score>
+      <Hsp_score>195</Hsp_score>
+      <Hsp_evalue>1.5188e-16</Hsp_evalue>
+      <Hsp_query-from>108</Hsp_query-from>
+      <Hsp_query-to>195</Hsp_query-to>
+      <Hsp_hit-from>493203</Hsp_hit-from>
+      <Hsp_hit-to>493466</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>51</Hsp_identity>
+      <Hsp_positive>64</Hsp_positive>
+      <Hsp_gaps>6</Hsp_gaps>
+      <Hsp_align-len>91</Hsp_align-len>
+      <Hsp_qseq>FLHETGSNNPLGLTSDSDKIPFHPYYTIKDFXXXXXXXXXXXXXXXXSPDMLGDPDNHMPADPLN---TPLHIKPEWYFLFAYAILRSVPN</Hsp_qseq>
+      <Hsp_hseq>FLHQTGSNNPLGTNRNSDKIPFHPYFFYKGIVGILIITIALLTLTFY---LSGDPDNFIRANPLVIIIIPVHIQSE*YFLFANAILRSIPN</Hsp_hseq>
+      <Hsp_midline>FLH+TGSNNPLG   +SDKIPFHPY+  K  +G+LI+ + LL L      + GDPDN + A+PL     P+HI+ E YFLFA AILRS+PN</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>29.261</Hsp_bit-score>
+      <Hsp_score>64</Hsp_score>
+      <Hsp_evalue>1.5188e-16</Hsp_evalue>
+      <Hsp_query-from>85</Hsp_query-from>
+      <Hsp_query-to>106</Hsp_query-to>
+      <Hsp_hit-from>493468</Hsp_hit-from>
+      <Hsp_hit-to>493533</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-1</Hsp_hit-frame>
+      <Hsp_identity>12</Hsp_identity>
+      <Hsp_positive>15</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>22</Hsp_align-len>
+      <Hsp_qseq>NRFFAFHFILPFTMVALAGVHL</Hsp_qseq>
+      <Hsp_hseq>TRFFTLHFLLPLIIVALVIIHL</Hsp_hseq>
+      <Hsp_midline> RFF  HF+LP  +VAL  +HL</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>15</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523902.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523902.1</Hit_accession>
+  <Hit_len>5665586</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>83.5741</Hsp_bit-score>
+      <Hsp_score>205</Hsp_score>
+      <Hsp_evalue>5.19784e-16</Hsp_evalue>
+      <Hsp_query-from>155</Hsp_query-from>
+      <Hsp_query-to>228</Hsp_query-to>
+      <Hsp_hit-from>2526497</Hsp_hit-from>
+      <Hsp_hit-to>2526712</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>2</Hsp_hit-frame>
+      <Hsp_identity>43</Hsp_identity>
+      <Hsp_positive>53</Hsp_positive>
+      <Hsp_gaps>2</Hsp_gaps>
+      <Hsp_align-len>74</Hsp_align-len>
+      <Hsp_qseq>SPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKHRSMMLRP</Hsp_qseq>
+      <Hsp_hseq>NPYLLGGPDNFIPANSLVTPVHIQPE*YFLFAYAILRSIPNKLGEVIALILSIAILAILP--SPSSANQFRFRP</Hsp_hseq>
+      <Hsp_midline>+P +LG PDN +PA+ L TP+HI+PE YFLFAYAILRS+PNKLG V+AL LSI IL ++P    S       RP</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>16</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523847.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523847.1</Hit_accession>
+  <Hit_len>5474809</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>80.4925</Hsp_bit-score>
+      <Hsp_score>197</Hsp_score>
+      <Hsp_evalue>4.26093e-15</Hsp_evalue>
+      <Hsp_query-from>34</Hsp_query-from>
+      <Hsp_query-to>90</Hsp_query-to>
+      <Hsp_hit-from>3650890</Hsp_hit-from>
+      <Hsp_hit-to>3651060</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>40</Hsp_identity>
+      <Hsp_positive>48</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>57</Hsp_align-len>
+      <Hsp_qseq>ATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAF</Hsp_qseq>
+      <Hsp_hseq>STAFIGYVLP*GQISF*GATVITNLLSAIPYLGIDLVQ*V*GGFAVDNATLTRFFTF</Hsp_hseq>
+      <Hsp_midline>+TAF+GYVLP GQ+SF GATVITNL SAIPY+G +LV+ + GGF+VD ATL RFF F</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>17</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523925.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523925.1</Hit_accession>
+  <Hit_len>4118346</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>62.003</Hsp_bit-score>
+      <Hsp_score>149</Hsp_score>
+      <Hsp_evalue>4.63419e-09</Hsp_evalue>
+      <Hsp_query-from>40</Hsp_query-from>
+      <Hsp_query-to>96</Hsp_query-to>
+      <Hsp_hit-from>2476326</Hsp_hit-from>
+      <Hsp_hit-to>2476496</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>33</Hsp_identity>
+      <Hsp_positive>41</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>57</Hsp_align-len>
+      <Hsp_qseq>YVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWGGFSVDKATLNRFFAFHFILPF</Hsp_qseq>
+      <Hsp_hseq>HVLMGEHISF*GATVITNLLSAIPYLGIDLVQ*V*GGFAVDNATLTRFM*HSYIQPF</Hsp_hseq>
+      <Hsp_midline>+VL    +SF GATVITNL SAIPY+G +LV+ + GGF+VD ATL RF    +I PF</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>18</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold59</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold59</Hit_accession>
+  <Hit_len>1770912</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>51.2174</Hsp_bit-score>
+      <Hsp_score>121</Hsp_score>
+      <Hsp_evalue>2.3526e-08</Hsp_evalue>
+      <Hsp_query-from>31</Hsp_query-from>
+      <Hsp_query-to>69</Hsp_query-to>
+      <Hsp_hit-from>309561</Hsp_hit-from>
+      <Hsp_hit-to>309677</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>25</Hsp_identity>
+      <Hsp_positive>31</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>39</Hsp_align-len>
+      <Hsp_qseq>ITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNL</Hsp_qseq>
+      <Hsp_hseq>IVVKTAFLGYVLP*RQISF*GGTLITNLLSAIPYLGTTM</Hsp_hseq>
+      <Hsp_midline>I + TAF+GYVLP  Q+SF G T+ITNL SAIPY+GT +</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>29.6462</Hsp_bit-score>
+      <Hsp_score>65</Hsp_score>
+      <Hsp_evalue>2.3526e-08</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>31</Hsp_query-to>
+      <Hsp_hit-from>309674</Hsp_hit-from>
+      <Hsp_hit-to>309766</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-3</Hsp_hit-frame>
+      <Hsp_identity>15</Hsp_identity>
+      <Hsp_positive>20</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>31</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIMLLLI</Hsp_qseq>
+      <Hsp_hseq>ICLYIYIERGIYYGSYNLIET*IIGVTIFLL</Hsp_hseq>
+      <Hsp_midline>+CLY +I R IYYGSY   ET   G+ + L+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>19</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523309.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523309.1</Hit_accession>
+  <Hit_len>10453798</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>43.8986</Hsp_bit-score>
+      <Hsp_score>102</Hsp_score>
+      <Hsp_evalue>1.37781e-07</Hsp_evalue>
+      <Hsp_query-from>178</Hsp_query-from>
+      <Hsp_query-to>206</Hsp_query-to>
+      <Hsp_hit-from>1150276</Hsp_hit-from>
+      <Hsp_hit-to>1150362</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>1</Hsp_hit-frame>
+      <Hsp_identity>21</Hsp_identity>
+      <Hsp_positive>23</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>KPEWYFLFAYAILRSVPNKLGGVLALFLS</Hsp_qseq>
+      <Hsp_hseq>NPNDIFYFAYAILRSIPNKLGGVIALVLS</Hsp_hseq>
+      <Hsp_midline> P   F FAYAILRS+PNKLGGV+AL LS</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>34.2686</Hsp_bit-score>
+      <Hsp_score>77</Hsp_score>
+      <Hsp_evalue>1.37781e-07</Hsp_evalue>
+      <Hsp_query-from>163</Hsp_query-from>
+      <Hsp_query-to>186</Hsp_query-to>
+      <Hsp_hit-from>1150230</Hsp_hit-from>
+      <Hsp_hit-to>1150301</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>3</Hsp_hit-frame>
+      <Hsp_identity>15</Hsp_identity>
+      <Hsp_positive>19</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>24</Hsp_align-len>
+      <Hsp_qseq>DNHMPADPLNTPLHIKPEWYFLFA</Hsp_qseq>
+      <Hsp_hseq>DNFIPANPLVTPVHIQSE*YFLFC</Hsp_hseq>
+      <Hsp_midline>DN +PA+PL TP+HI+ E YFLF </Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>20</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523714.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523714.1</Hit_accession>
+  <Hit_len>5701487</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>56.225</Hsp_bit-score>
+      <Hsp_score>134</Hsp_score>
+      <Hsp_evalue>3.77854e-07</Hsp_evalue>
+      <Hsp_query-from>25</Hsp_query-from>
+      <Hsp_query-to>73</Hsp_query-to>
+      <Hsp_hit-from>1702700</Hsp_hit-from>
+      <Hsp_hit-to>1702846</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>2</Hsp_hit-frame>
+      <Hsp_identity>25</Hsp_identity>
+      <Hsp_positive>39</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>49</Hsp_align-len>
+      <Hsp_qseq>GIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWI</Hsp_qseq>
+      <Hsp_hseq>GVLILFLVISTAFIGYVLP*GKITFRRSTVITNLLSTIPY*GIDLVQGV</Hsp_hseq>
+      <Hsp_midline>G+++L + ++TAF+GYVLP G+++F  +TVITNL S IPY G +LV+ +</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>21</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold9</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold9</Hit_accession>
+  <Hit_len>2226624</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>51.2174</Hsp_bit-score>
+      <Hsp_score>121</Hsp_score>
+      <Hsp_evalue>6.82312e-07</Hsp_evalue>
+      <Hsp_query-from>27</Hsp_query-from>
+      <Hsp_query-to>69</Hsp_query-to>
+      <Hsp_hit-from>698108</Hsp_hit-from>
+      <Hsp_hit-to>698236</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-3</Hsp_hit-frame>
+      <Hsp_identity>26</Hsp_identity>
+      <Hsp_positive>32</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>43</Hsp_align-len>
+      <Hsp_qseq>MLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNL</Hsp_qseq>
+      <Hsp_hseq>LFLFIVIGTAFLGYVLP*GQISF*GVTVITNLL*AISYLGTTI</Hsp_hseq>
+      <Hsp_midline>+ L I + TAF+GYVLP GQ+SF G TVITNL  AI Y+GT +</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>24.6386</Hsp_bit-score>
+      <Hsp_score>52</Hsp_score>
+      <Hsp_evalue>6.82312e-07</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>28</Hsp_query-to>
+      <Hsp_hit-from>698232</Hsp_hit-from>
+      <Hsp_hit-to>698315</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>13</Hsp_identity>
+      <Hsp_positive>17</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIML</Hsp_qseq>
+      <Hsp_hseq>ICLFIHIG*GIYYRSYNLIET*IIGVTI</Hsp_hseq>
+      <Hsp_midline>+CL+ HIG  IYY SY   ET   G+ +</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>22</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004524279.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004524279.1</Hit_accession>
+  <Hit_len>4395057</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>51.9878</Hsp_bit-score>
+      <Hsp_score>123</Hsp_score>
+      <Hsp_evalue>8.24427e-06</Hsp_evalue>
+      <Hsp_query-from>64</Hsp_query-from>
+      <Hsp_query-to>108</Hsp_query-to>
+      <Hsp_hit-from>60563</Hsp_hit-from>
+      <Hsp_hit-to>60697</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-3</Hsp_hit-frame>
+      <Hsp_identity>25</Hsp_identity>
+      <Hsp_positive>32</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>45</Hsp_align-len>
+      <Hsp_qseq>YIGTNLVEWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTF</Hsp_qseq>
+      <Hsp_hseq>YLGE*NILLIKGGFAVDNATLTRFFTFHFILPFIVLAITLIHLLF</Hsp_hseq>
+      <Hsp_midline>Y+G   +  I GGF+VD ATL RFF FHFILPF ++A+  +HL F</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>23</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold1201</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold1201</Hit_accession>
+  <Hit_len>80649</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>44.669</Hsp_bit-score>
+      <Hsp_score>104</Hsp_score>
+      <Hsp_evalue>0.00199748</Hsp_evalue>
+      <Hsp_query-from>178</Hsp_query-from>
+      <Hsp_query-to>221</Hsp_query-to>
+      <Hsp_hit-from>2324</Hsp_hit-from>
+      <Hsp_hit-to>2455</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-3</Hsp_hit-frame>
+      <Hsp_identity>22</Hsp_identity>
+      <Hsp_positive>28</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>44</Hsp_align-len>
+      <Hsp_qseq>KPEWYFLFAYAILRSVPNKLGGVLALFLSIVILGLMPFLHTSKH</Hsp_qseq>
+      <Hsp_hseq>QSETILLLLLVIFRSIPNKLGGVLALVISIAILYTLPFTNKKKY</Hsp_hseq>
+      <Hsp_midline>+ E   L    I RS+PNKLGGVLAL +SI IL  +PF +  K+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>24</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004524234.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004524234.1</Hit_accession>
+  <Hit_len>1086424</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>43.8986</Hsp_bit-score>
+      <Hsp_score>102</Hsp_score>
+      <Hsp_evalue>0.00292732</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>36</Hsp_query-to>
+      <Hsp_hit-from>905102</Hsp_hit-from>
+      <Hsp_hit-to>905209</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-1</Hsp_hit-frame>
+      <Hsp_identity>18</Hsp_identity>
+      <Hsp_positive>28</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>36</Hsp_align-len>
+      <Hsp_qseq>LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATA</Hsp_qseq>
+      <Hsp_hseq>ICIYLHVGRGIYYGSYLFTPT*LIGVLILFLVIATA</Hsp_hseq>
+      <Hsp_midline>+C+Y H+GR IYYGSYL++ T   G+++L + +ATA</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>25</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold116</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold116</Hit_accession>
+  <Hit_len>1234590</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>43.1282</Hsp_bit-score>
+      <Hsp_score>100</Hsp_score>
+      <Hsp_evalue>0.00580215</Hsp_evalue>
+      <Hsp_query-from>9</Hsp_query-from>
+      <Hsp_query-to>52</Hsp_query-to>
+      <Hsp_hit-from>847802</Hsp_hit-from>
+      <Hsp_hit-to>847936</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-3</Hsp_hit-frame>
+      <Hsp_identity>24</Hsp_identity>
+      <Hsp_positive>28</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>45</Hsp_align-len>
+      <Hsp_qseq>RNIYYGSY-LYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGA</Hsp_qseq>
+      <Hsp_hseq>RGIYYGSYNLIETSIITGVTIFFIVMGTTFLGYVLP*EQMSI*GA</Hsp_hseq>
+      <Hsp_midline>R IYYGSY L   +  TG+ +  I M T F+GYVLP  QMS  GA</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>26</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004522866.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004522866.1</Hit_accession>
+  <Hit_len>8115852</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>42.743</Hsp_bit-score>
+      <Hsp_score>99</Hsp_score>
+      <Hsp_evalue>0.00788768</Hsp_evalue>
+      <Hsp_query-from>158</Hsp_query-from>
+      <Hsp_query-to>183</Hsp_query-to>
+      <Hsp_hit-from>4068189</Hsp_hit-from>
+      <Hsp_hit-to>4068266</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>3</Hsp_hit-frame>
+      <Hsp_identity>18</Hsp_identity>
+      <Hsp_positive>22</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>26</Hsp_align-len>
+      <Hsp_qseq>MLGDPDNHMPADPLNTPLHIKPEWYF</Hsp_qseq>
+      <Hsp_hseq>LLGDPDNFIPANPLVTPVHILPE*YF</Hsp_hseq>
+      <Hsp_midline>+LGDPDN +PA+PL TP+HI PE YF</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>27</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523858.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523858.1</Hit_accession>
+  <Hit_len>1550589</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>38.5058</Hsp_bit-score>
+      <Hsp_score>88</Hsp_score>
+      <Hsp_evalue>0.165743</Hsp_evalue>
+      <Hsp_query-from>89</Hsp_query-from>
+      <Hsp_query-to>118</Hsp_query-to>
+      <Hsp_hit-from>145163</Hsp_hit-from>
+      <Hsp_hit-to>145252</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>2</Hsp_hit-frame>
+      <Hsp_identity>16</Hsp_identity>
+      <Hsp_positive>24</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>30</Hsp_align-len>
+      <Hsp_qseq>AFHFILPFTMVALAGVHLTFLHETGSNNPL</Hsp_qseq>
+      <Hsp_hseq>KYNFILPIIVLAITLIHL*FLHQTGSNNPI</Hsp_hseq>
+      <Hsp_midline> ++FILP  ++A+  +HL FLH+TGSNNP+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>28</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold1</Hit_accession>
+  <Hit_len>5510682</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>38.1206</Hsp_bit-score>
+      <Hsp_score>87</Hsp_score>
+      <Hsp_evalue>0.24346</Hsp_evalue>
+      <Hsp_query-from>159</Hsp_query-from>
+      <Hsp_query-to>180</Hsp_query-to>
+      <Hsp_hit-from>3854045</Hsp_hit-from>
+      <Hsp_hit-to>3854110</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>2</Hsp_hit-frame>
+      <Hsp_identity>15</Hsp_identity>
+      <Hsp_positive>19</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>22</Hsp_align-len>
+      <Hsp_qseq>LGDPDNHMPADPLNTPLHIKPE</Hsp_qseq>
+      <Hsp_hseq>LRDPDNFIPANPLVTPVHIQPE</Hsp_hseq>
+      <Hsp_midline>L DPDN +PA+PL TP+HI+PE</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>29</Hit_num>
+  <Hit_id>gnl|Anoplophora_glabripennis|anogla_Scaffold36</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>anogla_Scaffold36</Hit_accession>
+  <Hit_len>1449386</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>36.1946</Hsp_bit-score>
+      <Hsp_score>82</Hsp_score>
+      <Hsp_evalue>0.941318</Hsp_evalue>
+      <Hsp_query-from>168</Hsp_query-from>
+      <Hsp_query-to>188</Hsp_query-to>
+      <Hsp_hit-from>831559</Hsp_hit-from>
+      <Hsp_hit-to>831621</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>1</Hsp_hit-frame>
+      <Hsp_identity>16</Hsp_identity>
+      <Hsp_positive>19</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>21</Hsp_align-len>
+      <Hsp_qseq>ADPLNTPLHIKPEWYFLFAYA</Hsp_qseq>
+      <Hsp_hseq>ANPLVTPIHIQPE*YFLFAYA</Hsp_hseq>
+      <Hsp_midline>A+PL TP+HI+PE YFLFAYA</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>30</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004524527.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004524527.1</Hit_accession>
+  <Hit_len>10972</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>34.6538</Hsp_bit-score>
+      <Hsp_score>78</Hsp_score>
+      <Hsp_evalue>2.32174</Hsp_evalue>
+      <Hsp_query-from>223</Hsp_query-from>
+      <Hsp_query-to>268</Hsp_query-to>
+      <Hsp_hit-from>10222</Hsp_hit-from>
+      <Hsp_hit-to>10359</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>-2</Hsp_hit-frame>
+      <Hsp_identity>17</Hsp_identity>
+      <Hsp_positive>32</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>46</Hsp_align-len>
+      <Hsp_qseq>SMMLRPLSQALFWXXXXXXXXXXWIGSQPVEYPYTIIGQMASILYF</Hsp_qseq>
+      <Hsp_hseq>TMKMYPLNKTLF*ITEVTVILLT*IGARPFEEPFVLIGQILTVIYF</Hsp_hseq>
+      <Hsp_midline>+M + PL++ LF    + ++ LT IG++P E P+ +IGQ+ +++YF</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>31</Hit_num>
+  <Hit_id>gnl|Ceratitis_capitata|cercap_NW_004523880.1</Hit_id>
+  <Hit_def>No definition line</Hit_def>
+  <Hit_accession>cercap_NW_004523880.1</Hit_accession>
+  <Hit_len>4038739</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>33.8834</Hsp_bit-score>
+      <Hsp_score>76</Hsp_score>
+      <Hsp_evalue>5.18816</Hsp_evalue>
+      <Hsp_query-from>3</Hsp_query-from>
+      <Hsp_query-to>75</Hsp_query-to>
+      <Hsp_hit-from>3454919</Hsp_hit-from>
+      <Hsp_hit-to>3455128</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>2</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>39</Hsp_positive>
+      <Hsp_gaps>3</Hsp_gaps>
+      <Hsp_align-len>73</Hsp_align-len>
+      <Hsp_qseq>LYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLVEWIWG</Hsp_qseq>
+      <Hsp_hseq>LFTNI---LDFGKFNYFLIFISGMVMAVVLLETSSMGFILPIAQCDLHLTNVDKGVLSAISFLGIISSSHLWG</Hsp_hseq>
+      <Hsp_midline>L+T+I   + +G + Y   + +G+++ ++ + T+ MG++LP  Q       V   + SAI ++G      +WG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+</Iteration_hits>
+  <Iteration_stat>
+    <Statistics>
+      <Statistics_db-num>12296</Statistics_db-num>
+      <Statistics_db-len>1192485685</Statistics_db-len>
+      <Statistics_hsp-len>124</Statistics_hsp-len>
+      <Statistics_eff-space>63355283840</Statistics_eff-space>
+      <Statistics_kappa>0.041</Statistics_kappa>
+      <Statistics_lambda>0.267</Statistics_lambda>
+      <Statistics_entropy>0.14</Statistics_entropy>
+    </Statistics>
+  </Iteration_stat>
+</Iteration>
+</BlastOutput_iterations>
+</BlastOutput>
+
