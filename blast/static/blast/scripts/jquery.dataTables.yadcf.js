@@ -1253,7 +1253,8 @@ var yadcf = (function ($) {
 							col_num_visible--;
 						}
 					}
-					filter_selector_string = table_selector + " thead th:eq(" + col_num_visible + ")";
+					//filter_selector_string = table_selector + " thead th:eq(" + col_num_visible + ")";
+					filter_selector_string = ".dataTables_scroll thead th:eq(" + col_num_visible + ")"; // Han Lin
 					$filter_selector = $(filter_selector_string).find(".yadcf-filter");
 				} else {
 					if ($("#" + filter_container_id).length === 0) {

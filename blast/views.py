@@ -33,7 +33,7 @@ def create(request):
         )
     elif request.method == 'POST':
         # setup file paths
-        task_id = uuid4().hex
+        task_id = uuid4().hex # TODO: Create from hash of input to check for duplicate inputs
         file_prefix = path.join(settings.MEDIA_ROOT, task_id)
         query_filename = file_prefix + '.in'
         asn_filename = file_prefix + '.asn'
@@ -90,6 +90,7 @@ def retrieve(request, task_id='1'):
                 'results_col_names': json.dumps(blast_out_col_names),
                 'results_data': json.dumps(results_data),
                 'results_detail': results_detail,
+                'task_id': task_id,
             })
         )
     except:

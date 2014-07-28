@@ -7,52 +7,69 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<script type="text/javascript" src="{% static 'blast/components/platform/platform.js' %}"></script>
     <link rel="import" href="{% static 'blast/components/core-splitter/core-splitter.html' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/jquery.dataTables.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/jquery-ui.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/dataTables.jqueryui.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'blast/css/jquery.dataTables.yadcf.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/jquery.dataTables.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.tableTools.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.scroller.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.colReorder.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'blast/css/blast-results.css' %}" />
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
+    <!--
+    <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.colVis.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'blast/css/jquery.dataTables.yadcf.css' %}" />
+    -->
 	<style>
 		sortable-table { width: 100%; }
 	</style>
     <script>
         var results_col_names = {{ results_col_names|safe }};
         var results_data = {{ results_data|safe }};
+        var task_id = '{{ task_id }}';
     </script>
 </head>
 <body unresolved fullbleed style="overflow: hidden;">
     <div vertical layout style="height: 100%;">
         <div horizontal layout style="height: 30%;">
-            <div style="width: 50%;">
-                <canvas id="query-canvas" width="1000" height="400" style="width: 100%; height: 100%;"></canvas>
+            <div style="width: 50%; height: 100%; position: relative;">
+                <canvas id="query-canvas"></canvas>
             </div>
-            <core-splitter direction="left" disableSelection></core-splitter>
-            <div style="width: 50%;">
-                <canvas id="subject-canvas" width="1000" height="400" style="width: 100%; height: 100%;"></canvas>
+            <core-splitter id="graph-splitter" direction="left" disableSelection></core-splitter>
+            <div flex style="width: 50%; height: 100%; position: relative;">
+                <canvas id="subject-canvas"></canvas>
             </div>
         </div>
         <core-splitter id="horizontal-splitter" direction="up" disableSelection></core-splitter>
-        <div horizontal layout style="height: 70%;">
-            <div id='table-panel' flex style="overflow: auto;">
+        <div flex horizontal layout style="height: 70%;">
+            <div id="table-panel" style="overflow: hidden;">
                 <table id="results-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 </table>
             </div>
-            <core-splitter direction="right" allowOverflow disableSelection></core-splitter>
-            <div style="width: 650px; height: 100%; overflow: auto;">
+            <core-splitter direction="left" allowOverflow disableSelection></core-splitter>
+            <div flex style="overflow: auto;">
                 {{ results_detail|safe }}
             </div>
         </div>
     </div>
     <script src="{% static 'blast/scripts/jquery-1.11.1.min.js' %}"></script>
     <script src="{% static 'blast/scripts/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'blast/scripts/dragscrollable.js' %}"></script>
     <script src="{% static 'blast/dataTables/js/jquery.dataTables.js' %}"></script>
-    <script src="{% static 'blast//scripts/dataTables.jqueryui.js' %}"></script>
-    <script src="{% static 'blast//scripts/jquery.dataTables.yadcf.js' %}"></script>
+    <script src="{% static 'blast/dataTables/js/dataTables.scroller.js' %}"></script>
+    <script src="{% static 'blast/dataTables/js/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'blast/dataTables/js/dataTables.tableTools.js' %}"></script>
+    <script src="{% static 'blast/dataTables/js/dataTables.bootstrap.js' %}"></script>
     <script src="{% static 'blast/scripts/underscore-min.js' %}"></script>
-    <script src="{% static 'blast/scripts/scribl.1.1.4.min.js' %}"></script>
+    <script src="{% static 'blast/scripts/scribl.1.1.4.js' %}"></script>
     <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
     <script src="{% static 'app/scripts/respond.js' %}"></script>
     <script src="{% static 'blast/scripts/blast-results.js' %}"></script>
+    <!--
+    <script src="{% static 'blast/dataTables/js/dataTables.colVis.js' %}"></script>
+    <script src="{% static 'blast//scripts/jquery.dataTables.yadcf.js' %}"></script>
+    <script src="{% static 'blast//scripts/dataTables.jqueryui.js' %}"></script>
+    -->
 </body>
 </html>
