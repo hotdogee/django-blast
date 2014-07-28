@@ -793,22 +793,6 @@ var Scribl = Class.extend({
             // Make dragable
             jQuery(scroll_wrapper).dragscrollable({ dragSelector: 'canvas:first', acceptPropagatedEvent: false });
         }
-        //var scrollStartMin;
-        //var scrollStartMax = this.scrollValues[1] || this.scale.max - totalNts * .35;
-        //if (this.scrollValues[0] != undefined)
-        //    scrollStartMin = this.scrollValues[0];
-        //else
-        //    scrollStartMin = this.scale.max + totalNts * .35;
-
-        //var viewNts = scrollStartMax - scrollStartMin;
-        //var viewNtsPerPixel = viewNts / $(scroll_wrapper).width();
-
-        //var canvasWidth = (totalNts / viewNtsPerPixel) || 100;
-        //this.canvas.width = canvasWidth;
-        //this.width = canvasWidth - this.offset * 2;
-        //var schart = this;
-        //var zoomValue = (scrollStartMax - scrollStartMin) / (this.scale.max - this.scale.min) * 100 || 1;
-
         // At min zoom, this.canvas.width = $(scroll_wrapper).width()
         // At max zoom, let one Nt = 10px, this.canvas.width = (this.scale.max - this.scale.min) * 10 + this.offset * 2;
         // use this.scrollValues to calculate zoomValue
@@ -829,6 +813,8 @@ var Scribl = Class.extend({
         var scroll_max = full_range * 10 + this.offset * 2;
         if (scroll_max < scroll_wrapper_width)
             scroll_max = scroll_wrapper_width;
+        if (scroll_max > 32760) // nothing draws if > 32768
+            scroll_max = 32760;
         jQuery(this.canvas.parentNode.previousElementSibling).slider({
             orientation: 'vertical',
             range: 'min',
@@ -840,16 +826,6 @@ var Scribl = Class.extend({
                 var center = full_range * (scroll_wrapper.scrollLeft + scroll_wrapper_width / 2 - offset) / (schart.canvas.width - offset * 2);
                 var left = center - (scroll_wrapper_width / 2 - offset) * ntPerPixel;
                 var right = center + (scroll_wrapper_width / 2 - offset) * ntPerPixel;
-                //var totalNts = schart.scale.max - schart.scale.min;
-                //var width = ui['value'] / 100 * totalNts;
-                //var widthPixels = ui['value'] / schart.canvas.width;
-                //var center = scroll_wrapper.scrollLeft + scroll_wrapper_width / 2;
-                //// get min max pixels
-                //var minPixel = center - widthPixels / 2;
-                //var maxPixel = center + widthPixels / 2;
-                //// convert to nt
-                //var min = schart.scale.min + (minPixel / schart.canvas.width) * totalNts;
-                //var max = schart.scale.min + (maxPixel / schart.canvas.width) * totalNts;
                 schart.scrollValues = [left, right];
                 schart.ctx.clearRect(0, 0, schart.canvas.width, schart.canvas.height);
                 schart.draw();

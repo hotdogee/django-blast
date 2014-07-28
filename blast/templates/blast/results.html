@@ -49,7 +49,9 @@
             </div>
             <core-splitter direction="left" allowOverflow disableSelection></core-splitter>
             <div flex style="overflow: auto;">
-                {{ results_detail|safe }}
+                <div flex style="overflow: auto;">
+                    {{ results_detail|safe }}
+                </div>
             </div>
         </div>
     </div>

@@ -124,10 +124,15 @@
     };
     // initial update, wait till core-splitter loads
     $(window).on('polymer-ready', function () {
-        $table_panel.width($(window).width() - 650);
+        var w = $(window).width() - 650
+        w = w < 650 ? $(window).width() / 2 : w
+        $table_panel.width(w);
         updateDataTableHeight();
     });
     $(window).resize(function () {
+        var w = $(window).width() - 650
+        w = w < 650 ? $(window).width() / 2 : w
+        $table_panel.width(w);
         updateDataTableHeight();
     });
     // only the horizontal-splitter changes height, track event defined by polymer
@@ -237,17 +242,23 @@
         // change text color		
         chart.glyph.text.color = 'white';
 
+        // Get data indexes
+        var rstart = canvas_name == 'query-canvas' ? col_idx['qstart'] : col_idx['sstart'];
+        var rend = canvas_name == 'query-canvas' ? col_idx['qend'] : col_idx['send'];
+        var sstart = col_idx['sstart'];
+        var send = col_idx['send'];
         // Get data as ordered and filtered in datatable
         var table_data = results_table_api.rows({ search: 'applied' }).data();
         // Filter data, only keep rows associated with the reference given by row_data
         var other_canvas = canvas_name == 'query-canvas' ? 'subject-canvas' : 'query-canvas';
         var rseqid = canvas_name == 'query-canvas' ? col_idx['qseqid'] : col_idx['sseqid'];
-        var aligned_data = _.filter(table_data, function (row) { return row[rseqid] == row_data[rseqid]; });
+        var aligned_data = _.filter(table_data, function (row) {
+            // only draw HSPs within the range of 32000nt(+-16000nt)
+            var position = row[rend] < row[rstart] ? row[rend] : row[rstart];
+            var center_position = row_data[rend] < row_data[rstart] ? row_data[rend] : row_data[rstart];
+            return row[rseqid] == row_data[rseqid] && Math.abs(center_position - position) < 16000;
+        });
         // Sort data ascending by coordinate for draw order
-        var rstart = canvas_name == 'query-canvas' ? col_idx['qstart'] : col_idx['sstart'];
-        var rend = canvas_name == 'query-canvas' ? col_idx['qend'] : col_idx['send'];
-        var sstart = col_idx['sstart'];
-        var send = col_idx['send'];
         //var sorted_data = _.sortBy(filtered_data, function (row) { return -row['bitscore']; });
 
         // draw each hsp row
@@ -281,6 +292,7 @@
         optimal_lane_size = (canvas.height - chart.getScaleHeight() - chart.trackBuffer) / chart.tracks[0].lanes.length - chart.laneBuffer;
         optimal_lane_size = optimal_lane_size < 5 ? 5 : optimal_lane_size > 20 ? 20 : optimal_lane_size;
         chart.laneSizes = optimal_lane_size;
+        canvas.height = chart.getHeight();
 
         // create lane size slider on top right
         var lane_size_slider_id = canvas_name + '-lane-size-slider';
