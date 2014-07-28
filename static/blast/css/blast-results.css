@@ -1,0 +1,10 @@
+﻿.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th,
+.highlight,
+.table-striped > tbody > tr.highlight:nth-child(odd) > td,
+.table-striped > tbody > tr.highlight:nth-child(odd) > th,
+.table-striped > tbody > tr.highlight > th,
+.table-striped > tbody > tr.highlight > th,
+div.DTS tbody tr.even.highlight {
+  background-color: #f8f887;
+}
