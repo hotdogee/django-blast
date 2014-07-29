@@ -5,7 +5,7 @@ Backend
 =======
 * Implemented in [Python](https://www.python.org/) with [Django](https://www.djangoproject.com/).
 * Supports the latest [NCBI BLAST+ executables](http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download).
-* Task Queue with [RabbitMQ](http://www.rabbitmq.com/).
+* Task queue with [RabbitMQ](http://www.rabbitmq.com/).
 * Generates all BLAST output formats for download: Text, CSV, TSV, XML, ASN.1.
 * Retreive previous results with a unique URL for every task.
 * Works on Linux and Windows.
