@@ -6,8 +6,10 @@
 *.user
 *.sln.docstates
 
-# Build results
+# virtualenv
+env/
 
+# Build results
 [Dd]ebug/
 [Rr]elease/
 x64/
