@@ -15,15 +15,16 @@ import subprocess
 dir = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(filename=(dir + '/consumer.log'), format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.INFO)
 
+blast_out_col_name_str = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe'
+blast_out_col_names = blast_out_col_name_str.split()
 blast_out_ext = {}
 blast_out_ext['.0'] = '0'
 blast_out_ext['.html'] = '0'
 blast_out_ext['.1'] = '1'
 blast_out_ext['.3'] = '3'
 blast_out_ext['.xml'] = '5'
-blast_out_ext['.tsv'] = '6 qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs'
-blast_out_ext['.csv'] = '10 qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs'
-blast_out_col_types = [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int]
+blast_out_ext['.tsv'] = '6 ' + blast_out_col_name_str
+blast_out_ext['.csv'] = '10 ' + blast_out_col_name_str
 
 class MyThread(threading.Thread):
 
@@ -51,7 +52,6 @@ def callback(ch, method, properties, body):
     task_arg = body[(body.find("arg=")+4):(body.find("fmt="))]
     blast_formatter_path = body[(body.find("fmt=")+4):]
 
-    
     # update dequeue time
     con = sqlite3.connect('../db.sqlite3')
     with con:
@@ -67,7 +67,6 @@ def callback(ch, method, properties, body):
     args = json.loads(task_arg)
     # run blast process
     subprocess.Popen(args).wait()
-
     
     # convert to multiple formats
     asn_filename = args[-3] # ex. /usr/local/i5k/media/3ee04cec89b54d33ba557335b7b7134d/3ee04cec89b54d33ba557335b7b7134d.asn
@@ -77,8 +76,7 @@ def callback(ch, method, properties, body):
         if ext == '.html':
             args.append('-html')
         subprocess.Popen(args).wait()
-    
-     
+  
     # update job finish time
     con = sqlite3.connect('../db.sqlite3')
     with con:

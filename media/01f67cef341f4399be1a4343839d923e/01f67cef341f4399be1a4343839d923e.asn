@@ -1,0 +1,390 @@
+Blast4-archive ::= {
+  request {
+    ident "2.2.29+",
+    body queue-search {
+      program "blastn",
+      service "megablast",
+      queries bioseq-set {
+        seq-set {
+          seq {
+            id {
+              local str "Query_1"
+            },
+            descr {
+              user {
+                type str "CFastaReader",
+                data {
+                  {
+                    label str "DefLine",
+                    data str ">Contig1"
+                  }
+                }
+              },
+              title "Contig1"
+            },
+            inst {
+              repr raw,
+              mol na,
+              length 1920,
+              seq-data ncbi2na '0C0300C0300C0300C0300C0300C0302C0300C0300C0380
+08300C0102703C0301E040320C000F0FFF51F10E9F3B1380B37B37263CF3903300E67D4E9D9724
+0925100795E4710114711483E03768061FF83EC034EF81FE1FE0E925CDE9A6704BF8784BBB87A4
+BFDB90C445E3CF83B8303B3C303F393BCEC4C4C62C4C2C8CFC0D5E74D3FA5FFBFBC3C03BF5481E
+C1E7B4063EFA7F16F9EF7EF76F3E7BEFBEF2FE7C433394300710CC0ED2CFEA65FBE7F3E3CFEFE0
+FED7CFBE4BEFACF9EFBE78E979F93FC49CC3CB2D8BF240411FF9C7EFE7A7F39B9B3FE3BB331333
+3BBBB933CB3B3B8C7C52BE6BE6BCF50EC392F87FD3FB033333F02D967A439F0CC5447C1ACCECFC
+CCCCC5C4CFFE34D5430BB2B7D75DD127AAE3B44D35318184E11EDEF8FBE3F8008B493B780471BA
+E58327E0AAD7592F7A6897F8CF1F2EF2CC44A4CC2FFDDA314074A7202E2B7F9423FA64EBA3F3C4
+DC09C478C2B5092F6F82BA9FC37F444339D9C817CCE6336E8A74CD30C3E9821ECB757222647CAF
+50D360CE5F4D614CF39F209C3139146D2F7D96DB91277528C78DA75A71C64DF27DFDFFFBF90328
+7E7D7DF49CDACDCD53511EBEEB23641BD8033DF7D77DDFC71A4E93756FF1695F7FCC3EDA01430F
+F9F0A711F022BA03DEF512643CCDAF94189BDF2222008888A88CC882'H
+            }
+          }
+        }
+      },
+      subject database "Aros01112013-genome_new_ids.fa
+ Clec_Bbug02212013.genome_new_ids.fa",
+      algorithm-options {
+        {
+          name "EvalueThreshold",
+          value cutoff e-value { 1, 10, 1 }
+        },
+        {
+          name "MaskAtHash",
+          value boolean TRUE
+        },
+        {
+          name "DustFilteringLevel",
+          value integer 20
+        },
+        {
+          name "DustFilteringWindow",
+          value integer 64
+        },
+        {
+          name "DustFilteringLinker",
+          value integer 1
+        },
+        {
+          name "UngappedMode",
+          value boolean FALSE
+        },
+        {
+          name "HitlistSize",
+          value integer 500
+        },
+        {
+          name "EffectiveSearchSpace",
+          value big-integer 1539793644909
+        }
+      },
+      program-options {
+        {
+          name "LCaseMask",
+          value query-mask {
+            locations {
+              packed-int {
+                {
+                  from 0,
+                  to 154,
+                  id local str "Query_1"
+                },
+                {
+                  from 0,
+                  to 154,
+                  id local str "Query_1"
+                },
+                {
+                  from 577,
+                  to 639,
+                  id local str "Query_1"
+                },
+                {
+                  from 577,
+                  to 639,
+                  id local str "Query_1"
+                },
+                {
+                  from 695,
+                  to 755,
+                  id local str "Query_1"
+                },
+                {
+                  from 695,
+                  to 755,
+                  id local str "Query_1"
+                },
+                {
+                  from 837,
+                  to 900,
+                  id local str "Query_1"
+                },
+                {
+                  from 837,
+                  to 900,
+                  id local str "Query_1"
+                },
+                {
+                  from 1016,
+                  to 1037,
+                  id local str "Query_1"
+                },
+                {
+                  from 1016,
+                  to 1037,
+                  id local str "Query_1"
+                },
+                {
+                  from 1884,
+                  to 1917,
+                  id local str "Query_1"
+                },
+                {
+                  from 1884,
+                  to 1917,
+                  id local str "Query_1"
+                }
+              }
+            },
+            frame plus1
+          }
+        }
+      }
+    }
+  },
+  results {
+    alignments {
+    },
+    masks {
+      {
+        locations {
+          packed-int {
+            {
+              from 0,
+              to 154,
+              id local str "Query_1"
+            },
+            {
+              from 577,
+              to 639,
+              id local str "Query_1"
+            },
+            {
+              from 695,
+              to 755,
+              id local str "Query_1"
+            },
+            {
+              from 837,
+              to 900,
+              id local str "Query_1"
+            },
+            {
+              from 1016,
+              to 1037,
+              id local str "Query_1"
+            },
+            {
+              from 1884,
+              to 1917,
+              id local str "Query_1"
+            }
+          }
+        },
+        frame plus1
+      }
+    },
+    ka-blocks {
+      {
+        lambda { 133270576282382, 10, -14 },
+        k { 620991117264207, 10, -15 },
+        h { 112409184650115, 10, -14 },
+        gapped FALSE
+      },
+      {
+        lambda { 128, 10, -2 },
+        k { 46, 10, -2 },
+        h { 85, 10, -2 },
+        gapped TRUE
+      }
+    },
+    search-stats {
+      "Effective search space: 1539793644909",
+      "Effective search space used: 1539793644909",
+      "Length adjustment: 29"
+    }
+  }
+}
+Blast4-archive ::= {
+  request {
+    ident "2.2.29+",
+    body queue-search {
+      program "blastn",
+      service "megablast",
+      queries bioseq-set {
+        seq-set {
+          seq {
+            id {
+              local str "Query_2"
+            },
+            descr {
+              user {
+                type str "CFastaReader",
+                data {
+                  {
+                    label str "DefLine",
+                    data str ">Contig2"
+                  }
+                }
+              },
+              title "Contig2"
+            },
+            inst {
+              repr raw,
+              mol na,
+              length 1729,
+              seq-data ncbi2na 'FC3DE7D018F9A9481EDDC4FEAE62344A413442F4B8C586
+48D4443951228F7DFF746DA3A78E2400135A7B8F800A4214C84ED61FA2961EBEB8EFD00A2C2CCF
+3CFAFE613DBE88ED0CB3810FE1FE1FFE2BF62231327B7DF4820E3B83AFE3310F7002C4BA2C41DC
+09409F74BCCFBD2849F4D3A2F90A41EC77DEBDE8EDFE88203FBD30E54683617DBAAF6E95DA60AF
+A441C534F5F55EA1C5B9E781EAF50B3E5E187C6E361FFEDF1F697A4C61702DE553114E3200889B
+C206A21AC64D2BB1AFF0823423A988F9E2BAD0E09C1862082C60BA28033CDA82A4208DFD682F25
+22AC3A5B92AB00C2EC3CF2F0299FD7F6EF934413FDD8714EFBE5D3FFF1E344F5C4A12F8BCEF23C
+3A07FF70BF02A8FFF0B0030900CFF8AC3FEB503C04FD8233297F0FFDFF43CE03F002D0FB3FDFFF
+CFFCC1CCF9FF72C3E003F8BE817C41C6000FD22FFCC3F0F403CC4CCC80F3A7C1CEDFCCACFBF005
+3F0BF3F033023A9004FB5D7402EEE300DB1FD433ACB6100CE2CFFE313F73C8CE0EE33FCBFF1C33
+BAB37F82CFF04473FF01C3F5C98F1BEC0050202A80FE833E0C33BF2CFD1C2A7F38CB40EFE94FC8
+8C0C2020D8F080C8426BAC03C833330CCC4D1300'H
+            }
+          }
+        }
+      },
+      subject database "Aros01112013-genome_new_ids.fa
+ Clec_Bbug02212013.genome_new_ids.fa",
+      algorithm-options {
+        {
+          name "EvalueThreshold",
+          value cutoff e-value { 1, 10, 1 }
+        },
+        {
+          name "MaskAtHash",
+          value boolean TRUE
+        },
+        {
+          name "DustFilteringLevel",
+          value integer 20
+        },
+        {
+          name "DustFilteringWindow",
+          value integer 64
+        },
+        {
+          name "DustFilteringLinker",
+          value integer 1
+        },
+        {
+          name "UngappedMode",
+          value boolean FALSE
+        },
+        {
+          name "HitlistSize",
+          value integer 500
+        },
+        {
+          name "EffectiveSearchSpace",
+          value big-integer 1384267158300
+        }
+      },
+      program-options {
+        {
+          name "LCaseMask",
+          value query-mask {
+            locations {
+              packed-int {
+                {
+                  from 979,
+                  to 985,
+                  id local str "Query_2"
+                },
+                {
+                  from 979,
+                  to 985,
+                  id local str "Query_2"
+                },
+                {
+                  from 1129,
+                  to 1191,
+                  id local str "Query_2"
+                },
+                {
+                  from 1129,
+                  to 1191,
+                  id local str "Query_2"
+                },
+                {
+                  from 1704,
+                  to 1719,
+                  id local str "Query_2"
+                },
+                {
+                  from 1704,
+                  to 1719,
+                  id local str "Query_2"
+                }
+              }
+            },
+            frame plus1
+          }
+        }
+      }
+    }
+  },
+  results {
+    alignments {
+    },
+    masks {
+      {
+        locations {
+          packed-int {
+            {
+              from 979,
+              to 985,
+              id local str "Query_2"
+            },
+            {
+              from 1129,
+              to 1191,
+              id local str "Query_2"
+            },
+            {
+              from 1704,
+              to 1719,
+              id local str "Query_2"
+            }
+          }
+        },
+        frame plus1
+      }
+    },
+    ka-blocks {
+      {
+        lambda { 133270576282382, 10, -14 },
+        k { 620991117264206, 10, -15 },
+        h { 112409184650114, 10, -14 },
+        gapped FALSE
+      },
+      {
+        lambda { 128, 10, -2 },
+        k { 46, 10, -2 },
+        h { 85, 10, -2 },
+        gapped TRUE
+      }
+    },
+    search-stats {
+      "Effective search space: 1384267158300",
+      "Effective search space used: 1384267158300",
+      "Length adjustment: 29"
+    }
+  }
+}
