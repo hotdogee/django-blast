@@ -111,6 +111,7 @@
     <Folder Include="blast\static\blast\dataTables\images\psd\" />
     <Folder Include="blast\static\blast\dataTables\js\" />
     <Folder Include="blast\static\blast\scripts\" />
+    <Folder Include="blast\static\blast\swf\" />
     <Folder Include="blast\templates\" />
     <Folder Include="app\static\" />
     <Folder Include="app\static\app\" />
@@ -563,6 +564,8 @@
     <Content Include="blast\static\blast\scripts\scribl.1.1.4.min.js" />
     <Content Include="blast\static\blast\scripts\underscore-min.js" />
     <Content Include="blast\static\blast\scripts\underscore.js" />
+    <Content Include="blast\static\blast\swf\copy_csv_xls.swf" />
+    <Content Include="blast\static\blast\swf\copy_csv_xls_pdf.swf" />
     <Content Include="blast\templates\blast\results.html" />
     <Content Include="blast\templates\blast\main.html" />
     <Content Include="blast\bin_win\makeblastdb.exe" />
@@ -575,6 +578,7 @@
     <Content Include="blast\bin_win\tblastn.exe" />
     <Content Include="blast\bin_win\tblastx.exe" />
     <Content Include="blast\bin_win\windowmasker.exe" />
+    <Content Include="blast\templates\blast\results_not_existed.html" />
     <Content Include="rabbitmq\clear_files.sh" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
