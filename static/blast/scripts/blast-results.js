@@ -128,6 +128,8 @@
         w = w < 650 ? $(window).width() / 2 : w
         $table_panel.width(w);
         updateDataTableHeight();
+        var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>')
+        $('.ui-corner-bl').append(footer)
     });
     $(window).resize(function () {
         var w = $(window).width() - 650
@@ -243,15 +245,18 @@
         chart.glyph.text.color = 'white';
 
         // Get data indexes
+        var other_canvas = canvas_name == 'query-canvas' ? 'subject-canvas' : 'query-canvas';
+        var rseqid = canvas_name == 'query-canvas' ? col_idx['qseqid'] : col_idx['sseqid'];
         var rstart = canvas_name == 'query-canvas' ? col_idx['qstart'] : col_idx['sstart'];
         var rend = canvas_name == 'query-canvas' ? col_idx['qend'] : col_idx['send'];
         var sstart = col_idx['sstart'];
         var send = col_idx['send'];
+        var bitscore = col_idx['bitscore'];
         // Get data as ordered and filtered in datatable
         var table_data = results_table_api.rows({ search: 'applied' }).data();
         // Filter data, only keep rows associated with the reference given by row_data
-        var other_canvas = canvas_name == 'query-canvas' ? 'subject-canvas' : 'query-canvas';
-        var rseqid = canvas_name == 'query-canvas' ? col_idx['qseqid'] : col_idx['sseqid'];
+        // Set name text
+        $('#' + canvas_name + '-name').text(row_data[rseqid]);
         var aligned_data = _.filter(table_data, function (row) {
             // only draw HSPs within the range of 32000nt(+-16000nt)
             var position = row[rend] < row[rstart] ? row[rend] : row[rstart];
@@ -272,6 +277,20 @@
                 feature.setColorGradient(
                     'rgb(252, 213, 181)',
                     'rgb(228, 108, 10)'
+                );
+            } else {
+                // color according to score
+                var min_score = 50;
+                var max_score = 200;
+                var color_bitscore = Math.max(min_score, Math.min(max_score, row[bitscore]));
+                var color_scale = (color_bitscore - min_score) / (max_score - min_score);
+                // max_color = rgb(30, 74, 117), min_color = rgb(170, 178, 187)
+                var r = Math.round(29 - (29 - 22) * color_scale);
+                var g = Math.round(114 - (114 - 52) * color_scale);
+                var b = Math.round(54 - (54 - 82) * color_scale);
+                feature.setColorGradient(
+                    ' #99CCFF',
+                    'rgb(' + r + ', ' + g + ', ' + b + ')'
                 );
             }
             feature.onMouseover = function () {

@@ -8,3 +8,9 @@
 div.DTS tbody tr.even.highlight {
   background-color: #f8f887;
 }
+.nal-footer {
+    position: absolute;
+    bottom: 0;
+    margin: 14px;
+    right: 0;
+}
