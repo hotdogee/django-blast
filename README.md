@@ -9,6 +9,7 @@ Backend
 * Task Queue with [RabbitMQ](http://www.rabbitmq.com/).
 * Generates all BLAST output formats for download: Text, CSV, TSV, XML, ASN.1.
 * Retreive previous results with a unique url for every task.
+* Works on Linux and Windows.
 
 Fronend - Results
 =================
@@ -20,6 +21,7 @@ Fronend - Results
   * Mouse over each row.
   * Changes the sorting column.
   * Filters the table using the search box.
+* Works on the latest versions of Chrome, Firefox, IE.
 
 Screenshots
 ===========
