@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # BLAST
-    url(r'^newblast/', include('blast.urls', namespace='blast')),
+    url(r'^blast/', include('blast.urls', namespace='blast')),
 )
 from django.conf import settings
 if settings.DEBUG:
