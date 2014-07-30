@@ -12,31 +12,31 @@
         true,
         $.fn.dataTable.TableTools.buttonBase,
         {
-            "sAction": "text",
-            "sTag": "default",
-            "sFieldBoundary": "",
-            "sFieldSeperator": "\t",
-            "sNewLine": "<br>",
-            "sToolTip": "",
-            "sButtonClass": "DTTT_button_text",
-            "sButtonClassHover": "DTTT_button_text_hover",
-            "sButtonText": "Download",
-            "mColumns": "all",
-            "bHeader": true,
-            "bFooter": true,
-            "sDiv": "",
-            "fnMouseover": null,
-            "fnMouseout": null,
-            "fnClick": function (nButton, oConfig) {
+            'sAction': 'text',
+            'sTag': 'default',
+            'sFieldBoundary': '',
+            'sFieldSeperator': '\t',
+            'sNewLine': '<br>',
+            'sToolTip': '',
+            'sButtonClass': 'DTTT_button_text',
+            'sButtonClassHover': 'DTTT_button_text_hover',
+            'sButtonText': 'Download',
+            'mColumns': 'all',
+            'bHeader': true,
+            'bFooter': true,
+            'sDiv': '',
+            'fnMouseover': null,
+            'fnMouseout': null,
+            'fnClick': function (nButton, oConfig) {
                 var iframe = document.createElement('iframe');
-                iframe.style.height = "0px";
-                iframe.style.width = "0px";
+                iframe.style.height = '0px';
+                iframe.style.width = '0px';
                 iframe.src = oConfig.sUrl;
                 document.body.appendChild(iframe);
             },
-            "fnSelect": null,
-            "fnComplete": null,
-            "fnInit": null
+            'fnSelect': null,
+            'fnComplete': null,
+            'fnInit': null
         }
     );
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
@@ -53,13 +53,13 @@
         //deferRender: true,
         //bJQueryUI: true,
         tableTools: {
-            sSwfPath: "/static/blast/swf/copy_csv_xls_pdf.swf",
+            sSwfPath: '/static/blast/swf/copy_csv_xls_pdf.swf',
             aButtons: [
-                "copy",
-                "print",
+                'copy',
+                'print',
                 {
-                    sExtends:    "collection",
-                    sButtonText: "Save",
+                    sExtends:    'collection',
+                    sButtonText: 'Save',
                     aButtons: [{
                         sExtends: 'download',
                         sButtonText: 'Pairwise',
