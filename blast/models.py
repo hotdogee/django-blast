@@ -22,18 +22,6 @@ class Organism(models.Model):
     def __unicode__(self):
         return self.display_name
 
-class BlastDb(models.Model):
-    organism = models.ForeignKey(Organism) # 
-    type = models.ForeignKey(BlastDbType) # 
-    description = models.TextField(blank=True) # shown in blast db selection ui
-    title = models.CharField(max_length=200, unique=True) # makeblastdb -title
-    fasta_file = models.PositiveIntegerField(null=True, blank=True) # upload file
-    is_shown = models.BooleanField() # to temporarily remove from blast db selection ui
-    #sequence_count = models.PositiveIntegerField(null=True, blank=True) # number of sequences in this fasta
-
-    def __unicode__(self):
-        return self.fasta_file
-
 class BlastDbType(models.Model):
     molecule_type = models.CharField(max_length=4, default='nucl', choices=(
         ('nucl', 'Nucleotide'),
@@ -45,6 +33,18 @@ class BlastDbType(models.Model):
 
     class Meta:
         unique_together = ('molecule_type', 'dataset_type')
+
+class BlastDb(models.Model):
+    organism = models.ForeignKey(Organism) # 
+    type = models.ForeignKey(BlastDbType) # 
+    description = models.TextField(blank=True) # shown in blast db selection ui
+    title = models.CharField(max_length=200, unique=True) # makeblastdb -title
+    fasta_file = models.FileField(upload_to='blastdb') # upload file
+    is_shown = models.BooleanField(help_text='display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
+    #sequence_count = models.PositiveIntegerField(null=True, blank=True) # number of sequences in this fasta
+
+    def __unicode__(self):
+        return self.fasta_file
 
 class Sequence(models.Model):
     key = models.AutoField(primary_key=True)

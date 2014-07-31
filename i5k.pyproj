@@ -29,6 +29,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="blast\admin.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="blast\models.py" />
     <Compile Include="blast\tests.py" />
     <Compile Include="blast\urls.py">
