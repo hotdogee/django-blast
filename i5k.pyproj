@@ -615,6 +615,7 @@
     <Content Include="app\templates\app\layout.html" />
     <Content Include="app\templates\app\login.html" />
     <Content Include="app\templates\app\loginpartial.html" />
+    <Content Include="templates\admin\base_site.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.mht">
