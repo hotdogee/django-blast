@@ -129,10 +129,48 @@ INSTALLED_APPS = (
     'app',
     'blast',
     # Uncomment the next line to enable the admin:
+    'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
 )
+
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+    'django.core.context_processors.request',
+)
+
+# Django Suit configuration example
+SUIT_CONFIG = {
+    # header
+    'ADMIN_NAME': 'i5k Admin',
+    # 'HEADER_DATE_FORMAT': 'l, j. F Y',
+    # 'HEADER_TIME_FORMAT': 'H:i',
+
+    # forms
+    # 'SHOW_REQUIRED_ASTERISK': True,  # Default True
+    # 'CONFIRM_UNSAVED_CHANGES': True, # Default True
+
+    # menu
+    # 'SEARCH_URL': '/admin/auth/user/',
+    #'MENU_ICONS': {
+    #    'blast': 'icon-leaf',
+    #    'auth': 'icon-lock',
+    #},
+    # 'MENU_OPEN_FIRST_CHILD': True, # Default True
+    'MENU_EXCLUDE': (),
+    'MENU': (
+        {'app': 'blast', 'label': 'BLAST', 'icon':'icon-leaf', 'models': (
+            {'model': 'blastdb', 'label': 'Databases'},
+            {'model': 'blastqueryrecord', 'label': 'Results'},
+        )},
+        {'app': 'auth', 'label': 'Authorization', 'icon':'icon-lock', 'models': ('user', 'group')},
+        #{'label': 'Support', 'icon':'icon-question-sign', 'url': '/support/'},
+    ),
+
+    # misc
+    # 'LIST_PER_PAGE': 15
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

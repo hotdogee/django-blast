@@ -125,7 +125,9 @@
     <Folder Include="app\templates\app\" />
     <Folder Include="blast\templates\blast\" />
     <Folder Include="i5k\" />
+    <Folder Include="templates\" />
     <Folder Include="rabbitmq\" />
+    <Folder Include="templates\admin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="blast\bin_linux\blastdbcmd" />
