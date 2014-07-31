@@ -573,6 +573,7 @@
     <Content Include="blast\static\blast\scripts\jquery-ui.min.js" />
     <Content Include="blast\static\blast\scripts\jquery.dataTables.yadcf.js" />
     <Content Include="blast\static\blast\scripts\jquery.hoverIntent.minified.js" />
+    <Content Include="blast\static\blast\scripts\organism-admin.js" />
     <Content Include="blast\static\blast\scripts\scribl.1.0.min.js" />
     <Content Include="blast\static\blast\scripts\scribl.1.1.4.js" />
     <Content Include="blast\static\blast\scripts\scribl.1.1.4.min.js" />

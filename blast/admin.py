@@ -1,26 +1,32 @@
 from django.contrib import admin
 from blast.models import *
 
-@admin.register(BlastQueryRecord)
 class BlastQueryRecordAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date')
+    fields = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date')
+    readonly_fields = ('enqueue_date',)
+    list_filter = ('enqueue_date', 'dequeue_date', 'result_date')
+    search_fields = ('task_id',)
+admin.site.register(BlastQueryRecord, BlastQueryRecordAdmin)
 
-@admin.register(BlastDb)
 class BlastDbAdmin(admin.ModelAdmin):
     pass
+admin.site.register(BlastDb, BlastDbAdmin)
 
-@admin.register(Organism)
 class OrganismAdmin(admin.ModelAdmin):
-    pass
+    class Media:
+        js = ('blast/scripts/organism-admin.js',)
+admin.site.register(Organism, OrganismAdmin)
 
-@admin.register(BlastDbType)
 class BlastDbTypeAdmin(admin.ModelAdmin):
+    list_display = ('molecule_type', 'dataset_type')
     pass
+admin.site.register(BlastDbType, BlastDbTypeAdmin)
 
-@admin.register(Sequence)
 class SequenceAdmin(admin.ModelAdmin):
     pass
+admin.site.register(Sequence, SequenceAdmin)
 
-@admin.register(JbrowseInfo)
 class JbrowseInfoAdmin(admin.ModelAdmin):
     pass
+admin.site.register(JbrowseInfo, JbrowseInfoAdmin)
