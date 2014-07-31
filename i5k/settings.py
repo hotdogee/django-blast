@@ -163,8 +163,12 @@ SUIT_CONFIG = {
     'MENU_EXCLUDE': (),
     'MENU': (
         {'app': 'blast', 'label': 'BLAST', 'icon':'icon-leaf', 'models': (
-            {'model': 'blastdb', 'label': 'Databases'},
-            {'model': 'blastqueryrecord', 'label': 'Results'},
+            {'model': 'blastqueryrecord'},
+            {'model': 'blastdb'},
+            {'model': 'organism'},
+            {'model': 'blastdbtype'},
+            {'model': 'jbrowseinfo'},
+            {'model': 'sequence'},
         )},
         {'app': 'auth', 'label': 'Authorization', 'icon':'icon-lock', 'models': ('user', 'group')},
         #{'label': 'Support', 'icon':'icon-question-sign', 'url': '/support/'},

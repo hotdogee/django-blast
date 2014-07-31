@@ -13,6 +13,9 @@ class BlastQueryRecord(models.Model):
         from django.core.urlresolvers import reverse
         return reverse('blast:retrieve', args=[str(self.task_id)])
 
+    class Meta:
+        verbose_name = 'blast result'
+
 class Organism(models.Model):
     display_name = models.CharField(max_length=200, unique=True) # shown to user
     short_name = models.CharField(max_length=20, unique=True) # used in code or filenames
@@ -32,6 +35,7 @@ class BlastDbType(models.Model):
         return u'%s - %s' % (self.get_molecule_type_display(), self.dataset_type)
 
     class Meta:
+        verbose_name = 'blast database type'
         unique_together = ('molecule_type', 'dataset_type')
 
 class BlastDb(models.Model):
@@ -45,6 +49,9 @@ class BlastDb(models.Model):
 
     def __unicode__(self):
         return self.fasta_file
+
+    class Meta:
+        verbose_name = 'blast database'
 
 class Sequence(models.Model):
     key = models.AutoField(primary_key=True)
@@ -61,8 +68,12 @@ class Sequence(models.Model):
         unique_together = ('blast_db', 'id')
 
 class JbrowseInfo(models.Model):
+    'Used to link databases to Jbrowse'
     blast_db = models.ForeignKey(BlastDb) # 
     url = models.URLField('Jbrowse URL', unique=True)
 
     def __unicode__(self):
         return self.url
+
+    class Meta:
+        verbose_name = 'Jbrowse information'

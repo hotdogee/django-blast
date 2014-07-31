@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% load admin_static %}
+{% load admin_static %}{% load suit_tags %}{% load i18n %}
 
 {# Additional <head> content here, some extra meta tags or favicon #}
 {#{% block extrahead %}#}
@@ -38,8 +38,49 @@
 </style>
 {% endblock %}
 
-{# Remove header time block #}
-{% block header_time %}
+{% block header %}
+    {% if not is_popup %}
+        <!-- Header -->
+        <div id="header" class="header">
+        <div id="branding">
+            <a href="{% url 'admin:index' %}"><h1 id="site-name">{% block branding %}{{ 'ADMIN_NAME'|suit_conf }}{% endblock %}</h1></a>
+        </div>
+
+        {% block header_time %}
+        {% endblock %}
+            
+        {# Remove header time block #}
+        {% block header_content %}
+            <!--<div class="header-content">
+            <div class="header-column icon">
+                <i class="icon-comment"></i>
+            </div>
+            <div class="header-column">
+                <a href="" class="grey"><b>2</b> new messages</a>
+            </div>
+            </div>-->
+        {% endblock %}
+
+        {% if user.is_active and user.is_staff %}
+            <div id="user-tools">
+            {% trans 'Welcome, ' %}{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}.
+            <span class="user-links">
+            {% block userlinks %}
+                {% url 'django-admindocs-docroot' as docsroot %}
+                {% if docsroot %}
+                <a href="{{ docsroot }}">{% trans 'Documentation' %}</a>
+                <span class="separator">|</span>
+                {% endif %}
+                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a>
+                <span class="separator">|</span>
+                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+                </span>
+            {% endblock %}
+            </div>
+        {% endif %}
+        {% block nav-global %}{% endblock %}
+        </div>
+    {% endif %}
 {% endblock %}
 
 
