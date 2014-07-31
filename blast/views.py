@@ -18,6 +18,7 @@ import json
 import csv
 import traceback
 import stat
+import ReadGFF3
 
 
 blast_out_col_types = [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int, int, int]
@@ -139,3 +140,11 @@ def retrieve(request, task_id='1'):
     except:
         return HttpResponse(traceback.format_exc())
         #raise Http404
+        
+def read_gff3(request, task_id, dbname):
+    if request.method == 'GET':
+        return HttpResponse(ReadGFF3.get_gff(task_id, dbname))
+        #return HttpResponse(task_id+dbname)
+    else:
+        return HttpResponse("##gff-version 3\n")
+
