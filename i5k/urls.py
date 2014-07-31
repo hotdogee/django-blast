@@ -4,7 +4,9 @@ from app.forms import BootstrapAuthenticationForm
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.contrib.sites.models import Site
 admin.autodiscover()
+admin.site.unregister(Site)
 
 urlpatterns = patterns('',
     # Examples:
