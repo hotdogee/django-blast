@@ -12,34 +12,35 @@
         true,
         $.fn.dataTable.TableTools.buttonBase,
         {
-            "sAction": "text",
-            "sTag": "default",
-            "sFieldBoundary": "",
-            "sFieldSeperator": "\t",
-            "sNewLine": "<br>",
-            "sToolTip": "",
-            "sButtonClass": "DTTT_button_text",
-            "sButtonClassHover": "DTTT_button_text_hover",
-            "sButtonText": "Download",
-            "mColumns": "all",
-            "bHeader": true,
-            "bFooter": true,
-            "sDiv": "",
-            "fnMouseover": null,
-            "fnMouseout": null,
-            "fnClick": function (nButton, oConfig) {
+            'sAction': 'text',
+            'sTag': 'default',
+            'sFieldBoundary': '',
+            'sFieldSeperator': '\t',
+            'sNewLine': '<br>',
+            'sToolTip': '',
+            'sButtonClass': 'DTTT_button_text',
+            'sButtonClassHover': 'DTTT_button_text_hover',
+            'sButtonText': 'Download',
+            'mColumns': 'all',
+            'bHeader': true,
+            'bFooter': true,
+            'sDiv': '',
+            'fnMouseover': null,
+            'fnMouseout': null,
+            'fnClick': function (nButton, oConfig) {
                 var iframe = document.createElement('iframe');
-                iframe.style.height = "0px";
-                iframe.style.width = "0px";
+                iframe.style.height = '0px';
+                iframe.style.width = '0px';
                 iframe.src = oConfig.sUrl;
                 document.body.appendChild(iframe);
             },
-            "fnSelect": null,
-            "fnComplete": null,
-            "fnInit": null
+            'fnSelect': null,
+            'fnComplete': null,
+            'fnInit': null
         }
     );
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
+    var task_path = '/media/' + task_id + '/' + task_id;
     var $results_table = $('#results-table').dataTable({
         scrollX: '100%',
         scrollY: '200px',
@@ -52,41 +53,41 @@
         //deferRender: true,
         //bJQueryUI: true,
         tableTools: {
-            sSwfPath: "/static/blast/swf/copy_csv_xls_pdf.swf",
+            sSwfPath: '/static/blast/swf/copy_csv_xls_pdf.swf',
             aButtons: [
-                "copy",
-                "print",
+                'copy',
+                'print',
                 {
-                    sExtends:    "collection",
-                    sButtonText: "Save",
+                    sExtends:    'collection',
+                    sButtonText: 'Save',
                     aButtons: [{
                         sExtends: 'download',
                         sButtonText: 'Pairwise',
-                        sUrl: '/media/' + task_id + '.0'
+                        sUrl: task_path + '.0'
                     }, {
                         sExtends: 'download',
                         sButtonText: 'Query-anchored showing identities',
-                        sUrl: '/media/' + task_id + '.1'
+                        sUrl: task_path + '.1'
                     }, {
                         sExtends: 'download',
                         sButtonText: 'Flat query-anchored, show identities',
-                        sUrl: '/media/' + task_id + '.3'
+                        sUrl: task_path + '.3'
                     }, {
                         sExtends: 'download',
                         sButtonText: 'XML',
-                        sUrl: '/media/' + task_id + '.xml'
+                        sUrl: task_path + '.xml'
                     }, {
                         sExtends: 'download',
                         sButtonText: 'Tabular',
-                        sUrl: '/media/' + task_id + '.tsv'
+                        sUrl: task_path + '.tsv'
                     }, {
                         sExtends: 'download',
                         sButtonText: 'CSV',
-                        sUrl: '/media/' + task_id + '.csv'
+                        sUrl: task_path + '.csv'
                     }, {
                         sExtends: 'download',
                         sButtonText: 'BLAST archive format (ASN.1)',
-                        sUrl: '/media/' + task_id + '.asn'
+                        sUrl: task_path + '.asn'
                     }]
                 }
             ]

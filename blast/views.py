@@ -12,6 +12,7 @@ from blast.models import BlastQueryRecord
 from rabbitmq import receiver
 from datetime import datetime, timedelta
 from pytz import timezone
+from celery_consumer import tasks
 import subprocess
 import json
 import csv
@@ -66,6 +67,7 @@ def create(request):
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
             #args = [program_path, '-query', query_filename, '-db', db_list, '-html']
             args = [program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']
+            task_arg = json.dumps(args)
             # run blast process
             #subprocess.Popen(args).wait()
             # convert to multiple formats
@@ -75,8 +77,10 @@ def create(request):
             r.task_id = task_id
             r.save()
 
-            task_arg = json.dumps(args)
-            receiver.assign(task_id, task_arg, blast_formatter_path)
+            msg = 'task_id=' + task_id + 'arg=' + task_arg + 'fmt=' + blast_formatter_path
+            tasks.run.delay(msg)
+            #receiver.assign(task_id, task_arg, blast_formatter_path)
+
 
             #for ext, outfmt in blast_out_ext.items():
             #    args = [blast_formatter_path, '-archive', asn_filename, '-outfmt', outfmt, '-out', file_prefix + ext]
