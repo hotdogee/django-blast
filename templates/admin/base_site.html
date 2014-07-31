@@ -7,9 +7,40 @@
 
 
 {# Additional CSS includes #}
-{#{% block extrastyle %}#}
-{#  <link rel="stylesheet" type="text/css" href="{% static 'css/my_project.css' %}" media="all">#}
-{#{% endblock %}#}
+{% block extrastyle %}
+<style type="text/css">
+    .footer .content .copyright {
+        padding: 15px 20px 0 0;
+        float: right;
+        text-align: right;
+    }
+    .header {
+        color: #d4d4d4;
+        height: 50px;
+        overflow: hidden;
+        text-shadow: 0 -1px #121414;
+        background-color: #222;
+        background-image: none;
+    }
+    .header #branding h1 {
+        color: #fff;
+        font-size: 18px;
+        font-weight: normal;
+        margin: 15px;
+        text-shadow: 0 -1px #121414;
+        line-height: 20px;
+    }
+    .header #user-tools {
+        padding: 15px 20px 0 0;
+        font-size: 14px;
+        float: right;
+    }
+</style>
+{% endblock %}
+
+{# Remove header time block #}
+{% block header_time %}
+{% endblock %}
 
 
 {# Additional JS files in footer, right before </body> #}
