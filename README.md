@@ -25,4 +25,4 @@ Fronend - Results
 Screenshots
 ===========
 BLAST Results
-![alt tag](https://github.com/hotdogee/django-blast/blob/doc/doc/images/blast-results-dynamic.gif)
+![alt tag](https://raw.githubusercontent.com/hotdogee/django-blast/doc/doc/images/blast-results-dynamic.gif)
