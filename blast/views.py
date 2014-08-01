@@ -111,7 +111,7 @@ def retrieve(request, task_id='1'):
             file_prefix = path.join(settings.MEDIA_ROOT, task_id, task_id)
             
             # if .csv file size is 0, no hits found
-            if stat(file_prefix + '.csv')[6] == 0:
+            if (stat(file_prefix + '.csv')[6] == 0) or (stat(file_prefix + '.asn')[6] == 0):
                 return render(request, 'blast/results_not_existed.html', 
                 {
                     'isNoHits': True,
