@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
+from django.conf import settings
 
 def home(request):
     assert isinstance(request, HttpRequest)
@@ -11,8 +12,8 @@ def home(request):
         'app/index.html',
         RequestContext(request,
         {
-            'title':'Home Page',
-            'year':datetime.now().year,
+            'title': 'Home Page',
+            'year': datetime.now().year,
         })
     )
 
@@ -23,9 +24,9 @@ def contact(request):
         'app/contact.html',
         RequestContext(request,
         {
-            'title':'Contact',
-            'message':'Your contact page.',
-            'year':datetime.now().year,
+            'title': 'Contact',
+            'message': 'National Agricultural Library',
+            'year': datetime.now().year,
         })
     )
 
@@ -36,8 +37,8 @@ def about(request):
         'app/about.html',
         RequestContext(request,
         {
-            'title':'About',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
+            'title': 'About',
+            'message': 'django-blast',
+            'year': datetime.now().year,
         })
     )

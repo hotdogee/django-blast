@@ -138,6 +138,8 @@
     <Folder Include="templates\admin\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\static\app\scripts\jquery.gh-readme.js" />
+    <Content Include="app\static\app\scripts\marked.min.js" />
     <Content Include="blast\bin_linux\blastdbcmd" />
     <Content Include="blast\bin_linux\blastn" />
     <Content Include="blast\bin_linux\blastp" />
@@ -599,6 +601,7 @@
     <Content Include="celery_consumer\tasks.pyc" />
     <Content Include="celery_consumer\__init__.pyc" />
     <Content Include="rabbitmq\clear_files.sh" />
+    <Content Include="README.md" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

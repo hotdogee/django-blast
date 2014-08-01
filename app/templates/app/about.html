@@ -1,10 +1,29 @@
 {% extends "app/layout.html" %}
+{% load staticfiles %}
 
 {% block content %}
 
-<h2>{{ title }}.</h2>
+<h2>{{ title }}</h2>
 <h3>{{ message }}</h3>
+<div id="readme"></div>
 
-<p>Use this area to provide additional information.</p>
+{% endblock %}
 
+{% block scripts %}
+<script src="{% static 'app/scripts/marked.min.js' %}"></script>
+<script src="{% static 'app/scripts/jquery.gh-readme.js' %}"></script>
+<script>
+    $(function () {
+        var options = {
+            owner: 'hotdogee',
+            repo: 'django-blast'
+        };
+        $('#readme').readme(options);
+    });
+</script>
+<style type="text/css">
+    #readme img {
+        width: 100%;
+    }
+</style>
 {% endblock %}

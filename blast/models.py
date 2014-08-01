@@ -17,10 +17,10 @@ class BlastQueryRecord(models.Model):
         verbose_name = 'blast result'
 
 class Organism(models.Model):
-    display_name = models.CharField(max_length=200, unique=True) # shown to user
-    short_name = models.CharField(max_length=20, unique=True) # used in code or filenames
+    display_name = models.CharField(max_length=200, unique=True, help_text='Scientific or common name') # shown to user
+    short_name = models.CharField(max_length=20, unique=True, help_text='This is used in filenames or code') # used in code or filenames
     description = models.TextField(blank=True) # optional
-    tax_id = models.PositiveIntegerField('NCBI Taxonomy ID', null=True, blank=True) # ncbi tax id
+    tax_id = models.PositiveIntegerField('NCBI Taxonomy ID', null=True, blank=True, help_text='This is passed in to makeblast') # ncbi tax id
 
     def __unicode__(self):
         return self.display_name
@@ -44,7 +44,7 @@ class BlastDb(models.Model):
     description = models.TextField(blank=True) # shown in blast db selection ui
     title = models.CharField(max_length=200, unique=True) # makeblastdb -title
     fasta_file = models.FileField(upload_to='blastdb') # upload file
-    is_shown = models.BooleanField(help_text='display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
+    is_shown = models.BooleanField(help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
     #sequence_count = models.PositiveIntegerField(null=True, blank=True) # number of sequences in this fasta
 
     def __unicode__(self):
