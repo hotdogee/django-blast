@@ -5,7 +5,7 @@ from django.http import Http404
 from django.http import HttpResponse
 from django.template import RequestContext
 from uuid import uuid4
-from os import path, makedirs, chmod
+from os import path, makedirs, chmod, stat
 from django.conf import settings
 from sys import platform
 from blast.models import BlastQueryRecord
@@ -17,7 +17,7 @@ import subprocess
 import json
 import csv
 import traceback
-import stat
+import stat as Perm
 import ReadGFF3
 
 
@@ -48,10 +48,11 @@ def create(request):
         asn_filename = file_prefix + '.asn'
         if not path.exists(path.dirname(query_filename)):
             makedirs(path.dirname(query_filename))
-        chmod(path.dirname(query_filename), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO) # ensure the standalone dequeuing process can open files in the directory
+        chmod(path.dirname(query_filename), Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can open files in the directory
         bin_name = 'bin_linux'
         if platform == 'win32':
             bin_name = 'bin_win'
+
         # write query to file
         if 'query-file' in request.FILES:
             with open(query_filename, 'wb+') as query_f:
@@ -60,9 +61,16 @@ def create(request):
         elif 'query-sequence' in request.POST and request.POST['query-sequence']:
             with open(query_filename, 'wb+') as query_f:
                 query_f.write(request.POST['query-sequence'])
-        chmod(query_filename, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO) # ensure the standalone dequeuing process can access the file
+        else:
+            return render(request, 'blast/invalid_query.html')
+
+        chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can access the file
+
         # build blast command
         db_list = ' '.join(request.POST.getlist('db-name'))
+        if not db_list:
+            return render(request, 'blast/invalid_query.html')
+        
         # check if program is in list for security
         if request.POST['program'] in ['blastn', 'tblastn', 'tblastx', 'blastp', 'blastx']:
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
@@ -101,6 +109,15 @@ def retrieve(request, task_id='1'):
         if r.result_date and (r.result_date.replace(tzinfo=None) >= (datetime.utcnow()+ timedelta(days=-7))):
             # parse csv
             file_prefix = path.join(settings.MEDIA_ROOT, task_id, task_id)
+            
+            # if .csv file size is 0, no hits found
+            if stat(file_prefix + '.csv')[6] == 0:
+                return render(request, 'blast/results_not_existed.html', 
+                {
+                    'isNoHits': True,
+                    'isExpired': False,
+                })
+                
             results_data = []
             with open(file_prefix + '.csv', 'r') as f:
                 cr = csv.reader(f)
@@ -136,6 +153,7 @@ def retrieve(request, task_id='1'):
                 'isExpired': isExpired,
                 'enqueue_date': enqueue_date,
                 'dequeue_date': dequeue_date,
+                'isNoHits': False,
             })
     except:
         return HttpResponse(traceback.format_exc())

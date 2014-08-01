@@ -10,7 +10,7 @@ admin.site.unregister(Site)
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'app.views.home', name='home'),
+    url(r'^home$', 'app.views.home', name='home'),
     url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
     url(r'^login/$',
@@ -28,7 +28,7 @@ urlpatterns = patterns('',
     url(r'^logout$',
         'django.contrib.auth.views.logout',
         {
-            'next_page': '/',
+            'next_page': './',
         },
         name='logout'),
 
@@ -39,7 +39,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # BLAST
-    url(r'^blast/', include('blast.urls', namespace='blast')),
+    url(r'^', include('blast.urls', namespace='blast')),
 )
 from django.conf import settings
 if settings.DEBUG:
