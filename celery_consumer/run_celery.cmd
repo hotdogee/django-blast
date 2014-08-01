@@ -1,0 +1,1 @@
+celery -A i5k worker -l info
