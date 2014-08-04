@@ -39,6 +39,14 @@ class OrganismAdmin(admin.ModelAdmin):
     #    }),
     #)
     form = OrganismForm
+    list_display = ('display_name', 'short_name', 'tax_id', 'short_description')
+
+    def short_description(self, obj):
+        if len(obj.description) < 100:
+            return obj.description
+        else:
+            return obj.description[:100] + '...'
+    short_description.short_description = 'description'
     class Media:
         css = {
             'all': ('blast/css/organism-admin.css',)
