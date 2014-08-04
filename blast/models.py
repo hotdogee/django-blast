@@ -5,6 +5,7 @@ class BlastQueryRecord(models.Model):
     enqueue_date = models.DateTimeField(auto_now_add=True)
     dequeue_date = models.DateTimeField(null=True)
     result_date = models.DateTimeField(null=True)
+    result_status = models.CharField(max_length=32, default='WAITING') # ex. WAITING, SUCCESS, NO_ASN, ASN_EMPTY, NO_CSV, CSV_EMPTY
 
     def __unicode__(self):
         return self.task_id

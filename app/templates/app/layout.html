@@ -27,15 +27,16 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'blast:create' %}">BLAST</a></li>
                     <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'contact' %}">Contact</a></li>
-                    <li><a href="{% url 'blast:create' %}">BLAST</a></li>
-                    <li><a href="{% url 'blast:retrieve' '5df09d8487174e1180e7bb169030aeb0' %}">BLAST RESULT</a></li>
+                    <!--<li><a href="{% url 'blast:create' %}">BLAST</a></li>
+                    <li><a href="{% url 'blast:retrieve' '5df09d8487174e1180e7bb169030aeb0' %}">BLAST RESULT</a></li>-->
                     {% if request.user.is_superuser %}
                     <li><a href="{% url 'admin:index' %}">Admin</a></li>
                     {% endif %}
                 </ul>
-                {% include 'app/loginpartial.html' %}
+                <!--{% include 'app/loginpartial.html' %}-->
             </div>
         </div>
     </div>

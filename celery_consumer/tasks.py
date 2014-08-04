@@ -6,6 +6,7 @@ import json
 import subprocess
 import datetime
 from blast.models import BlastQueryRecord
+from os import path, stat
 import pytz
 
 blast_out_col_name_str = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe'
@@ -46,6 +47,20 @@ def run(msg):
         if ext == '.html':
             args.append('-html')
         subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE).wait()
+
+    result_status = ''
+    # check running status
+    if not path.isfile(file_prefix + '.asn'):
+        result_status = 'NO_ASN'
+    elif stat(file_prefix + '.asn')[6] == 0:
+        result_status = 'ASN_EMPTY'
+    elif not path.isfile(file_prefix + '.csv'):
+        result_status = 'NO_CSV'
+    elif stat(file_prefix + '.csv')[6] == 0:
+        result_status = 'CSV_EMPTY'
+    else:
+        result_status = 'SUCCESS'
+    BlastQueryRecord.objects.filter(task_id=task_id).update(result_status=result_status)
 
     # update job finish time
     BlastQueryRecord.objects.filter(task_id=task_id).update(result_date=datetime.datetime.utcnow().replace(tzinfo=pytz.utc))

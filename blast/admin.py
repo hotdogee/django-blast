@@ -4,10 +4,10 @@ from django.forms import ModelForm
 from suit.widgets import AutosizedTextarea
 
 class BlastQueryRecordAdmin(admin.ModelAdmin):
-    list_display = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date')
-    fields = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date')
+    list_display = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status')
+    fields = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status')
     readonly_fields = ('enqueue_date',)
-    list_filter = ('enqueue_date', 'dequeue_date', 'result_date')
+    list_filter = ('enqueue_date', 'dequeue_date', 'result_date', 'result_status')
     search_fields = ('task_id',)
     ordering = ('-enqueue_date',) # descending
 admin.site.register(BlastQueryRecord, BlastQueryRecordAdmin)
