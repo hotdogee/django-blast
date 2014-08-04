@@ -494,6 +494,7 @@
     <Content Include="blast\static\blast\css\images\ui-icons_ef8c08_256x240.png" />
     <Content Include="blast\static\blast\css\images\ui-icons_ffd27a_256x240.png" />
     <Content Include="blast\static\blast\css\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="blast\static\blast\css\organism-admin.css" />
     <Content Include="blast\static\blast\dataTables\css\dataTables.bootstrap.css" />
     <Content Include="blast\static\blast\dataTables\css\dataTables.colReorder.css" />
     <Content Include="blast\static\blast\dataTables\css\dataTables.colReorder.min.css" />
@@ -573,6 +574,8 @@
     <Content Include="blast\static\blast\scripts\jquery-ui.js" />
     <Content Include="blast\static\blast\css\jquery-ui.min.css" />
     <Content Include="blast\static\blast\scripts\jquery-ui.min.js" />
+    <Content Include="blast\static\blast\scripts\jquery.autosize.js" />
+    <Content Include="blast\static\blast\scripts\jquery.autosize.min.js" />
     <Content Include="blast\static\blast\scripts\jquery.dataTables.yadcf.js" />
     <Content Include="blast\static\blast\scripts\jquery.hoverIntent.minified.js" />
     <Content Include="blast\static\blast\scripts\organism-admin.js" />

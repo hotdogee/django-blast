@@ -34,6 +34,9 @@ class OrganismAdmin(admin.ModelAdmin):
     #    }),
     #)
     class Media:
+        css = {
+            'all': ('blast/css/organism-admin.css',)
+        }
         js = ('blast/scripts/organism-admin.js',)
 admin.site.register(Organism, OrganismAdmin)
 
@@ -46,6 +49,6 @@ class SequenceAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Sequence, SequenceAdmin)
 
-class JbrowseInfoAdmin(admin.ModelAdmin):
+class JbrowseSettingAdmin(admin.ModelAdmin):
     pass
-admin.site.register(JbrowseInfo, JbrowseInfoAdmin)
+admin.site.register(JbrowseSetting, JbrowseSettingAdmin)

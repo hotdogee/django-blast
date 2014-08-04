@@ -6,6 +6,9 @@
 *.user
 *.sln.docstates
 
+# Python byte code
+*.pyc
+
 # virtualenv
 env/
 

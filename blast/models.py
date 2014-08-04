@@ -18,9 +18,9 @@ class BlastQueryRecord(models.Model):
 
 class Organism(models.Model):
     display_name = models.CharField(max_length=200, unique=True, help_text='Scientific or common name') # shown to user
-    short_name = models.CharField(max_length=20, unique=True, help_text='This is used in filenames or code') # used in code or filenames
+    short_name = models.CharField(max_length=20, unique=True, help_text='This is used for file names and variable names in code') # used in code or filenames
     description = models.TextField(blank=True) # optional
-    tax_id = models.PositiveIntegerField('NCBI Taxonomy ID', null=True, blank=True, help_text='This is passed in to makeblast') # ncbi tax id
+    tax_id = models.PositiveIntegerField('NCBI Taxonomy ID', null=True, blank=True, help_text='This is passed into makeblast') # ncbi tax id
 
     def __unicode__(self):
         return self.display_name
@@ -67,13 +67,10 @@ class Sequence(models.Model):
     class Meta:
         unique_together = ('blast_db', 'id')
 
-class JbrowseInfo(models.Model):
+class JbrowseSetting(models.Model):
     'Used to link databases to Jbrowse'
-    blast_db = models.ForeignKey(BlastDb) # 
-    url = models.URLField('Jbrowse URL', unique=True)
+    blast_db = models.ForeignKey(BlastDb, verbose_name='reference sequence', unique=True, help_text='The BLAST database used as the reference sequence in Jbrowse') # 
+    url = models.URLField('Jbrowse URL', unique=True, help_text='The URL to Jbrowse using this reference')
 
     def __unicode__(self):
         return self.url
-
-    class Meta:
-        verbose_name = 'Jbrowse information'

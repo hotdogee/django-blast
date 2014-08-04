@@ -167,7 +167,7 @@ SUIT_CONFIG = {
             {'model': 'blastdb'},
             {'model': 'organism'},
             {'model': 'blastdbtype'},
-            {'model': 'jbrowseinfo'},
+            {'model': 'jbrowsesetting'},
             {'model': 'sequence'},
         )},
         {'app': 'auth', 'label': 'Authorization', 'icon':'icon-lock', 'models': ('user', 'group')},
