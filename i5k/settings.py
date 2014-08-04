@@ -4,6 +4,7 @@ PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 ALLOWED_HOSTS = (
     'localhost',
@@ -131,7 +132,7 @@ INSTALLED_APPS = (
     'blast',
     'celery_consumer',
     # Uncomment the next line to enable the admin:
-    'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
+    #'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
@@ -170,7 +171,8 @@ SUIT_CONFIG = {
             {'model': 'jbrowsesetting'},
             {'model': 'sequence'},
         )},
-        {'app': 'auth', 'label': 'Authorization', 'icon':'icon-lock', 'models': ('user', 'group')},
+        'auth',
+        #{'app': 'auth', 'label': 'Authorization', 'icon':'icon-lock', 'models': ('user', 'group')},
         #{'label': 'Support', 'icon':'icon-question-sign', 'url': '/support/'},
     ),
 

@@ -1,0 +1,209 @@
+[
+{
+  "fields": {
+    "display_name": "Anoplophora glabripennis",
+    "description": "The Asian long-horned beetle (Anoplophora glabripennis), also known as the starry sky, sky beetle, or ALB, is a species native to eastern China, Japan, and Korea. This species has now been accidentally introduced into the United States, where it was first discovered in 1996, as well as Canada, Trinidad, and several countries in Europe, including Austria, France, Germany, Italy, and the UK. This beetle is believed to have been spread from Asia in solid wood packaging material.\r\n",
+    "short_name": "anogla",
+    "tax_id": 217634
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Athalia rosae",
+    "description": "The turnip sawfly Athalia rosae is a typical sawfly with dark green or blackish 18\u201325\u00a0 mm long larvae that feed on plants of the brassica family, and can sometimes be a pest. It winters below the ground, emerging in early summer as a 7\u20138\u00a0mm adult with a mainly orange body and a black head. The adult feeds on nectar. The Turnip Sawfly was found to result in diploid males and females after sister-brother matings. This differs from normal haplodiploid hymenoptera and after a further cross causing triploid males, resulted in evidence that sex determination is controlled by a single loci.  The sawflies have been found to sequester glucosinolates like many insects in larval stages. Removal of various glucosinolates has been shown to reduce sensitivity to host plants in later adult stages. The fact that glucosinolates being removed causes reduced sensitivity to future possible host plants has been used to argue that these chemicals are important in specific larval patterning to future host plant options.  Due to no current primitive Hymenoptera, the Turnip Sawfly is being worked on for genome sequencing. This effort will add to the planned i5K, the effort to sequence 5,000 insect genomes in 5 years. Proposed time line for an annotated genome is Fall of 2013. ",
+    "short_name": "athros",
+    "tax_id": 37344
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Ceratitis capitata",
+    "description": "Ceratitis capitata, the Mediterranean fruit fly, or medfly for short, is a species of fruit fly capable of causing extensive damage to a wide range of fruit crops. It is native to the Mediterranean area, but has spread invasively to many parts of the world, including Australasia and North and South America.\r\n",
+    "short_name": "cercap",
+    "tax_id": 7213
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Cimex lectularius",
+    "description": "Bed bugs, bed-bugs, or bedbugs  are parasitic insects of the cimicid family that feed exclusively on blood. Cimex lectularius, the common bed bug, is the best known as it prefers to feed on human blood although other Cimex species are specialized to other animals, e.g., bat bugs, Cimex pipistrelli (Europe), Cimex pilosellus (western US), and Cimex adjunctus (entire eastern US).\r\nThe name of the \"bed bug\" is derived from the preferred habitat of Cimex lectularius: warm houses and especially nearby or inside of beds and bedding or other sleep areas. Bed bugs are mainly active at night, but are not exclusively nocturnal. They usually feed on their hosts without being noticed.\r\nA number of adverse health effects may result from bed bug bites, including skin rashes, psychological effects, and allergic symptoms. They are not known to transmit any pathogens as disease vectors. Certain signs and symptoms suggest the presence of bed bugs; finding the insects confirms the diagnosis.\r\nBed bugs have been known as human parasites for thousands of years. At a point in the early 1940s, they were mostly eradicated in the developed world, but have increased in prevalence since 1995, likely due to pesticide resistance. Because infestation of human habitats has been on the increase, bed bug bites and related conditions have been on the rise as well.",
+    "short_name": "cimlec",
+    "tax_id": 79782
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Diaphorina citri",
+    "description": "The Asian citrus psyllid, Diaphorina citri, is a sap-sucking, hemipteran bug in the family Psyllidae. It is an important pest of citrus, as it is one of only two confirmed vectors of the serious citrus disease, Huanglongbing or greening disease. It is widely distributed in southern Asia and has spread to other citrus growing regions.\r\n",
+    "short_name": "diacit",
+    "tax_id": 121845
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Drosophila biarmipes",
+    "description": "",
+    "short_name": "drobia",
+    "tax_id": 125945
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Drosophila bipectinata",
+    "description": "",
+    "short_name": "drobip",
+    "tax_id": 42026
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Drosophila elegans",
+    "description": "",
+    "short_name": "droele",
+    "tax_id": 30023
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Drosophila eugracilis",
+    "description": "",
+    "short_name": "droeug",
+    "tax_id": 29029
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Drosophila ficusphila",
+    "description": "",
+    "short_name": "drofic",
+    "tax_id": 30025
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Drosophila kikkawai",
+    "description": "",
+    "short_name": "drokik",
+    "tax_id": 30033
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Drosophila rhopaloa",
+    "description": "",
+    "short_name": "drorho",
+    "tax_id": 1041015
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Drosophila takahashii",
+    "description": "",
+    "short_name": "drotak",
+    "tax_id": 29030
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Ephemera danica",
+    "description": "Ephemera danica is a species of mayfly in the genus Ephemera. The common name \"green drake\" is used in some parts of the British Isles for this species.\r\n",
+    "short_name": "ephdan",
+    "tax_id": 1049336
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Eurytemora affinis",
+    "description": "",
+    "short_name": "euraff",
+    "tax_id": 88015
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Frankliniella occidentalis",
+    "description": "The western flower thrips [Frankliniella occidentalis (Pergande)] is an important pest insect in agriculture. This species of thrips is native to the Southwestern United States but has spread to other continents, including Europe, Australia (where it was identified in May 1993), and South America via transport of infested plant material. It has been documented to feed on over 500 different species of host plants, including a large number of fruit, vegetable, and ornamental crops. The adult male is about 1 mm long; the female is slightly larger, about 1.4 mm in length. Most western flower thrips are female and reproduce by arrhenotokous parthenogenesis; i.e. females can produce males from unfertilized eggs, but females arise only from fertilized eggs. Males are rare, and are always pale yellow, while females vary in color, often by season, from red to yellow to dark brown. Each adult is elongated and thin, with two pairs of long wings. The eggs are oval or kidney-shaped, white, and about 0.2 mm long. The nymph is yellowish in color with red eyes.\r\nThe lifecycle of the western flower thrips varies in length due to temperature, with the adult living from two to five or more weeks, and the nymph stage lasting from five to 20 days. Each female may lay 40 to over 100 eggs in the tissues of the plant, often in the flower, but also in the fruit or foliage. The newly hatched nymph feeds on the plant for two of its instars, then falls off the plant to complete its other two instar stages. The insect damages the plant in several ways. The major damage is caused by the adult ovipositing in the plant tissue. The plant is also injured by feeding, which leaves holes and areas of silvery discoloration when the plant reacts to the insect's saliva. Nymphs feed heavily on new fruit just beginning to develop from the flower. The western flower thrips is also the major vector of tomato spotted wilt virus, a serious plant disease.\r\nWestern flower thrips are a year-round pest, but is less destructive during wet weather. Damage can be reduced by growing barriers of nonhost plants around crops and by eliminating reservoir plants, plants to which the thrips are especially attracted, such as jimson weed. The thrips' natural enemies include pirate bugs of genus Orius. Other agents show promise as biological pest control, including the fungus Metarhizium anisopliae.\r\nFlower-feeding thrips are routinely attracted to bright floral colors, especially white, blue, and yellow, and will land and attempt to feed. Some flower thrips will \"bite\" humans wearing clothing with such bright colors, though no species feed on blood; such biting does not result in any known disease transmission, but skin irritations are known to occur.",
+    "short_name": "fraocc",
+    "tax_id": 133901
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Ladona fulva",
+    "description": "Libellula is a genus of dragonflies, commonly called Skimmers, in the family Libellulidae, distributed throughout the temperate zone of the Northern Hemisphere. Most species are found in the United States, where they are the best-known large dragonflies, often seen flying over freshwater ponds in summer. Many have showy wing patterns.\r\nThe taxa Ladona (Corporals) and Plathemis (Whitetails) have been considered as synonyms of Libellula, subgenera, or separate genera by different authorities. Recent phylogenetic analysis has supported their status as either subgenera or full genera.\r\n",
+    "short_name": "ladful",
+    "tax_id": 123851
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Leptinotarsa decemlineata",
+    "description": "The Colorado potato beetle (Leptinotarsa decemlineata), also known as the Colorado beetle, the ten-striped spearman, the ten-lined potato beetle or the potato bug, is an important pest of potato crops. It is approximately 10 millimetres (0.39\u00a0in) long, with a bright yellow/orange body and five bold brown stripes along the length of each of its elytra. It can easily be confused with its close cousin and look-alike, the false potato beetle.\r\n",
+    "short_name": "lepdec",
+    "tax_id": 7539
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Oncopeltus fasciatus",
+    "description": "The milkweed bug, Oncopeltus fasciatus, is a medium\u2013sized hemipteran (true bug) of the family Lygaeidae. It feeds mainly on grains, particularly those of the milkweed. Like all hemiptera, it feeds through a long mouthpart known as a rostrum. O. fasciatus is commonly used in science due to ease of rearing and ease of dissection.\r\n",
+    "short_name": "oncfas",
+    "tax_id": 7536
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Orussus abietinus",
+    "description": "The Orussidae or the parasitic wood wasps represent a small family of sawflies (\"Symphyta\"). Currently, about 85 extant and four fossil species are known. They take a key position in phylogenetic analyses of Hymenoptera, because they form the sister taxon of the megadiverse apocritan wasps, and the common ancestor of Orussidae + Apocrita invented parasitism for the first time in course of the evolution of the Hymenoptera.\r\n",
+    "short_name": "oruabi",
+    "tax_id": 222816
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Pachypsylla venusta",
+    "description": "Pachypsylla is a genus of psyllids. Each of its four species lay eggs on the leaves of the Celtis occidentalis tree. Upon hatching, the young psyllids become encased in a \"gall\" which the young leaf parts grow in response to the infestation. Species of Pachypsylla include Pachypsylla celtidisgemma (hackberry bud gall maker), Pachypsylla celtidismamma (hackberry nipplegall maker), Pachypsylla celtidisvesiculum (hackberry blistergall psyllid) and Pachypsylla venusta (petiolegall psyllid).",
+    "short_name": "pacven",
+    "tax_id": 38123
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Parasteatoda tepidariorum",
+    "description": "The common house spider (Parasteatoda tepidariorum), referred to internationally as the American house spider, is a spider species of the genus Parasteatoda that is mainly indigenous to the New World, with P. tepidariorum australis (common gray house spider) also encountered in some parts of Myanmar and Pakistan. American house spiders are synanthropic and build their tangled webs in or near human dwellings, often in secluded areas such as between loose walls and behind open doors and attic windows. Their prey mechanism is similar to that of the other cobweb spiders: the spider follows disturbances transmitted along the web to entangle and then paralyze its prey, which usually consists of household insects and other invertebrates (often considered as pests).\r\n",
+    "short_name": "partep",
+    "tax_id": 114398
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Trichogramma pretiosum",
+    "description": "Trichogramma are minute polyphagous wasps, commonly known as stingless wasps, that are endoparasitoids of insect eggs.  Endoparasitoids lay their eggs in eggs or larvae of other species. Currently in the world there is an estimated 50 million animal species with 1.7 million having been described. Of these, seventy-five per cent are believed to be insects. Trichogramma represent around 80 genera from the Trichogrammatidae family with over 800 species worldwide. \r\nMembers of the Trichogrammatidae family range in size from 0.2 to 1.5 mm. Key means of dispersal include walking and short jumps.  The adults require sugar as an energy source obtained from nectars, honeydew, plant sap and sugars leached through the phloem. They occur naturally in a variety of habitats across the world and have the ability to parasitize numerous host species. Their main hosts are eggs of Lepidoptera and other species such as Hymenoptera, Neuroptera, Diptera, Coleoptera and Hemiptera. \r\nAlthough there are several egg parasitoids commonly used throughout the world, Trichogramma have been the most extensively studied.  There have been more than a thousand papers published on Trichogramma and they are the most used biological control agents in the world. \r\n",
+    "short_name": "tripre",
+    "tax_id": 7493
+  },
+  "model": "blast.organism"
+}
+]

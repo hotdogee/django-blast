@@ -64,8 +64,8 @@ class BlastDb(models.Model):
     type = models.ForeignKey(BlastDbType) # 
     description = models.TextField(blank=True) # shown in blast db selection ui
     title = models.CharField(max_length=200, unique=True, help_text='This is passed into makeblast -title') # makeblastdb -title
-    fasta_file = models.FileField(upload_to='blastdb', unique=True) # upload file
-    is_shown = models.BooleanField(help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
+    fasta_file = models.FileField(upload_to='blastdb') # upload file
+    is_shown = models.BooleanField(default=None, help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
     #sequence_count = models.PositiveIntegerField(null=True, blank=True) # number of sequences in this fasta
     
     objects = OrganismManager()
