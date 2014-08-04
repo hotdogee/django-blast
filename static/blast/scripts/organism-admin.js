@@ -48,7 +48,7 @@
                     //console.log(data['query']['pages']);
                     var keys = Object.keys(data['query']['pages']);
                     if (keys.length > 0) {
-                        $('#id_description').val($(data['query']['pages'][keys[0]]['extract']).text());
+                        $('#id_description').val($(data['query']['pages'][keys[0]]['extract']).text()).trigger('autosize.resize');;
                         // data['query']['search'][keys(data['query']['pages'])[0]]['extract']
                     }
                 });
