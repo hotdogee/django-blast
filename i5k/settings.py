@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'blast',
     'celery_consumer',
     # Uncomment the next line to enable the admin:
-    #'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
+    'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
@@ -160,7 +160,7 @@ SUIT_CONFIG = {
     #    'blast': 'icon-leaf',
     #    'auth': 'icon-lock',
     #},
-    # 'MENU_OPEN_FIRST_CHILD': True, # Default True
+    'MENU_OPEN_FIRST_CHILD': False, # Default True
     'MENU_EXCLUDE': (),
     'MENU': (
         {'app': 'blast', 'label': 'BLAST', 'icon':'icon-leaf', 'models': (
@@ -171,8 +171,11 @@ SUIT_CONFIG = {
             {'model': 'jbrowsesetting'},
             {'model': 'sequence'},
         )},
-        'auth',
-        #{'app': 'auth', 'label': 'Authorization', 'icon':'icon-lock', 'models': ('user', 'group')},
+        #'auth',
+        {'app': 'auth', 'label': 'Auth', 'icon':'icon-lock', 'models': (
+            {'model': 'user'},
+            {'model': 'group'},
+        )},
         #{'label': 'Support', 'icon':'icon-question-sign', 'url': '/support/'},
     ),
 
