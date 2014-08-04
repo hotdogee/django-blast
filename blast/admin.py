@@ -12,8 +12,14 @@ class BlastQueryRecordAdmin(admin.ModelAdmin):
     ordering = ('-enqueue_date',) # descending
 admin.site.register(BlastQueryRecord, BlastQueryRecordAdmin)
 
+class BlastDbForm(ModelForm):
+    class Meta:
+        widgets = {
+            'description': AutosizedTextarea(attrs={'rows': 10, 'class': 'input-xxlarge'}),
+        }
+
 class BlastDbAdmin(admin.ModelAdmin):
-    pass
+    form = BlastDbForm
 admin.site.register(BlastDb, BlastDbAdmin)
 
 class OrganismForm(ModelForm):
@@ -23,7 +29,6 @@ class OrganismForm(ModelForm):
         }
 
 class OrganismAdmin(admin.ModelAdmin):
-    form = OrganismForm
     #fieldsets = (
     #    (None, {
     #        'fields': ('display_name', 'short_name', 'tax_id')
@@ -33,6 +38,7 @@ class OrganismAdmin(admin.ModelAdmin):
     #        'fields': ('description',)
     #    }),
     #)
+    form = OrganismForm
     class Media:
         css = {
             'all': ('blast/css/organism-admin.css',)
@@ -45,8 +51,14 @@ class BlastDbTypeAdmin(admin.ModelAdmin):
     pass
 admin.site.register(BlastDbType, BlastDbTypeAdmin)
 
+class SequenceForm(ModelForm):
+    class Meta:
+        widgets = {
+            'sequence': AutosizedTextarea(attrs={'rows': 10, 'class': 'input-xxlarge'}),
+        }
+
 class SequenceAdmin(admin.ModelAdmin):
-    pass
+    form = SequenceForm
 admin.site.register(Sequence, SequenceAdmin)
 
 class JbrowseSettingAdmin(admin.ModelAdmin):

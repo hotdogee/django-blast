@@ -14,7 +14,7 @@ class BlastQueryRecord(models.Model):
         return reverse('blast:retrieve', args=[str(self.task_id)])
 
     class Meta:
-        verbose_name = 'blast result'
+        verbose_name = 'BLAST result'
 
 class Organism(models.Model):
     display_name = models.CharField(max_length=200, unique=True, help_text='Scientific or common name') # shown to user
@@ -35,14 +35,14 @@ class BlastDbType(models.Model):
         return u'%s - %s' % (self.get_molecule_type_display(), self.dataset_type)
 
     class Meta:
-        verbose_name = 'blast database type'
+        verbose_name = 'BLAST database type'
         unique_together = ('molecule_type', 'dataset_type')
 
 class BlastDb(models.Model):
     organism = models.ForeignKey(Organism) # 
     type = models.ForeignKey(BlastDbType) # 
     description = models.TextField(blank=True) # shown in blast db selection ui
-    title = models.CharField(max_length=200, unique=True) # makeblastdb -title
+    title = models.CharField(max_length=200, unique=True, help_text='This is passed into makeblast -title') # makeblastdb -title
     fasta_file = models.FileField(upload_to='blastdb') # upload file
     is_shown = models.BooleanField(help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
     #sequence_count = models.PositiveIntegerField(null=True, blank=True) # number of sequences in this fasta
@@ -51,11 +51,12 @@ class BlastDb(models.Model):
         return self.fasta_file
 
     class Meta:
-        verbose_name = 'blast database'
+        verbose_name = 'BLAST database'
 
 class Sequence(models.Model):
+    'Contents of this table should be automatically generated'
     key = models.AutoField(primary_key=True)
-    blast_db = models.ForeignKey(BlastDb) # 
+    blast_db = models.ForeignKey(BlastDb, verbose_name='BLAST DB') # 
     id = models.CharField(max_length=100) # 
     header = models.CharField(max_length=400) # 
     length = models.PositiveIntegerField() # 
@@ -69,7 +70,7 @@ class Sequence(models.Model):
 
 class JbrowseSetting(models.Model):
     'Used to link databases to Jbrowse'
-    blast_db = models.ForeignKey(BlastDb, verbose_name='reference sequence', unique=True, help_text='The BLAST database used as the reference sequence in Jbrowse') # 
+    blast_db = models.ForeignKey(BlastDb, verbose_name='reference', unique=True, help_text='The BLAST database used as the reference in Jbrowse') # 
     url = models.URLField('Jbrowse URL', unique=True, help_text='The URL to Jbrowse using this reference')
 
     def __unicode__(self):
