@@ -214,7 +214,7 @@ class Menu(object):
 
     def find_native_app(self, app_name):
         for app in self.app_list:
-            if app['name'].lower() == app_name:
+            if app['app_label'].lower() == app_name:
                 return app
 
     def convert_native_app(self, native_app, app_name):
