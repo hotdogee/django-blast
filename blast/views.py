@@ -36,10 +36,7 @@ blast_out_col_names = blast_out_col_name_str.split()
 def create(request):
     #return HttpResponse("BLAST Page: create.")
     if request.method == 'GET':
-        return render(
-            request,
-            'blast/main.html',
-        )
+        return render(request, 'blast/main.html', {'title': 'BLAST Query',})
     elif request.method == 'POST':
         # setup file paths
         task_id = uuid4().hex # TODO: Create from hash of input to check for duplicate inputs
@@ -62,14 +59,14 @@ def create(request):
             with open(query_filename, 'wb+') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
-            return render(request, 'blast/invalid_query.html')
+            return render(request, 'blast/invalid_query.html', {'title': 'Invalid Query',})
 
         chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can access the file
 
         # build blast command
         db_list = ' '.join(request.POST.getlist('db-name'))
         if not db_list:
-            return render(request, 'blast/invalid_query.html')
+            return render(request, 'blast/invalid_query.html', {'title': 'Invalid Query',})
         
         # check if program is in list for security
         if request.POST['program'] in ['blastn', 'tblastn', 'tblastx', 'blastp', 'blastx']:
@@ -114,6 +111,7 @@ def retrieve(request, task_id='1'):
             if r.result_status != 'SUCCESS':
                 return render(request, 'blast/results_not_existed.html', 
                 {
+                    'title': 'No Hits Found',
                     'isNoHits': True,
                     'isExpired': False,
                 })
@@ -150,6 +148,7 @@ def retrieve(request, task_id='1'):
             if r.result_date and (r.result_date.replace(tzinfo=None) < (datetime.utcnow()+ timedelta(days=-7))):
                 isExpired = True
             return render(request, 'blast/results_not_existed.html', {
+                'title': 'Query Submitted',
                 'task_id': task_id,
                 'isExpired': isExpired,
                 'enqueue_date': enqueue_date,

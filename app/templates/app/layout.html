@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} - i5k - BLAST</title>
+    <title>{{ title }} | i5k - BLAST</title>
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
@@ -22,11 +22,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand">i5k - BLAST</a>
+                <a href="./" class="navbar-brand">i5k - BLAST</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <!--<li><a href="{% url 'home' %}">Home</a></li>-->
                     <li><a href="{% url 'blast:create' %}">BLAST</a></li>
                     <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'contact' %}">Contact</a></li>
@@ -35,6 +35,7 @@
                     {% if request.user.is_superuser %}
                     <li><a href="{% url 'admin:index' %}">Admin</a></li>
                     {% endif %}
+{% block navbar %}{% endblock %}
                 </ul>
                 <!--{% include 'app/loginpartial.html' %}-->
             </div>

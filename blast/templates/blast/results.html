@@ -2,6 +2,10 @@
 
 {% load staticfiles %}
 
+{% block navbar%}
+    <li><a href="./">[ Link of this page ]</a></li>
+{% endblock%}
+
 {% block head %}
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<script type="text/javascript" src="{% static 'blast/components/platform/platform.js' %}"></script>
