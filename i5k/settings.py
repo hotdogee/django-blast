@@ -133,7 +133,6 @@ INSTALLED_APPS = (
     'celery_consumer',
     # Uncomment the next line to enable the admin:
     'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
-    'grappelli',
     'filebrowser',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -145,7 +144,6 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
 )
 
-GRAPPELLI_ADMIN_TITLE = 'i5k Admin'
 FILEBROWSER_DIRECTORY = ''
 FILEBROWSER_VERSIONS_BASEDIR = '_versions/'
 FILEBROWSER_EXTENSIONS = {

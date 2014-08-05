@@ -6,7 +6,7 @@ from app.forms import BootstrapAuthenticationForm
 from django.contrib import admin
 from django.contrib.sites.models import Site
 admin.autodiscover()
-admin.site.unregister(Site)
+#admin.site.unregister(Site)
 
 from filebrowser.sites import site
 
@@ -35,7 +35,6 @@ urlpatterns = patterns('',
         name='logout'),
     
     url(r'^admin/filebrowser/', include(site.urls)),
-    url(r'^grappelli/', include('grappelli.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
 
