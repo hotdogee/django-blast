@@ -9,7 +9,6 @@ from os import path, makedirs, chmod, stat
 from django.conf import settings
 from sys import platform
 from blast.models import BlastQueryRecord
-from rabbitmq import receiver
 from datetime import datetime, timedelta
 from pytz import timezone
 from celery_consumer import tasks
@@ -127,16 +126,13 @@ def retrieve(request, task_id='1'):
                 results_detail = f.read()
             return render(
                 request,
-                'blast/results.html',
-                RequestContext(request,
-                {
+                'blast/results.html', {
                     'title': 'BLAST Result',
                     'results_col_names': json.dumps(blast_out_col_names),
                     'results_data': json.dumps(results_data),
                     'results_detail': results_detail,
                     'task_id': task_id,
                 })
-            )
         else:
             enqueue_date = r.enqueue_date.astimezone(timezone('US/Eastern')).strftime('%d %b %Y %X %Z')
             if r.dequeue_date:

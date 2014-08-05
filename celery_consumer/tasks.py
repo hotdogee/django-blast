@@ -26,7 +26,8 @@ def run(msg):
     example msg:
     task_id=3ee04cec89b54d33ba557335b7b7134darg=["/usr/local/i5k/blast/bin_linux/blastn", "-query", "/usr/local/i5k/media/3ee04cec89b54d33ba557335b7b7134d/3ee04cec89b54d33ba557335b7b7134d.in", "-db", "Agla_Btl03082013.genome_new_ids.fa Ccap01172013-genome_new_ids.fa", "-outfmt", "11", "-out", "/usr/local/i5k/media/3ee04cec89b54d33ba557335b7b7134d/3ee04cec89b54d33ba557335b7b7134d.asn", "-num_threads", "6"]fmt=/usr/local/i5k/blast/bin_linux/blast_formatter
     """
-
+    import django
+    django.setup()
     task_id = msg[(msg.find("task_id=")+8):(msg.find("arg="))]
     task_arg = msg[(msg.find("arg=")+4):(msg.find("fmt="))]
     blast_formatter_path = msg[(msg.find("fmt=")+4):]
