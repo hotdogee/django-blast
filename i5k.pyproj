@@ -91,6 +91,7 @@
     <Compile Include="suit\watch_less.py" />
     <Compile Include="suit\widgets.py" />
     <Compile Include="suit\__init__.py" />
+    <Compile Include="util\copy_dataset_list_files.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
@@ -275,6 +276,7 @@
     <Folder Include="rabbitmq\" />
     <Folder Include="templates\admin\" />
     <Folder Include="templates\filebrowser\" />
+    <Folder Include="util\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\static\app\scripts\jquery.gh-readme.js" />
@@ -1065,6 +1067,7 @@
     <Content Include="suit\templates\suit\menu.html" />
     <Content Include="templates\admin\base_site.html" />
     <Content Include="templates\filebrowser\custom_field.html" />
+    <Content Include="util\dataset_list.tsv" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.mht">

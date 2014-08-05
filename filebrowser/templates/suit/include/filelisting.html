@@ -54,15 +54,15 @@
 
         <!-- FILEICON -->
         <td>
-            <img src="{{ settings_var.URL_FILEBROWSER_MEDIA }}img/filebrowser_type_{{ file.filetype|lower }}.gif" />
+            <img src="{{ settings_var.URL_FILEBROWSER_MEDIA }}img/filebrowser_type_{{ file.filetype|lower }}.gif" title="{{ file.filetype }}" />
         </td>
         
         <!-- THUMBNAIL -->
-        <td class="fb_thumbnail">
+        <!--td class="fb_thumbnail">
             {% if file.filetype == "Image" %}
                 <a href="{{ file.url_full }}" class="fb_viewlink"><img src="{% version file.path settings_var.ADMIN_THUMBNAIL %}" title="{% trans 'View Image' %}" /></a>
             {% endif %}
-        </td>
+        </td-->
         
         <!-- FILENAME/DIMENSIONS -->
         {% if file.filetype == "Folder" %}
