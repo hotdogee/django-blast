@@ -132,6 +132,7 @@ def retrieve(request, task_id='1'):
                 'blast/results.html',
                 RequestContext(request,
                 {
+                    'title': 'BLAST Result',
                     'results_col_names': json.dumps(blast_out_col_names),
                     'results_data': json.dumps(results_data),
                     'results_detail': results_detail,

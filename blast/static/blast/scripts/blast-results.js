@@ -2,6 +2,7 @@
     //////////////////
     // Prepare Data //
     //////////////////
+    $('body').attr('fullbleed', ''); // To fit polymer's requirement for <body>
     // convert arrays to objects
     //var results_db = _.map(results_data, function (row) { return _.object(results_col_names, row); });
     var col_idx = _.object(results_col_names, _.range(results_col_names.length));
