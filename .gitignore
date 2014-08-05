@@ -5,6 +5,7 @@
 *.suo
 *.user
 *.sln.docstates
+media/blastdb/*
 
 # Python byte code
 *.pyc

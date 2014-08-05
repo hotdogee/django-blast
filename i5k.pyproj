@@ -77,9 +77,6 @@
     <Compile Include="i5k\settings.py" />
     <Compile Include="i5k\urls.py" />
     <Compile Include="i5k\wsgi.py" />
-    <Compile Include="rabbitmq\consumer.py" />
-    <Compile Include="rabbitmq\receiver.py" />
-    <Compile Include="rabbitmq\__init__.py" />
     <Compile Include="suit\admin.py" />
     <Compile Include="suit\config.py" />
     <Compile Include="suit\models.py" />
@@ -273,7 +270,6 @@
     <Folder Include="suit\templates\suit\includes\" />
     <Folder Include="suit\templatetags\" />
     <Folder Include="templates\" />
-    <Folder Include="rabbitmq\" />
     <Folder Include="templates\admin\" />
     <Folder Include="templates\filebrowser\" />
     <Folder Include="util\" />
@@ -913,7 +909,6 @@
     <Content Include="filebrowser\templates\suit\rename.html" />
     <Content Include="filebrowser\templates\suit\upload.html" />
     <Content Include="filebrowser\templates\suit\versions.html" />
-    <Content Include="rabbitmq\clear_files.sh" />
     <Content Include="README.md" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
