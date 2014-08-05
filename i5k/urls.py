@@ -8,6 +8,8 @@ from django.contrib.sites.models import Site
 admin.autodiscover()
 admin.site.unregister(Site)
 
+#from filebrowser.sites import site
+
 urlpatterns = patterns('',
     # Examples:
     url(r'^home$', 'app.views.home', name='home'),
@@ -31,7 +33,8 @@ urlpatterns = patterns('',
             'next_page': './',
         },
         name='logout'),
-
+    
+    url(r'^admin/filebrowser/', include('filebrowser.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
 

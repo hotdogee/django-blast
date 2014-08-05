@@ -20,6 +20,7 @@ class BlastDbForm(ModelForm):
 
 class BlastDbAdmin(admin.ModelAdmin):
     form = BlastDbForm
+    list_display = ('fasta_file', 'organism', 'type', 'description', 'title', 'is_shown')
 admin.site.register(BlastDb, BlastDbAdmin)
 
 class OrganismForm(ModelForm):
@@ -29,15 +30,6 @@ class OrganismForm(ModelForm):
         }
 
 class OrganismAdmin(admin.ModelAdmin):
-    #fieldsets = (
-    #    (None, {
-    #        'fields': ('display_name', 'short_name', 'tax_id')
-    #    }),
-    #    ('Description', {
-    #        'classes': ('full-width',),
-    #        'fields': ('description',)
-    #    }),
-    #)
     form = OrganismForm
     list_display = ('display_name', 'short_name', 'tax_id', 'short_description')
 
@@ -67,8 +59,9 @@ class SequenceForm(ModelForm):
 
 class SequenceAdmin(admin.ModelAdmin):
     form = SequenceForm
+    list_display = ('id', 'blast_db', 'length')
 admin.site.register(Sequence, SequenceAdmin)
 
 class JbrowseSettingAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('blast_db', 'url')
 admin.site.register(JbrowseSetting, JbrowseSettingAdmin)
