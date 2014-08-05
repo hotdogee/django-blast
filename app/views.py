@@ -37,7 +37,7 @@ def about(request):
         'app/about.html',
         RequestContext(request,
         {
-            'title': 'About',
+            'title': 'About i5k - BLAST',
             'message': 'django-blast',
             'year': datetime.now().year,
         })
