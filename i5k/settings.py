@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'blast',
     'celery_consumer',
     # Uncomment the next line to enable the admin:
-    #'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
+    'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
     'grappelli',
     'filebrowser',
     'django.contrib.admin',
@@ -145,20 +145,33 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
 )
 
-FILEBROWSER_DIRECTORY = 'uploads/'
+GRAPPELLI_ADMIN_TITLE = 'i5k Admin'
+FILEBROWSER_DIRECTORY = ''
 FILEBROWSER_VERSIONS_BASEDIR = '_versions/'
 FILEBROWSER_EXTENSIONS = {
     'Folder': [''],
     'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff'],
     'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv', '.docx'],
     'Video': ['.mov', '.wmv', '.mpeg', '.mpg', '.avi', '.rm'],
-    'Audio': ['.mp3', '.mp4', '.wav', '.aiff', '.midi', '.m4p']
+    'Audio': ['.mp3', '.mp4', '.wav', '.aiff', '.midi', '.m4p'],
+    'FASTA': ['.fa', '.faa', '.fna', '.fasta'],
+    'FASTQ': ['.fq', '.fastq'],
+    'SAM': ['.sam', '.bam'],
+    'WIG': ['.wig', '.bw', '.bigwig'],
+    'JSON': ['.json'],
+    'GFF': ['.gff', '.gff3']
 }
 FILEBROWSER_SELECT_FORMATS = {
-    'file': ['Folder','Image','Document','Video','Audio'],
+    'file': ['Folder', 'Image', 'Document', 'Video', 'Audio', 'FASTA', 'FASTQ', 'SAM', 'WIG', 'JSON', 'GFF'],
     'image': ['Image'],
     'document': ['Document'],
     'media': ['Video','Audio'],
+    'FASTA': ['FASTA'],
+    'FASTQ': ['FASTQ'],
+    'SAM': ['SAM'],
+    'WIG': ['WIG'],
+    'JSON': ['JSON'],
+    'GFF': ['GFF'],
 }
 FILEBROWSER_VERSIONS = {
     'admin_thumbnail': {'verbose_name': 'Admin Thumbnail', 'width': 60, 'height': 60, 'opts': 'crop'},

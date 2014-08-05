@@ -159,6 +159,7 @@
     <Folder Include="suit\static\suit\bootstrap\img\" />
     <Folder Include="suit\static\suit\bootstrap\js\" />
     <Folder Include="suit\static\suit\css\" />
+    <Folder Include="suit\static\suit\fonts\" />
     <Folder Include="suit\static\suit\img\" />
     <Folder Include="suit\static\suit\js\" />
     <Folder Include="suit\static\suit\less\" />
@@ -188,6 +189,7 @@
     <Folder Include="templates\" />
     <Folder Include="rabbitmq\" />
     <Folder Include="templates\admin\" />
+    <Folder Include="templates\filebrowser\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\static\app\scripts\jquery.gh-readme.js" />
@@ -697,9 +699,15 @@
     <Content Include="suit\static\suit\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="suit\static\suit\bootstrap\js\bootstrap.js" />
     <Content Include="suit\static\suit\bootstrap\js\bootstrap.min.js" />
+    <Content Include="suit\static\suit\css\bootstrap-glyphicon.css" />
+    <Content Include="suit\static\suit\css\bootstrap-glyphicon.min.css" />
     <Content Include="suit\static\suit\css\djangocms.css" />
     <Content Include="suit\static\suit\css\filer.css" />
     <Content Include="suit\static\suit\css\suit.css" />
+    <Content Include="suit\static\suit\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="suit\static\suit\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="suit\static\suit\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="suit\static\suit\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="suit\static\suit\img\ajax-loader.gif" />
     <Content Include="suit\static\suit\img\bg_left_white.gif" />
     <Content Include="suit\static\suit\img\bg_pattern.jpg" />
@@ -803,6 +811,7 @@
     <Content Include="suit\templates\suit\includes\change_form_includes.html" />
     <Content Include="suit\templates\suit\menu.html" />
     <Content Include="templates\admin\base_site.html" />
+    <Content Include="templates\filebrowser\custom_field.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.mht">
