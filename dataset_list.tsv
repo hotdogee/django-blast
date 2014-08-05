@@ -1,0 +1,71 @@
+Anoplophora glabripennis	anogla	Genome Assembly	Agla_Btl03082013.genome_new_ids.fa
+Anoplophora glabripennis	anogla	Transcript	AGLA_new_ids.fna
+Anoplophora glabripennis	anogla	Protein	AGLA_new_ids.faa
+Athalia rosae	athros	Genome Assembly	Aros01112013-genome_new_ids.fa
+Athalia rosae	athros	Transcript	AROS_new_ids.fna
+Athalia rosae	athros	Protein	AROS_new_ids.faa
+Ceratitis capitata	cercap	Genome Assembly	Ccap01172013-genome_new_ids.fa
+Ceratitis capitata JAMg_v1	cercap	Transcript	cercap_JAMG_v1.cds
+Ceratitis capitata JAMg_v1	cercap	Protein	cercap_JAMG_v1.pep
+Ceratitis capitata NCBI RefSeq	cercap	Transcript	Cercap_NCBI_RefSeq.fna
+Ceratitis capitata NCBI RefSeq	cercap	Protein	Cercap_NCBI_RefSeq.faa
+Cimex lectularius	cimlec	Genome Assembly	Clec_Bbug02212013.genome_new_ids.fa
+Cimex lectularius	cimlec	Transcript	CLEC_new_ids.fna
+Cimex lectularius	cimlec	Protein	CLEC_new_ids.faa
+Diaphorina citri	diacit	Genome Assembly	diaci1.1_new_ids.fa
+Diaphorina citri	diacit	Transcript	maker_genes_diaci1.1_transcripts_NALmod_new_ids.fasta
+Diaphorina citri	diacit	Protein	maker_genes_diaci1.1_proteins_NALmod_new_ids.fasta
+Drosophila biarmipes	drobia	Genome Assembly	Dbia02082011-genome.fa
+Drosophila biarmipes	drobia	Transcript	DBIA.fna 
+Drosophila biarmipes	drobia	Protein	DBIA.faa
+Drosophila bipectinata	drobip	Genome Assembly	Dbip02082011-genome.fa
+Drosophila bipectinata	drobip	Transcript	DBIP.fna 
+Drosophila bipectinata	drobip	Protein	DBIP.faa
+Drosophila elegans	droele	Genome Assembly	Dele02082011-genome.fa
+Drosophila elegans	droele	Transcript	DELE.fna
+Drosophila elegans	droele	Protein	DELE.faa
+Drosophila eugracilis	droeug	Genome Assembly	Deug05112011.genome.fa
+Drosophila eugracilis	droeug	Transcript	DEUG.fna
+Drosophila eugracilis	droeug	Protein	DEUG.faa
+Drosophila ficusphila	drofic	Genome Assembly	Dfic02082011-genome.fa
+Drosophila ficusphila	drofic	Transcript	DFIC.fna
+Drosophila ficusphila	drofic	Protein	DFIC.faa
+Drosophila kikkawai	drokik	Genome Assembly	Dkik02082011-genome.fa
+Drosophila kikkawai	drokik	Transcript	DKIK.fna
+Drosophila kikkawai	drokik	Protein	DKIK.faa
+Drosophila rhopaloa	drorho	Genome Assembly	Drho05162011.genome.fa
+Drosophila rhopaloa	drorho	Transcript	DRHO.fna
+Drosophila rhopaloa	drorho	Protein	DRHO.faa
+Drosophila takahashii	drotak	Genome Assembly	Dtak02082011-genome.fa
+Drosophila takahashii	drotak	Transcript	DTAK.fna
+Drosophila takahashii	drotak	Protein	DTAK.faa
+Ephemera danica	drotak	Genome Assembly	Edan07162013.scaffolds_new_ids.fa
+Ephemera danica	drotak	Transcript	EDAN_new_ids.fna
+Ephemera danica	drotak	Protein	EDAN_new_ids.faa
+Eurytemora affinis	euraff	Genome Assembly	Eaff_11172013.genome_new_ids.fa
+Eurytemora affinis	euraff	Transcript	EAFF_new_ids.fna
+Eurytemora affinis	euraff	Protein	EAFF_new_ids.faa
+Frankliniella occidentalis	fraocc	Genome Assembly	Focc_FINAL.scaffolds_new_ids.fa
+Frankliniella occidentalis	fraocc	Transcript	FOCC_new_ids.fna
+Frankliniella occidentalis	fraocc	Protein	FOCC_new_ids.faa
+Ladona fulva	ladful	Genome Assembly	Lful_Scha04012013-genome_new_ids.fa
+Ladona fulva	ladful	Transcript	LFUL_new_ids.fna
+Ladona fulva	ladful	Protein	LFUL_new_ids.faa
+Leptinotarsa decemlineata	lepdec	Genome Assembly	Ldec.genome.10062013_new_ids.fa
+Leptinotarsa decemlineata	lepdec	Transcript	LDEC_new_ids.fna
+Leptinotarsa decemlineata	lepdec	Protein	LDEC_new_ids.faa
+Oncopeltus fasciatus	oncfas	Genome Assembly	Ofas.scaffolds_new_ids.fa
+Oncopeltus fasciatus	oncfas	Transcript	OFAS_new_ids.fna
+Oncopeltus fasciatus	oncfas	Protein	OFAS_new_ids.faa
+Orussus abietinus	oruabi	Genome Assembly	Oabi11242013.genome_new_ids.fa
+Orussus abietinus	oruabi	Transcript	OABI_new_ids.fna
+Orussus abietinus	oruabi	Protein	OABI_new_ids.faa
+Pachypsylla venusta	pacven	Genome Assembly	Pven10162013.scaffolds_new_ids.fa
+Pachypsylla venusta	pacven	Transcript	PVEN_new_ids.fna
+Pachypsylla venusta	pacven	Protein	PVEN_new_ids.faa
+Parasteatoda tepidariorum	partep	Genome Assembly	Ptep01282013.genome_new_ids.fa
+Parasteatoda tepidariorum	partep	Transcript	PTEP_new_ids.fna
+Parasteatoda tepidariorum	partep	Protein	PTEP_new_ids.faa
+Trichogramma pretiosum	tripre	Genome Assembly	Tpre_FINAL.scaffolds_new_ids.fa
+Trichogramma pretiosum	tripre	Transcript	TPRE_new_ids.fna
+Trichogramma pretiosum	tripre	Protein	TPRE_new_ids.faa
