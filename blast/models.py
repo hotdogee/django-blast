@@ -56,8 +56,8 @@ class BlastDbType(models.Model):
         unique_together = ('molecule_type', 'dataset_type')
 
 class BlastDbManager(models.Manager):
-    def get_by_natural_key(self, fasta_file):
-        return self.get(fasta_file=fasta_file)
+    def get_by_natural_key(self, fasta_file_name):
+        return self.get(fasta_file=fasta_file_name)
 
 class BlastDb(models.Model):
     organism = models.ForeignKey(Organism) # 
@@ -70,10 +70,10 @@ class BlastDb(models.Model):
     
     objects = OrganismManager()
     def natural_key(self):
-        return (self.fasta_file)
+        return (self.fasta_file.name)
 
     def __unicode__(self):
-        return self.fasta_file
+        return self.fasta_file.name
 
     class Meta:
         verbose_name = 'BLAST database'
