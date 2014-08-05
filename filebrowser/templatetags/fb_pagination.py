@@ -1,25 +1,31 @@
 # coding: utf-8
-
-# DJANGO IMPORTS
-from django.utils.html import escape
-from django.utils.safestring import mark_safe
 from django.template import Library
 
+from filebrowser.conf import fb_settings
+
 register = Library()
+
 DOT = '.'
 
+def _template():
+    if fb_settings.SUIT_TEMPLATE:
+        path = 'suit/'
+    else:
+        path = 'filebrowser/'
 
-@register.inclusion_tag('filebrowser/include/paginator.html', takes_context=True)
+    return path
+
+@register.inclusion_tag(_template() + 'include/paginator.html', takes_context=True)
 def pagination(context):
     page_num = context['page'].number-1
     paginator = context['p']
-
+    
     if not paginator.num_pages or paginator.num_pages == 1:
         page_range = []
     else:
         ON_EACH_SIDE = 3
         ON_ENDS = 2
-
+        
         # If there are 10 or fewer pages, display links to every page.
         # Otherwise, do some fancy
         if paginator.num_pages <= 10:
@@ -41,10 +47,12 @@ def pagination(context):
                 page_range.extend(range(paginator.num_pages - ON_ENDS, paginator.num_pages))
             else:
                 page_range.extend(range(page_num + 1, paginator.num_pages))
-
+    
     return {
         'page_range': page_range,
         'page_num': page_num,
-        'filelisting': context['filelisting'],
+        'results_var': context['results_var'],
         'query': context['query'],
     }
+
+

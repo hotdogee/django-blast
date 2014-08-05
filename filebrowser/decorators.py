@@ -1,66 +1,29 @@
 # coding: utf-8
 
-# PYTHON IMPORTS
-import os
-
-# DJANGO IMPORTS
-from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
-from django.contrib import messages
-from django.core.exceptions import ImproperlyConfigured
-from django.utils.encoding import smart_text
-
-# FILEBROWSER IMPORTS
-from filebrowser.templatetags.fb_tags import query_helper
+# django imports
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+from django.conf import settings
 
 
-def get_path(path, site=None):
-    "Get path."
-    if path.startswith('.') or os.path.isabs(path) or not site.storage.isdir(os.path.join(site.directory, path)):
-        return None
-    return path
-
-
-def get_file(path, filename, site=None):
-    "Get file (or folder)."
-    converted_path = smart_text(os.path.join(site.directory, path, filename))
-    if not site.storage.isfile(converted_path) and not site.storage.isdir(converted_path):
-        return None
-    return filename
-
-
-def path_exists(site, function):
-    "Check if the given path exists."
-
+def flash_login_required(function):
+    """
+    Decorator to recognize a user  by its session.
+    Used for Flash-Uploading.
+    """
+    
     def decorator(request, *args, **kwargs):
-        if get_path('', site=site) is None:
-            # The storage location does not exist, raise an error to prevent eternal redirecting.
-            raise ImproperlyConfigured, _("Error finding Upload-Folder (site.storage.location + site.directory). Maybe it does not exist?")
-        if get_path(request.GET.get('dir', ''), site=site) is None:
-            msg = _('The requested Folder does not exist.')
-            messages.add_message(request, messages.ERROR, msg)
-            redirect_url = reverse("filebrowser:fb_browse", current_app=site.name) + query_helper(request.GET, "", "dir")
-            return HttpResponseRedirect(redirect_url)
+        try:
+            engine = __import__(settings.SESSION_ENGINE, {}, {}, [''])
+        except:
+            import django.contrib.sessions.backends.db
+            engine = django.contrib.sessions.backends.db
+        session_data = engine.SessionStore(request.POST.get('session_key'))
+        user_id = session_data['_auth_user_id']
+        # will return 404 if the session ID does not resolve to a valid user
+        User = get_user_model()
+        request.user = get_object_or_404(User, pk=user_id)
         return function(request, *args, **kwargs)
     return decorator
 
 
-def file_exists(site, function):
-    "Check if the given file exists."
-
-    def decorator(request, *args, **kwargs):
-        file_path = get_file(request.GET.get('dir', ''), request.GET.get('filename', ''), site=site)
-        if file_path is None:
-            msg = _('The requested File does not exist.')
-            messages.add_message(request, messages.ERROR, msg)
-            redirect_url = reverse("filebrowser:fb_browse", current_app=site.name) + query_helper(request.GET, "", "dir")
-            return HttpResponseRedirect(redirect_url)
-        elif file_path.startswith('/') or file_path.startswith('..'):
-            # prevent path traversal
-            msg = _('You do not have permission to access this file!')
-            messages.add_message(request, messages.ERROR, msg)
-            redirect_url = reverse("filebrowser:fb_browse", current_app=site.name) + query_helper(request.GET, "", "dir")
-            return HttpResponseRedirect(redirect_url)
-        return function(request, *args, **kwargs)
-    return decorator

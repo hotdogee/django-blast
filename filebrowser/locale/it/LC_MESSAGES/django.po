@@ -1,452 +1,356 @@
-# SOME DESCRIPTIVE TITLE.
+# translation of django.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
-# Translators:
-# Stefano <stefano.cicatiello@gmail.com>, 2012
-# Stefano <stefano.cicatiello@gmail.com>, 2012
+#
+# Alberto BOTTARINI <alberto.bottarini@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: django-filebrowser\n"
+"Project-Id-Version: django\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-30 18:48+0100\n"
-"PO-Revision-Date: 2013-12-06 08:13+0000\n"
-"Last-Translator: Patrick Kranzlmueller <patrick@vonautomatisch.at>\n"
-"Language-Team: Italian (http://www.transifex.com/projects/p/django-filebrowser/language/it/)\n"
+"POT-Creation-Date: 2009-02-19 21:24+0000\n"
+"PO-Revision-Date: 2009-02-04 14:02+0100\n"
+"Last-Translator: Alberto BOTTARINI <alberto.bottarini@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
 
-#: actions.py:53
+#: fields.py:27
 #, python-format
-msgid "Action applied successfully to '%s'"
-msgstr "Azione applicata correttamente a '%s'"
-
-#: actions.py:59 forms.py:20
-msgid "Flip horizontal"
-msgstr "Rifletti orizzontalmente"
-
-#: actions.py:66 forms.py:21
-msgid "Flip vertical"
-msgstr "Rifletti verticalmente"
-
-#: actions.py:73 forms.py:22
-msgid "Rotate 90° CW"
-msgstr "Ruota 90° in senso orario"
-
-#: actions.py:80 forms.py:23
-msgid "Rotate 90° CCW"
-msgstr "Ruota 90° in senso antiorario"
-
-#: actions.py:87 forms.py:24
-msgid "Rotate 180°"
-msgstr "Ruota 180°"
-
-#: decorators.py:39
-msgid ""
-"Error finding Upload-Folder (site.storage.location + site.directory). Maybe "
-"it does not exist?"
+msgid "Ensure this value has at most %(max)d characters (it has %(length)d)."
 msgstr ""
+"Assicurati che il testo abbia al massimo %(max)d  caratteri (ora sono %"
+"(length)d)"
 
-#: decorators.py:41
-msgid "The requested Folder does not exist."
-msgstr "La Cartella richiesta non esiste"
+#: fields.py:28
+#, python-format
+msgid "Ensure this value has at least %(min)d characters (it has %(length)d)."
+msgstr ""
+"Assicurati che il testo abbia come minimo %(min)d caratteri (ora sono %"
+"(length)d)"
 
-#: decorators.py:55
-msgid "The requested File does not exist."
-msgstr "Il File richiesto non esiste"
-
-#: decorators.py:61
-msgid "You do not have permission to access this file!"
-msgstr "Non hai i permessi per accedere a questo file!"
-
-#: fields.py:63
+#: fields.py:29
 #, python-format
 msgid "Extension %(ext)s is not allowed. Only %(allowed)s is allowed."
-msgstr "Estensione %(ext)s non permessa. Solo %(allowed)s è permessa."
+msgstr "L'estensione %(ext)s è vietata. Sono accettate: %(allowed)s"
 
-#: forms.py:57 forms.py:82
+#: forms.py:23
 msgid "Name"
-msgstr "Nome"
+msgstr ""
 
-#: forms.py:57 forms.py:69 forms.py:82 forms.py:101
-msgid "Only letters, numbers, underscores, spaces and hyphens are allowed."
-msgstr "Solo lettere, numeri, underscore, spazi e trattini sono permessi."
+#: forms.py:23 forms.py:46
+#, fuzzy
+msgid ""
+"The Name will automatically be converted to lowercase. Only letters, "
+"numbers, underscores and hyphens are allowed."
+msgstr ""
+"Il nome del file verrà sostituito con le lettere minuscole.Sono accettati "
+"solo lettere. numeri, underscore e accenti."
 
-#: forms.py:72 forms.py:104
+#: forms.py:30 forms.py:53
+msgid "Only letters, numbers, underscores and hyphens are allowed."
+msgstr "Sono accettati solo lettere. numeri, underscore e accenti."
+
+#: forms.py:33
+#, fuzzy
 msgid "The Folder already exists."
-msgstr "Cartella già esistente"
+msgstr "La cartella esiste già"
 
-#: forms.py:81
-msgid "Actions"
-msgstr "Azioni"
+#: forms.py:46
+msgid "New Name"
+msgstr ""
 
-#: forms.py:106
-msgid "The File already exists."
-msgstr "File già esistente"
+#: forms.py:56
+#, fuzzy
+msgid "The File/Folder already exists."
+msgstr "Il file/cartella esiste già"
 
-#: settings.py:110 templates/filebrowser/include/tableheader.html:21
-#: templates/filebrowser/include/tableheader.html:22
-msgid "Folder"
-msgstr "Cartella"
+#: forms.py:92
+#, fuzzy
+msgid "File"
+msgstr "Filtro"
 
-#: settings.py:111
-msgid "Image"
-msgstr "Immagine"
+#: forms.py:93
+#, fuzzy
+msgid "Use Image Generator"
+msgstr "Usa il generatore di immagini"
 
-#: settings.py:112
-msgid "Video"
-msgstr "Video"
+#: forms.py:102
+msgid "File already exists."
+msgstr "Il file esiste già"
 
-#: settings.py:113
-msgid "Document"
-msgstr "Documento"
+#: forms.py:108
+msgid "Filename is not allowed."
+msgstr "Filename non permesso"
 
-#: settings.py:114
-msgid "Audio"
-msgstr "Audio"
+#: forms.py:113
+msgid "File extension is not allowed."
+msgstr "Estensione non permessa"
 
-#: sites.py:348 templates/filebrowser/include/breadcrumbs.html:9
-#: templates/filebrowser/include/breadcrumbs.html:11
-msgid "FileBrowser"
-msgstr "FileBrowser"
+#: forms.py:118
+msgid "Filesize exceeds allowed Upload Size."
+msgstr "Il file eccede il limite"
 
-#: sites.py:369
-#, python-format
-msgid "The Folder %s was successfully created."
-msgstr "Cartella %s creata."
-
-#: sites.py:374
-msgid "Permission denied."
-msgstr "Permesso negato."
-
-#: sites.py:376
-msgid "Error creating folder."
-msgstr "Errore creazione cartella."
-
-#: sites.py:383 sites.py:386 templates/filebrowser/index.html:80
-msgid "New Folder"
-msgstr "Nuova Cartella"
-
-#: sites.py:396
-msgid "Select files to upload"
-msgstr "Seleziona files da caricare"
-
-#: sites.py:399 templates/filebrowser/index.html:81
-msgid "Upload"
-msgstr "Carica"
-
-#: sites.py:429 sites.py:432
-msgid "Confirm delete"
-msgstr "Conferma eliminazione"
-
-#: sites.py:448
-#, python-format
-msgid "Successfully deleted %s"
-msgstr "%s eliminato correttamente"
-
-#: sites.py:485
-msgid "Renaming was successful."
-msgstr "Ridenominazione effettuata correttamente"
-
-#: sites.py:494
-msgid "Error."
-msgstr "Errore."
-
-#: widgets.py:17 widgets.py:50
-msgid "Currently"
-msgstr "Attualmente"
-
-#: widgets.py:18 widgets.py:51
-#: templates/filebrowser/include/filelisting.html:131
-msgid "Change"
-msgstr "Modifica"
-
-#: widgets.py:19 widgets.py:52
-msgid "Clear"
-msgstr "Pulisci"
-
-#: templates/filebrowser/createdir.html:23
-#: templates/filebrowser/detail.html:48
-msgid "Please correct the following errors."
-msgstr "Perfavore correggi i seguenti errori."
-
-#: templates/filebrowser/createdir.html:36
-#: templates/filebrowser/upload.html:147
-msgid ""
-"The Name will be normalized by converting or stripping all non-standard "
-"characters."
-msgstr "Dal nome saranno eliminati tutti i caratteri non standard."
-
-#: templates/filebrowser/createdir.html:39
-#: templates/filebrowser/upload.html:150
-msgid ""
-"The Name will be converted to lowercase. Spaces will be replaced with "
-"underscores."
-msgstr "Il Nome sarà convertito in minuscolo. Gli spazi saranno sostituiti dagli underscore."
-
-#: templates/filebrowser/createdir.html:50
-msgid "Submit"
-msgstr "Invia"
-
-#: templates/filebrowser/custom_field.html:26
-#: templates/filebrowser/widgets/clearablefileinput.html:11
-#: templates/filebrowser/widgets/fileinput.html:11
-msgid "File not found"
-msgstr "File non trovato"
-
-#: templates/filebrowser/delete_confirm.html:30
-#, python-format
-msgid ""
-"Are you sure you want to delete \"%(escaped_object)s\"? All of the following"
-" items will be deleted:"
-msgstr "Vuoi cancellare \"%(escaped_object)s\"? Tutti i seguenti oggetti saranno cancellati:"
-
-#: templates/filebrowser/delete_confirm.html:43
-#, python-format
-msgid "... and %(escaped_object)s more Files."
-msgstr "... e %(escaped_object)s ulteriori File."
-
-#: templates/filebrowser/delete_confirm.html:50
-#: templates/filebrowser/upload.html:51
-msgid "Cancel"
-msgstr "Cancella"
-
-#: templates/filebrowser/delete_confirm.html:51
-msgid "Yes, I'm sure"
-msgstr "Sì, sono sicuro"
-
-#: templates/filebrowser/detail.html:63
-msgid "Edit"
-msgstr "Modifica"
-
-#: templates/filebrowser/detail.html:78
-msgid "Folder Information"
-msgstr "Informazioni Cartella"
-
-#: templates/filebrowser/detail.html:81 templates/filebrowser/detail.html:116
-#: templates/filebrowser/include/tableheader.html:28
-#: templates/filebrowser/include/tableheader.html:29
-msgid "Date"
-msgstr "Data"
-
-#: templates/filebrowser/detail.html:93
-msgid "File Information"
-msgstr "Informazioni File"
-
-#: templates/filebrowser/detail.html:96
-msgid "URL"
-msgstr "URL"
-
-#: templates/filebrowser/detail.html:106
-msgid "Filesize"
-msgstr "Dimensioni file"
-
-#: templates/filebrowser/detail.html:127
-#: templates/filebrowser/include/tableheader.html:25
-#: templates/filebrowser/include/tableheader.html:26
-msgid "Size"
-msgstr "Dimensioni"
-
-#: templates/filebrowser/detail.html:140
-msgid "Image Versions"
-msgstr "Versioni Immagine"
-
-#: templates/filebrowser/detail.html:144
-#: templates/filebrowser/include/tableheader.html:15
-msgid "Thumbnail"
-msgstr "Anteprima"
-
-#: templates/filebrowser/detail.html:146
-#: templates/filebrowser/include/filelisting.html:101
-msgid "View Image"
-msgstr "Visualizza Immagine"
-
-#: templates/filebrowser/detail.html:170
-msgid "Delete"
-msgstr "Cancella"
-
-#: templates/filebrowser/detail.html:171
-msgid "Save"
-msgstr "Salva"
-
-#: templates/filebrowser/detail.html:172
-msgid "Save and continue editing"
-msgstr "Salva e continua"
-
-#: templates/filebrowser/upload.html:42
-msgid "Drop files here to upload"
-msgstr "Seleziona files da caricare"
-
-#: templates/filebrowser/upload.html:43
-msgid "Upload a file"
-msgstr "Carica"
-
-#: templates/filebrowser/upload.html:52
-msgid "Failed"
-msgstr "Fallito"
-
-#: templates/filebrowser/upload.html:66
-msgid "{file} has invalid extension. Only {extensions} are allowed."
-msgstr "{file} ha un'estensione non valida. Solo {extensions} sono permessi."
-
-#: templates/filebrowser/upload.html:67
-msgid "{file} is too large, maximum file size is {sizeLimit}."
-msgstr "{file} è troppo grande, la dimensione massima è {minSizeLimit}"
-
-#: templates/filebrowser/upload.html:68
-msgid "{file} is too small, minimum file size is {minSizeLimit}."
-msgstr "{file} è troppo piccolo, la dimensione minima è {minSizeLimit}"
-
-#: templates/filebrowser/upload.html:69
-msgid "{file} is empty, please select files again without it."
-msgstr "{file} è vuoto, riseleziona i file senza di esso."
-
-#: templates/filebrowser/upload.html:70
-msgid ""
-"The files are being uploaded, if you leave now the upload will be cancelled."
-msgstr "I files sono stati caricati, se esci in questo momenti il caricamento sarà cancellato."
-
-#: templates/filebrowser/upload.html:115
-msgid "Please enable Javascript to upload files."
-msgstr "Perfavore abilita Javascript per caricare files."
-
-#: templates/filebrowser/upload.html:120
-msgid "Help"
-msgstr "Aiuto"
-
-#: templates/filebrowser/upload.html:123
-msgid "Allowed"
-msgstr "Permesso"
-
-#: templates/filebrowser/upload.html:137
-msgid "Max. Filesize"
-msgstr "Dimensione massima File"
-
-#: templates/filebrowser/upload.html:144
-#: templates/filebrowser/include/tableheader.html:17
-#: templates/filebrowser/include/tableheader.html:18
-msgid "Filename"
-msgstr "Nome del file"
-
-#: templates/filebrowser/include/breadcrumbs.html:6
+#: functions.py:84
 msgid "Home"
 msgstr "Home"
 
-#: templates/filebrowser/include/filelisting.html:19
-#: templates/filebrowser/include/filelisting.html:45
-#: templates/filebrowser/include/filelisting.html:70
+#: functions.py:276
+msgid "Thumbnail creation failed."
+msgstr "Errore nella creazione delle thumbnail"
+
+#: functions.py:331 functions.py:398
+msgid "Image creation failed."
+msgstr "Errore nella creazione dell'immagine"
+
+#: views.py:165
+msgid "FileBrowser"
+msgstr "FileBrowser"
+
+#: views.py:188
+#, fuzzy, python-format
+msgid "The Folder %s was successfully created."
+msgstr "Cartella %s creata con successo"
+
+#: views.py:194
+msgid "Permission denied."
+msgstr "Permesso negato"
+
+#: views.py:196
+msgid "Error creating directory."
+msgstr "Errore nella creazione della cartella"
+
+#: views.py:204 views.py:205 templates/filebrowser/index.html:30
+#, fuzzy
+msgid "New Folder"
+msgstr "Elimina la cartella"
+
+#: views.py:250
+msgid "Upload successful."
+msgstr "Upload effettuato con successo"
+
+#: views.py:263 templates/filebrowser/index.html:33
+#: templates/filebrowser/upload.html:62
+msgid "Upload"
+msgstr ""
+
+#: views.py:264
+msgid "Select files to upload"
+msgstr "Seleziona i file da uploadare"
+
+#: views.py:294
+msgid "Thumbnail creation successful."
+msgstr "Creazione thumbnail effettuata con successo"
+
+#: views.py:344
+#, python-format
+msgid "The file %s was successfully deleted."
+msgstr "Eliminazione di %s effettuata con successo"
+
+#: views.py:356
+#, python-format
+msgid "The directory %s was successfully deleted."
+msgstr "Eliminazione di %s effettuata con successo"
+
+#: views.py:407
+msgid "Error renaming Thumbnail."
+msgstr "Errore nella rinominazione delle thumbnail"
+
+#: views.py:413
+msgid "Renaming was successful."
+msgstr "Rinominazione effettuata con successo"
+
+#: views.py:418
+msgid "Error."
+msgstr "Errore"
+
+#: views.py:427 templates/filebrowser/include/filelisting.html:52
+#, fuzzy
+msgid "Rename"
+msgstr "Nome del file"
+
+#: views.py:428
+#, python-format
+msgid "Rename \"%s\""
+msgstr "Rinomina \"%s\""
+
+#: views.py:465
+msgid "Successfully generated Images."
+msgstr "Immagini generate con successo"
+
+#: templates/filebrowser/index.html:31
+msgid "Make Thumbs"
+msgstr "Genera le thumbnail"
+
+#: templates/filebrowser/index.html:32
+msgid "Generate Images"
+msgstr "Genera le immagini"
+
+#: templates/filebrowser/makedir.html:24 templates/filebrowser/rename.html:22
+msgid "Please correct the following errors."
+msgstr ""
+
+#: templates/filebrowser/makedir.html:34 templates/filebrowser/rename.html:33
+msgid "Submit"
+msgstr "Invia"
+
+#: templates/filebrowser/upload.html:37
+#, fuzzy
+msgid "Will use image generator."
+msgstr "Usa il generatore di immagini"
+
+#: templates/filebrowser/upload.html:47
+msgid "Help"
+msgstr "Aiuto"
+
+#: templates/filebrowser/upload.html:51
+msgid "Allowed"
+msgstr "Accettate"
+
+#: templates/filebrowser/upload.html:57
+msgid "Max. Filesize"
+msgstr "Dimensione massima"
+
+#: templates/filebrowser/include/filelisting.html:8
+#, fuzzy
 msgid "Select"
-msgstr "Seleziona"
+msgstr "Seleziona un file"
 
-#: templates/filebrowser/include/filelisting.html:23
-#: templates/filebrowser/include/filelisting.html:49
-#: templates/filebrowser/include/filelisting.html:74
-msgid "Versions"
-msgstr "Versioni"
+#: templates/filebrowser/include/filelisting.html:15
+msgid "Select File"
+msgstr "Seleziona un file"
 
-#: templates/filebrowser/include/filter.html:5
+#: templates/filebrowser/include/filelisting.html:26
+msgid "Make Thumbnail"
+msgstr "Genera la thumbnail"
+
+#: templates/filebrowser/include/filelisting.html:29
+msgid "View Image"
+msgstr "Guarda immagine"
+
+#: templates/filebrowser/include/filelisting.html:46
+msgid "Generate Image Versions"
+msgstr "Genera le immagini"
+
+#: templates/filebrowser/include/filelisting.html:61
+msgid "Are you sure you want to delete this file?"
+msgstr ""
+
+#: templates/filebrowser/include/filelisting.html:61
+msgid "Delete File"
+msgstr "Elimina il file"
+
+#: templates/filebrowser/include/filelisting.html:64
+msgid "Are you sure you want to delete this Folder?"
+msgstr ""
+
+#: templates/filebrowser/include/filelisting.html:64
+msgid "Delete Folder"
+msgstr "Elimina la cartella"
+
+#: templates/filebrowser/include/filter.html:15
 msgid "Filter"
-msgstr "Filtra"
+msgstr "Filtro"
 
-#: templates/filebrowser/include/filter.html:9
+#: templates/filebrowser/include/filter.html:21
 msgid "By Date"
-msgstr "Per Data"
+msgstr "Per data"
 
-#: templates/filebrowser/include/filter.html:11
+#: templates/filebrowser/include/filter.html:23
 msgid "Any Date"
-msgstr "Qualsiasi Data"
+msgstr "Qualsiasi data"
 
-#: templates/filebrowser/include/filter.html:12
+#: templates/filebrowser/include/filter.html:25
 msgid "Today"
 msgstr "Oggi"
 
-#: templates/filebrowser/include/filter.html:13
+#: templates/filebrowser/include/filter.html:27
 msgid "Past 7 days"
-msgstr "Scorsi 7 giorni"
+msgstr "Ultimi 7 giorni"
 
-#: templates/filebrowser/include/filter.html:14
-msgid "This Month"
-msgstr "Questo Mese"
+#: templates/filebrowser/include/filter.html:29
+msgid "Past 30 days"
+msgstr "Questo mese"
 
-#: templates/filebrowser/include/filter.html:15
+#: templates/filebrowser/include/filter.html:31
 msgid "This year"
-msgstr "Questo Anno"
+msgstr "Quest'anno"
 
-#: templates/filebrowser/include/filter.html:21
+#: templates/filebrowser/include/filter.html:39
 msgid "By Type"
-msgstr "Per Tipo"
+msgstr "Per tipo"
 
-#: templates/filebrowser/include/filter.html:23
+#: templates/filebrowser/include/filter.html:41
 msgid "All"
 msgstr "Tutti"
 
-#: templates/filebrowser/include/paginator.html:6
-msgid "result"
-msgstr "risultato"
-
-#: templates/filebrowser/include/paginator.html:6
-msgid "results"
-msgstr "risultati"
+#: templates/filebrowser/include/paginator.html:5
+#, fuzzy
+msgid "No Items Found."
+msgstr "Nessun file trovato"
 
 #: templates/filebrowser/include/paginator.html:10
-#: templates/filebrowser/include/paginator.html:12
-msgid "total"
-msgstr "totali"
+#, python-format
+msgid "%(counter)s Item"
+msgid_plural "%(counter)s Items"
+msgstr[0] ""
+msgstr[1] ""
 
-#: templates/filebrowser/include/tableheader.html:12
+#: templates/filebrowser/include/paginator.html:16
+msgid "No Items."
+msgstr ""
+
 #: templates/filebrowser/include/tableheader.html:13
-msgid "Type"
-msgstr "Tipo"
+#: templates/filebrowser/include/tableheader.html:14
+msgid "Filename"
+msgstr "Nome del file"
 
-#: templates/filebrowser/include/toolbar.html:6
-msgid "Results"
-msgstr "Risultati"
+#: templates/filebrowser/include/tableheader.html:20
+#: templates/filebrowser/include/tableheader.html:21
+msgid "Size"
+msgstr "Dimensione"
 
-#: templates/filebrowser/include/toolbar.html:8
-#, python-format
-msgid "%(counter)s result"
-msgid_plural "%(counter)s results"
-msgstr[0] "%(counter)s risultato"
-msgstr[1] "%(counter)s risultati"
+#: templates/filebrowser/include/tableheader.html:23
+#: templates/filebrowser/include/tableheader.html:24
+msgid "Date"
+msgstr "Data"
 
-#: templates/filebrowser/include/toolbar.html:9
-#, python-format
-msgid "%(full_result_count)s total"
-msgstr "%(full_result_count)s totali"
+#: templates/filebrowser/include/toolbar.html:14
+msgid "Go"
+msgstr ""
 
 #: templates/filebrowser/include/toolbar.html:16
-msgid "Search"
-msgstr "Cerca"
+#, python-format
+msgid "%(counter)s Item found"
+msgid_plural "%(counter)s Items found"
+msgstr[0] ""
+msgstr[1] ""
 
-#~ msgid "BROWSE"
-#~ msgstr "BROWSE"
+#: templates/filebrowser/include/toolbar.html:17
+#, python-format
+msgid "%(counter)s Item total"
+msgid_plural "%(counter)s Items total"
+msgstr[0] ""
+msgstr[1] ""
 
-#~ msgid "An Error occured"
-#~ msgstr "An Error occured"
+#~ msgid ""
+#~ "The directory will automatically be converted to lowercase. Only letters, "
+#~ "numbers, underscores and hyphens are allowed."
+#~ msgstr ""
+#~ "Il nome della cartella verrà sostituito con le lettere minuscole.Sono "
+#~ "accettati solo lettere. numeri, underscore e accenti."
 
-#~ msgid "Completed"
-#~ msgstr "Completed"
+#~ msgid "Make directory"
+#~ msgstr "Nuova cartella"
 
-#~ msgid "Do you want to replace the file"
-#~ msgstr "Do you want to replace the file"
+#~ msgid "Make Directory"
+#~ msgstr "Nuova cartella"
 
-#~ msgid "KB"
-#~ msgstr "KB"
+#~ msgid "Multiple Upload"
+#~ msgstr "Chargement de fichiers"
 
-#~ msgid "MB"
-#~ msgstr "MB"
+#~ msgid "Rename File"
+#~ msgstr "Rinomina il file"
 
-#~ msgid "Clear Queue"
-#~ msgstr "Clear Queue"
-
-#~ msgid "Flip/Rotate"
-#~ msgstr "Flip/Rotate"
-
-#~ msgid "Transposing was successful."
-#~ msgstr "Transposing was successful."
-
-#~ msgid "SELECT FILES"
-#~ msgstr "SELECT FILES"
+#~ msgid "No Files"
+#~ msgstr "Nessun file"
