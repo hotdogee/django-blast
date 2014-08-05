@@ -144,8 +144,10 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
 )
 
+FILEBROWSER_SUIT_TEMPLATE = True
 FILEBROWSER_DIRECTORY = ''
 FILEBROWSER_VERSIONS_BASEDIR = '_versions/'
+FILEBROWSER_MAX_UPLOAD_SIZE = 10737418240 # 10GB
 FILEBROWSER_EXTENSIONS = {
     'Folder': [''],
     'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff'],
