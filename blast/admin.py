@@ -108,7 +108,7 @@ class SequenceForm(ModelForm):
         }
 
 class SequenceAdmin(admin.ModelAdmin):
-    form = SequenceForm
+    #form = SequenceForm
     list_display = ('id', 'blast_db', 'length', 'modified_date',)
     readonly_fields = ('modified_date',)
     actions_on_top = True

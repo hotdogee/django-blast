@@ -148,8 +148,8 @@ class Sequence(models.Model):
     id = models.CharField(max_length=100) # gi|45478711|ref|NC_005816.1|
     header = models.CharField(max_length=400) # gi|45478711|ref|NC_005816.1| Yersinia pestis biovar Microtus ... pPCP1, complete sequence
     length = models.PositiveIntegerField() # 
-    seq_start_pos = models.PositiveIntegerField() # used for file.seek(offset), marks start of '>'
-    seq_end_pos = models.PositiveIntegerField() # used to calculate file.read(size)
+    seq_start_pos = models.BigIntegerField() # used for file.seek(offset), marks start of '>'
+    seq_end_pos = models.BigIntegerField() # used to calculate file.read(size)
     modified_date = models.DateTimeField(auto_now_add=True)
 
     def get_entry(self):
