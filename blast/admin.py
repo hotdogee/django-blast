@@ -21,6 +21,8 @@ class BlastDbForm(ModelForm):
 class BlastDbAdmin(admin.ModelAdmin):
     form = BlastDbForm
     list_display = ('title', 'organism', 'type', 'fasta_file', 'description', 'is_shown')
+    list_filter = ('organism', 'type', 'is_shown')
+    search_fields = ('fasta_file','title',)
     class Media:
         js = ('blast/scripts/blastdb-admin.js',)
 admin.site.register(BlastDb, BlastDbAdmin)
@@ -34,6 +36,7 @@ class OrganismForm(ModelForm):
 class OrganismAdmin(admin.ModelAdmin):
     form = OrganismForm
     list_display = ('display_name', 'short_name', 'tax_id', 'short_description')
+    search_fields = ('display_name', 'short_name', 'tax_id', 'short_description')
 
     def short_description(self, obj):
         if len(obj.description) < 100:
@@ -50,6 +53,7 @@ admin.site.register(Organism, OrganismAdmin)
 
 class BlastDbTypeAdmin(admin.ModelAdmin):
     list_display = ('molecule_type', 'dataset_type')
+    search_fields = ('molecule_type', 'dataset_type')
     pass
 admin.site.register(BlastDbType, BlastDbTypeAdmin)
 

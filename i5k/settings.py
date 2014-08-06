@@ -154,7 +154,7 @@ FILEBROWSER_EXTENSIONS = {
     'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv', '.docx'],
     'Video': ['.mov', '.wmv', '.mpeg', '.mpg', '.avi', '.rm'],
     'Audio': ['.mp3', '.mp4', '.wav', '.aiff', '.midi', '.m4p'],
-    'FASTA': ['.fa', '.faa', '.fna', '.fasta', 'cds', 'pep'],
+    'FASTA': ['.fa', '.faa', '.fna', '.fasta', '.cds', '.pep'],
     'FASTQ': ['.fq', '.fastq'],
     'SAM': ['.sam', '.bam'],
     'WIG': ['.wig', '.bw', '.bigwig'],
@@ -215,7 +215,7 @@ SUIT_CONFIG = {
             {'model': 'user'},
             {'model': 'group'},
         )},
-        #{'label': 'Support', 'icon':'icon-question-sign', 'url': '/support/'},
+        {'label': 'File Browser', 'icon':'icon-hdd', 'url': 'fb_browse'},
     ),
 
     # misc

@@ -46,6 +46,10 @@
     .controls select {
         width: 284px;
     }
+
+    .autosize{
+        max-height: 500px
+    }
 </style>
 {% endblock %}
 
@@ -54,7 +58,7 @@
 <script type="text/javascript" src="{% static 'suit/bootstrap/js/bootstrap-select.min.js' %}"></script>
 <script type="text/javascript">
     $('select').attr('data-size', '15');
-    $('select').attr('data-width', '284px');
+    $('select').attr('data-width', 'auto');
     $('select').selectpicker();
 </script>
 {% endblock %}
