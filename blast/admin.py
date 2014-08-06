@@ -23,6 +23,14 @@ class BlastDbAdmin(admin.ModelAdmin):
     list_display = ('title', 'organism', 'type', 'fasta_file', 'description', 'is_shown')
     list_filter = ('organism', 'type', 'is_shown')
     search_fields = ('fasta_file','title',)
+    # file_exist
+    # db_status
+    # (re)makeblastdb - delete existing database files if exist
+    # (re)populate sequence table - delete existing sequence entries if exist
+    # sequence table status?
+    # fasta file change date
+    # makeblastdb date
+    # populate sequence table date
     class Media:
         js = ('blast/scripts/blastdb-admin.js',)
 admin.site.register(BlastDb, BlastDbAdmin)
