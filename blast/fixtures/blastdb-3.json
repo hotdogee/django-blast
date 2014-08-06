@@ -1,0 +1,47 @@
+[
+{
+  "fields": {
+    "description": "",
+    "title": "Agla_Btl03082013.genome_new_ids.fa",
+    "organism": [
+      "anogla"
+    ],
+    "fasta_file": "/media/blastdb/Agla_Btl03082013.genome_new_ids.fa",
+    "is_shown": true,
+    "type": [
+      "Genome Assembly"
+    ]
+  },
+  "model": "blast.blastdb"
+},
+{
+  "fields": {
+    "description": "",
+    "title": "AGLA_new_ids.fna",
+    "organism": [
+      "anogla"
+    ],
+    "fasta_file": "/media/blastdb/AGLA_new_ids.fna",
+    "is_shown": true,
+    "type": [
+      "Transcript"
+    ]
+  },
+  "model": "blast.blastdb"
+},
+{
+  "fields": {
+    "description": "",
+    "title": "AGLA_new_ids.faa",
+    "organism": [
+      "anogla"
+    ],
+    "fasta_file": "/media/blastdb/AGLA_new_ids.faa",
+    "is_shown": true,
+    "type": [
+      "Protein"
+    ]
+  },
+  "model": "blast.blastdb"
+}
+]

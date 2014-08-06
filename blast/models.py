@@ -23,44 +23,44 @@ class OrganismManager(models.Manager):
         return self.get(short_name=short_name)
 
 class Organism(models.Model):
+    objects = OrganismManager()
     display_name = models.CharField(max_length=200, unique=True, help_text='Scientific or common name') # shown to user
     short_name = models.CharField(max_length=20, unique=True, help_text='This is used for file names and variable names in code') # used in code or filenames
     description = models.TextField(blank=True) # optional
     tax_id = models.PositiveIntegerField('NCBI Taxonomy ID', null=True, blank=True, help_text='This is passed into makeblast') # ncbi tax id
     
-    objects = OrganismManager()
     def natural_key(self):
-        return (self.short_name)
+        return (self.short_name,)
 
     def __unicode__(self):
         return self.display_name
 
 class BlastDbTypeManager(models.Manager):
-    def get_by_natural_key(self, molecule_type, dataset_type):
-        return self.get(molecule_type=molecule_type, dataset_type=dataset_type)
+    def get_by_natural_key(self, dataset_type):
+        return self.get(dataset_type=dataset_type)
 
 class BlastDbType(models.Model):
+    objects = BlastDbTypeManager()
     molecule_type = models.CharField(max_length=4, default='nucl', choices=(
         ('nucl', 'Nucleotide'),
         ('prot', 'Protein'))) # makeblastdb -dbtype
-    dataset_type = models.CharField(max_length=50) # 
+    dataset_type = models.CharField(max_length=50, unique=True) # 
     
-    objects = OrganismManager()
     def natural_key(self):
-        return (self.molecule_type, self.dataset_type)
+        return (self.dataset_type,)
 
     def __unicode__(self):
         return u'%s - %s' % (self.get_molecule_type_display(), self.dataset_type)
 
     class Meta:
         verbose_name = 'BLAST database type'
-        unique_together = ('molecule_type', 'dataset_type')
 
 class BlastDbManager(models.Manager):
     def get_by_natural_key(self, fasta_file):
         return self.get(fasta_file=fasta_file)
 
 class BlastDb(models.Model):
+    objects = BlastDbManager()
     organism = models.ForeignKey(Organism) # 
     type = models.ForeignKey(BlastDbType) # 
     #fasta_file = models.FileField(upload_to='blastdb') # upload file
@@ -70,9 +70,8 @@ class BlastDb(models.Model):
     is_shown = models.BooleanField(default=None, help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
     #sequence_count = models.PositiveIntegerField(null=True, blank=True) # number of sequences in this fasta
     
-    objects = BlastDbManager()
     def natural_key(self):
-        return (str(self.fasta_file))
+        return (str(self.fasta_file),)
 
     def __unicode__(self):
         return str(self.fasta_file)

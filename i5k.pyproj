@@ -88,6 +88,9 @@
     <Compile Include="suit\watch_less.py" />
     <Compile Include="suit\widgets.py" />
     <Compile Include="suit\__init__.py" />
+    <Compile Include="util\build_blastdb_fixture_from_dataset_list.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="util\copy_dataset_list_files.py" />
   </ItemGroup>
   <ItemGroup>
@@ -305,6 +308,7 @@
     <Content Include="blast\bin_win\convert2blastmask.exe" />
     <Content Include="blast\bin_win\deltablast.exe" />
     <Content Include="blast\bin_win\dustmasker.exe" />
+    <Content Include="blast\fixtures\blastdb.json" />
     <Content Include="blast\fixtures\blastdbtype.json" />
     <Content Include="blast\fixtures\organism.json" />
     <Content Include="blast\static\blast\components\aha-table\aha-table.html" />
@@ -1065,6 +1069,7 @@
     <Content Include="suit\templates\suit\menu.html" />
     <Content Include="templates\admin\base_site.html" />
     <Content Include="templates\filebrowser\custom_field.html" />
+    <Content Include="util\blastdb.json" />
     <Content Include="util\dataset_list.tsv" />
   </ItemGroup>
   <ItemGroup>

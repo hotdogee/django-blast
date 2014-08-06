@@ -39,9 +39,9 @@ Drosophila rhopaloa	drorho	Protein	DRHO.faa
 Drosophila takahashii	drotak	Genome Assembly	Dtak02082011-genome.fa
 Drosophila takahashii	drotak	Transcript	DTAK.fna
 Drosophila takahashii	drotak	Protein	DTAK.faa
-Ephemera danica	drotak	Genome Assembly	Edan07162013.scaffolds_new_ids.fa
-Ephemera danica	drotak	Transcript	EDAN_new_ids.fna
-Ephemera danica	drotak	Protein	EDAN_new_ids.faa
+Ephemera danica	ephdan	Genome Assembly	Edan07162013.scaffolds_new_ids.fa
+Ephemera danica	ephdan	Transcript	EDAN_new_ids.fna
+Ephemera danica	ephdan	Protein	EDAN_new_ids.faa
 Eurytemora affinis	euraff	Genome Assembly	Eaff_11172013.genome_new_ids.fa
 Eurytemora affinis	euraff	Transcript	EAFF_new_ids.fna
 Eurytemora affinis	euraff	Protein	EAFF_new_ids.faa
