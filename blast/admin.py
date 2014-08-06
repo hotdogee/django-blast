@@ -2,6 +2,7 @@ from django.contrib import admin
 from blast.models import *
 from django.forms import ModelForm
 from suit.widgets import AutosizedTextarea
+from django.contrib import messages
 
 class BlastQueryRecordAdmin(admin.ModelAdmin):
     list_display = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status',)
@@ -37,6 +38,20 @@ class BlastDbAdmin(admin.ModelAdmin):
     # fasta file change date
     # makeblastdb date
     # populate sequence table date
+    actions = ['makeblastdb']
+
+    def makeblastdb(self, request, queryset):
+        success_count = 0
+        for blastdb in queryset:
+            returncode, error, output = blastdb.makeblastdb()
+            if returncode != 0:
+                self.message_user(request, "[%s] - [%s]" % (error, blastdb.fasta_file.path_full), level=messages.ERROR)
+            else:
+                success_count += 1
+        if success_count > 0:
+            self.message_user(request, "%d entries successfully ran makeblastdb." % success_count)
+    makeblastdb.short_description = 'Run makeblastdb on selected entries(replace existing database files if exist)'
+
     class Media:
         js = ('blast/scripts/blastdb-admin.js',)
 admin.site.register(BlastDb, BlastDbAdmin)

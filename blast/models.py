@@ -80,7 +80,7 @@ class BlastDb(models.Model):
 
     def makeblastdb(self):
         if not os.path.isfile(self.fasta_file.path_full):
-            return False
+            return 1, 'FASTA file not found', ''
         from sys import platform
         from subprocess import Popen, PIPE
         bin_name = 'bin_linux'
@@ -91,12 +91,10 @@ class BlastDb(models.Model):
         if self.title:
             args += ['-title', self.title]
         if self.organism.tax_id:
-            args += ['-taxid', self.organism.tax_id]
+            args += ['-taxid', str(self.organism.tax_id)]
         p = Popen(args, stdout=PIPE, stderr=PIPE)
         output, error = p.communicate()
-        if p.returncode > 0:
-            return False
-        return True
+        return p.returncode, error, output
 
     def natural_key(self):
         return (str(self.fasta_file),)
