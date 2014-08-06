@@ -97,7 +97,8 @@ class SequenceForm(ModelForm):
 
 class SequenceAdmin(admin.ModelAdmin):
     form = SequenceForm
-    list_display = ('id', 'blast_db', 'length',)
+    list_display = ('id', 'blast_db', 'length', 'modified_date',)
+    readonly_fields = ('modified_date',)
     actions_on_top = True
     actions_on_bottom = True
 admin.site.register(Sequence, SequenceAdmin)
