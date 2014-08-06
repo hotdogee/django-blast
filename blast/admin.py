@@ -38,7 +38,7 @@ class BlastDbAdmin(admin.ModelAdmin):
     # fasta file change date
     # makeblastdb date
     # populate sequence table date
-    actions = ['makeblastdb']
+    actions = ['makeblastdb', 'index_fasta']
 
     def makeblastdb(self, request, queryset):
         success_count = 0
@@ -50,7 +50,19 @@ class BlastDbAdmin(admin.ModelAdmin):
                 success_count += 1
         if success_count > 0:
             self.message_user(request, "%d entries successfully ran makeblastdb." % success_count)
-    makeblastdb.short_description = 'Run makeblastdb on selected entries(replace existing database files if exist)'
+    makeblastdb.short_description = 'Run makeblastdb on selected entries, replaces existing files'
+
+    def index_fasta(self, request, queryset):
+        success_count = 0
+        for blastdb in queryset:
+            returncode, error, output = blastdb.index_fasta()
+            if returncode != 0:
+                self.message_user(request, "[%s] - [%s]" % (error, blastdb.fasta_file.path_full), level=messages.ERROR)
+            else:
+                success_count += 1
+        if success_count > 0:
+            self.message_user(request, "%d entries successfully added to Sequences table." % success_count)
+    index_fasta.short_description = 'Parse FASTA and add to Sequences table, replaces existing Sequence entries'
 
     class Media:
         js = ('blast/scripts/blastdb-admin.js',)
