@@ -20,7 +20,9 @@ class BlastDbForm(ModelForm):
 
 class BlastDbAdmin(admin.ModelAdmin):
     form = BlastDbForm
-    list_display = ('fasta_file', 'organism', 'type', 'description', 'title', 'is_shown')
+    list_display = ('title', 'organism', 'type', 'fasta_file', 'description', 'is_shown')
+    class Media:
+        js = ('blast/scripts/blastdb-admin.js',)
 admin.site.register(BlastDb, BlastDbAdmin)
 
 class OrganismForm(ModelForm):

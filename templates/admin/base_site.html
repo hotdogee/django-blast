@@ -1,20 +1,20 @@
 {% extends "admin/base.html" %}
 {% load admin_static %}{% load suit_tags %}{% load i18n %}
-
 {# Additional <head> content here, some extra meta tags or favicon #}
 {#{% block extrahead %}#}
 {#{% endblock %}#}
 
-
 {# Additional CSS includes #}
 {% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="{% static 'suit/css/bootstrap-glyphicon.css' %}" media="all"/>
+<link rel="stylesheet" type="text/css" href="{% static 'suit/css/bootstrap-glyphicon.css' %}" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static 'suit/bootstrap/css/bootstrap-select.min.css' %}" media="all" />
 <style type="text/css">
     .footer .content .copyright {
         padding: 15px 20px 0 0;
         float: right;
         text-align: right;
     }
+
     .header {
         color: #d4d4d4;
         height: 50px;
@@ -23,6 +23,7 @@
         background-color: #222;
         background-image: none;
     }
+
     .header #branding h1 {
         color: #fff;
         font-size: 18px;
@@ -31,71 +32,63 @@
         text-shadow: 0 -1px #121414;
         line-height: 20px;
     }
+
     .header #user-tools {
         padding: 15px 20px 0 0;
         font-size: 14px;
         float: right;
     }
+
+    .controls input[type="text"] {
+        width: 530px;
+    }
+
+    .controls select {
+        width: 284px;
+    }
 </style>
 {% endblock %}
 
-{% block header %}
-    {% if not is_popup %}
-        <!-- Header -->
-        <div id="header" class="header">
-        <div id="branding">
-            <a href="{% url 'admin:index' %}"><h1 id="site-name">{% block branding %}{{ 'ADMIN_NAME'|suit_conf }}{% endblock %}</h1></a>
-        </div>
-
-        {% block header_time %}
-        {% endblock %}
-            
-        {# Remove header time block #}
-        {% block header_content %}
-            <!--<div class="header-content">
-            <div class="header-column icon">
-                <i class="icon-comment"></i>
-            </div>
-            <div class="header-column">
-                <a href="" class="grey"><b>2</b> new messages</a>
-            </div>
-            </div>-->
-        {% endblock %}
-
-        {% if user.is_active and user.is_staff %}
-            <div id="user-tools">
-            {% trans 'Welcome, ' %}{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}.
-            <span class="user-links">
-            {% block userlinks %}
-                {% url 'django-admindocs-docroot' as docsroot %}
-                {% if docsroot %}
-                <a href="{{ docsroot }}">{% trans 'Documentation' %}</a>
-                <span class="separator">|</span>
-                {% endif %}
-                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a>
-                <span class="separator">|</span>
-                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
-                </span>
-            {% endblock %}
-            </div>
-        {% endif %}
-        {% block nav-global %}{% endblock %}
-        </div>
-    {% endif %}
+{# Additional JS files in footer, right before </body> #}
+{% block extrajs %}
+<script type="text/javascript" src="{% static 'suit/bootstrap/js/bootstrap-select.min.js' %}"></script>
+<script type="text/javascript">
+    $('select').attr('data-size', '15');
+    $('select').attr('data-width', '284px');
+    $('select').selectpicker();
+</script>
 {% endblock %}
 
-
-{# Additional JS files in footer, right before </body> #}
-{#{% block extrajs %}#}
-{#  <script type="text/javascript" src="{% static 'js/my_project.js' %}"></script>#}
-{#{% endblock %}#}
-
+{% block header %}{% if not is_popup %}
+<!-- Header -->
+<div id="header" class="header">
+    <div id="branding">
+        <a href="{% url 'admin:index' %}"><h1 id="site-name">{% block branding %}{{ 'ADMIN_NAME'|suit_conf }}{% endblock %}</h1></a>
+    </div>{% block header_time %}{% endblock %}{# Remove header time block #}{% block header_content %}
+    <!--<div class="header-content">
+    <div class="header-column icon">
+        <i class="icon-comment"></i>
+    </div>
+    <div class="header-column">
+        <a href="" class="grey"><b>2</b> new messages</a>
+    </div>
+    </div>-->{% endblock %}{% if user.is_active and user.is_staff %}
+    <div id="user-tools">{% trans 'Welcome, ' %}{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}.
+        <span class="user-links">{% block userlinks %}{% url 'django-admindocs-docroot' as docsroot %}{% if docsroot %}
+            <a href="{{ docsroot }}">{% trans 'Documentation' %}</a>
+            <span class="separator">|</span>{% endif %}
+            <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a>
+            <span class="separator">|</span>
+            <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+        </span>{% endblock %}
+    </div>{% endif %}{% block nav-global %}{% endblock %}
+</div>{% endif %}
+{% endblock %}
 
 {# Footer links (left side) #}
 {#{% block footer_links %}#}
 {#  <a href="/docs/" class="icon"><i class="icon-question-sign"></i>Documentation</a>#}
 {#{% endblock %}#}
-
 {# Additional header content like notifications or language switcher #}
 {#{% block header_content %}#}
 {#    {{ block.super }}#}
@@ -119,14 +112,11 @@
 {#    </div>#}
 {#{% endblock %}#}
 
-
 {% block footer_links %}
 {% endblock %}
-
 {# Footer branding name (center) #}
 {#{% block footer_branding %}#}
 {#{% endblock %}#}
-
 
 {# Footer copyright (right side) #}
 {% block copyright %}

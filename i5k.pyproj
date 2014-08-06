@@ -705,6 +705,7 @@
     <Content Include="blast\static\blast\dataTables\js\dataTables.fixedHeader.min.js" />
     <Content Include="blast\static\blast\scripts\blast-results.js" />
     <Content Include="blast\static\blast\scripts\blast-multi.js" />
+    <Content Include="blast\static\blast\scripts\blastdb-admin.js" />
     <Content Include="blast\static\blast\scripts\dataTables.jqueryui.js" />
     <Content Include="blast\static\blast\scripts\dragscrollable.js" />
     <Content Include="blast\static\blast\scripts\jquery-1.11.1.min.js" />
@@ -942,11 +943,13 @@
     <Content Include="app\templates\app\loginpartial.html" />
     <Content Include="suit\static\admin\css\forms.css" />
     <Content Include="suit\static\cms\css\pages.css" />
+    <Content Include="suit\static\suit\bootstrap\css\bootstrap-select.min.css" />
     <Content Include="suit\static\suit\bootstrap\css\bootstrap.css" />
     <Content Include="suit\static\suit\bootstrap\css\bootstrap.min.css" />
     <Content Include="suit\static\suit\bootstrap\img\glyphicons-halflings-white-shadow.png" />
     <Content Include="suit\static\suit\bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="suit\static\suit\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="suit\static\suit\bootstrap\js\bootstrap-select.min.js" />
     <Content Include="suit\static\suit\bootstrap\js\bootstrap.js" />
     <Content Include="suit\static\suit\bootstrap\js\bootstrap.min.js" />
     <Content Include="suit\static\suit\css\bootstrap-glyphicon.css" />
