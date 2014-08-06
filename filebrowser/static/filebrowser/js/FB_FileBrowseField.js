@@ -10,7 +10,7 @@ function FileSubmit(FileURL, ThumbURL, FileType) {
     link = opener.document.getElementById(link_id);
     help = opener.document.getElementById(help_id);
     // set new value for input field
-    input.value = FileURL;
+    opener.id_fasta_file_change(FileURL);
     
     if (ThumbURL && FileType != "") {
         // selected file is an image and thumbnail is available:
