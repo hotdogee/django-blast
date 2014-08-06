@@ -6,7 +6,7 @@ from app.forms import BootstrapAuthenticationForm
 from django.contrib import admin
 from django.contrib.sites.models import Site
 admin.autodiscover()
-#admin.site.unregister(Site)
+admin.site.unregister(Site)
 
 #from filebrowser.sites import site
 

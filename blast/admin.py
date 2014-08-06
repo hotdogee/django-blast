@@ -4,12 +4,15 @@ from django.forms import ModelForm
 from suit.widgets import AutosizedTextarea
 
 class BlastQueryRecordAdmin(admin.ModelAdmin):
-    list_display = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status')
-    fields = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status')
+    list_display = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status',)
+    fields = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status',)
     readonly_fields = ('enqueue_date',)
-    list_filter = ('enqueue_date', 'dequeue_date', 'result_date', 'result_status')
+    date_hierarchy = 'enqueue_date'
+    list_filter = ('enqueue_date', 'dequeue_date', 'result_date', 'result_status',)
     search_fields = ('task_id',)
     ordering = ('-enqueue_date',) # descending
+    actions_on_top = True
+    actions_on_bottom = True
 admin.site.register(BlastQueryRecord, BlastQueryRecordAdmin)
 
 class BlastDbForm(ModelForm):
@@ -20,9 +23,12 @@ class BlastDbForm(ModelForm):
 
 class BlastDbAdmin(admin.ModelAdmin):
     form = BlastDbForm
-    list_display = ('title', 'organism', 'type', 'fasta_file', 'description', 'is_shown')
-    list_filter = ('organism', 'type', 'is_shown')
+    list_display = ('title', 'organism', 'type', 'fasta_file', 'fasta_file_exists','description', 'is_shown',)
+    list_editable = ('is_shown',)
+    list_filter = ('organism', 'type', 'is_shown',)
     search_fields = ('fasta_file','title',)
+    actions_on_top = True
+    actions_on_bottom = True
     # file_exist
     # db_status
     # (re)makeblastdb - delete existing database files if exist
@@ -43,8 +49,10 @@ class OrganismForm(ModelForm):
 
 class OrganismAdmin(admin.ModelAdmin):
     form = OrganismForm
-    list_display = ('display_name', 'short_name', 'tax_id', 'short_description')
-    search_fields = ('display_name', 'short_name', 'tax_id', 'short_description')
+    list_display = ('display_name', 'short_name', 'tax_id', 'short_description',)
+    search_fields = ('display_name', 'short_name', 'tax_id', 'short_description',)
+    actions_on_top = True
+    actions_on_bottom = True
 
     def short_description(self, obj):
         if len(obj.description) < 100:
@@ -60,9 +68,10 @@ class OrganismAdmin(admin.ModelAdmin):
 admin.site.register(Organism, OrganismAdmin)
 
 class BlastDbTypeAdmin(admin.ModelAdmin):
-    list_display = ('molecule_type', 'dataset_type')
-    search_fields = ('molecule_type', 'dataset_type')
-    pass
+    list_display = ('molecule_type', 'dataset_type',)
+    search_fields = ('molecule_type', 'dataset_type',)
+    actions_on_top = True
+    actions_on_bottom = True
 admin.site.register(BlastDbType, BlastDbTypeAdmin)
 
 class SequenceForm(ModelForm):
@@ -73,9 +82,13 @@ class SequenceForm(ModelForm):
 
 class SequenceAdmin(admin.ModelAdmin):
     form = SequenceForm
-    list_display = ('id', 'blast_db', 'length')
+    list_display = ('id', 'blast_db', 'length',)
+    actions_on_top = True
+    actions_on_bottom = True
 admin.site.register(Sequence, SequenceAdmin)
 
 class JbrowseSettingAdmin(admin.ModelAdmin):
-    list_display = ('blast_db', 'url')
+    list_display = ('blast_db', 'url',)
+    actions_on_top = True
+    actions_on_bottom = True
 admin.site.register(JbrowseSetting, JbrowseSettingAdmin)

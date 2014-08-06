@@ -1,5 +1,7 @@
 from django.db import models
 from filebrowser.fields import FileBrowseField
+from django.core.urlresolvers import reverse
+import os.path
 
 class BlastQueryRecord(models.Model):
     task_id = models.CharField(max_length=32, primary_key=True) # ex. 128c8661c25d45b8-9ca7809a09619db9
@@ -12,7 +14,6 @@ class BlastQueryRecord(models.Model):
         return self.task_id
 
     def get_absolute_url(self):
-        from django.core.urlresolvers import reverse
         return reverse('blast:retrieve', args=[str(self.task_id)])
 
     class Meta:
@@ -70,6 +71,12 @@ class BlastDb(models.Model):
     is_shown = models.BooleanField(default=None, help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
     #sequence_count = models.PositiveIntegerField(null=True, blank=True) # number of sequences in this fasta
     
+    # properties
+    def fasta_file_exists(self):
+        return os.path.isfile(self.fasta_file.path_full)
+    fasta_file_exists.boolean = True
+    fasta_file_exists.short_description = 'file exists'
+
     def natural_key(self):
         return (str(self.fasta_file),)
 
