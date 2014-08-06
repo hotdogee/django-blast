@@ -23,6 +23,13 @@ import ReadGFF3
 blast_out_col_types = [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int, int, int]
 blast_out_col_name_str = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe'
 blast_out_col_names = blast_out_col_name_str.split()
+
+blast_customized_options = {'blastn':['num_alignments', 'evalue', 'word_size', 'reward', 'penalty', 'gapopen', 'gapextend', 'strand', 'low_complexity', 'soft_masking'],
+                            'tblastn':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend', 'low_complexity', 'soft_masking'],
+                            'tblastx':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'strand'],
+                            'blastp':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend'],
+                            'blastx':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'strand', 'gapopen', 'gapextend']}
+
 #blast_out_ext = {}
 #blast_out_ext['.0'] = '0'
 #blast_out_ext['.html'] = '0'
@@ -69,9 +76,23 @@ def create(request):
         
         # check if program is in list for security
         if request.POST['program'] in ['blastn', 'tblastn', 'tblastx', 'blastp', 'blastx']:
+
+            # generate customized_options
+            input_opt = []
+            for blast_option in blast_customized_options[request.POST['program']]:
+                if blast_option == 'low_complexity':
+                    if request.POST['program'] == 'blastn':
+                        input_opt.append('-dust')
+                    else:
+                        input_opt.append('-seg')
+                else:
+                    input_opt.append('-'+blast_option)
+                input_opt.append(request.POST[blast_option])
+
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
             #args = [program_path, '-query', query_filename, '-db', db_list, '-html']
             args = [program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']
+            args.extend(input_opt)
             task_arg = json.dumps(args)
             # run blast process
             #subprocess.Popen(args).wait()

@@ -41,8 +41,8 @@ def run(msg):
     subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE).wait()
     
     # convert to multiple formats
-    asn_filename = args[-3] # ex. /usr/local/i5k/media/3ee04cec89b54d33ba557335b7b7134d/3ee04cec89b54d33ba557335b7b7134d.asn
-    file_prefix = args[-3].replace('.asn', '') 
+    asn_filename = args[2].replace('.in', '.asn') # ex. /usr/local/i5k/media/3ee04cec89b54d33ba557335b7b7134d/3ee04cec89b54d33ba557335b7b7134d.asn
+    file_prefix = args[2].replace('.in', '') 
     for ext, outfmt in blast_out_ext.items():
         args = [blast_formatter_path, '-archive', asn_filename, '-outfmt', outfmt, '-out', file_prefix + ext]
         if ext == '.html':
