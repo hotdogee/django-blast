@@ -92,6 +92,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="util\copy_dataset_list_files.py" />
+    <Compile Include="util\run_makeblastdb_test.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />

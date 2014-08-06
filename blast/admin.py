@@ -50,7 +50,7 @@ class OrganismForm(ModelForm):
 class OrganismAdmin(admin.ModelAdmin):
     form = OrganismForm
     list_display = ('display_name', 'short_name', 'tax_id', 'short_description',)
-    search_fields = ('display_name', 'short_name', 'tax_id', 'short_description',)
+    search_fields = ('display_name', 'short_name', 'tax_id', 'description',)
     actions_on_top = True
     actions_on_bottom = True
 

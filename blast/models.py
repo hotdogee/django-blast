@@ -2,6 +2,7 @@ from django.db import models
 from filebrowser.fields import FileBrowseField
 from django.core.urlresolvers import reverse
 import os.path
+from django.conf import settings
 
 class BlastQueryRecord(models.Model):
     task_id = models.CharField(max_length=32, primary_key=True) # ex. 128c8661c25d45b8-9ca7809a09619db9
@@ -76,6 +77,26 @@ class BlastDb(models.Model):
         return os.path.isfile(self.fasta_file.path_full)
     fasta_file_exists.boolean = True
     fasta_file_exists.short_description = 'file exists'
+
+    def makeblastdb(self):
+        if not os.path.isfile(self.fasta_file.path_full):
+            return False
+        from sys import platform
+        from subprocess import Popen, PIPE
+        bin_name = 'bin_linux'
+        if platform == 'win32':
+            bin_name = 'bin_win'
+        makeblastdb_path = os.path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'makeblastdb')
+        args = [makeblastdb_path, '-in', self.fasta_file.path_full, '-dbtype', self.type.molecule_type, '-hash_index']
+        if self.title:
+            args += ['-title', self.title]
+        if self.organism.tax_id:
+            args += ['-taxid', self.organism.tax_id]
+        p = Popen(args, stdout=PIPE, stderr=PIPE)
+        output, error = p.communicate()
+        if p.returncode > 0:
+            return False
+        return True
 
     def natural_key(self):
         return (str(self.fasta_file),)
