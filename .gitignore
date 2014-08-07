@@ -5,6 +5,7 @@
 *.suo
 *.user
 *.sln.docstates
+db.sqlite3
 
 # Python byte code
 *.pyc
