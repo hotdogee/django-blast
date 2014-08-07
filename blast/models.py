@@ -99,35 +99,41 @@ class BlastDb(models.Model):
     def index_fasta(self):
         if not os.path.isfile(self.fasta_file.path_full):
             return 1, 'FASTA file not found', ''
-        # remove existing sequences
-        self.sequence_set.all().delete()
-        # parse fasta
-        seq_count = 0
-        with open(self.fasta_file.path_full, 'rb') as f:
-            offset = 0
-            id = ''
-            header = ''
-            length = 0
-            seq_start_pos = 0
-            seq_end_pos = 0
-            for line in f:
-                stripped = line.strip()
-                if len(stripped) > 0:
-                    if stripped[0] == '>': # header
-                        if length > 0: # not first sequence, add previous sequence to db
-                            self.sequence_set.create(id=id, header=header, length=length, seq_start_pos=seq_start_pos, seq_end_pos=offset)
-                            seq_count += 1
-                        seq_start_pos = offset + line.find('>') # white chars before '>'
-                        header = stripped[1:] # exclue '>'
-                        id = header.split(None, 1)[0]
-                        length = 0
-                    else: # sequence
-                        length += len(stripped)
-                offset += len(line)
-            if length > 0: # add last sequence
-                self.sequence_set.create(id=id, header=header, length=length, seq_start_pos=seq_start_pos, seq_end_pos=offset)
-                seq_count += 1
-        return 0, '', '%d sequences added.' % seq_count
+        try:
+            # remove existing sequences
+            self.sequence_set.all().delete()
+            # parse fasta
+            #seq_count = 0
+            sequence_list = []
+            with open(self.fasta_file.path_full, 'rb') as f:
+                offset = 0
+                id = ''
+                #header = ''
+                length = 0
+                seq_start_pos = 0
+                seq_end_pos = 0
+                for line in f:
+                    stripped = line.strip()
+                    if len(stripped) > 0:
+                        if stripped[0] == '>': # header
+                            if length > 0: # not first sequence, add previous sequence to db
+                                sequence_list.append(Sequence(blast_db=self, id=id, length=length, seq_start_pos=seq_start_pos, seq_end_pos=offset))
+                                #seq_count += 1
+                            seq_start_pos = offset + line.find('>') # white chars before '>'
+                            #header = stripped[1:] # exclue '>'
+                            id = stripped.split(None, 1)[0][1:]
+                            length = 0
+                        else: # sequence
+                            length += len(stripped)
+                    offset += len(line)
+                if length > 0: # add last sequence
+                    sequence_list.append(Sequence(blast_db=self, id=id, length=length, seq_start_pos=seq_start_pos, seq_end_pos=offset))
+                    #seq_count += 1
+            if len(sequence_list) > 0:
+                Sequence.objects.bulk_create(sequence_list)
+            return 0, '', '%d sequences added.' % len(sequence_list)
+        except Exception as e:
+            return 1, str(e), ''
 
     def natural_key(self):
         return (str(self.fasta_file),)
@@ -142,11 +148,11 @@ class Sequence(models.Model):
     '''
     Contents of this table should be generated programmatically
     >gi|45478711|ref|NC_005816.1| Yersinia pestis biovar Microtus ... pPCP1, complete sequence
+    SELECT [key], blast_db_id, id, length, seq_start_pos, seq_end_pos, modified_date FROM blast_sequence
     '''
     key = models.AutoField(primary_key=True)
     blast_db = models.ForeignKey(BlastDb, verbose_name='BLAST DB') # 
     id = models.CharField(max_length=100) # gi|45478711|ref|NC_005816.1|
-    header = models.CharField(max_length=400) # gi|45478711|ref|NC_005816.1| Yersinia pestis biovar Microtus ... pPCP1, complete sequence
     length = models.PositiveIntegerField() # 
     seq_start_pos = models.BigIntegerField() # used for file.seek(offset), marks start of '>'
     seq_end_pos = models.BigIntegerField() # used to calculate file.read(size)
@@ -165,6 +171,13 @@ class Sequence(models.Model):
         with open(self.blast_db.fasta_file.path_full, 'rb') as f:
             f.seek(seq_start_pos)
             return f.read(seq_end_pos - seq_start_pos).split('\n', 1)[1]
+
+    def get_header(self):
+        if not os.path.isfile(self.blast_db.fasta_file.path_full):
+            return 'FASTA file not found.'
+        with open(self.blast_db.fasta_file.path_full, 'rb') as f:
+            f.seek(seq_start_pos)
+            return f.read(seq_end_pos - seq_start_pos).split('\n', 1)[0]
 
     def __unicode__(self):
         return self.id
