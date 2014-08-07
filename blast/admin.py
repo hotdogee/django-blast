@@ -24,7 +24,7 @@ class BlastDbForm(ModelForm):
 
 class BlastDbAdmin(admin.ModelAdmin):
     form = BlastDbForm
-    list_display = ('title', 'organism', 'type', 'fasta_file', 'fasta_file_exists', 'blast_db_files_exists','description', 'is_shown',)
+    list_display = ('title', 'organism', 'type', 'fasta_file', 'fasta_file_exists', 'blast_db_files_exists', 'sequence_set_exists','description', 'is_shown',)
     list_editable = ('is_shown',)
     list_filter = ('organism', 'type', 'is_shown',)
     search_fields = ('fasta_file','title',)
@@ -62,7 +62,7 @@ class BlastDbAdmin(admin.ModelAdmin):
                 success_count += 1
         if success_count > 0:
             self.message_user(request, "%d entries successfully added to Sequences table." % success_count)
-    index_fasta.short_description = 'Parse FASTA and add to Sequences table, replaces existing Sequence entries'
+    index_fasta.short_description = 'Populate Sequences table, replaces existing Sequence entries'
 
     class Media:
         js = ('blast/scripts/blastdb-admin.js',)
