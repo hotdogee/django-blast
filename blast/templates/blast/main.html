@@ -53,9 +53,11 @@ Enter here your input data as
 	<BR>
 	<span class="load-nucleotide">Or</span> <span class="load-peptide">load</span> it from disk 
 	<input type="file" name="query-file" class="query-file">
+    <!--
 	<div>
 		Set subsequence: From <input TYPE="text" NAME="QUERY_FROM" VALUE="" SIZE="10"> To <input TYPE="text" NAME="QUERY_TO" VALUE="" SIZE="10">
 	</div>
+    -->
 </fieldset>
 
 <fieldset id="fieldset-program">
@@ -82,158 +84,54 @@ Enter here your input data as
 	</label>
 	<div id="blastProgramDescription">blastn - Nucleotide vs. Nucleotide</div>
 	<div>
-		<INPUT TYPE="button" VALUE="Clear sequence" onClick="MainBlastForm.SEQUENCE.value='';MainBlastForm.QUERY_FROM.value='';MainBlastForm.QUERY_TO.value='';MainBlastForm.SEQUENCE.focus();">
+		<INPUT TYPE="button" VALUE="Reset" CLASS="btn_reset">
 		<INPUT TYPE="submit" VALUE="Search">
 	</div>
 </fieldset>
 
-<fieldset id="fieldset-options">
-	<legend>BLAST Options</legend>
-	The query sequence is 
-	<a href="docs/filtered.html">filtered</a> 
-	for low complexity regions by default.
-	<BR>
-	<a href="docs/newoptions.html#filter">Filter</a>
-	 <INPUT TYPE="checkbox" VALUE="L" NAME="FILTER" CHECKED> Low complexity
-	 <INPUT TYPE="checkbox" VALUE="m" NAME="FILTER"> Mask for lookup table only
-	<P>
-	<a href="docs/newoptions.html#expect">Expect</a>
-	<select name = "EXPECT">
-		<option> 0.0001 
-		<option> 0.01 
-		<option> 1 
-		<option selected> 10 
-		<option> 100 
-		<option> 1000 
-	</select>
-	&nbsp;&nbsp;
-
-	<a href="docs/matrix_info.html">Matrix</a>
-	<select name = "MAT_PARAM">
-		<option value = "PAM30	 9	 1"> PAM30 </option>
-		<option value = "PAM70	 10	 1"> PAM70 </option> 
-		<option value = "BLOSUM80	 10	 1"> BLOSUM80 </option>
-		<option selected value = "BLOSUM62	 11	 1"> BLOSUM62 </option>
-		<option value = "BLOSUM45	 14	 2"> BLOSUM45 </option>
-	</select>
-	<INPUT TYPE="checkbox" NAME="UNGAPPED_ALIGNMENT" VALUE="is_set"> Perform ungapped alignment 
-	<P>
-	<a href="docs/newoptions.html#gencodes">Query Genetic Codes (blastx only) 
-	</a>
-	<select name = "GENETIC_CODE">
-	 <option> Standard (1) 
-	 <option> Vertebrate Mitochondrial (2) 
-	 <option> Yeast Mitochondrial (3) 
-	 <option> Mold Mitochondrial; ... (4) 
-	 <option> Invertebrate Mitochondrial (5) 
-	 <option> Ciliate Nuclear; ... (6) 
-	 <option> Echinoderm Mitochondrial (9) 
-	 <option> Euplotid Nuclear (10) 
-	 <option> Bacterial (11) 
-	 <option> Alternative Yeast Nuclear (12) 
-	 <option> Ascidian Mitochondrial (13) 
-	 <option> Flatworm Mitochondrial (14) 
-	 <option> Blepharisma Macronuclear (15) 
-	</select>
-	<P>
-	<a href="docs/newoptions.html#gencodes">Database Genetic Codes (tblast[nx] only)
-	</a>
-	<select name = "DB_GENETIC_CODE">
-	 <option> Standard (1)
-	 <option> Vertebrate Mitochondrial (2)
-	 <option> Yeast Mitochondrial (3)
-	 <option> Mold Mitochondrial; ... (4)
-	 <option> Invertebrate Mitochondrial (5)
-	 <option> Ciliate Nuclear; ... (6)
-	 <option> Echinoderm Mitochondrial (9)
-	 <option> Euplotid Nuclear (10)
-	 <option> Bacterial (11)
-	 <option> Alternative Yeast Nuclear (12)
-	 <option> Ascidian Mitochondrial (13)
-	 <option> Flatworm Mitochondrial (14)
-	 <option> Blepharisma Macronuclear (15)
-	</select>
-	<P>
-	<a href="docs/oof_notation.html">Frame shift penalty</a> for blastx 
-	<select NAME = "OOF_ALIGN"> 
-	 <option> 6
-	 <option> 7
-	 <option> 8
-	 <option> 9
-	 <option> 10
-	 <option> 11
-	 <option> 12
-	 <option> 13
-	 <option> 14
-	 <option> 15
-	 <option> 16
-	 <option> 17
-	 <option> 18
-	 <option> 19
-	 <option> 20
-	 <option> 25   
-	 <option> 30
-	 <option> 50
-	 <option> 1000
-	 <option selected VALUE = "0"> No OOF
-	</select>
-	<P>
-	<a href="docs/full_options.html">Other advanced options:</a> <INPUT TYPE="text" NAME="OTHER_ADVANCED" VALUE="-v 250 -b 250" MAXLENGTH="50">
-	<HR>
-	<!--
-	<INPUT TYPE="checkbox" NAME="NCBI_GI" >&nbsp;&nbsp;
-	<a href="docs/newoptions.html#ncbi-gi"> NCBI-gi</a>
-	&nbsp;&nbsp;&nbsp;&nbsp;
-	-->
-	<INPUT TYPE="checkbox" NAME="OVERVIEW"  CHECKED> 
-
-	<a href="docs/newoptions.html#graphical-overview">Graphical Overview</a>
-	&nbsp;&nbsp;
-	<a href="docs/options.html#alignmentviews">Alignment view</a>
-	<select name = "ALIGNMENT_VIEW">
-		<option value=0> Pairwise
-		<option value=1> master-slave with identities
-		<option value=2> master-slave without identities
-		<option value=3> flat master-slave with identities
-		<option value=4> flat master-slave without identities
-		<option value=7> BLAST XML
-		<option value=9> Hit Table
-	</select>
-	<BR>
-	<a href="docs/newoptions.html#descriptions">Descriptions</a>
-	<select name = "DESCRIPTIONS">
-		<option> 0 
-		<option> 10 
-		<option> 50 
-		<option selected> 100 
-		<option> 250 
-		<option> 500 
-	</select>
-	&nbsp;&nbsp;
-	<a href="docs/newoptions.html#alignments">Alignments</a>
-	<select name = "ALIGNMENTS">
-		<option> 0 
-		<option> 10 
-		<option selected> 50 
-		<option> 100 
-		<option> 250 
-		<option> 500 
-	</select>
-	<a href="docs/color_schema.html">Color schema</a>
-	<select name = "COLOR_SCHEMA">
-		<option selected value = 0> No color schema 
-		<option value = 1> Color schema 1 
-		<option value = 2> Color schema 2  
-		<option value = 3> Color schema 3 
-		<option value = 4> Color schema 4 
-		<option value = 5> Color schema 5 
-		<option value = 6> Color schema 6 
-	</select>
+<!-- BLAST options start -->
+<div id="blast_options">
+    <fieldset id="fieldset-options-blast">
+        <legend></legend>
+        <fieldset id="fieldset-options-blast-general-param">
+        <legend>General Parameters</legend>
+        <a>Number of alignments </a>
+        <select id="num_alignments" name="num_alignments">
+            <option value="10">10</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="250">250</option>
+            <option value="500" selected>500</option>
+            <option value="1000">1000</option>
+            <option value="5000">5000</option>
+            <option value="10000">10000</option>
+            <option value="20000">20000</option>
+        </select>
+        <br/>
+        <a>Expect threshold </a>
+        <input TYPE="text" ID='evalue' NAME="evalue" VALUE="10" SIZE="10"><br/>
+        <a>Word size </a>
+        <input TYPE="text" ID='word_size' NAME="word_size" VALUE="3" SIZE="10"><br/>
+        </fieldset>
+        
+        <fieldset id="fieldset-options-blast-scoring-param">
+        <legend>Scoring Parameters </legend>
+        </fieldset>
+        
+        <fieldset id="fieldset-options-blast-filter-param">
+        <legend>Filters and Masking</legend>
+        <a><input TYPE="checkbox" ID="low_complexity" VALUE="yes" NAME="low_complexity"> Low complexity</a><br/>
+        <a><input TYPE="checkbox" ID="soft_masking" VALUE="true" NAME="soft_masking"> Mask for lookup table only</a><br/>
+        </fieldset>
+    </fieldset>
+</div>
+<!-- BLAST options end -->
+   
 	<div>
-		<INPUT TYPE="button" VALUE="Clear sequence" onClick="MainBlastForm.SEQUENCE.value='';MainBlastForm.SEQFILE.value='';MainBlastForm.SEQUENCE.focus();">
+		<INPUT TYPE="button" VALUE="Reset" CLASS="btn_reset">
 		<INPUT TYPE="submit" VALUE="Search">
 	</div>
-</fieldset>
+
 </FORM>
 </div>
 </div>
