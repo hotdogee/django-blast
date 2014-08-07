@@ -76,7 +76,12 @@ class BlastDb(models.Model):
     def fasta_file_exists(self):
         return os.path.isfile(self.fasta_file.path_full)
     fasta_file_exists.boolean = True
-    fasta_file_exists.short_description = 'file exists'
+    fasta_file_exists.short_description = 'fasta file exists'
+    
+    def blast_db_files_exists(self):
+        return all([os.path.isfile(self.fasta_file.path_full + '.' + self.type.molecule_type[0] + ext) for ext in  ['hd', 'hi', 'hr', 'in', 'og', 'sd', 'si', 'sq']])
+    blast_db_files_exists.boolean = True
+    blast_db_files_exists.short_description = 'blast db files exists'
 
     def makeblastdb(self):
         if not os.path.isfile(self.fasta_file.path_full):

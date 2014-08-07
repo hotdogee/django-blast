@@ -24,7 +24,7 @@ class BlastDbForm(ModelForm):
 
 class BlastDbAdmin(admin.ModelAdmin):
     form = BlastDbForm
-    list_display = ('title', 'organism', 'type', 'fasta_file', 'fasta_file_exists','description', 'is_shown',)
+    list_display = ('title', 'organism', 'type', 'fasta_file', 'fasta_file_exists', 'blast_db_files_exists','description', 'is_shown',)
     list_editable = ('is_shown',)
     list_filter = ('organism', 'type', 'is_shown',)
     search_fields = ('fasta_file','title',)
