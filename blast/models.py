@@ -82,6 +82,11 @@ class BlastDb(models.Model):
         return all([os.path.isfile(self.fasta_file.path_full + '.' + self.type.molecule_type[0] + ext) for ext in  ['hd', 'hi', 'hr', 'in', 'og', 'sd', 'si', 'sq']])
     blast_db_files_exists.boolean = True
     blast_db_files_exists.short_description = 'blast db files exists'
+    
+    def sequence_set_exists(self):
+        return self.sequence_set.count() > 0
+    sequence_set_exists.boolean = True
+    sequence_set_exists.short_description = 'Sequence table populated'
 
     def makeblastdb(self):
         if not os.path.isfile(self.fasta_file.path_full):
