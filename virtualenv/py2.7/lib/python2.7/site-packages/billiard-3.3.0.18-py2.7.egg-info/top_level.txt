@@ -1,3 +1,0 @@
-funtests
-billiard
-_billiard
