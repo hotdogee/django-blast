@@ -86,7 +86,7 @@ class BlastDb(models.Model):
     def sequence_set_exists(self):
         return self.sequence_set.count() > 0
     sequence_set_exists.boolean = True
-    sequence_set_exists.short_description = 'Sequence table populated'
+    sequence_set_exists.short_description = 'sequence table populated'
 
     def makeblastdb(self):
         if not os.path.isfile(self.fasta_file.path_full):
