@@ -260,3 +260,6 @@ CELERY_ACCEPT_CONTENT=['json']
 CELERY_TIMEZONE = TIME_ZONE
 #CELERY_ENABLE_UTC = True
 
+# Use virtual environment or not
+USE_VIRTUALENV = False
+

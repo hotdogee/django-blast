@@ -14,19 +14,18 @@ framework.
 
 """
 import os
+from django.conf import settings
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "i5k.settings")
 
-USE_VIRTUALENV = False
-if USE_VIRTUALENV:
+if settings.USE_VIRTUALENV:
     import sys
     import site
 
-    PROJECT_ROOT = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+    PROJECT_ROOT = settings.PROJECT_ROOT
 
     # Add the site-packages of the chosen virtualenv to work with
     site.addsitedir(os.path.join(PROJECT_ROOT, '/virtualenv/py2.7/lib/python2.7/site-packages'))
-    #site.addsitedir('/myprojectenv/local/lib/python2.7/site-packages')
 
     # Add the app's directory to the PYTHONPATH
     sys.path.append(PROJECT_ROOT)
