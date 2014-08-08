@@ -262,4 +262,4 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # Use virtual environment or not
 USE_VIRTUALENV = False
-
+VIRTUALENV_ROOT = 'virtualenv/py2.7'

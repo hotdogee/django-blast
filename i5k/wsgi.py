@@ -23,16 +23,17 @@ if settings.USE_VIRTUALENV:
     import site
 
     PROJECT_ROOT = settings.PROJECT_ROOT
+    VIRTUALENV_ROOT = settings.VIRTUALENV_ROOT
 
     # Add the site-packages of the chosen virtualenv to work with
-    site.addsitedir(os.path.join(PROJECT_ROOT, '/virtualenv/py2.7/lib/python2.7/site-packages'))
+    site.addsitedir(os.path.join(PROJECT_ROOT, VIRTUALENV_ROOT, 'lib/python2.7/site-packages'))
 
     # Add the app's directory to the PYTHONPATH
     sys.path.append(PROJECT_ROOT)
     sys.path.append(os.path.join(PROJECT_ROOT, 'i5k'))
 
     # Activate your virtual env
-    activate_env=os.path.expanduser(os.path.join(PROJECT_ROOT, 'virtualenv/py2.7/bin/activate_this.py'))
+    activate_env=os.path.expanduser(os.path.join(PROJECT_ROOT, VIRTUALENV_ROOT, 'bin/activate_this.py'))
     execfile(activate_env, dict(__file__=activate_env))
 
 # This application object is used by any WSGI server configured to use this
