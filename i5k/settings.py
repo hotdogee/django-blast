@@ -204,9 +204,9 @@ SUIT_CONFIG = {
     'MENU': (
         {'app': 'blast', 'label': 'BLAST', 'icon':'icon-leaf', 'models': (
             {'model': 'blastqueryrecord'},
-            {'model': 'blastdb'},
             {'model': 'organism'},
-            {'model': 'blastdbtype'},
+            {'model': 'sequencetype'},
+            {'model': 'blastdb'},
             {'model': 'jbrowsesetting'},
             {'model': 'sequence'},
         )},

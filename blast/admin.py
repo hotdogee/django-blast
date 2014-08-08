@@ -94,12 +94,12 @@ class OrganismAdmin(admin.ModelAdmin):
         js = ('blast/scripts/organism-admin.js',)
 admin.site.register(Organism, OrganismAdmin)
 
-class BlastDbTypeAdmin(admin.ModelAdmin):
+class SequenceTypeAdmin(admin.ModelAdmin):
     list_display = ('molecule_type', 'dataset_type',)
     search_fields = ('molecule_type', 'dataset_type',)
     actions_on_top = True
     actions_on_bottom = True
-admin.site.register(BlastDbType, BlastDbTypeAdmin)
+admin.site.register(SequenceType, SequenceTypeAdmin)
 
 class SequenceForm(ModelForm):
     class Meta:

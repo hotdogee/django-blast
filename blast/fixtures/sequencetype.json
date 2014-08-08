@@ -1,15 +1,15 @@
 [
   {
     "pk": 1,
-    "model": "blast.blastdbtype",
+    "model": "blast.sequencetype",
     "fields": {
-      "dataset_type": " Genome Assembly",
+      "dataset_type": "Genome Assembly",
       "molecule_type": "nucl"
     }
   },
   {
     "pk": 2,
-    "model": "blast.blastdbtype",
+    "model": "blast.sequencetype",
     "fields": {
       "dataset_type": "Transcript",
       "molecule_type": "nucl"
@@ -17,7 +17,7 @@
   },
   {
     "pk": 3,
-    "model": "blast.blastdbtype",
+    "model": "blast.sequencetype",
     "fields": {
       "dataset_type": "Protein",
       "molecule_type": "prot"

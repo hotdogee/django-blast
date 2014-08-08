@@ -37,12 +37,12 @@ class Organism(models.Model):
     def __unicode__(self):
         return self.display_name
 
-class BlastDbTypeManager(models.Manager):
+class SequenceTypeManager(models.Manager):
     def get_by_natural_key(self, dataset_type):
         return self.get(dataset_type=dataset_type)
 
-class BlastDbType(models.Model):
-    objects = BlastDbTypeManager()
+class SequenceType(models.Model):
+    objects = SequenceTypeManager()
     molecule_type = models.CharField(max_length=4, default='nucl', choices=(
         ('nucl', 'Nucleotide'),
         ('prot', 'Protein'))) # makeblastdb -dbtype
@@ -55,7 +55,7 @@ class BlastDbType(models.Model):
         return u'%s - %s' % (self.get_molecule_type_display(), self.dataset_type)
 
     class Meta:
-        verbose_name = 'BLAST database type'
+        verbose_name = 'sequence type'
 
 class BlastDbManager(models.Manager):
     def get_by_natural_key(self, fasta_file):
@@ -64,9 +64,9 @@ class BlastDbManager(models.Manager):
 class BlastDb(models.Model):
     objects = BlastDbManager()
     organism = models.ForeignKey(Organism) # 
-    type = models.ForeignKey(BlastDbType) # 
+    type = models.ForeignKey(SequenceType) # 
     #fasta_file = models.FileField(upload_to='blastdb') # upload file
-    fasta_file = FileBrowseField('FASTA file', max_length=100, directory='blastdb/', extensions='FASTA', format='FASTA')
+    fasta_file = FileBrowseField('FASTA file path', max_length=100, directory='blastdb/', extensions='FASTA', format='FASTA')
     title = models.CharField(max_length=200, unique=True, help_text='This is passed into makeblast -title') # makeblastdb -title
     description = models.TextField(blank=True) # shown in blast db selection ui
     is_shown = models.BooleanField(default=None, help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
