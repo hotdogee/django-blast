@@ -47,12 +47,7 @@
     <Compile Include="app\tests.py" />
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
-    <Compile Include="celery_consumer\admin.py" />
-    <Compile Include="celery_consumer\models.py" />
-    <Compile Include="celery_consumer\tasks.py" />
-    <Compile Include="celery_consumer\tests.py" />
-    <Compile Include="celery_consumer\views.py" />
-    <Compile Include="celery_consumer\__init__.py" />
+    <Compile Include="blast\tasks.py" />
     <Compile Include="filebrowser\base.py" />
     <Compile Include="filebrowser\conf.py" />
     <Compile Include="filebrowser\decorators.py" />
@@ -72,6 +67,7 @@
     <Compile Include="filebrowser\urls.py" />
     <Compile Include="filebrowser\views.py" />
     <Compile Include="filebrowser\__init__.py" />
+    <Compile Include="i5k\celery.py" />
     <Compile Include="manage.py" />
     <Compile Include="i5k\__init__.py" />
     <Compile Include="i5k\settings.py" />
@@ -170,7 +166,6 @@
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\app\" />
     <Folder Include="blast\templates\blast\" />
-    <Folder Include="celery_consumer\" />
     <Folder Include="blast\fixtures\" />
     <Folder Include="filebrowser\" />
     <Folder Include="filebrowser\locale\" />
@@ -315,8 +310,8 @@
     <Content Include="blast\bin_win\deltablast.exe" />
     <Content Include="blast\bin_win\dustmasker.exe" />
     <Content Include="blast\fixtures\blastdb.json" />
-    <Content Include="blast\fixtures\blastdbtype.json" />
     <Content Include="blast\fixtures\organism.json" />
+    <Content Include="blast\fixtures\sequencetype.json" />
     <Content Include="blast\static\blast\components\aha-table\aha-table.html" />
     <Content Include="blast\static\blast\components\core-ajax\.bower.json" />
     <Content Include="blast\static\blast\components\core-ajax\bower.json" />
@@ -748,10 +743,6 @@
     <Content Include="blast\bin_win\tblastx.exe" />
     <Content Include="blast\bin_win\windowmasker.exe" />
     <Content Include="blast\templates\blast\results_not_existed.html" />
-    <Content Include="celery_consumer\admin.pyc" />
-    <Content Include="celery_consumer\models.pyc" />
-    <Content Include="celery_consumer\tasks.pyc" />
-    <Content Include="celery_consumer\__init__.pyc" />
     <Content Include="filebrowser\locale\ca\LC_MESSAGES\django.mo" />
     <Content Include="filebrowser\locale\ca\LC_MESSAGES\django.po" />
     <Content Include="filebrowser\locale\de\LC_MESSAGES\django.mo" />

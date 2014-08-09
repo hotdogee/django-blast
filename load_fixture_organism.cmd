@@ -1,0 +1,1 @@
+manage.py loaddata organism.json
