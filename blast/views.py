@@ -43,10 +43,9 @@ blast_info = {
 def create(request):
     #return HttpResponse("BLAST Page: create.")
     if request.method == 'GET':
-        # build dataset_list
-        db_organism = [db for db in BlastDb.objects.select_related('organism__short_name').filter(is_shown=True) if db.db_ready()].values_list('title', 'organism__short_name')
-        dataset_list = []
-        return render(request, 'blast/main.html', {'title': 'BLAST Query',})
+        # build dataset_list = [['Genome Assembly', 'Nucleotide', 'Agla_Btl03082013.genome_new_ids.fa', 'Anoplophora glabripennis'],]
+        blastdb_list = [[db.type.dataset_type, db.type.get_molecule_type_display(), db.fasta_file.title, db.organism.display_name] for db in BlastDb.objects.select_related('organism').select_related('sequencetype').filter(is_shown=True) if db.db_ready()]
+        return render(request, 'blast/main.html', {'title': 'BLAST Query', 'blastdb_list': blastdb_list})
     elif request.method == 'POST':
         # setup file paths
         task_id = uuid4().hex # TODO: Create from hash of input to check for duplicate inputs

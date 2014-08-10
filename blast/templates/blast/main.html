@@ -5,6 +5,9 @@
     <link type="text/css" rel="stylesheet" media="all" href="{% static 'blast/css/main.css' %}" />
     <script type="text/javascript" src="{% static 'blast/scripts/jquery-1.11.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'blast/scripts/jquery.hoverIntent.minified.js' %}"></script>
+    <script>
+    var dataset_list = {{ blastdb_list|safe }};
+    </script>
     <script type="text/javascript" src="{% static 'blast/scripts/blast-multi.js' %}"></script>
 {% endblock %}
 
