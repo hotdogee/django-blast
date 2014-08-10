@@ -117,33 +117,30 @@ def retrieve(request, task_id='1'):
 
         # if result is generated and not expired
         if r.result_date and (r.result_date.replace(tzinfo=None) >= (datetime.utcnow()+ timedelta(days=-7))):
-            # parse csv
-            file_prefix = path.join(settings.MEDIA_ROOT, task_id, task_id)
-            
-            # if .csv file size is 0, no hits found
-            if r.result_status != 'SUCCESS':
+            if r.result_status in set(['SUCCESS', 'NO_GFF']):
+                file_prefix = path.join(settings.MEDIA_ROOT, task_id, task_id)
+                results_data = ''
+                with open(file_prefix + '.json', 'r') as f:
+                    results_data = f.read()
+                # detail results
+                results_detail = ''
+                with open(file_prefix + '.html', 'r') as f:
+                    results_detail = f.read()
+                return render(
+                    request,
+                    'blast/results.html', {
+                        'title': 'BLAST Result',
+                        'results_col_names': json.dumps(blast_info['col_names'] + ['jbrowse']),
+                        'results_data': results_data,
+                        'results_detail': results_detail,
+                        'task_id': task_id,
+                    })
+            else: # if .csv file size is 0, no hits found
                 return render(request, 'blast/results_not_existed.html', 
                 {
                     'title': 'No Hits Found',
                     'isNoHits': True,
                     'isExpired': False,
-                })
-                
-            results_data = ''
-            with open(file_prefix + '.json', 'r') as f:
-                results_data = f.read()
-            # detail results
-            results_detail = ''
-            with open(file_prefix + '.html', 'r') as f:
-                results_detail = f.read()
-            return render(
-                request,
-                'blast/results.html', {
-                    'title': 'BLAST Result',
-                    'results_col_names': json.dumps(blast_info['col_names'] + ['jbrowse']),
-                    'results_data': results_data,
-                    'results_detail': results_detail,
-                    'task_id': task_id,
                 })
         else:
             enqueue_date = r.enqueue_date.astimezone(timezone('US/Eastern')).strftime('%d %b %Y %X %Z')
