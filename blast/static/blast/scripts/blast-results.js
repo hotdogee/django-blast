@@ -42,6 +42,7 @@
     );
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
+    var index_of_jbrowse = _.indexOf(results_col_names, 'jbrowse');
     var $results_table = $('#results-table').dataTable({
         scrollX: '100%',
         scrollY: '200px',
@@ -95,7 +96,14 @@
         },
         //responsive: true,
         data: results_data,
-        columns: _.map(results_col_names, function (name) { return { 'title': name }; })
+        columns: _.map(results_col_names, function (name) { return { 'title': name }; }),
+        createdRow: function (row, data, dataIndex) {
+            if (data[index_of_jbrowse] != '') {
+                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" href="' + results_info['db_url'][results_info['sseqid_db'][data[col_idx['sseqid']]]] + '?task_id=' + task_id + '&dbname=' + data[index_of_jbrowse] + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
+                //<a class="btn btn-default" href="#" role="button">Link</a>
+                //http://gmod-dev.nal.usda.gov:8080/[ORGANISM]/jbrowse/?task_id=[TASK_ID]&dbname=[BLAST_DB]
+            }
+        }
     });
     var results_table_api = $('#results-table').DataTable();
     //}).yadcf([{

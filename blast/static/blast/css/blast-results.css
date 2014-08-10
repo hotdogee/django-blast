@@ -14,3 +14,8 @@ div.DTS tbody tr.even.highlight {
     margin: 14px;
     right: 0;
 }
+
+.center-cell {
+    text-align: center;
+    vertical-align: middle;
+}
