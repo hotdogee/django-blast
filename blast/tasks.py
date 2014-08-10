@@ -91,7 +91,7 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                                     match_part_id += 1
                             match_id += 1
             with open(json_path, 'wb') as f:
-                json.dump([hsp + [db_organism[sseqid_db[hsp_dict_list[i]['sseqid']]] if sseqid_db[hsp_dict_list[i]['sseqid']] in db_url else ''] for i, hsp in enumerate(hsp_list)], f)
+                json.dump([[db_organism[sseqid_db[hsp_dict_list[i]['sseqid']]] if sseqid_db[hsp_dict_list[i]['sseqid']] in db_url else ''] + hsp for i, hsp in enumerate(hsp_list)], f)
             with open(path.join(basedir, 'info.json'), 'wb') as f:
                 json.dump({'sseqid_db': sseqid_db, 'db_organism': db_organism, 'db_url': db_url}, f)
             result_status = 'SUCCESS'

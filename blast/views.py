@@ -134,7 +134,7 @@ def retrieve(request, task_id='1'):
                     request,
                     'blast/results.html', {
                         'title': 'BLAST Result',
-                        'results_col_names': json.dumps(blast_info['col_names'] + ['jbrowse']),
+                        'results_col_names': json.dumps(['jbrowse'] + blast_info['col_names']),
                         'results_data': results_data,
                         'results_detail': results_detail,
                         'results_info': results_info,

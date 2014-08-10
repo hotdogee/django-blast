@@ -94,9 +94,15 @@
                 }
             ]
         },
+        order: [[ col_idx['qseqid'], 'asc' ]],
         //responsive: true,
         data: results_data,
-        columns: _.map(results_col_names, function (name) { return { 'title': name }; }),
+        columns: _.map(results_col_names, function (name) {
+            col = { 'title': name };
+            if (name == 'jbrowse')
+                col['orderable'] = false;
+            return col;
+        }),
         createdRow: function (row, data, dataIndex) {
             if (data[index_of_jbrowse] != '') {
                 $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" href="' + results_info['db_url'][results_info['sseqid_db'][data[col_idx['sseqid']]]] + '?task_id=' + task_id + '&dbname=' + data[index_of_jbrowse] + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
