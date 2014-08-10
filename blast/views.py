@@ -27,7 +27,7 @@ blast_customized_options = {'blastn':['num_alignments', 'evalue', 'word_size', '
 
 blast_col_name = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe sstrand'
 blast_info = {
-    'col_types': [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int, int, int, str],
+    'col_types': ['str', 'str', 'float', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'float', 'int', 'int', 'int', 'str'],
     'col_names': blast_col_name.split(),
     'ext': {
         '.0': '0',
@@ -132,8 +132,9 @@ def retrieve(request, task_id='1'):
             results_data = []
             with open(file_prefix + '.csv', 'r') as f:
                 cr = csv.reader(f)
+                type_func = {'str': str, 'float': float, 'int': int}
                 for row in cr:
-                    results_data.append(tuple(convert(value) for convert, value in zip(blast_info['col_types'], row)))
+                    results_data.append(tuple(type_func[convert](value) for convert, value in zip(blast_info['col_types'], row)))
             # detail results
             results_detail = ''
             with open(file_prefix + '.html', 'r') as f:
