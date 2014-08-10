@@ -263,3 +263,8 @@ CELERY_DISABLE_RATE_LIMITS = True
 # Use virtual environment or not
 USE_VIRTUALENV = False
 VIRTUALENV_ROOT = 'virtualenv/py2.7'
+
+# Use settings for production
+USE_PROD_SETTINGS = False
+if USE_PROD_SETTINGS:
+    from settings_prod import *

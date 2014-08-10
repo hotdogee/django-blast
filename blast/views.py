@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.http import Http404
 from django.http import HttpResponse
 from django.template import RequestContext
+from django.conf import settings
 from uuid import uuid4
 from os import path, makedirs, chmod, stat
 from django.conf import settings
@@ -163,8 +164,10 @@ def retrieve(request, task_id='1'):
                 'isNoHits': False,
             })
     except:
-        return HttpResponse(traceback.format_exc())
-        #raise Http404
+        if settings.USE_PROD_SETTINGS:
+            raise Http404
+        else:
+            return HttpResponse(traceback.format_exc())
         
 def read_gff3(request, task_id, dbname):
     output = '##gff-version 3\n'
