@@ -80,31 +80,32 @@ def create(request):
 
             # generate customized_options
             input_opt = []
-            for blast_option in blast_customized_options[request.POST['program']]:
-                if blast_option == 'low_complexity':
-                    if request.POST['program'] == 'blastn':
-                        input_opt.append('-dust')
-                    else:
-                        input_opt.append('-seg')
-                else:
-                    input_opt.append('-'+blast_option)
-                input_opt.append(request.POST[blast_option])
+            #for blast_option in blast_customized_options[request.POST['program']]:
+            #    if blast_option == 'low_complexity':
+            #        if request.POST['program'] == 'blastn':
+            #            input_opt.append('-dust')
+            #        else:
+            #            input_opt.append('-seg')
+            #    else:
+            #        input_opt.append('-'+blast_option)
+            #    input_opt.append(request.POST[blast_option])
 
             
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
-            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6'].extend(input_opt)]
+            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']]
             # convert to multiple formats
+            blast_formatter_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'blast_formatter')
             for ext, outfmt in blast_info['ext'].items():
                 args = [blast_formatter_path, '-archive', asn_filename, '-outfmt', outfmt, '-out', file_prefix + ext]
                 if ext == '.html':
                     args.append('-html')
                 args_list.append(args)
 
-            r = BlastQueryRecord()
-            r.task_id = task_id
-            r.save()
+            record = BlastQueryRecord()
+            record.task_id = task_id
+            record.save()
 
-            run_blast_task.delay(task_id, args_list)
+            run_blast_task.delay(task_id, args_list, file_prefix, blast_info)
             return redirect('blast:retrieve', task_id)
         else:
             raise Http404

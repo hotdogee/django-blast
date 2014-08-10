@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import os
 import sys
 import subprocess
@@ -6,7 +5,6 @@ import csv
 import re
 from itertools import groupby
 import sqlite3
-from .models import BlastDb, Sequence
 
 __DEFINE_OVERLAP_BASE_FOR_QUERY = 5 # move this to form field
 
@@ -15,22 +13,29 @@ db_path = 'C:\\Users\\clee\\Desktop\\Works\\blast2gff3\\python\\blast2gff3\\blas
 ID_num = 1
 name_num = 1
 
-blast_out_col_name_str = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe'
-blast_out_col_names = blast_out_col_name_str.split()
+#blast_out_col_name_str = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe'
 def blast2gff3(blast_program='blastn', csv_path='C:\\Users\\clee\\Desktop\\Works\\blast2gff3\\python\\6a991080e94a4174bbd2ac09ba840251\\6a991080e94a4174bbd2ac09ba840251.csv', blast_out_col_types = [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int, int, int]):
     try:
         basedir = os.path.dirname(csv_path)
-        content_groups = []
+        csv_content = []
         with open(csv_path, 'r') as f:
-            content_groups = groupby([dict(zip(blast_out_col_names, [convert(value) for convert, value in zip(blast_out_col_types, row)])) for row in csv.reader(f)], lambda x: x['qseqid'] + x['sseqid'] + '+' if x['qend'] - x['qstart'] >= 0 else '-').values()
+            cr = csv.reader(f)
+            for row in cr:
+                row = list(convert(value) for convert, value in zip(blast_out_col_types, row))
+                csv_content.append(row)
+        content_groups = []
+        for k, g in groupby(csv_content, lambda x: x[0]+x[1]):
+            content_groups.append(list(g))      # Store group iterator as a list
 
         for hsps in content_groups:
-            # check_is_genome
-            if Sequence.objects.filter(id__exact=hsps[0][1])[0].blast_db.type.dataset_type == 'Genome Assembly': continue
         
             hsp_plus_strand = []
             hsp_minus_strand = []
             hsp_unknown_strand = []
+            hsp_all_seq = []
+
+            if check_is_genome(hsps) == 0 : continue
+
             for hsp in hsps: #Get HSPs data here
                 # Get 'hsp' data and write out 'hsp' line
                 gff_col1_sseqid = hsp[1] #sseqid
@@ -81,7 +86,6 @@ def blast2gff3(blast_program='blastn', csv_path='C:\\Users\\clee\\Desktop\\Works
             hsp_unknown_strand = check_ref_overlap(hsp_unknown_strand)
 
             # Merge arrays together
-            hsp_all_seq = []
             hsp_all_seq.extend(make_gff(hsp_plus_strand))
             hsp_all_seq.extend(make_gff(hsp_minus_strand))
             hsp_all_seq.extend(make_gff(hsp_unknown_strand))
@@ -93,30 +97,15 @@ def blast2gff3(blast_program='blastn', csv_path='C:\\Users\\clee\\Desktop\\Works
     except:
         return 0
 
-def output_gff(arr_hsps_input, out_path):
-    try:
-        save_file_name = os.path.splitext(get_dbname(arr_hsps_input))[0]+'.gff'
-        fp = open(os.path.join(out_path, save_file_name), 'a')
+def check_is_genome(arr_hsps_input):
+    global db_path
 
-        if os.path.getsize(os.path.join(out_path, save_file_name)) == 0:
-            fp.write("##gff-version 3\n")
+    conn = sqlite3.connect(db_path).cursor()
+    conn.execute("SELECT COUNT(*) FROM sseqid2dbname, dbname2dbtype WHERE sseqid2dbname.dbname=dbname2dbtype.dbname AND sseqid2dbname.sseqid='%s' AND dbname2dbtype.dbtype='Genome Assembly'"%arr_hsps_input[0][1])
+    r = conn.fetchone()[0]
+    conn.close()
 
-        jBrowse_ref_name = os.path.splitext(save_file_name)[0]
-        m = re.findall('gnl\|(.+)\|(.+)', arr_hsps_input[0][0])
-        if m : jBrowse_ref_name = m[0][1].split('_', 1)[1]
-
-        m = re.findall('(diacit)\|(.*)', arr_hsps_input[0][0])
-        if m : jBrowse_ref_name = m[0][1]
-
-        for hsp in arr_hsps_input:
-            tmp_str = jBrowse_ref_name+"\t"+hsp[1]+"\t"+hsp[2]+"\t"+str(hsp[3])+"\t"+str(hsp[4])+"\t"+str(hsp[5])+"\t"+hsp[6]+"\t"+str(hsp[7])+"\t"+hsp[8]+"\n"
-            fp.write(tmp_str)
-    
-        fp.close()
-        return 1
-
-    except:
-        return 0
+    return 1 if r else 0
 
 def get_dbname(arr_hsps_input):
     global db_path
@@ -324,6 +313,31 @@ def make_gff(arr_hsps_input):
             ID_num += 1
 
     return arr_hsps_output
+
+def output_gff(arr_hsps_input, out_path):
+    try:
+        save_file_name = os.path.splitext(get_dbname(arr_hsps_input))[0]+'.gff'
+        fp = open(os.path.join(out_path, save_file_name), 'a')
+
+        if os.path.getsize(os.path.join(out_path, save_file_name)) == 0:
+            fp.write("##gff-version 3\n")
+
+        jBrowse_ref_name = os.path.splitext(save_file_name)[0]
+        m = re.findall('gnl\|(.+)\|(.+)', arr_hsps_input[0][0])
+        if m : jBrowse_ref_name = m[0][1].split('_', 1)[1]
+
+        m = re.findall('(diacit)\|(.*)', arr_hsps_input[0][0])
+        if m : jBrowse_ref_name = m[0][1]
+
+        for hsp in arr_hsps_input:
+            tmp_str = jBrowse_ref_name+"\t"+hsp[1]+"\t"+hsp[2]+"\t"+str(hsp[3])+"\t"+str(hsp[4])+"\t"+str(hsp[5])+"\t"+hsp[6]+"\t"+str(hsp[7])+"\t"+hsp[8]+"\n"
+            fp.write(tmp_str)
+    
+        fp.close()
+        return 1
+
+    except:
+        return 0
 
 #This function will generate an additional column of BLAST_DB which is queried by sseqid (the 2nd column in csv).
 def output_csv(in_csv_path='C:\\Users\\clee\\Desktop\\Works\\blast2gff3\\python\\6a991080e94a4174bbd2ac09ba840251\\6a991080e94a4174bbd2ac09ba840251.csv', blast_out_col_types = [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int, int, int]):
