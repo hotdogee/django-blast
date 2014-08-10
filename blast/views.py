@@ -129,12 +129,9 @@ def retrieve(request, task_id='1'):
                     'isExpired': False,
                 })
                 
-            results_data = []
-            with open(file_prefix + '.csv', 'r') as f:
-                cr = csv.reader(f)
-                type_func = {'str': str, 'float': float, 'int': int}
-                for row in cr:
-                    results_data.append(tuple(type_func[convert](value) for convert, value in zip(blast_info['col_types'], row)))
+            results_data = ''
+            with open(file_prefix + '.json', 'r') as f:
+                results_data = f.read()
             # detail results
             results_detail = ''
             with open(file_prefix + '.html', 'r') as f:
@@ -143,8 +140,8 @@ def retrieve(request, task_id='1'):
                 request,
                 'blast/results.html', {
                     'title': 'BLAST Result',
-                    'results_col_names': json.dumps(blast_info['col_names']),
-                    'results_data': json.dumps(results_data),
+                    'results_col_names': json.dumps(blast_info['col_names'] + ['jbrowse']),
+                    'results_data': results_data,
                     'results_detail': results_detail,
                     'task_id': task_id,
                 })
