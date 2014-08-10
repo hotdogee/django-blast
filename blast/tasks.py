@@ -48,7 +48,7 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
             basedir = path.dirname(csv_path)
             gff_col_names = 'seqid source type start end score strand phase attributes'.split()
             hsp_dict_list = [dict(zip(blast_info['col_names'], row)) for row in hsp_list]
-            sseqid_db = dict(Sequence.objects.select_related('blast_db__title').filter(id__in=[hsp['sseqid'] for hsp in hsp_dict_list]).values_list('id', 'blast_db__title'))
+            sseqid_db = dict(Sequence.objects.select_related('blast_db__title').filter(id__in=set([hsp['sseqid'] for hsp in hsp_dict_list])).values_list('id', 'blast_db__title'))
             db_organism = dict(BlastDb.objects.select_related('organism__short_name').filter(title__in=set(sseqid_db.values())).values_list('title', 'organism__short_name'))
             db_url = dict(JbrowseSetting.objects.select_related('blast_db__title').filter(blast_db__title__in=set(sseqid_db.values())).values_list('blast_db__title', 'url'))
             for db_name, db_hsp_dict_list in groupby([hsp for hsp in hsp_dict_list if sseqid_db[hsp['sseqid']] in db_url], lambda hsp: sseqid_db[hsp['sseqid']]):
@@ -92,6 +92,8 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                             match_id += 1
             with open(json_path, 'wb') as f:
                 json.dump([hsp + [db_organism[sseqid_db[hsp_dict_list[i]['sseqid']]] if sseqid_db[hsp_dict_list[i]['sseqid']] in db_url else ''] for i, hsp in enumerate(hsp_list)], f)
+            with open(path.join(basedir, 'info.json'), 'wb') as f:
+                json.dump({'sseqid_db': sseqid_db, 'db_organism': db_organism, 'db_url': db_url}, f)
             result_status = 'SUCCESS'
         except:
             with open(json_path, 'wb') as f:

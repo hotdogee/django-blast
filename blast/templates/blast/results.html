@@ -23,12 +23,10 @@
     <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.colVis.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/jquery.dataTables.yadcf.css' %}" />
     -->
-	<style>
-		sortable-table { width: 100%; }
-	</style>
     <script>
         var results_col_names = {{ results_col_names|safe }};
         var results_data = {{ results_data|safe }};
+        var results_info = {{ results_info|safe }};
         var task_id = '{{ task_id }}';
     </script>
 {% endblock %}

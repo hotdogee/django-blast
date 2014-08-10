@@ -59,11 +59,11 @@ def create(request):
 
         # write query to file
         if 'query-file' in request.FILES:
-            with open(query_filename, 'wb+') as query_f:
+            with open(query_filename, 'wb') as query_f:
                 for chunk in request.FILES['query-file'].chunks():
                     query_f.write(chunk)
         elif 'query-sequence' in request.POST and request.POST['query-sequence']:
-            with open(query_filename, 'wb+') as query_f:
+            with open(query_filename, 'wb') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
             return render(request, 'blast/invalid_query.html', {'title': 'Invalid Query',})
@@ -114,17 +114,18 @@ def retrieve(request, task_id='1'):
     #return HttpResponse("BLAST Page: retrieve = %s." % (task_id))
     try:
         r = BlastQueryRecord.objects.get(task_id=task_id)
-
         # if result is generated and not expired
         if r.result_date and (r.result_date.replace(tzinfo=None) >= (datetime.utcnow()+ timedelta(days=-7))):
             if r.result_status in set(['SUCCESS', 'NO_GFF']):
                 file_prefix = path.join(settings.MEDIA_ROOT, task_id, task_id)
+                results_info = ''
+                with open(path.join(settings.MEDIA_ROOT, task_id, 'info.json'), 'rb') as f:
+                    results_info = f.read()
                 results_data = ''
-                with open(file_prefix + '.json', 'r') as f:
+                with open(file_prefix + '.json', 'rb') as f:
                     results_data = f.read()
-                # detail results
                 results_detail = ''
-                with open(file_prefix + '.html', 'r') as f:
+                with open(file_prefix + '.html', 'rb') as f:
                     results_detail = f.read()
                 return render(
                     request,
@@ -133,6 +134,7 @@ def retrieve(request, task_id='1'):
                         'results_col_names': json.dumps(blast_info['col_names'] + ['jbrowse']),
                         'results_data': results_data,
                         'results_detail': results_detail,
+                        'results_info': results_info,
                         'task_id': task_id,
                     })
             else: # if .csv file size is 0, no hits found
