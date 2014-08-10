@@ -35,7 +35,7 @@
     <Compile Include="blast\apps.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="blast\blast2gff3.py" />
+    <Compile Include="util\blast2gff3.py" />
     <Compile Include="blast\models.py" />
     <Compile Include="blast\tests.py" />
     <Compile Include="blast\urls.py">

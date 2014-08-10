@@ -165,12 +165,10 @@ def retrieve(request, task_id='1'):
         #raise Http404
         
 def read_gff3(request, task_id, dbname):
-    if request.method == 'GET':
-        try:
-            with open(path.join(settings.MEDIA_ROOT, in_task_id, in_dbname) + '.gff', 'r') as f:
-                return HttpResponse(f.read())
-        except:
-            return HttpResponse("##gff-version 3\n")
-    else:
-        return HttpResponse("##gff-version 3\n")
-
+    output = '##gff-version 3\n'
+    try:
+        if request.method == 'GET':
+            with open(path.join(settings.MEDIA_ROOT, task_id, dbname) + '.gff', 'rb') as f:
+                output = f.read()
+    finally:
+        return HttpResponse(output)
