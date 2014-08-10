@@ -8,7 +8,7 @@ from uuid import uuid4
 from os import path, makedirs, chmod, stat
 from django.conf import settings
 from sys import platform
-from .models import BlastQueryRecord
+from .models import BlastQueryRecord, BlastDb
 from .tasks import run_blast_task
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -44,8 +44,8 @@ def create(request):
     #return HttpResponse("BLAST Page: create.")
     if request.method == 'GET':
         # build dataset_list = [['Genome Assembly', 'Nucleotide', 'Agla_Btl03082013.genome_new_ids.fa', 'Anoplophora glabripennis'],]
-        blastdb_list = [[db.type.dataset_type, db.type.get_molecule_type_display(), db.fasta_file.title, db.organism.display_name] for db in BlastDb.objects.select_related('organism').select_related('sequencetype').filter(is_shown=True) if db.db_ready()]
-        return render(request, 'blast/main.html', {'title': 'BLAST Query', 'blastdb_list': blastdb_list})
+        blastdb_list = [[db.type.dataset_type, db.type.get_molecule_type_display(), db.title, db.organism.display_name] for db in BlastDb.objects.select_related('organism').select_related('sequencetype').filter(is_shown=True) if db.db_ready()]
+        return render(request, 'blast/main.html', {'title': 'BLAST Query', 'blastdb_list': json.dumps(blastdb_list)})
     elif request.method == 'POST':
         # setup file paths
         task_id = uuid4().hex # TODO: Create from hash of input to check for duplicate inputs
@@ -73,7 +73,7 @@ def create(request):
         chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can access the file
 
         # build blast command
-        db_list = ' '.join(request.POST.getlist('db-name'))
+        db_list = ' '.join([db.fasta_file.path_full for db in BlastDb.objects.filter(title__in=set(request.POST.getlist('db-name'))) if db.db_ready()])
         if not db_list:
             return render(request, 'blast/invalid_query.html', {'title': 'Invalid Query',})
         
