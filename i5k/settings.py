@@ -130,7 +130,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'app',
     'blast',
-    'celery_consumer',
     # Uncomment the next line to enable the admin:
     'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
     'filebrowser',
@@ -258,6 +257,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT=['json']
 CELERY_TIMEZONE = TIME_ZONE
+CELERY_DISABLE_RATE_LIMITS = True
 #CELERY_ENABLE_UTC = True
 
 # Use virtual environment or not

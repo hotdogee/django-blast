@@ -1,4 +1,4 @@
-# Create your views here.
+from __future__ import absolute_import
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import Http404
@@ -8,21 +8,16 @@ from uuid import uuid4
 from os import path, makedirs, chmod, stat
 from django.conf import settings
 from sys import platform
-from blast.models import BlastQueryRecord
+from .models import BlastQueryRecord
+from .tasks import run_blast_task
 from datetime import datetime, timedelta
 from pytz import timezone
-from celery_consumer import tasks
 import subprocess
 import json
 import csv
 import traceback
 import stat as Perm
-import ReadGFF3
-
-
-blast_out_col_types = [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int, int, int]
-blast_out_col_name_str = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe'
-blast_out_col_names = blast_out_col_name_str.split()
+from copy import deepcopy
 
 blast_customized_options = {'blastn':['num_alignments', 'evalue', 'word_size', 'reward', 'penalty', 'gapopen', 'gapextend', 'strand', 'low_complexity', 'soft_masking'],
                             'tblastn':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend', 'low_complexity', 'soft_masking'],
@@ -30,14 +25,20 @@ blast_customized_options = {'blastn':['num_alignments', 'evalue', 'word_size', '
                             'blastp':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend'],
                             'blastx':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'strand', 'gapopen', 'gapextend']}
 
-#blast_out_ext = {}
-#blast_out_ext['.0'] = '0'
-#blast_out_ext['.html'] = '0'
-#blast_out_ext['.1'] = '1'
-#blast_out_ext['.3'] = '3'
-#blast_out_ext['.xml'] = '5'
-#blast_out_ext['.tsv'] = '6 ' + blast_out_col_name_str
-#blast_out_ext['.csv'] = '10 ' + blast_out_col_name_str
+blast_col_name = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe sstrand'
+blast_info = {
+    'col_types': [str, str, float, int, int, int, int, int, int, int, int, int, int, int, int, float, int, int, int, str],
+    'col_names': blast_col_name.split(),
+    'ext': {
+        '.0': '0',
+        '.html': '0',
+        '.1': '1',
+        '.3': '3',
+        '.xml': '5',
+        '.tsv': '6 ' + blast_col_name,
+        '.csv': '10 ' + blast_col_name,
+    },
+}
 
 def create(request):
     #return HttpResponse("BLAST Page: create.")
@@ -89,30 +90,21 @@ def create(request):
                     input_opt.append('-'+blast_option)
                 input_opt.append(request.POST[blast_option])
 
+            
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
-            #args = [program_path, '-query', query_filename, '-db', db_list, '-html']
-            args = [program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']
-            args.extend(input_opt)
-            task_arg = json.dumps(args)
-            # run blast process
-            #subprocess.Popen(args).wait()
+            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6'].extend(input_opt)]
             # convert to multiple formats
-            blast_formatter_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'blast_formatter')
+            for ext, outfmt in blast_info['ext'].items():
+                args = [blast_formatter_path, '-archive', asn_filename, '-outfmt', outfmt, '-out', file_prefix + ext]
+                if ext == '.html':
+                    args.append('-html')
+                args_list.append(args)
 
             r = BlastQueryRecord()
             r.task_id = task_id
             r.save()
 
-            msg = 'task_id=' + task_id + 'arg=' + task_arg + 'fmt=' + blast_formatter_path
-            tasks.run.delay(msg)
-            #receiver.assign(task_id, task_arg, blast_formatter_path)
-
-
-            #for ext, outfmt in blast_out_ext.items():
-            #    args = [blast_formatter_path, '-archive', asn_filename, '-outfmt', outfmt, '-out', file_prefix + ext]
-            #    if ext == '.html':
-            #        args.append('-html')
-            #    subprocess.Popen(args).wait()
+            run_blast_task.delay(task_id, args_list)
             return redirect('blast:retrieve', task_id)
         else:
             raise Http404
@@ -140,7 +132,7 @@ def retrieve(request, task_id='1'):
             with open(file_prefix + '.csv', 'r') as f:
                 cr = csv.reader(f)
                 for row in cr:
-                    results_data.append(tuple(convert(value) for convert, value in zip(blast_out_col_types, row)))
+                    results_data.append(tuple(convert(value) for convert, value in zip(blast_info['col_types'], row)))
             # detail results
             results_detail = ''
             with open(file_prefix + '.html', 'r') as f:
@@ -149,7 +141,7 @@ def retrieve(request, task_id='1'):
                 request,
                 'blast/results.html', {
                     'title': 'BLAST Result',
-                    'results_col_names': json.dumps(blast_out_col_names),
+                    'results_col_names': json.dumps(blast_info['col_names']),
                     'results_data': json.dumps(results_data),
                     'results_detail': results_detail,
                     'task_id': task_id,
@@ -178,8 +170,11 @@ def retrieve(request, task_id='1'):
         
 def read_gff3(request, task_id, dbname):
     if request.method == 'GET':
-        return HttpResponse(ReadGFF3.get_gff(task_id, dbname))
-        #return HttpResponse(task_id+dbname)
+        try:
+            with open(path.join(settings.MEDIA_ROOT, in_task_id, in_dbname) + '.gff', 'r') as f:
+                return HttpResponse(f.read())
+        except:
+            return HttpResponse("##gff-version 3\n")
     else:
         return HttpResponse("##gff-version 3\n")
 

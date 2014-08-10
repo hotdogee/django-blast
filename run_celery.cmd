@@ -1,1 +1,1 @@
-celery -A i5k worker -l info
+celery -A i5k worker --loglevel=info

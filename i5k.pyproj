@@ -35,6 +35,7 @@
     <Compile Include="blast\apps.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="blast\blast2gff3.py" />
     <Compile Include="blast\models.py" />
     <Compile Include="blast\tests.py" />
     <Compile Include="blast\urls.py">
@@ -942,6 +943,7 @@
     <Content Include="app\templates\app\layout.html" />
     <Content Include="app\templates\app\login.html" />
     <Content Include="app\templates\app\loginpartial.html" />
+    <Content Include="run_celery.cmd" />
     <Content Include="suit\static\admin\css\forms.css" />
     <Content Include="suit\static\cms\css\pages.css" />
     <Content Include="suit\static\suit\bootstrap\css\bootstrap-select.min.css" />
