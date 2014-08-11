@@ -1,12 +1,11 @@
 ﻿{% extends "app/layout.html" %}
-
 {% load staticfiles %}
 
 {% block navbar%}
-    <li><a href="./">[ Link of this page ]</a></li>
+    <li><a href="./">Result</a></li>
 {% endblock%}
 
-{% block head %}
+{% block head-scripts %}
     <link rel="import" href="{% static 'blast/components/core-splitter/core-splitter.html' %}" />
     <link rel="import" href="{% static 'blast/components/code-mirror/code-mirror.html' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/jquery-ui.min.css' %}" />
@@ -33,8 +32,7 @@
     </script>
 {% endblock %}
 
-{% block content %}
-</div> <!-- escape <div> from upper level to ignore its css style-->
+{% block content-fluid %}
 <div vertical layout style="height: 100%;">
     <div horizontal layout style="height: 38%;">
          <div style="width: 50%; height: 100%; position: relative;">
@@ -65,7 +63,6 @@
         <code-mirror flex>{{ results_detail|safe }}</code-mirror>
     </div>
 </div>
-<div style="display:none;"><!-- link back to </div> from upper level-->
 {% endblock %}
 
 {% block scripts %}

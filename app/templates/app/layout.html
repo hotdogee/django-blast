@@ -2,20 +2,19 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ title }} | i5k - BLAST</title>
     {% load staticfiles %}
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<script type="text/javascript" src="{% static 'blast/components/platform/platform.js' %}"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <script type="text/javascript" src="{% static 'blast/components/platform/platform.js' %}"></script>
     <link rel="import" href="{% static 'blast/components/paper-tabs/paper-tabs.html' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
-    <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
-{% block head %}{% endblock %}
+{% block head-scripts %}{% endblock %}
 </head>
 
 <body unresolved fullbleed>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -25,7 +24,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="./" class="navbar-brand">i5k - BLAST</a>
+                <a href="./" class="navbar-brand">i5k</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -43,14 +42,18 @@
                 <!--{% include 'app/loginpartial.html' %}-->
             </div>
         </div>
-    </div>
-
-    <div class="container body-content">
+    </nav>
+    
+    <div class="container-fluid">
+{% block content-fluid %}
+        <div class="container body-content">
 {% block content %}{% endblock %}
-        <hr/>
-        <footer>
-            <p>2014 - National Agricultural Library</p>
-        </footer>
+            <hr/>
+            <footer>
+                <p>2014 - National Agricultural Library</p>
+            </footer>
+        </div>
+{% endblock %}
     </div>
 
     <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>

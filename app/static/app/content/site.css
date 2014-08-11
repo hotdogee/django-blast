@@ -1,7 +1,11 @@
 ﻿/* Set padding to keep content from hitting the edges */
+body { padding-top: 50px; }
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+nav.navbar {
+    margin-bottom: 0;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */

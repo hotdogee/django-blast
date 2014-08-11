@@ -142,6 +142,13 @@ def retrieve(request, task_id='1'):
                 return render(
                     request,
                     'blast/results.html', {
+                        'title': 'About i5k - BLAST',
+                        'message': 'django-blast',
+                        #'year': datetime.now().year,
+                    })
+                return render(
+                    request,
+                    'blast/results.html', {
                         'title': 'BLAST Result',
                         'results_col_names': json.dumps(['jbrowse'] + blast_info['col_names']),
                         'results_data': results_data,
