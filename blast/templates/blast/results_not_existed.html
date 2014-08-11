@@ -20,7 +20,26 @@
 {% block scripts %}
 
 {% if not isExpired and not isNoHits %}
-    <script>setInterval(function(){window.location.reload(1);},5000);</script>
+    <script>
+        $(document).ready(function () {
+            setInterval( function(){retrieve();},2000);
+        });
+
+        function retrieve() {
+            $.ajax({
+                type: 'GET',
+                url: '/media/{{task_id}}/status.json',
+                dataType: "json",
+                error: function (){
+                    // do nothing
+                },
+                success: function () {
+                    window.location.reload(1);
+                }
+            });
+        };
+    </script>
+
 {% endif %}
 
 {% endblock %}

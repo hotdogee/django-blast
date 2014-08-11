@@ -116,3 +116,8 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
     record.result_status = result_status
     record.result_date = datetime.utcnow().replace(tzinfo=utc)
     record.save()
+
+    # generate status.json for frontend statu checking
+    statusdir = path.dirname(file_prefix + '.in')
+    with open(path.join(statusdir, 'status.json'), 'wb') as f:
+        json.dump({'status': 'done'}, f)
