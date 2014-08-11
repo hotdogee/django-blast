@@ -115,7 +115,11 @@
                 if (end_pos < start_pos)
                     end_pos = [start_pos, start_pos = end_pos][0];
                 start_pos -= 200;
+                if (start_pos < 0)
+                    start_pos = 0;
                 end_pos += 200;
+                if (end_pos > data[col_idx['slen']])
+                    end_pos = data[col_idx['slen']]
                 //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
                 $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href="' + results_info['db_url'][results_info['sseqid_db'][data[col_idx['sseqid']]]] + '?task_id=' + task_id + '&dbname=' + data[index_of_jbrowse] + '&loc=' + sseqid + ':' + start_pos + '..' + end_pos + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
                 //<a class="btn btn-default" href="#" role="button">Link</a>
