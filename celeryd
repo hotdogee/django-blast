@@ -29,7 +29,6 @@
 # Setting `prog` here allows you to symlink this init script, making it easy
 # to run multiple processes on the system.
 
-export BLASTDB="/usr/local/blast/db/"
 
 # If we're invoked via SysV-style runlevel scripts we need to follow the 
 # link from rcX.d before working out the script name.
