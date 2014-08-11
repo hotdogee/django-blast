@@ -346,3 +346,9 @@ legend {
 label {
 	display: block;
 }
+
+label.error {
+background: url('images/unchecked.gif') no-repeat;
+padding-left: 16px;
+margin-left: .3em;
+color: red;
