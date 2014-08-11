@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }} | i5k - BLAST</title>
     {% load staticfiles %}
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<script type="text/javascript" src="{% static 'blast/components/platform/platform.js' %}"></script>
+    <link rel="import" href="{% static 'blast/components/paper-tabs/paper-tabs.html' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
 {% block head %}{% endblock %}
 </head>
 
-<body>
+<body unresolved fullbleed>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">

@@ -7,10 +7,8 @@
 {% endblock%}
 
 {% block head %}
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<script type="text/javascript" src="{% static 'blast/components/platform/platform.js' %}"></script>
-    <link rel="import" href="{% static 'blast/components/core-splitter/core-splitter.html' %}">
-    <link rel="import" href="{% static 'blast/components/code-mirror/code-mirror.html' %}">
+    <link rel="import" href="{% static 'blast/components/core-splitter/core-splitter.html' %}" />
+    <link rel="import" href="{% static 'blast/components/code-mirror/code-mirror.html' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/jquery-ui.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/dataTables.jqueryui.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/jquery.dataTables.min.css' %}" />
@@ -19,7 +17,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.colReorder.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.bootstrap.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/blast-results.css' %}" />
-    <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
     <!--
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/codemirror.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.colVis.min.css' %}" />
@@ -27,10 +24,8 @@
     -->
     <script src="{% static 'blast/scripts/jquery-1.11.1.min.js' %}"></script>
     <script>
-        $('body').attr('unresolved', ''); // To fit polymer's requirement for <body>
-        $('body').attr('fullbleed', ''); // To fit polymer's requirement for <body>
-    </script>
-    <script>
+        //$('body').attr('unresolved', ''); // To fit polymer's requirement for <body>
+        //$('body').attr('fullbleed', ''); // To fit polymer's requirement for <body>
         var results_col_names = {{ results_col_names|safe }};
         var results_data = {{ results_data|safe }};
         var results_info = {{ results_info|safe }};
