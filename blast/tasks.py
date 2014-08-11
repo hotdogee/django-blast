@@ -73,7 +73,7 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                     match_part_id = 1
                     for key_db_hsp_dict_list in [sorted(hsps, key=lambda h: (h['sstart'], h['send']) if h['sstrand'] == '+' else (h['send'], h['sstart'])) for _, hsps in groupby(db_hsp_dict_list, lambda x: x['qseqid'] + x['sseqid'] + x['qstrand'] + x['sstrand'])]:
                         seqid = key_db_hsp_dict_list[0]['sseqid'] if len(key_db_hsp_dict_list[0]['sseqid'].split('|')) < 2 else key_db_hsp_dict_list[0]['sseqid'].split('|')[1]
-                        gff_item = {'seqid': key_db_hsp_dict_list[0]['sseqid'].split('_')[-1] if key_db_hsp_dict_list[0]['sseqid'][:3] == 'gnl' else seqid,
+                        gff_item = {'seqid': key_db_hsp_dict_list[0]['sseqid'].split('|')[-1].split('_', 1)[-1] if key_db_hsp_dict_list[0]['sseqid'][:3] == 'gnl' else seqid,
                                     'source': blast_program}
                         # cut if overlap length > overlap_cutoff
                         spos, qpos, matches, matches_list = 0, 0, [], []
