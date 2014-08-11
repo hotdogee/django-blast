@@ -1,7 +1,7 @@
 /////////////////////
 // DATA PROCESSING //
 /////////////////////
-var dataset_list = [['Genome Assembly', 'Nucleotide', 'Agla_Btl03082013.genome_new_ids.fa', 'Anoplophora glabripennis'], ['Genome Assembly', 'Nucleotide', 'Aros01112013-genome_new_ids.fa', 'Athalia rosae'], ['Genome Assembly', 'Nucleotide', 'Ccap01172013-genome_new_ids.fa', 'Ceratitis capitata'], ['Genome Assembly', 'Nucleotide', 'Clec_Bbug02212013.genome_new_ids.fa', 'Cimex lectularius'], ['Genome Assembly', 'Nucleotide', 'diaci1.1_new_ids.fa', 'Diaphorina citri'], ['Genome Assembly', 'Nucleotide', 'Edan07162013.scaffolds_new_ids.fa', 'Ephemera danica'], ['Genome Assembly', 'Nucleotide', 'Eaff_11172013.genome_new_ids.fa', 'Eurytemora affinis'], ['Genome Assembly', 'Nucleotide', 'Focc_FINAL.scaffolds_new_ids.fa', 'Frankliniella occidentalis'], ['Genome Assembly', 'Nucleotide', 'Lful_Scha04012013-genome_new_ids.fa', 'Ladona fulva'], ['Genome Assembly', 'Nucleotide', 'Ldec.genome.10062013_new_ids.fa', 'Leptinotarsa decemlineata'], ['Genome Assembly', 'Nucleotide', 'Ofas.scaffolds_new_ids.fa', 'Oncopeltus fasciatus'], ['Genome Assembly', 'Nucleotide', 'Oabi11242013.genome_new_ids.fa', 'Orussus abietinus'], ['Genome Assembly', 'Nucleotide', 'Pven10162013.scaffolds_new_ids.fa', 'Pachypsylla venusta'], ['Genome Assembly', 'Nucleotide', 'Ptep01282013.genome_new_ids.fa', 'Parasteatoda tepidariorum'], ['Genome Assembly', 'Nucleotide', 'Tpre_FINAL.scaffolds_new_ids.fa', 'Trichogramma pretiosum'], ['Transcript', 'Nucleotide', 'AGLA_new_ids.fna', 'Anoplophora glabripennis'], ['Transcript', 'Nucleotide', 'AROS_new_ids.fna', 'Athalia rosae'], ['Transcript', 'Nucleotide', 'CCAP_new_ids.fna', 'Ceratitis capitata'], ['Transcript', 'Nucleotide', 'CLEC_new_ids.fna', 'Cimex lectularius'], ['Transcript', 'Nucleotide', 'maker_genes_diaci1.1_transcripts_NALmod_new_ids.fasta', 'Diaphorina citri'], ['Transcript', 'Nucleotide', 'EDAN_new_ids.fna', 'Ephemera danica'], ['Transcript', 'Nucleotide', 'EAFF_new_ids.fna', 'Eurytemora affinis'], ['Transcript', 'Nucleotide', 'FOCC_new_ids.fna', 'Frankliniella occidentalis'], ['Transcript', 'Nucleotide', 'LFUL_new_ids.fna', 'Ladona fulva'], ['Transcript', 'Nucleotide', 'LDEC_new_ids.fna', 'Leptinotarsa decemlineata'], ['Transcript', 'Nucleotide', 'OFAS_new_ids.fna', 'Oncopeltus fasciatus'], ['Transcript', 'Nucleotide', 'OABI_new_ids.fna', 'Orussus abietinus'], ['Transcript', 'Nucleotide', 'PVEN_new_ids.fna', 'Pachypsylla venusta'], ['Transcript', 'Nucleotide', 'PTEP_new_ids.fna', 'Parasteatoda tepidariorum'], ['Transcript', 'Nucleotide', 'TPRE_new_ids.fna', 'Trichogramma pretiosum'], ['Protein', 'Peptide', 'AGLA_new_ids.faa', 'Anoplophora glabripennis'], ['Protein', 'Peptide', 'AROS_new_ids.faa', 'Athalia rosae'], ['Protein', 'Peptide', 'CCAP_new_ids.faa', 'Ceratitis capitata'], ['Protein', 'Peptide', 'CLEC_new_ids.faa', 'Cimex lectularius'], ['Protein', 'Peptide', 'maker_genes_diaci1.1_proteins_NALmod_new_ids.fasta', 'Diaphorina citri'], ['Protein', 'Peptide', 'EDAN_new_ids.faa', 'Ephemera danica'], ['Protein', 'Peptide', 'EAFF_new_ids.faa', 'Eurytemora affinis'], ['Protein', 'Peptide', 'FOCC_new_ids.faa', 'Frankliniella occidentalis'], ['Protein', 'Peptide', 'LFUL_new_ids.faa', 'Ladona fulva'], ['Protein', 'Peptide', 'LDEC_new_ids.faa', 'Leptinotarsa decemlineata'], ['Protein', 'Peptide', 'OFAS_new_ids.faa', 'Oncopeltus fasciatus'], ['Protein', 'Peptide', 'OABI_new_ids.faa', 'Orussus abietinus'], ['Protein', 'Peptide', 'PVEN_new_ids.faa', 'Pachypsylla venusta'], ['Protein', 'Peptide', 'PTEP_new_ids.faa', 'Parasteatoda tepidariorum'], ['Protein', 'Peptide', 'TPRE_new_ids.faa', 'Trichogramma pretiosum']];
+//var dataset_list = [['Genome Assembly', 'Nucleotide', 'Agla_Btl03082013.genome_new_ids.fa', 'Anoplophora glabripennis'], ['Genome Assembly', 'Nucleotide', 'Aros01112013-genome_new_ids.fa', 'Athalia rosae'], ['Genome Assembly', 'Nucleotide', 'Ccap01172013-genome_new_ids.fa', 'Ceratitis capitata'], ['Genome Assembly', 'Nucleotide', 'Clec_Bbug02212013.genome_new_ids.fa', 'Cimex lectularius'], ['Genome Assembly', 'Nucleotide', 'diaci1.1_new_ids.fa', 'Diaphorina citri'], ['Genome Assembly', 'Nucleotide', 'Edan07162013.scaffolds_new_ids.fa', 'Ephemera danica'], ['Genome Assembly', 'Nucleotide', 'Eaff_11172013.genome_new_ids.fa', 'Eurytemora affinis'], ['Genome Assembly', 'Nucleotide', 'Focc_FINAL.scaffolds_new_ids.fa', 'Frankliniella occidentalis'], ['Genome Assembly', 'Nucleotide', 'Lful_Scha04012013-genome_new_ids.fa', 'Ladona fulva'], ['Genome Assembly', 'Nucleotide', 'Ldec.genome.10062013_new_ids.fa', 'Leptinotarsa decemlineata'], ['Genome Assembly', 'Nucleotide', 'Ofas.scaffolds_new_ids.fa', 'Oncopeltus fasciatus'], ['Genome Assembly', 'Nucleotide', 'Oabi11242013.genome_new_ids.fa', 'Orussus abietinus'], ['Genome Assembly', 'Nucleotide', 'Pven10162013.scaffolds_new_ids.fa', 'Pachypsylla venusta'], ['Genome Assembly', 'Nucleotide', 'Ptep01282013.genome_new_ids.fa', 'Parasteatoda tepidariorum'], ['Genome Assembly', 'Nucleotide', 'Tpre_FINAL.scaffolds_new_ids.fa', 'Trichogramma pretiosum'], ['Transcript', 'Nucleotide', 'AGLA_new_ids.fna', 'Anoplophora glabripennis'], ['Transcript', 'Nucleotide', 'AROS_new_ids.fna', 'Athalia rosae'], ['Transcript', 'Nucleotide', 'CCAP_new_ids.fna', 'Ceratitis capitata'], ['Transcript', 'Nucleotide', 'CLEC_new_ids.fna', 'Cimex lectularius'], ['Transcript', 'Nucleotide', 'maker_genes_diaci1.1_transcripts_NALmod_new_ids.fasta', 'Diaphorina citri'], ['Transcript', 'Nucleotide', 'EDAN_new_ids.fna', 'Ephemera danica'], ['Transcript', 'Nucleotide', 'EAFF_new_ids.fna', 'Eurytemora affinis'], ['Transcript', 'Nucleotide', 'FOCC_new_ids.fna', 'Frankliniella occidentalis'], ['Transcript', 'Nucleotide', 'LFUL_new_ids.fna', 'Ladona fulva'], ['Transcript', 'Nucleotide', 'LDEC_new_ids.fna', 'Leptinotarsa decemlineata'], ['Transcript', 'Nucleotide', 'OFAS_new_ids.fna', 'Oncopeltus fasciatus'], ['Transcript', 'Nucleotide', 'OABI_new_ids.fna', 'Orussus abietinus'], ['Transcript', 'Nucleotide', 'PVEN_new_ids.fna', 'Pachypsylla venusta'], ['Transcript', 'Nucleotide', 'PTEP_new_ids.fna', 'Parasteatoda tepidariorum'], ['Transcript', 'Nucleotide', 'TPRE_new_ids.fna', 'Trichogramma pretiosum'], ['Protein', 'Peptide', 'AGLA_new_ids.faa', 'Anoplophora glabripennis'], ['Protein', 'Peptide', 'AROS_new_ids.faa', 'Athalia rosae'], ['Protein', 'Peptide', 'CCAP_new_ids.faa', 'Ceratitis capitata'], ['Protein', 'Peptide', 'CLEC_new_ids.faa', 'Cimex lectularius'], ['Protein', 'Peptide', 'maker_genes_diaci1.1_proteins_NALmod_new_ids.fasta', 'Diaphorina citri'], ['Protein', 'Peptide', 'EDAN_new_ids.faa', 'Ephemera danica'], ['Protein', 'Peptide', 'EAFF_new_ids.faa', 'Eurytemora affinis'], ['Protein', 'Peptide', 'FOCC_new_ids.faa', 'Frankliniella occidentalis'], ['Protein', 'Peptide', 'LFUL_new_ids.faa', 'Ladona fulva'], ['Protein', 'Peptide', 'LDEC_new_ids.faa', 'Leptinotarsa decemlineata'], ['Protein', 'Peptide', 'OFAS_new_ids.faa', 'Oncopeltus fasciatus'], ['Protein', 'Peptide', 'OABI_new_ids.faa', 'Orussus abietinus'], ['Protein', 'Peptide', 'PVEN_new_ids.faa', 'Pachypsylla venusta'], ['Protein', 'Peptide', 'PTEP_new_ids.faa', 'Parasteatoda tepidariorum'], ['Protein', 'Peptide', 'TPRE_new_ids.faa', 'Trichogramma pretiosum']];
 var dataset_dict = {};
 var organism_list = [];
 var alphabet_list = [];
@@ -215,6 +215,7 @@ $(function() { // document ready
 		$('input.program:not([disabled])').first().prop('checked', true);
 		program_selected = $('input.program:not([disabled])').first().val();
 		$('.' + program_selected).mouseover();
+        add_blast_options(program_selected.toUpperCase());
 	}
 	
 	function sum(obj) {
@@ -409,4 +410,203 @@ IENY';
 			}
 		}
     });
+
+    function add_blast_options(blast_program) {
+        var html_content='';
+        
+        $('#fieldset-options-blast legend:first').html(blast_program+' Options');   //Show the option title
+        
+        switch(blast_program) {
+            case 'BLASTN':
+                $('#word_size').val('11');
+                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
+                
+                 html_content = '\
+                                <a>Match score <input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10"></a><br/>\
+                                <a>Mismatch score <input TYPE="text" ID="penalty" NAME="penalty" VALUE="-3" SIZE="10"></a><br/>\
+                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="5" SIZE="10"></a><br/>\
+                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="2" SIZE="10"></a><br/>\
+                                <a>Strand </a>\
+                                <select id="strand" name="strand">\
+                                    <option value="both" selected>both</option>\
+                                    <option value="plus">plus</option>\
+                                    <option value="minus">minus</option>\
+                                </select>\
+                               ';
+                $('#fieldset-options-blast-scoring-param legend').after(html_content);
+                
+                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
+                $('#soft_masking').prop("checked", true).attr("checked", true);
+                $('#fieldset-options-blast-filter-param input:hidden').remove();
+
+                break;
+            
+            case 'TBLASTN':
+                $('#word_size').val('3');
+                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
+                
+                 html_content = '\
+                                <a>Matrix </a>\
+                                <select id="matrix" name="matrix">\
+                                    <option value="PAM30">PAM30</option>\
+                                    <option value="PAM70">PAM70</option>\
+                                    <option value="PAM250">PAM250</option>\
+                                    <option value="BLOSUM90">BLOSUM90</option>\
+                                    <option value="BLOSUM80">BLOSUM80</option>\
+                                    <option value="BLOSUM62" selected>BLOSUM62</option>\
+                                    <option value="BLOSUM50">BLOSUM50</option>\
+                                    <option value="BLOSUM45">BLOSUM45</option>\
+                                </select>\
+                                <br/>\
+                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"></a><br/>\
+                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"></a><br/>\
+                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"></a>\
+                               ';
+                $('#fieldset-options-blast-scoring-param legend').after(html_content);
+                
+                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
+                $('#soft_masking').prop("checked", false).attr("checked", false);
+                $('#fieldset-options-blast-filter-param input:hidden').remove();
+                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
+                
+                break;
+            
+            case 'TBLASTX':
+                $('#word_size').val('3');
+                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
+                
+                html_content = '\
+                                <a>Matrix </a>\
+                                <select id="matrix" name="matrix">\
+                                    <option value="PAM30">PAM30</option>\
+                                    <option value="PAM70">PAM70</option>\
+                                    <option value="PAM250">PAM250</option>\
+                                    <option value="BLOSUM90">BLOSUM90</option>\
+                                    <option value="BLOSUM80">BLOSUM80</option>\
+                                    <option value="BLOSUM62" selected>BLOSUM62</option>\
+                                    <option value="BLOSUM50">BLOSUM50</option>\
+                                    <option value="BLOSUM45">BLOSUM45</option>\
+                                </select>\
+                                <br/>\
+                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"></a><br/>\
+                                <a>Strand </a>\
+                                <select id="strand" name="strand">\
+                                    <option value="both" selected>both</option>\
+                                    <option value="plus">plus</option>\
+                                    <option value="minus">minus</option>\
+                                </select>\
+                               ';
+                $('#fieldset-options-blast-scoring-param legend').after(html_content);
+                
+                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
+                $('#soft_masking').prop("checked", false).attr("checked", false);
+                $('#fieldset-options-blast-filter-param input:hidden').remove();
+                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
+                
+                break;
+                
+            case 'BLASTP':
+                $('#word_size').val('3');
+                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
+                
+                html_content = '\
+                                <a>Matrix </a>\
+                                <select id="matrix" name="matrix">\
+                                <option value="PAM30">PAM30</option>\
+                                <option value="PAM70">PAM70</option>\
+                                <option value="PAM250">PAM250</option>\
+                                <option value="BLOSUM90">BLOSUM90</option>\
+                                <option value="BLOSUM80">BLOSUM80</option>\
+                                <option value="BLOSUM62" selected>BLOSUM62</option>\
+                                <option value="BLOSUM50">BLOSUM50</option>\
+                                <option value="BLOSUM45">BLOSUM45</option>\
+                                </select>\
+                                <br/>\
+                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="11" SIZE="10"></a><br/>\
+                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"></a><br/>\
+                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"></a>\
+                               ';
+                $('#fieldset-options-blast-scoring-param legend').after(html_content);
+                
+                $('#low_complexity').attr("value", "yes").prop("checked", false).attr("checked", false);
+                $('#soft_masking').prop("checked", false).attr("checked", false);
+                $('#fieldset-options-blast-filter-param input:hidden').remove();
+                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="low_complexity_hidden" NAME="low_complexity" VALUE="no">').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
+                
+                break;
+                
+            case 'BLASTX':
+                $('#word_size').val('3');
+                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
+                
+                html_content = '\
+                                <a>Matrix </a>\
+                                <select id="matrix" name="matrix">\
+                                    <option value="PAM30">PAM30</option>\
+                                    <option value="PAM70">PAM70</option>\
+                                    <option value="PAM250">PAM250</option>\
+                                    <option value="BLOSUM90">BLOSUM90</option>\
+                                    <option value="BLOSUM80">BLOSUM80</option>\
+                                    <option value="BLOSUM62" selected>BLOSUM62</option>\
+                                    <option value="BLOSUM50">BLOSUM50</option>\
+                                    <option value="BLOSUM45">BLOSUM45</option>\
+                                </select>\
+                                <br/>\
+                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="12" SIZE="10"></a><br/>\
+                                <a>Strand </a>\
+                                <select id="strand" name="strand">\
+                                    <option value="both" selected>both</option>\
+                                    <option value="plus">plus</option>\
+                                    <option value="minus">minus</option>\
+                                </select>\
+                                <br/>\
+                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"></a><br/>\
+                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"></a>\
+                               ';
+                $('#fieldset-options-blast-scoring-param legend').after(html_content);
+                
+                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
+                $('#soft_masking').prop("checked", false).attr("checked", false);
+                $('#fieldset-options-blast-filter-param input:hidden').remove();
+                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
+                
+                break;
+        }
+    }
+	$('#low_complexity').change(function(e) {
+		if ($(this).is(':checked')) {
+            $('#low_complexity_hidden').remove();
+        }
+        else {
+            $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="low_complexity_hidden" NAME="low_complexity" VALUE="no">');
+            
+        }
+    });
+    
+	$('#soft_masking').change(function(e) {
+		if ($(this).is(':checked')) {
+            $('#soft_masking_hidden').remove();
+        }
+        else {
+            $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
+            
+        }
+    });
+
+    $('input.program:radio').click(function() {
+        add_blast_options($('input.program:checked').val().toUpperCase());
+	});
+    
+    $('.btn_reset').click(function() {
+        $('#query-textarea').val('');
+        $('.all-organism-checkbox').prop("checked", false).attr("checked", false);
+        $('.all-organism-checkbox').change();
+        $('.program').attr('disabled', false).removeClass('disabled-radio');
+        add_blast_options('BLASTN');
+        event.preventDefault();
+        $(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
+        
+    });
+    
+    add_blast_options('BLASTN'); //show initially
 });

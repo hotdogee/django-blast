@@ -2,7 +2,6 @@
     //////////////////
     // Prepare Data //
     //////////////////
-    $('body').attr('fullbleed', ''); // To fit polymer's requirement for <body>
     // convert arrays to objects
     //var results_db = _.map(results_data, function (row) { return _.object(results_col_names, row); });
     var col_idx = _.object(results_col_names, _.range(results_col_names.length));
@@ -42,6 +41,7 @@
     );
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
+    var index_of_jbrowse = _.indexOf(results_col_names, 'jbrowse');
     var $results_table = $('#results-table').dataTable({
         scrollX: '100%',
         scrollY: '200px',
@@ -93,9 +93,22 @@
                 }
             ]
         },
+        order: [[ col_idx['qseqid'], 'asc' ]],
         //responsive: true,
         data: results_data,
-        columns: _.map(results_col_names, function (name) { return { 'title': name }; })
+        columns: _.map(results_col_names, function (name) {
+            col = { 'title': name };
+            if (name == 'jbrowse')
+                col['orderable'] = false;
+            return col;
+        }),
+        createdRow: function (row, data, dataIndex) {
+            if (data[index_of_jbrowse] != '') {
+                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" href="' + results_info['db_url'][results_info['sseqid_db'][data[col_idx['sseqid']]]] + '?task_id=' + task_id + '&dbname=' + data[index_of_jbrowse] + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
+                //<a class="btn btn-default" href="#" role="button">Link</a>
+                //http://gmod-dev.nal.usda.gov:8080/[ORGANISM]/jbrowse/?task_id=[TASK_ID]&dbname=[BLAST_DB]
+            }
+        }
     });
     var results_table_api = $('#results-table').DataTable();
     //}).yadcf([{
@@ -124,18 +137,44 @@
         // trigger dataTables.scroller to recalculate how many rows its showing
         $(window).trigger('resize.DTS');
     };
+    // Draw initial graph with first row
+    var row_data = results_table_api.row(0).data();
     // initial update, wait till core-splitter loads
+    var report_panel_width = 820;
+    var cm = null;
     $(window).on('polymer-ready', function () {
-        var w = $(window).width() - 650
-        w = w < 650 ? $(window).width() / 2 : w
+        var w = $(window).width() - report_panel_width
+        w = w < report_panel_width ? $(window).width() / 2 : w
         $table_panel.width(w);
         updateDataTableHeight();
-        var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>')
-        $('.ui-corner-bl').append(footer)
+        var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
+        $('.ui-corner-bl').append(footer);
+        cm = $('code-mirror')[0].mirror;
+        cm.on('cursorActivity', function () {
+            //console.log('cm.getCursor() = ' + cm.getCursor().line);
+            var filtered = results_info['line_num_list'].filter(function (i) { return i <= cm.getCursor().line + 3 });
+            var i = 0;
+            if (filtered.length > 0)
+                i = filtered.length - 1;
+            //console.log(i);
+            // get row
+            var row = results_table_api.row(i);
+            row_data = row.data();
+            renderAlignmentGraph('query-canvas', row_data);
+            renderAlignmentGraph('subject-canvas', row_data);
+            // is filtered?
+            // Get data as ordered and filtered in datatable
+            var table_data = results_table_api.rows({ search: 'applied' }).data();
+            var i = _.indexOf(table_data, row_data);
+            results_table_api.scroller().scrollToRow(i, false);
+            $(results_table_api.rows().nodes()).removeClass('highlight');
+            var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
+            $row.addClass('highlight');
+        })
     });
     $(window).resize(function () {
-        var w = $(window).width() - 650
-        w = w < 650 ? $(window).width() / 2 : w
+        var w = $(window).width() - report_panel_width
+        w = w < report_panel_width ? $(window).width() / 2 : w
         $table_panel.width(w);
         updateDataTableHeight();
     });
@@ -147,16 +186,20 @@
      * data row mouse over event
      */
     $results_table.addClass('table-hover');
-    // Draw initial graph with first row
-    var row_data = results_table_api.row(0).data();
     $results_table.on('mouseover', 'tr', function () {
         $(results_table_api.rows().nodes()).removeClass('highlight');
         // get row data and convert to object
         //row_data = _.object(results_col_names, results_table_api.row(this).data());
-        row_data = results_table_api.row(this).data();
+        var this_row = results_table_api.row(this);
+        row_data = this_row.data();
         //console.log('mouseover: row_data = ' + row_data);
         renderAlignmentGraph('query-canvas', row_data);
         renderAlignmentGraph('subject-canvas', row_data);
+        cm.operation(function () {
+            cm.scrollIntoView({ line: results_info['line_num_list'][this_row.index()], ch: 0 }, cm.getScrollInfo().clientHeight / 2)
+            cm.setCursor({ line: results_info['line_num_list'][this_row.index()], ch: 0 })
+            cm.curOp.cursorActivity = false; // don't fire event
+        });
     });
     // Order event
     var order = results_table_api.order();
@@ -265,6 +308,9 @@
             var center_position = row_data[rend] < row_data[rstart] ? row_data[rend] : row_data[rstart];
             return row[rseqid] == row_data[rseqid] && Math.abs(center_position - position) < 16000;
         });
+        // draw at most 100 alignments, partition aligned_data if length > 100
+        var start = Math.floor(_.indexOf(aligned_data, row_data) / 100) * 100;
+        aligned_data = aligned_data.slice(start, start + 100);
         // Sort data ascending by coordinate for draw order
         //var sorted_data = _.sortBy(filtered_data, function (row) { return -row['bitscore']; });
 
@@ -299,13 +345,19 @@
                 renderAlignmentGraph('query-canvas', row);
                 renderAlignmentGraph('subject-canvas', row);
                 var i = _.indexOf(table_data, row);
-                console.log(i);
+                //console.log(i);
                 // highlight row
                 //.ui-state-highlight
                 // scroll to row
                 results_table_api.scroller().scrollToRow(i, false);
                 $(results_table_api.rows().nodes()).removeClass('highlight');
-                $(results_table_api.rows({ search: 'applied' }).nodes()[i]).addClass('highlight');
+                var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
+                $row.addClass('highlight');
+                cm.operation(function () {
+                    cm.scrollIntoView({ line: results_info['line_num_list'][$row.index()], ch: 0 }, cm.getScrollInfo().clientHeight / 2)
+                    cm.setCursor({ line: results_info['line_num_list'][$row.index()], ch: 0 })
+                    cm.curOp.cursorActivity = false; // don't fire event
+                });
             };
         });
         // Calculate optimal lane size according to current canvas height
@@ -345,4 +397,7 @@
         // Draw Chart
         chart.draw();
     }
+    /////////////////
+    // Text Report //
+    /////////////////
 });

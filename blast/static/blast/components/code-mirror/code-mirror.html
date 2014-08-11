@@ -1,0 +1,72 @@
+<!--
+Copyright 2013 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="codemirror-import.html">
+
+<polymer-element name="code-mirror" attributes="value mode theme tabSize lineNumbers">
+  <template>
+    <link rel="stylesheet" href="codemirror-4.0/lib/codemirror.css">
+    <link href="codemirror-4.0/theme/xq-light.css" rel="stylesheet">
+
+    <style>
+      :host {
+        display: block;
+        position: relative;
+      }
+      .CodeMirror {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </template>
+  <script>
+    Polymer('code-mirror', {
+      value: '',
+      theme: 'xq-light',
+      tabSize: 2,
+      lineNumbers: true,
+      ready: function() {
+        if (!this.value) {
+          this.value = this.textContent;
+        }
+        this.mirror = CodeMirror(this.shadowRoot, {
+          value: this.value || this.textContent,
+          theme: this.theme,
+          tabSize: this.tabSize,
+          lineNumbers: this.lineNumbers,
+          styleActiveLine: true,
+          readOnly: true,
+          viewportMargin: 20,
+          gutters: ["CodeMirror-linenumbers"]
+        });
+      },
+      refresh: function() {
+        this.mirror.refresh();
+      },
+      valueChanged: function() {
+        this.mirror.setValue(this.value);
+      },
+      modeChanged: function() {
+        this.mirror.setOption('mode', this.mode);
+      },
+      themeChanged: function() {
+        this.mirror.setOption('theme', this.theme);
+      },
+      tabSizeChanged: function() {
+        this.mirror.setOption('tabSize', this.tabSize);
+      },
+      lineNumbersChanged: function() {
+        this.mirror.setOption('lineNumbers', this.lineNumbers);
+      },
+      focus: function() {
+        this.mirror.focus();
+      }
+    });
+  </script>
+</polymer-element>

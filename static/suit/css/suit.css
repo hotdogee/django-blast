@@ -280,8 +280,6 @@ div .datepicker{margin:0;padding:0}
 .nav-tabs-suit:after,.nav-tabs-suit:before{display:inline;content:normal;clear:none}
 body{background-color:#edeff1;min-width:960px}body.popup{min-width:inherit}
 #wrap{background:url(../img/bg_left_white.gif) top left repeat-y}.popup #wrap{background:none}
-a{text-decoration:underline}
-a:hover{text-decoration:none}
 a.icon{margin-right:10px}a.icon i{margin-right:5px}
 a.icon:last-child{margin-right:0}
 a.btn{text-decoration:none}

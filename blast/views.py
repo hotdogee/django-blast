@@ -26,9 +26,9 @@ blast_customized_options = {'blastn':['num_alignments', 'evalue', 'word_size', '
                             'blastp':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend'],
                             'blastx':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'strand', 'gapopen', 'gapextend']}
 
-blast_col_name = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe sstrand'
+blast_col_name = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe'
 blast_info = {
-    'col_types': ['str', 'str', 'float', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'float', 'int', 'int', 'int', 'str'],
+    'col_types': ['str', 'str', 'float', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'int', 'float', 'int', 'int', 'int'],
     'col_names': blast_col_name.split(),
     'ext': {
         '.0': '0',
@@ -83,6 +83,7 @@ def create(request):
 
             # generate customized_options
             input_opt = []
+            num_alignments = '100'
             #for blast_option in blast_customized_options[request.POST['program']]:
             #    if blast_option == 'low_complexity':
             #        if request.POST['program'] == 'blastn':
@@ -95,13 +96,21 @@ def create(request):
 
             
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
-            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']]
+            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6', '-max_target_seqs', num_alignments]]
             # convert to multiple formats
             blast_formatter_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'blast_formatter')
             for ext, outfmt in blast_info['ext'].items():
                 args = [blast_formatter_path, '-archive', asn_filename, '-outfmt', outfmt, '-out', file_prefix + ext]
                 if ext == '.html':
                     args.append('-html')
+                if int(outfmt.split()[0]) > 4:
+                    args.append('-max_target_seqs')
+                    args.append(num_alignments)
+                else:
+                    args.append('-num_descriptions')
+                    args.append(num_alignments)
+                    args.append('-num_alignments')
+                    args.append(num_alignments)
                 args_list.append(args)
 
             record = BlastQueryRecord()
@@ -128,7 +137,7 @@ def retrieve(request, task_id='1'):
                 with open(file_prefix + '.json', 'rb') as f:
                     results_data = f.read()
                 results_detail = ''
-                with open(file_prefix + '.html', 'rb') as f:
+                with open(file_prefix + '.0', 'rb') as f:
                     results_detail = f.read()
                 return render(
                     request,

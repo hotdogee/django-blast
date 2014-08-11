@@ -16,6 +16,7 @@
         if (!$('#id_short_name').data('userModified'))
             $('#id_short_name').val(short_name);
     });
+    // don't overwrite user input
     $('#id_short_name').keyup(function () {
         if ($('#id_short_name').val().length > 0) {
             $('#id_short_name').data('userModified', true);
