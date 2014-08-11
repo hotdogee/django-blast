@@ -93,6 +93,11 @@
                 }
             ]
         },
+        colReorder: {
+            fixedColumns: 3,
+            realtime: true,
+            stateSave: true
+        },
         order: [[ col_idx['qseqid'], 'asc' ]],
         //responsive: true,
         data: results_data,
@@ -102,13 +107,14 @@
                 col['orderable'] = false;
             return col;
         }),
-        createdRow: function (row, data, dataIndex) {
+        rowCallback: function (row, data) {
             if (data[index_of_jbrowse] != '') {
                 var sseqid = data[col_idx['sseqid']];
-                //>gnl|Ceratitis_capitata|cercap_Scaffold1
                 if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
+                    //>gnl|Ceratitis_capitata|cercap_Scaffold1
                     sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
                 else if (/\|([^|]+)\|/.exec(sseqid) != null)
+                    //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
                     sseqid = /\|([^|]+)\|/.exec(sseqid)[1];
                 var start_pos = data[col_idx['sstart']];
                 var end_pos = data[col_idx['send']];
@@ -120,7 +126,6 @@
                 end_pos += 200;
                 if (end_pos > data[col_idx['slen']])
                     end_pos = data[col_idx['slen']]
-                //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
                 $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href="' + results_info['db_url'][results_info['sseqid_db'][data[col_idx['sseqid']]]] + '?task_id=' + task_id + '&dbname=' + data[index_of_jbrowse] + '&loc=' + sseqid + ':' + start_pos + '..' + end_pos + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
                 //<a class="btn btn-default" href="#" role="button">Link</a>
                 //http://gmod-dev.nal.usda.gov:8080/[ORGANISM]/jbrowse/?task_id=[TASK_ID]&dbname=[BLAST_DB]&loc=[sseqid]
