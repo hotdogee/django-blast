@@ -53,6 +53,7 @@ $(function() { // document ready
 			'organism': organism_id,
 			'type': 'checkbox',
 			'class': 'organism-checkbox ' + organism_id,
+            'name': 'organism-checkbox[]',
 		});
 		var $organism_div = $('<div/>', {
 			'organism': organism_id,
@@ -212,7 +213,7 @@ $(function() { // document ready
 			$('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
 		}
 		// select first non disabled option
-		$('input.program:not([disabled])').first().prop('checked', true);
+		$('input.program:not([disabled])').first().prop('checked', true).attr("checked", true);
 		program_selected = $('input.program:not([disabled])').first().val();
 		$('.' + program_selected).mouseover();
         add_blast_options(program_selected.toUpperCase());
@@ -572,7 +573,108 @@ IENY';
                 
                 break;
         }
+        
+        // Validate MainBlastForm form on keyup and submit
+        $("#MainBlastForm").validate({
+            rules: {
+                'query-sequence': {
+                    //'textarea_valid':'', 
+                    required: true
+                },
+                'organism-checkbox[]': {
+                    required: true
+                },
+                'dataset-checkbox[]': {
+                    required: true
+                },
+                evalue: {
+                    required: true,
+                    number: true
+                },
+                word_size: {
+                    required: true,
+                    number: true
+                },
+                reward: {
+                    required: true,
+                    number: true
+                },
+                penalty: {
+                    required: true,
+                    number: true
+                },
+                gapopen: {
+                    required: true,
+                    number: true
+                },
+                gapextend: {
+                    required: true,
+                    number: true
+                },
+                threshold: {
+                    required: true,
+                    number: true
+                }
+            },
+            messages: {
+                'query-sequence': {
+                    required: "No any sequence found!"
+                },
+                'organism-checkbox[]': {
+                    required: "Please choose at least one organism"
+                },
+                'dataset-checkbox[]': {
+                    required: "Please choose the type of databases"
+                },
+                evalue: {
+                    required: "Please provide an E-value",
+                    number: "Please enter a valid number"
+                },
+                word_size: {
+                    required: "Please provide word size value",
+                    number: "Please enter a valid number"
+                },
+                reward: {
+                    required: "Please provide match score value",
+                    number: "Please enter a valid number"
+                },
+                penalty: {
+                    required: "Please provide mismatch score value",
+                    number: "Please enter a valid number"
+                },
+                gapopen: {
+                    required: "Please provide a value for gap opening penalty",
+                    number: "Please enter a valid number"
+                },
+                gapextend: {
+                    required: "Please provide a value for gap extension penalty",
+                    number: "Please enter a valid number"
+                },
+                threshold: {
+                    required: "Please provide a threshold",
+                    number: "Please enter a valid number"
+                }
+            },
+            errorPlacement: function (error, element){
+                switch (element.attr('name').toString()) {
+                    case 'organism-checkbox[]':
+                        error.insertAfter('#legend-Organisms');
+                        break;
+                    case 'dataset-checkbox[]':
+                        error.insertAfter('.dataset-title');
+                        break;
+                    default:
+                        error.insertAfter(element);
+                }
+            }
+        });
+        
+/*         $.validator.addMethod('textarea_valid', function(value, element, param) {
+            return $.trim(value) != '';
+        }, 'No any sequence found!'); 
+ */        
     }
+    
 	$('#low_complexity').change(function(e) {
 		if ($(this).is(':checked')) {
             $('#low_complexity_hidden').remove();
@@ -606,7 +708,17 @@ IENY';
         event.preventDefault();
         $(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
         
+        $('label.error').remove();
+        
     });
     
     add_blast_options('BLASTN'); //show initially
+        
+    
 });
+
+function On_Submit(){
+    if($("#MainBlastForm").valid()) {
+        $("#MainBlastForm").submit();
+    }
+}
