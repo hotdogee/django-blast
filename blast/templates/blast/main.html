@@ -9,18 +9,20 @@
     var dataset_list = {{ blastdb_list|safe }};
     </script>
     <script type="text/javascript" src="{% static 'blast/scripts/blast-multi.js' %}"></script>
+    <script type="text/javascript" src="{% static 'blast/scripts/jquery.validate.min.js' %}"></script>
+    
 {% endblock %}
 
 {% block content %}
 <div class="tripal_details">
-<FORM METHOD = POST NAME="MainBlastForm" ENCTYPE= "multipart/form-data">
+<FORM METHOD="POST" id="MainBlastForm" NAME="MainBlastForm" ENCTYPE="multipart/form-data">
 {% csrf_token %}
 <div class="tripal_organism-info-box tripal-info-box">
 <!--<a href="docs/blast_databases.html">-->
 <fieldset id="fieldset-datasets">
 	<legend>BLAST Databases</legend>
 	<fieldset class="organism" id="fieldset-organism">
-		<legend>Organisms</legend>
+		<legend id="legend-Organisms">Organisms</legend>
 		<div id="box-organism">
 			<label><div organism="all" class="all organism-div organism-active-background"><input type="checkbox" organism="all" class="all-organism-checkbox">All organisms</div></label>
 		</div>
@@ -30,12 +32,12 @@
 			<div class="dataset-title">All organisms</div>
 			<fieldset class="nucleotide">
 				<legend>Nucleotide</legend>
-				<div><label><input type="checkbox" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly">Genome Assembly</label></div>
-				<div><label><input type="checkbox" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript">Transcript</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly">Genome Assembly</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript">Transcript</label></div>
 			</fieldset>
 			<fieldset class="peptide">
 				<legend>Peptide</legend>
-				<div><label><input type="checkbox" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein">Protein</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein">Protein</label></div>
 			</fieldset>
 		</div>
 	</div>
@@ -88,7 +90,7 @@ Enter here your input data as
 	<div id="blastProgramDescription">blastn - Nucleotide vs. Nucleotide</div>
 	<div>
 		<INPUT TYPE="button" VALUE="Reset" CLASS="btn_reset">
-		<INPUT TYPE="submit" VALUE="Search">
+		<INPUT TYPE="button" VALUE="Search" onclick="On_Submit();">
 	</div>
 </fieldset>
 
@@ -102,15 +104,19 @@ Enter here your input data as
         <select id="num_alignments" name="num_alignments">
             <option value="10">10</option>
             <option value="50">50</option>
-            <option value="100" selected>100</option>
+            <option value="100">100</option>
             <option value="250">250</option>
-            <option value="500">500</option>
+            <option value="500" selected>500</option>
+            <option value="1000">1000</option>
+            <option value="5000">5000</option>
+            <option value="10000">10000</option>
+            <option value="20000">20000</option>
         </select>
         <br/>
         <a>Expect threshold </a>
-        <input TYPE="text" ID='evalue' NAME="evalue" VALUE="10" SIZE="10"><br/>
+        <input TYPE="text" ID="evalue" NAME="evalue" VALUE="10" SIZE="10"><br/>
         <a>Word size </a>
-        <input TYPE="text" ID='word_size' NAME="word_size" VALUE="3" SIZE="10"><br/>
+        <input TYPE="text" ID="word_size" NAME="word_size" VALUE="3" SIZE="10"><br/>
         </fieldset>
         
         <fieldset id="fieldset-options-blast-scoring-param">
@@ -128,7 +134,7 @@ Enter here your input data as
    
 	<div>
 		<INPUT TYPE="button" VALUE="Reset" CLASS="btn_reset">
-		<INPUT TYPE="submit" VALUE="Search">
+		<INPUT TYPE="button" VALUE="Search" onclick="On_Submit();">
 	</div>
 
 </FORM>
