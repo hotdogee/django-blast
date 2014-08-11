@@ -44,7 +44,7 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                 if line[:len(target_str)] == target_str:
                     line_num_list.append(line_num)
                 line_num += 1
-        print line_num_list
+        #print line_num_list
         # read csv
         csv_path = file_prefix + '.csv'
         json_path = file_prefix + '.json'
