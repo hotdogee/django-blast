@@ -45,7 +45,7 @@ class SequenceType(models.Model):
     objects = SequenceTypeManager()
     molecule_type = models.CharField(max_length=4, default='nucl', choices=(
         ('nucl', 'Nucleotide'),
-        ('prot', 'Protein'))) # makeblastdb -dbtype
+        ('prot', 'Peptide'))) # makeblastdb -dbtype
     dataset_type = models.CharField(max_length=50, unique=True) # 
     
     def natural_key(self):
