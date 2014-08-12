@@ -24,14 +24,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="./" class="navbar-brand">i5k</a>
+                <a href="http://i5k.nal.usda.gov/" class="navbar-brand">i5k</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <!--<li><a href="{% url 'home' %}">Home</a></li>-->
                     <li><a href="{% url 'blast:create' %}">BLAST</a></li>
-                    <li><a href="{% url 'about' %}">About</a></li>
-                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                    <li><a href="{% url 'about' %}">About i5K BLAST</a></li>
+                    <li><a href="http://i5k.nal.usda.gov/contact-us">Contact</a></li>
                     <!--<li><a href="{% url 'blast:create' %}">BLAST</a></li>
                     <li><a href="{% url 'blast:retrieve' '5df09d8487174e1180e7bb169030aeb0' %}">BLAST RESULT</a></li>-->
                     {% if request.user.is_superuser %}

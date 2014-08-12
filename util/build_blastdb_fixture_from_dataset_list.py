@@ -13,7 +13,7 @@ with open(TSV_FILENAME, 'rb') as f:
         fixture_item = {
             'model': 'blast.blastdb',
             'fields': {
-                'description': '',
+                'description': fasta_filename,
                 'title': fasta_filename,
                 'organism': [short_name],
                 'fasta_file': BLASTDB_URL_ROOT + fasta_filename,

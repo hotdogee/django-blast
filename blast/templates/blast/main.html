@@ -32,12 +32,12 @@
 			<div class="dataset-title">All organisms</div>
 			<fieldset class="nucleotide">
 				<legend>Nucleotide</legend>
-				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly">Genome Assembly</label></div>
-				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript">Transcript</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly">Genome Assembly - {{ blastdb_type_counts.genome_assembly }} databases</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript">Transcript - {{ blastdb_type_counts.transcript }} databases</label></div>
 			</fieldset>
 			<fieldset class="peptide">
 				<legend>Peptide</legend>
-				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein">Protein</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein">Protein - {{ blastdb_type_counts.protein }} databases</label></div>
 			</fieldset>
 		</div>
 	</div>
@@ -53,7 +53,7 @@ Enter here your input data as
 
 <fieldset id="fieldset-query">
 	<legend>Query Sequence</legend>
-	<div class="enter-query-text">Enter sequence below in <a href="docs/fasta.html">FASTA</a> format:</div>
+	<div class="enter-query-text">Enter sequence below in <a target="_blank" href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format:</div>
 	<textarea id="query-textarea" name="query-sequence" rows=6 cols=60></textarea>
 	<BR>
 	<span class="load-nucleotide">Or</span> <span class="load-peptide">load</span> it from disk 
