@@ -1,7 +1,7 @@
 [
   {
     "fields": {
-      "description": "",
+      "description": "Agla_Btl03082013.genome_new_ids.fa",
       "fasta_file": "/media/blastdb/Agla_Btl03082013.genome_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -16,7 +16,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "AGLA_new_ids.fna",
       "fasta_file": "/media/blastdb/AGLA_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -31,7 +31,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "AGLA_new_ids.faa",
       "fasta_file": "/media/blastdb/AGLA_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -46,7 +46,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Aros01112013-genome_new_ids.fa",
       "fasta_file": "/media/blastdb/Aros01112013-genome_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -61,7 +61,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "AROS_new_ids.fna",
       "fasta_file": "/media/blastdb/AROS_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -76,7 +76,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "AROS_new_ids.faa",
       "fasta_file": "/media/blastdb/AROS_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -91,7 +91,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Ccap01172013-genome_new_ids.fa",
       "fasta_file": "/media/blastdb/Ccap01172013-genome_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -106,7 +106,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "cercap_JAMG_v1.cds",
       "fasta_file": "/media/blastdb/cercap_JAMG_v1.cds",
       "is_shown": true,
       "organism": [
@@ -121,7 +121,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "cercap_JAMG_v1.pep",
       "fasta_file": "/media/blastdb/cercap_JAMG_v1.pep",
       "is_shown": true,
       "organism": [
@@ -136,7 +136,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Cercap_NCBI_RefSeq.fna",
       "fasta_file": "/media/blastdb/Cercap_NCBI_RefSeq.fna",
       "is_shown": true,
       "organism": [
@@ -151,7 +151,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Cercap_NCBI_RefSeq.faa",
       "fasta_file": "/media/blastdb/Cercap_NCBI_RefSeq.faa",
       "is_shown": true,
       "organism": [
@@ -166,7 +166,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Clec_Bbug02212013.genome_new_ids.fa",
       "fasta_file": "/media/blastdb/Clec_Bbug02212013.genome_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -181,7 +181,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "CLEC_new_ids.fna",
       "fasta_file": "/media/blastdb/CLEC_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -196,7 +196,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "CLEC_new_ids.faa",
       "fasta_file": "/media/blastdb/CLEC_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -211,7 +211,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "diaci1.1_new_ids.fa",
       "fasta_file": "/media/blastdb/diaci1.1_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -226,7 +226,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "maker_genes_diaci1.1_transcripts_NALmod_new_ids.fasta",
       "fasta_file": "/media/blastdb/maker_genes_diaci1.1_transcripts_NALmod_new_ids.fasta",
       "is_shown": true,
       "organism": [
@@ -241,7 +241,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "maker_genes_diaci1.1_proteins_NALmod_new_ids.fasta",
       "fasta_file": "/media/blastdb/maker_genes_diaci1.1_proteins_NALmod_new_ids.fasta",
       "is_shown": true,
       "organism": [
@@ -256,7 +256,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Dbia02082011-genome.fa",
       "fasta_file": "/media/blastdb/Dbia02082011-genome.fa",
       "is_shown": true,
       "organism": [
@@ -271,7 +271,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DBIA.fna",
       "fasta_file": "/media/blastdb/DBIA.fna",
       "is_shown": true,
       "organism": [
@@ -286,7 +286,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DBIA.faa",
       "fasta_file": "/media/blastdb/DBIA.faa",
       "is_shown": true,
       "organism": [
@@ -301,7 +301,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Dbip02082011-genome.fa",
       "fasta_file": "/media/blastdb/Dbip02082011-genome.fa",
       "is_shown": true,
       "organism": [
@@ -316,7 +316,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DBIP.fna",
       "fasta_file": "/media/blastdb/DBIP.fna",
       "is_shown": true,
       "organism": [
@@ -331,7 +331,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DBIP.faa",
       "fasta_file": "/media/blastdb/DBIP.faa",
       "is_shown": true,
       "organism": [
@@ -346,7 +346,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Dele02082011-genome.fa",
       "fasta_file": "/media/blastdb/Dele02082011-genome.fa",
       "is_shown": true,
       "organism": [
@@ -361,7 +361,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DELE.fna",
       "fasta_file": "/media/blastdb/DELE.fna",
       "is_shown": true,
       "organism": [
@@ -376,7 +376,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DELE.faa",
       "fasta_file": "/media/blastdb/DELE.faa",
       "is_shown": true,
       "organism": [
@@ -391,7 +391,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Deug05112011.genome.fa",
       "fasta_file": "/media/blastdb/Deug05112011.genome.fa",
       "is_shown": true,
       "organism": [
@@ -406,7 +406,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DEUG.fna",
       "fasta_file": "/media/blastdb/DEUG.fna",
       "is_shown": true,
       "organism": [
@@ -421,7 +421,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DEUG.faa",
       "fasta_file": "/media/blastdb/DEUG.faa",
       "is_shown": true,
       "organism": [
@@ -436,7 +436,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Dfic02082011-genome.fa",
       "fasta_file": "/media/blastdb/Dfic02082011-genome.fa",
       "is_shown": true,
       "organism": [
@@ -451,7 +451,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DFIC.fna",
       "fasta_file": "/media/blastdb/DFIC.fna",
       "is_shown": true,
       "organism": [
@@ -466,7 +466,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DFIC.faa",
       "fasta_file": "/media/blastdb/DFIC.faa",
       "is_shown": true,
       "organism": [
@@ -481,7 +481,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Dkik02082011-genome.fa",
       "fasta_file": "/media/blastdb/Dkik02082011-genome.fa",
       "is_shown": true,
       "organism": [
@@ -496,7 +496,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DKIK.fna",
       "fasta_file": "/media/blastdb/DKIK.fna",
       "is_shown": true,
       "organism": [
@@ -511,7 +511,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DKIK.faa",
       "fasta_file": "/media/blastdb/DKIK.faa",
       "is_shown": true,
       "organism": [
@@ -526,7 +526,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Drho05162011.genome.fa",
       "fasta_file": "/media/blastdb/Drho05162011.genome.fa",
       "is_shown": true,
       "organism": [
@@ -541,7 +541,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DRHO.fna",
       "fasta_file": "/media/blastdb/DRHO.fna",
       "is_shown": true,
       "organism": [
@@ -556,7 +556,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DRHO.faa",
       "fasta_file": "/media/blastdb/DRHO.faa",
       "is_shown": true,
       "organism": [
@@ -571,7 +571,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Dtak02082011-genome.fa",
       "fasta_file": "/media/blastdb/Dtak02082011-genome.fa",
       "is_shown": true,
       "organism": [
@@ -586,7 +586,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DTAK.fna",
       "fasta_file": "/media/blastdb/DTAK.fna",
       "is_shown": true,
       "organism": [
@@ -601,7 +601,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "DTAK.faa",
       "fasta_file": "/media/blastdb/DTAK.faa",
       "is_shown": true,
       "organism": [
@@ -616,7 +616,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Edan07162013.scaffolds_new_ids.fa",
       "fasta_file": "/media/blastdb/Edan07162013.scaffolds_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -631,7 +631,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "EDAN_new_ids.fna",
       "fasta_file": "/media/blastdb/EDAN_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -646,7 +646,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "EDAN_new_ids.faa",
       "fasta_file": "/media/blastdb/EDAN_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -661,7 +661,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Eaff_11172013.genome_new_ids.fa",
       "fasta_file": "/media/blastdb/Eaff_11172013.genome_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -676,7 +676,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "EAFF_new_ids.fna",
       "fasta_file": "/media/blastdb/EAFF_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -691,7 +691,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "EAFF_new_ids.faa",
       "fasta_file": "/media/blastdb/EAFF_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -706,7 +706,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Focc_FINAL.scaffolds_new_ids.fa",
       "fasta_file": "/media/blastdb/Focc_FINAL.scaffolds_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -721,7 +721,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "FOCC_new_ids.fna",
       "fasta_file": "/media/blastdb/FOCC_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -736,7 +736,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "FOCC_new_ids.faa",
       "fasta_file": "/media/blastdb/FOCC_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -751,7 +751,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Lful_Scha04012013-genome_new_ids.fa",
       "fasta_file": "/media/blastdb/Lful_Scha04012013-genome_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -766,7 +766,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "LFUL_new_ids.fna",
       "fasta_file": "/media/blastdb/LFUL_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -781,7 +781,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "LFUL_new_ids.faa",
       "fasta_file": "/media/blastdb/LFUL_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -796,7 +796,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Ldec.genome.10062013_new_ids.fa",
       "fasta_file": "/media/blastdb/Ldec.genome.10062013_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -811,7 +811,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "LDEC_new_ids.fna",
       "fasta_file": "/media/blastdb/LDEC_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -826,7 +826,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "LDEC_new_ids.faa",
       "fasta_file": "/media/blastdb/LDEC_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -841,7 +841,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Ofas.scaffolds_new_ids.fa",
       "fasta_file": "/media/blastdb/Ofas.scaffolds_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -856,7 +856,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "OFAS_new_ids.fna",
       "fasta_file": "/media/blastdb/OFAS_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -871,7 +871,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "OFAS_new_ids.faa",
       "fasta_file": "/media/blastdb/OFAS_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -886,7 +886,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Oabi11242013.genome_new_ids.fa",
       "fasta_file": "/media/blastdb/Oabi11242013.genome_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -901,7 +901,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "OABI_new_ids.fna",
       "fasta_file": "/media/blastdb/OABI_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -916,7 +916,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "OABI_new_ids.faa",
       "fasta_file": "/media/blastdb/OABI_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -931,7 +931,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Pven10162013.scaffolds_new_ids.fa",
       "fasta_file": "/media/blastdb/Pven10162013.scaffolds_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -946,7 +946,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "PVEN_new_ids.fna",
       "fasta_file": "/media/blastdb/PVEN_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -961,7 +961,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "PVEN_new_ids.faa",
       "fasta_file": "/media/blastdb/PVEN_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -976,7 +976,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Ptep01282013.genome_new_ids.fa",
       "fasta_file": "/media/blastdb/Ptep01282013.genome_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -991,7 +991,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "PTEP_new_ids.fna",
       "fasta_file": "/media/blastdb/PTEP_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -1006,7 +1006,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "PTEP_new_ids.faa",
       "fasta_file": "/media/blastdb/PTEP_new_ids.faa",
       "is_shown": true,
       "organism": [
@@ -1021,7 +1021,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "Tpre_FINAL.scaffolds_new_ids.fa",
       "fasta_file": "/media/blastdb/Tpre_FINAL.scaffolds_new_ids.fa",
       "is_shown": true,
       "organism": [
@@ -1036,7 +1036,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "TPRE_new_ids.fna",
       "fasta_file": "/media/blastdb/TPRE_new_ids.fna",
       "is_shown": true,
       "organism": [
@@ -1051,7 +1051,7 @@
   },
   {
     "fields": {
-      "description": "",
+      "description": "TPRE_new_ids.faa",
       "fasta_file": "/media/blastdb/TPRE_new_ids.faa",
       "is_shown": true,
       "organism": [
