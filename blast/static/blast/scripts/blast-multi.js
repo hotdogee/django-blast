@@ -618,7 +618,7 @@ IENY';
             },
             messages: {
                 'query-sequence': {
-                    required: "No any sequence found!"
+                    required: "No sequence found!"
                 },
                 'organism-checkbox[]': {
                     required: "Please choose at least one organism"
