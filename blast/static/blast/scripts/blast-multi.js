@@ -1,3 +1,4 @@
+/// <reference path="../../../templates/blast/main.html" />
 /////////////////////
 // DATA PROCESSING //
 /////////////////////
@@ -12,6 +13,7 @@ for (var i = 0; i < dataset_list_count; i++) {
 	var alphabet = entry[1];
 	var file_name = entry[2];
 	var organism_name = entry[3];
+	var description = entry[4];
     if (!(organism_name in dataset_dict)) {
 		dataset_dict[organism_name] = {};
 		organism_list.push(organism_name);
@@ -23,7 +25,7 @@ for (var i = 0; i < dataset_list_count; i++) {
 	if ($.inArray(alphabet, alphabet_list) < 0) {
 		alphabet_list.push(alphabet);
 	}
-	dataset_dict[organism_name][alphabet].push([file_name, data_type]); // add info
+	dataset_dict[organism_name][alphabet].push([file_name, data_type, description]); // add info
 }
 // for IE6,7,8
 if (!Array.prototype.indexOf) {
@@ -75,6 +77,7 @@ $(function() { // document ready
 				for (var k = 0; k < entry_count; k++) {
 					var file_name = dataset_dict[organism_list[i]][alphabet_list[j]][k][0];
 					var data_type = dataset_dict[organism_list[i]][alphabet_list[j]][k][1];
+					var description = dataset_dict[organism_list[i]][alphabet_list[j]][k][2];
 					var data_type_class = data_type.toLowerCase().replace(' ', '-');
 					// dataset checkbox
 					var $organism_datasets_checkbox = $('<input>', {
@@ -85,7 +88,7 @@ $(function() { // document ready
 						'dataset-type': data_type_class,
 						'class': 'dataset-checkbox ' + organism_id + ' ' + data_type_class + ' ' + alphabet_class,
 					});
-					var $organism_datasets_checkbox_div = $('<div/>').append($organism_datasets_checkbox).append(data_type);
+					var $organism_datasets_checkbox_div = $('<div/>').append($organism_datasets_checkbox).append(data_type + ' - ' + description);
 					var $organism_datasets_label = $('<label/>').append($organism_datasets_checkbox_div);
 					$alphabet_fieldset.append($organism_datasets_label);
 					//dataset_i++;

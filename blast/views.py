@@ -19,6 +19,7 @@ import csv
 import traceback
 import stat as Perm
 from copy import deepcopy
+from itertools import groupby
 
 blast_customized_options = {'blastn':['max_target_seqs', 'evalue', 'word_size', 'reward', 'penalty', 'gapopen', 'gapextend', 'strand', 'low_complexity', 'soft_masking'],
                             'tblastn':['max_target_seqs', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend', 'low_complexity', 'soft_masking'],
@@ -46,8 +47,13 @@ def create(request):
     #return HttpResponse("BLAST Page: create.")
     if request.method == 'GET':
         # build dataset_list = [['Genome Assembly', 'Nucleotide', 'Agla_Btl03082013.genome_new_ids.fa', 'Anoplophora glabripennis'],]
-        blastdb_list = [[db.type.dataset_type, db.type.get_molecule_type_display(), db.title, db.organism.display_name] for db in BlastDb.objects.select_related('organism').select_related('sequencetype').filter(is_shown=True) if db.db_ready()]
-        return render(request, 'blast/main.html', {'title': 'BLAST Query', 'blastdb_list': json.dumps(blastdb_list)})
+        blastdb_list = [[db.type.dataset_type, db.type.get_molecule_type_display(), db.title, db.organism.display_name, db.description] for db in BlastDb.objects.select_related('organism').select_related('sequencetype').filter(is_shown=True) if db.db_ready()]
+        blastdb_type_counts = dict([(k.lower().replace(' ', '_'), len(list(g))) for k, g in groupby(sorted(blastdb_list, key=lambda x: x[0]), key=lambda x: x[0])])
+        return render(request, 'blast/main.html', {
+            'title': 'BLAST Query', 
+            'blastdb_list': json.dumps(blastdb_list), 
+            'blastdb_type_counts': blastdb_type_counts,
+        })
     elif request.method == 'POST':
         # setup file paths
         task_id = uuid4().hex # TODO: Create from hash of input to check for duplicate inputs
