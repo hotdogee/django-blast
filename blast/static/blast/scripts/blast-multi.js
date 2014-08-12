@@ -423,14 +423,15 @@ IENY';
         switch(blast_program) {
             case 'BLASTN':
                 $('#word_size').val('28');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 28)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                  html_content = '\
-                                <a>Match score <input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10"></a><br/>\
-                                <a>Mismatch score <input TYPE="text" ID="penalty" NAME="penalty" VALUE="-2" SIZE="10"></a><br/>\
-                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="0" SIZE="10"></a><br/>\
-                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="0" SIZE="10"></a><br/>\
-                                <a>Strand </a>\
+                                <span title="Reward for a nucleotide match.  (Default: 1)">Match score </span><input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10"><br/>\
+                                <span title="Penalty for a nucleotide mismatch.  (Default: -2)">Mismatch score </span><input TYPE="text" ID="penalty" NAME="penalty" VALUE="-2" SIZE="10"><br/>\
+                                <span title="Cost to open a gap.  (Default: 0)">Gap opening penalty </span><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="0" SIZE="10"><br/>\
+                                <span title="Cost to extend a gap.  (Default: 0)">Gap extension penalty </span><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="0" SIZE="10"><br/>\
+                                <span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span>\
                                 <select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
                                     <option value="plus">plus</option>\
@@ -447,10 +448,11 @@ IENY';
             
             case 'TBLASTN':
                 $('#word_size').val('3');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                  html_content = '\
-                                <a>Matrix </a>\
+                                <span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span>\
                                 <select id="matrix" name="matrix">\
                                     <option value="PAM30">PAM30</option>\
                                     <option value="PAM70">PAM70</option>\
@@ -462,9 +464,9 @@ IENY';
                                     <option value="BLOSUM45">BLOSUM45</option>\
                                 </select>\
                                 <br/>\
-                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"></a><br/>\
-                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"></a><br/>\
-                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"></a>\
+                                <span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"><br/>\
+								<span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"><br/>\
+                                <span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"><br/>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -477,10 +479,11 @@ IENY';
             
             case 'TBLASTX':
                 $('#word_size').val('3');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                 html_content = '\
-                                <a>Matrix </a>\
+                                <span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span>\
                                 <select id="matrix" name="matrix">\
                                     <option value="PAM30">PAM30</option>\
                                     <option value="PAM70">PAM70</option>\
@@ -492,8 +495,8 @@ IENY';
                                     <option value="BLOSUM45">BLOSUM45</option>\
                                 </select>\
                                 <br/>\
-                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"></a><br/>\
-                                <a>Strand </a>\
+                                <span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"><br/>\
+                                <span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span>\
                                 <select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
                                     <option value="plus">plus</option>\
@@ -511,10 +514,11 @@ IENY';
                 
             case 'BLASTP':
                 $('#word_size').val('3');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                 html_content = '\
-                                <a>Matrix </a>\
+                                <span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span>\
                                 <select id="matrix" name="matrix">\
                                 <option value="PAM30">PAM30</option>\
                                 <option value="PAM70">PAM70</option>\
@@ -526,9 +530,9 @@ IENY';
                                 <option value="BLOSUM45">BLOSUM45</option>\
                                 </select>\
                                 <br/>\
-                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="11" SIZE="10"></a><br/>\
-                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"></a><br/>\
-                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"></a>\
+                                <span title="Minimum score to add a word to the BLAST lookup table.  (Default: 11)">Threshold </span><input TYPE="text" ID="threshold" NAME="threshold" VALUE="11" SIZE="10"><br/>\
+                                <span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"><br/>\
+                                <span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"><br/>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -541,10 +545,11 @@ IENY';
                 
             case 'BLASTX':
                 $('#word_size').val('3');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                 html_content = '\
-                                <a>Matrix </a>\
+                                <span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span>\
                                 <select id="matrix" name="matrix">\
                                     <option value="PAM30">PAM30</option>\
                                     <option value="PAM70">PAM70</option>\
@@ -556,16 +561,16 @@ IENY';
                                     <option value="BLOSUM45">BLOSUM45</option>\
                                 </select>\
                                 <br/>\
-                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="12" SIZE="10"></a><br/>\
-                                <a>Strand </a>\
+                                <span title="Minimum score to add a word to the BLAST lookup table.  (Default: 12)">Threshold </span><input TYPE="text" ID="threshold" NAME="threshold" VALUE="12" SIZE="10"><br/>\
+                                <span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span>\
                                 <select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
                                     <option value="plus">plus</option>\
                                     <option value="minus">minus</option>\
                                 </select>\
                                 <br/>\
-                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"></a><br/>\
-                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"></a>\
+                                <span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"><br/>\
+                                <span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"><br/>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
