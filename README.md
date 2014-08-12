@@ -20,7 +20,8 @@ Frontend - Results
   * Mouse over each row.
   * Changes the sorting column.
   * Filters the table using the search box.
-* Works on the latest versions of Chrome (ver. 36.0), Firefox (ver. 31.0), IE (ver. 11).
+* Works on the latest versions of Chrome, Firefox, IE.
+  * On Windows: Chrome (ver. 36.0), Firefox (ver. 31.0), IE (ver. 11)
 
 Screenshots
 ===========
