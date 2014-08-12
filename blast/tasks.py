@@ -103,17 +103,15 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                             gff_item['attributes'] = 'ID=match%05d;Name=%s;Target=%s %d %d' % (match_id, matches[0]['qseqid'], matches[0]['qseqid'], matches[0]['qstart'] if matches[0]['sstrand'] == '+' else matches[-1]['qstart'], matches[-1]['qend'] if matches[0]['sstrand'] == '+' else matches[0]['qend'])
                             if len(matches) == 1:
                                 gff_item['score'] = str(matches[0]['evalue'])
+                            fgff.write('\t'.join([gff_item[c] for c in gff_col_names]) + '\n')
+                            gff_item['type'] = 'match_part'
+                            for match_part in matches:
+                                gff_item['start'] = str(match_part['sstart'] if match_part['sstrand'] == '+' else match_part['send'])
+                                gff_item['end'] = str(match_part['send'] if match_part['sstrand'] == '+' else match_part['sstart'])
+                                gff_item['score'] = str(match_part['evalue'])
+                                gff_item['attributes'] = 'ID=match_part%05d;Parent=match%05d;Target=%s %d %d' % (match_part_id, match_id, match_part['qseqid'], match_part['qstart'], match_part['qend'])
                                 fgff.write('\t'.join([gff_item[c] for c in gff_col_names]) + '\n')
-                            else:
-                                fgff.write('\t'.join([gff_item[c] for c in gff_col_names]) + '\n')
-                                gff_item['type'] = 'match_part'
-                                for match_part in matches:
-                                    gff_item['start'] = str(match_part['sstart'] if match_part['sstrand'] == '+' else match_part['send'])
-                                    gff_item['end'] = str(match_part['send'] if match_part['sstrand'] == '+' else match_part['sstart'])
-                                    gff_item['score'] = str(match_part['evalue'])
-                                    gff_item['attributes'] = 'ID=match_part%05d;Parent=match%05d;Target=%s %d %d' % (match_part_id, match_id, match_part['qseqid'], match_part['qstart'], match_part['qend'])
-                                    fgff.write('\t'.join([gff_item[c] for c in gff_col_names]) + '\n')
-                                    match_part_id += 1
+                                match_part_id += 1
                             match_id += 1
             with open(json_path, 'wb') as f:
                 json.dump([[db_organism[sseqid_db[hsp_dict_list[i]['sseqid']]] if sseqid_db[hsp_dict_list[i]['sseqid']] in db_url else ''] + hsp for i, hsp in enumerate(hsp_list)], f)
