@@ -1,5 +1,5 @@
-Under active development, not safe for consumption!
-===================================================
+<!--Under active development, not safe for consumption!
+===================================================-->
 
 Backend
 =======
@@ -7,7 +7,7 @@ Backend
 * Supports the latest [NCBI BLAST+ executables](http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download).
 * Task queue with [RabbitMQ](http://www.rabbitmq.com/).
 * Generates all BLAST output formats for download: Text, CSV, TSV, XML, ASN.1.
-* Retreive previous results with a unique URL for every task.
+* Retrieve previous results with a unique URL for every task.
 * Works on Linux and Windows.
 
 Frontend - Results
@@ -20,7 +20,7 @@ Frontend - Results
   * Mouse over each row.
   * Changes the sorting column.
   * Filters the table using the search box.
-* Works on the latest versions of Chrome, Firefox, IE.
+* Works on the latest versions of Chrome (ver. 36.0), Firefox (ver. 31.0), IE (ver. 11).
 
 Screenshots
 ===========
