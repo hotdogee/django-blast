@@ -98,7 +98,7 @@ def create(request):
             
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
             args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']]
-            args_list = args_list[0] + input_opt
+            #args_list = args_list[0] + input_opt
             # convert to multiple formats
             blast_formatter_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'blast_formatter')
             for ext, outfmt in blast_info['ext'].items():
