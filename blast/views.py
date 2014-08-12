@@ -20,11 +20,11 @@ import traceback
 import stat as Perm
 from copy import deepcopy
 
-blast_customized_options = {'blastn':['num_alignments', 'evalue', 'word_size', 'reward', 'penalty', 'gapopen', 'gapextend', 'strand', 'low_complexity', 'soft_masking'],
-                            'tblastn':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend', 'low_complexity', 'soft_masking'],
-                            'tblastx':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'strand'],
-                            'blastp':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend'],
-                            'blastx':['num_alignments', 'evalue', 'word_size', 'matrix', 'threshold', 'strand', 'gapopen', 'gapextend']}
+blast_customized_options = {'blastn':['max_target_seqs', 'evalue', 'word_size', 'reward', 'penalty', 'gapopen', 'gapextend', 'strand', 'low_complexity', 'soft_masking'],
+                            'tblastn':['max_target_seqs', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend', 'low_complexity', 'soft_masking'],
+                            'tblastx':['max_target_seqs', 'evalue', 'word_size', 'matrix', 'threshold', 'strand'],
+                            'blastp':['max_target_seqs', 'evalue', 'word_size', 'matrix', 'threshold', 'gapopen', 'gapextend'],
+                            'blastx':['max_target_seqs', 'evalue', 'word_size', 'matrix', 'threshold', 'strand', 'gapopen', 'gapextend']}
 
 blast_col_name = 'qseqid sseqid evalue qlen slen length nident mismatch positive gapopen gaps qstart qend sstart send bitscore qcovs qframe sframe'
 blast_info = {
@@ -83,20 +83,21 @@ def create(request):
 
             # generate customized_options
             input_opt = []
-            num_alignments = '100'
-            #for blast_option in blast_customized_options[request.POST['program']]:
-            #    if blast_option == 'low_complexity':
-            #        if request.POST['program'] == 'blastn':
-            #            input_opt.append('-dust')
-            #        else:
-            #            input_opt.append('-seg')
-            #    else:
-            #        input_opt.append('-'+blast_option)
-            #    input_opt.append(request.POST[blast_option])
+            max_target_seqs = request.POST['max_target_seqs']
+            for blast_option in blast_customized_options[request.POST['program']]:
+                if blast_option == 'low_complexity':
+                    if request.POST['program'] == 'blastn':
+                        input_opt.append('-dust')
+                    else:
+                        input_opt.append('-seg')
+                else:
+                    input_opt.append('-'+blast_option)
+                input_opt.append(request.POST[blast_option])
 
             
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
-            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6', '-max_target_seqs', num_alignments]]
+            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']]
+            args_list = args_list[0] + input_opt
             # convert to multiple formats
             blast_formatter_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'blast_formatter')
             for ext, outfmt in blast_info['ext'].items():
@@ -105,12 +106,12 @@ def create(request):
                     args.append('-html')
                 if int(outfmt.split()[0]) > 4:
                     args.append('-max_target_seqs')
-                    args.append(num_alignments)
+                    args.append(max_target_seqs)
                 else:
                     args.append('-num_descriptions')
-                    args.append(num_alignments)
+                    args.append(max_target_seqs)
                     args.append('-num_alignments')
-                    args.append(num_alignments)
+                    args.append(max_target_seqs)
                 args_list.append(args)
 
             record = BlastQueryRecord()

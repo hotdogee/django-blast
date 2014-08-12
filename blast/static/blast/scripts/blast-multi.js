@@ -108,51 +108,51 @@ $(function() { // document ready
 	});
 	$('.organism-checkbox').change(function(e) {
 		if ($(this).is(':checked')) {
-			$('.dataset-checkbox.' + $(this).attr('organism') + '.' + default_data_type).prop('checked', true).change();
+			$('.dataset-checkbox.' + $(this).attr('organism') + '.' + default_data_type).prop('checked', true).attr("checked", true).change();
 			//console.log('.datasets-checkbox.' + $(this).attr('organism') + '.' + default_data_type);
 		} else {
 			// uncheck all dataset checkboxes of the organism
-			$('.dataset-checkbox.' + $(this).attr('organism')).prop('checked', false).change();
+			$('.dataset-checkbox.' + $(this).attr('organism')).prop('checked', false).attr("checked", false).change();
 		}
 	});
 	$('.dataset-checkbox').change(function() {
 		if ($(this).is(':checked')) {
 			// check organism checkbox
-			$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', true);
+			$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', true).attr("checked", true);
 			default_data_type = $(this).attr('dataset-type');
 		} else {
 			//console.log($('.dataset-checkbox.' + $(this).attr('organism')).is(':checked'));
 			// if none of the dataset checkboxes are checked
 			if (!$('.dataset-checkbox.' + $(this).attr('organism')).is(':checked')) {
 				// uncheck the organism checkbox
-				$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', false);
+				$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', false).attr("checked", false);
 			}
 		}
 		setDatabaseType();
 	});
 	$('.all-organism-checkbox').change(function() {
 		if ($(this).is(':checked')) {
-			$('.all-dataset-checkbox.' + default_data_type).prop('checked', true);
+			$('.all-dataset-checkbox.' + default_data_type).prop('checked', true).attr("checked", true);
 			// check all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + default_data_type).prop('checked', true).change();
+			$('.dataset-checkbox.' + default_data_type).prop('checked', true).attr("checked", true).change();
 		} else {
 			// uncheck all dataset checkboxes of the organism
-			$('.all-dataset-checkbox').prop('checked', false).change();
+			$('.all-dataset-checkbox').prop('checked', false).attr("checked", false).change();
 		}
 	});
 	$('.all-dataset-checkbox').change(function() {
 		if ($(this).is(':checked')) {
 			// check organism checkbox
-			$('.all-organism-checkbox').prop('checked', true);
+			$('.all-organism-checkbox').prop('checked', true).attr("checked", true);
 			// check all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', true).change();
+			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', true).attr("checked", true).change();
 		} else {
 			// uncheck all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', false).change();
+			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', false).attr("checked", false).change();
 			// if none of the dataset checkboxes are checked
 			if (!$('.all-dataset-checkbox').is(':checked')) {
 				// uncheck the organism checkbox
-				$('.all-organism-checkbox').prop('checked', false);
+				$('.all-organism-checkbox').prop('checked', false).attr("checked", false);
 			}
 		}
 	});
@@ -419,14 +419,14 @@ IENY';
         
         switch(blast_program) {
             case 'BLASTN':
-                $('#word_size').val('11');
+                $('#word_size').val('28');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                  html_content = '\
                                 <a>Match score <input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10"></a><br/>\
-                                <a>Mismatch score <input TYPE="text" ID="penalty" NAME="penalty" VALUE="-3" SIZE="10"></a><br/>\
-                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="5" SIZE="10"></a><br/>\
-                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="2" SIZE="10"></a><br/>\
+                                <a>Mismatch score <input TYPE="text" ID="penalty" NAME="penalty" VALUE="-2" SIZE="10"></a><br/>\
+                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="0" SIZE="10"></a><br/>\
+                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="0" SIZE="10"></a><br/>\
                                 <a>Strand </a>\
                                 <select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
