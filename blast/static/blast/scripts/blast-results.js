@@ -125,8 +125,9 @@
                     start_pos = 0;
                 end_pos += 200;
                 if (end_pos > data[col_idx['slen']])
-                    end_pos = data[col_idx['slen']]
-                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href="' + results_info['db_url'][results_info['sseqid_db'][data[col_idx['sseqid']]]] + '?task_id=' + task_id + '&dbname=' + data[index_of_jbrowse] + '&loc=' + sseqid + ':' + start_pos + '..' + end_pos + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
+                    end_pos = data[col_idx['slen']];
+                var dbtitle = results_info['sseqid_db'][data[col_idx['sseqid']]];
+                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href="' + results_info['db_url'][dbtitle] + '?task_id=' + task_id + '&dbname=' + dbtitle + '&loc=' + sseqid + ':' + start_pos + '..' + end_pos + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
                 //<a class="btn btn-default" href="#" role="button">Link</a>
                 //http://gmod-dev.nal.usda.gov:8080/[ORGANISM]/jbrowse/?task_id=[TASK_ID]&dbname=[BLAST_DB]&loc=[sseqid]
             }

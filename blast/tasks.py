@@ -34,7 +34,7 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
     elif stat(file_prefix + '.csv')[6] == 0:
         result_status = 'CSV_EMPTY'
     else:
-        # parse .0
+        # parse .0, and save index in line_num_list
         report_path = file_prefix + '.0'
         line_num_list = []
         with open(report_path, 'rb') as f:
@@ -44,8 +44,7 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                 if line[:len(target_str)] == target_str:
                     line_num_list.append(line_num)
                 line_num += 1
-        #print line_num_list
-        # read csv
+        # read csv and convert to appropreate types
         csv_path = file_prefix + '.csv'
         json_path = file_prefix + '.json'
         type_func = {'str': str, 'float': float, 'int': int}
@@ -58,20 +57,30 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
             blast_program = path.basename(args_list[0][0])
             basedir = path.dirname(csv_path)
             gff_col_names = 'seqid source type start end score strand phase attributes'.split()
-            extended_col_names = blast_info['col_names'] + ['qstrand', 'sstrand']
-            col_idx = dict([(v, i) for i, v in enumerate(blast_info['col_names'])])
-            hsp_dict_list = [dict(zip(extended_col_names, row + ['-' if row[col_idx['qend']] - row[col_idx['qstart']] < 0 else '+', '-' if row[col_idx['send']] - row[col_idx['sstart']] < 0 else '+'])) for row in hsp_list]
+            # build hsp_dict_list with extra strand info, always let qend > qstart, if not swap both query and subject cords, than set strand
+            cid = dict([(v, i) for i, v in enumerate(blast_info['col_names'])])
+            hsp_dict_col_names = 'qseqid sseqid evalue qlen qstart qend sstart send sstrand'.split()
+            hsp_dict_list = [dict(zip(hsp_dict_col_names, [row[cid['qseqid']], row[cid['sseqid']], row[cid['evalue']], row[cid['qlen']], row[cid['qend']], row[cid['qstart']], row[cid['send']], row[cid['sstart']], '-' if row[cid['sstart']] - row[cid['send']] < 0 else '+'] if row[cid['qend']] - row[cid['qstart']] < 0 else [row[cid['qseqid']], row[cid['sseqid']], row[cid['evalue']], row[cid['qlen']], row[cid['qstart']], row[cid['qend']], row[cid['sstart']], row[cid['send']], '-' if row[cid['send']] - row[cid['sstart']] < 0 else '+'])) for row in hsp_list]
+            # build lookup tables from db
             sseqid_db = dict(Sequence.objects.select_related('blastdb').filter(id__in=set([hsp['sseqid'] for hsp in hsp_dict_list])).values_list('id', 'blast_db__title'))
             db_organism = dict(BlastDb.objects.select_related('organism').filter(title__in=set(sseqid_db.values())).values_list('title', 'organism__short_name'))
             db_url = dict(JbrowseSetting.objects.select_related('blastdb').filter(blast_db__title__in=set(sseqid_db.values())).values_list('blast_db__title', 'url'))
             with open(path.join(basedir, 'info.json'), 'wb') as f:
                 json.dump({'sseqid_db': sseqid_db, 'db_organism': db_organism, 'db_url': db_url, 'line_num_list': line_num_list}, f)
-            for db_name, db_hsp_dict_list in groupby([hsp for hsp in hsp_dict_list if sseqid_db[hsp['sseqid']] in db_url], lambda hsp: sseqid_db[hsp['sseqid']]):
-                with open(path.join(basedir, db_organism[db_name] + '.gff'), 'wb') as fgff:
+            # group hsps by database, need to sort before doing groupby
+            sorted_hsp_dict_list = sorted([hsp for hsp in hsp_dict_list if sseqid_db[hsp['sseqid']] in db_url], key=lambda a: sseqid_db[a['sseqid']])
+            db_count = 0
+            for db_name, db_hsp_dict_list in groupby(sorted_hsp_dict_list, key=lambda a: sseqid_db[a['sseqid']]):
+                with open(path.join(basedir, db_name + '.gff'), 'wb') as fgff:
                     fgff.write('##gff-version 3\n')
+                    db_count += 1
                     match_id = 1
                     match_part_id = 1
-                    for key_db_hsp_dict_list in [sorted(hsps, key=lambda h: (h['sstart'], h['send']) if h['sstrand'] == '+' else (h['send'], h['sstart'])) for _, hsps in groupby(db_hsp_dict_list, lambda x: x['qseqid'] + x['sseqid'] + x['qstrand'] + x['sstrand'])]:
+                    # sort before groupby
+                    sorted_db_hsp_dict_list = sorted(db_hsp_dict_list, key=lambda x: x['qseqid'] + x['sseqid'] + x['sstrand'])
+                    # group hsps with the same key = qseqid + sseqid + sstrand, sort groups asc on sstart or send according to sstrand
+                    for key_db_hsp_dict_list in [sorted(hsps, key=lambda h: (h['sstart'], h['send']) if h['sstrand'] == '+' else (h['send'], h['sstart'])) for _, hsps in groupby(sorted_db_hsp_dict_list, key=lambda x: x['qseqid'] + x['sseqid'] + x['sstrand'])]:
+                        # seqid parsing currently customized for i5k
                         seqid = key_db_hsp_dict_list[0]['sseqid'] if len(key_db_hsp_dict_list[0]['sseqid'].split('|')) < 2 else key_db_hsp_dict_list[0]['sseqid'].split('|')[1]
                         gff_item = {'seqid': key_db_hsp_dict_list[0]['sseqid'].split('|')[-1].split('_', 1)[-1] if key_db_hsp_dict_list[0]['sseqid'][:3] == 'gnl' else seqid,
                                     'source': blast_program}
@@ -109,7 +118,8 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
             with open(json_path, 'wb') as f:
                 json.dump([[db_organism[sseqid_db[hsp_dict_list[i]['sseqid']]] if sseqid_db[hsp_dict_list[i]['sseqid']] in db_url else ''] + hsp for i, hsp in enumerate(hsp_list)], f)
             result_status = 'SUCCESS'
-        except:
+        except Exception, e:
+            print Exception, e
             with open(json_path, 'wb') as f:
                 json.dump([hsp + [''] for i, hsp in enumerate(hsp_list)], f)
             result_status = 'NO_GFF'

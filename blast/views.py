@@ -9,7 +9,7 @@ from uuid import uuid4
 from os import path, makedirs, chmod, stat
 from django.conf import settings
 from sys import platform
-from .models import BlastQueryRecord, BlastDb
+from .models import BlastQueryRecord, BlastDb, Sequence, JbrowseSetting
 from .tasks import run_blast_task
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -118,6 +118,8 @@ def create(request):
             record.save()
 
             run_blast_task.delay(task_id, args_list, file_prefix, blast_info)
+            # debug
+            #run_blast_task.delay(task_id, args_list, file_prefix, blast_info).get()
             return redirect('blast:retrieve', task_id)
         else:
             raise Http404
