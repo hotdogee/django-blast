@@ -127,9 +127,8 @@
                 if (end_pos > data[col_idx['slen']])
                     end_pos = data[col_idx['slen']];
                 var dbtitle = results_info['sseqid_db'][data[col_idx['sseqid']]];
-                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href="' + results_info['db_url'][dbtitle] + '?task_id=' + task_id + '&dbname=' + dbtitle + '&loc=' + sseqid + ':' + start_pos + '..' + end_pos + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
-                //<a class="btn btn-default" href="#" role="button">Link</a>
-                //http://gmod-dev.nal.usda.gov:8080/[ORGANISM]/jbrowse/?task_id=[TASK_ID]&dbname=[BLAST_DB]&loc=[sseqid]
+                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href="' + results_info['db_url'][dbtitle] + '?loc=' + sseqid + ':' + start_pos + '..' + end_pos + '&addStores={\'url\':{\'type\':\'JBrowse/Store/SeqFeature/GFF3\',\'urlTemplate\':\'http://' + /http:\/\/([^\/]+)\//g.exec(document.URL)[1] + '/media/' + task_id + '/' + dbtitle + '.gff\'}}&addTracks=[{\'label\':\'BlastResults\',\'category\':\'0. Reference Assembly\',\'type\':\'WebApollo/View/Track/DraggableHTMLFeatures\',\'store\':\'url\'}]" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
+                // http://gmod-dev.nal.usda.gov:8080/cercap/jbrowse/?loc=NW_004524168.1:1573727..1574357&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://gmod-dev.nal.usda.gov/media/bd21a007bd3246f094bc756591a27d43/Ccap01172013-genome_new_ids.fa.gff"}}&addTracks=[{"label":"BlastResults","category":"0. Reference Assembly","type":"WebApollo/View/Track/DraggableHTMLFeatures","store":"url"}]
             }
         }
     });
