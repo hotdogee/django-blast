@@ -109,8 +109,8 @@
         }),
         "headerCallback": function( thead, data, start, end, display ) {
             $(thead).find('th').each(function(index) {
-                $(this).html('<a data-toggle="tooltip" data-placement="top" title="' + results_col_names_display[$(this).attr('data-column-index')] + '"><span>' + results_col_names[$(this).attr('data-column-index')] + '</span></a>');
-                $(this).tooltip()
+                $(this).html('<a data-toggle="tooltip" data-placement="top" data-container="body" title="' + results_col_names_display[$(this).attr('data-column-index')] + '"><span>' + results_col_names[$(this).attr('data-column-index')] + '</span></a>');
+                $(this).children().tooltip()
             });
         },
         rowCallback: function (row, data) {
