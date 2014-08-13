@@ -4,10 +4,10 @@
 CELERYD_NODES="celery_consumer"
 
 # Where to chdir at start. This could be the root of a virtualenv.
-CELERYD_CHDIR="/usr/local/i5k"
+CELERYD_CHDIR="/path/to/i5k"
 
 # How to call celeryd-multi
-CELERYD_MULTI="/usr/local/i5k/virtualenv/py2.7/bin/celery multi"
+CELERYD_MULTI="/path/to/i5k/virtualenv/py2.7/bin/celery multi"
 
 # Extra arguments
 CELERYD_OPTS="--app=i5k --concurrency=3"
