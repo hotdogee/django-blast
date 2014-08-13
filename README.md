@@ -13,7 +13,7 @@ Backend
 Frontend - Results
 =================
 * Fullscreen design dynamically scales to any screen size
-* Dynamically draws a unique query converage graph and a subject converage graph for every high scoring pair(HSP) on HTML5 canvas.
+* Dynamically draws a unique query coverage graph and a subject coverage graph for every high scoring pair(HSP) on HTML5 canvas.
 * Interactive graph updates the page as the user mouse over each aligned segment.
 * Graph zoom level and line height are first calculated according to the data and screen size, but can be easily adjusted to user's preference using the sliders on the left and right sides of each graph.
 * Interactive results table updates the page as the user:
