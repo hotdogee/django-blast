@@ -102,11 +102,17 @@
         //responsive: true,
         data: results_data,
         columns: _.map(results_col_names, function (name) {
-            col = { 'title': name };
+            col = { 'title': results_col_names_display[col_idx[name]] };
             if (name == 'jbrowse')
                 col['orderable'] = false;
             return col;
         }),
+        "headerCallback": function( thead, data, start, end, display ) {
+            $(thead).find('th').each(function(index) {
+                $(this).html('<a data-toggle="tooltip" data-placement="top" title="' + results_col_names_display[$(this).attr('data-column-index')] + '"><span>' + results_col_names[$(this).attr('data-column-index')] + '</span></a>');
+                $(this).tooltip()
+            });
+        },
         rowCallback: function (row, data) {
             if (data[index_of_jbrowse] != '') {
                 var sseqid = data[col_idx['sseqid']];
@@ -127,7 +133,7 @@
                 if (end_pos > data[col_idx['slen']])
                     end_pos = data[col_idx['slen']];
                 var dbtitle = results_info['sseqid_db'][data[col_idx['sseqid']]];
-                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href=\'' + results_info['db_url'][dbtitle] + '?loc=' + sseqid + ':' + start_pos + '..' + end_pos + '&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://' + /http:\/\/([^\/]+)\//g.exec(document.URL)[1] + '/media/' + task_id + '/' + dbtitle + '.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"JBrowse/View/Track/CanvasFeatures","store":"url","glyph":"JBrowse/View/FeatureGlyph/ProcessedTranscript","subParts":"match_part","style":{"color":"blue","height":6,"connectorColor":"gray","connectorThickness":2}}]\' role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
+                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href=\'' + results_info['db_url'][dbtitle] + '?loc=' + sseqid + ':' + start_pos + '..' + end_pos + '&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://' + /http:\/\/([^\/]+)\//g.exec(document.URL)[1] + '/media/' + task_id + '/' + dbtitle + '.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"JBrowse/View/Track/CanvasFeatures","store":"url","glyph":"JBrowse/View/FeatureGlyph/ProcessedTranscript","subParts":"match_part","style":{"color":"blue","height":6,"connectorColor":"gray","connectorThickness":2}}]&tracks=BLAST+ Results\' role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
                 //http://gmod-dev.nal.usda.gov:8080/anogla/jbrowse/?loc=Scaffold1:107901..161900&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://gmod-dev.nal.usda.gov/media/07b73d9a3dde4eac9faa9c4109f7cfb6/Agla_Btl03082013.genome_new_ids.fa.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"JBrowse/View/Track/CanvasFeatures","store":"url","glyph":"JBrowse/View/FeatureGlyph/ProcessedTranscript","subParts":"match_part","style":{"color":"blue","height":6,"connectorColor":"gray","connectorThickness":2}}]
             }
         }

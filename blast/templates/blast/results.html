@@ -26,15 +26,14 @@
     //$('body').attr('unresolved', ''); // To fit polymer's requirement for <body>
     //$('body').attr('fullbleed', ''); // To fit polymer's requirement for <body>
     var results_col_names = {{ results_col_names|safe }};
+    var results_col_names_display = {{ results_col_names_display|safe }};
     var results_data = {{ results_data|safe }};
     var results_info = {{ results_info|safe }};
     var task_id = '{{ task_id }}';
     </script>
 {% endblock %}
 
-
 {% block content-fluid %}
-
 <div vertical layout style="height: 100%;">
 <div horizontal layout style="height: 38%;">
 <div style="width: 50%; height: 100%; position: relative;">
@@ -65,8 +64,6 @@
 <code-mirror flex>{{ results_detail|safe }}</code-mirror>
 </div>
 </div>
-
-
 {% endblock %}
 
 {% block scripts %}
@@ -80,6 +77,4 @@
 <script src="{% static 'blast/scripts/underscore-min.js' %}"></script>
 <script src="{% static 'blast/scripts/scribl.1.1.4.js' %}"></script>
 <script src="{% static 'blast/scripts/blast-results.js' %}"></script>
-
-
 {% endblock %}
