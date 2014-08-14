@@ -1,3 +1,4 @@
+/// <reference path="../../../templates/blast/main.html" />
 /////////////////////
 // DATA PROCESSING //
 /////////////////////
@@ -12,6 +13,7 @@ for (var i = 0; i < dataset_list_count; i++) {
 	var alphabet = entry[1];
 	var file_name = entry[2];
 	var organism_name = entry[3];
+	var description = entry[4];
     if (!(organism_name in dataset_dict)) {
 		dataset_dict[organism_name] = {};
 		organism_list.push(organism_name);
@@ -23,7 +25,7 @@ for (var i = 0; i < dataset_list_count; i++) {
 	if ($.inArray(alphabet, alphabet_list) < 0) {
 		alphabet_list.push(alphabet);
 	}
-	dataset_dict[organism_name][alphabet].push([file_name, data_type]); // add info
+	dataset_dict[organism_name][alphabet].push([file_name, data_type, description]); // add info
 }
 // for IE6,7,8
 if (!Array.prototype.indexOf) {
@@ -53,6 +55,7 @@ $(function() { // document ready
 			'organism': organism_id,
 			'type': 'checkbox',
 			'class': 'organism-checkbox ' + organism_id,
+            'name': 'organism-checkbox[]',
 		});
 		var $organism_div = $('<div/>', {
 			'organism': organism_id,
@@ -74,6 +77,7 @@ $(function() { // document ready
 				for (var k = 0; k < entry_count; k++) {
 					var file_name = dataset_dict[organism_list[i]][alphabet_list[j]][k][0];
 					var data_type = dataset_dict[organism_list[i]][alphabet_list[j]][k][1];
+					var description = dataset_dict[organism_list[i]][alphabet_list[j]][k][2];
 					var data_type_class = data_type.toLowerCase().replace(' ', '-');
 					// dataset checkbox
 					var $organism_datasets_checkbox = $('<input>', {
@@ -84,7 +88,7 @@ $(function() { // document ready
 						'dataset-type': data_type_class,
 						'class': 'dataset-checkbox ' + organism_id + ' ' + data_type_class + ' ' + alphabet_class,
 					});
-					var $organism_datasets_checkbox_div = $('<div/>').append($organism_datasets_checkbox).append(data_type);
+					var $organism_datasets_checkbox_div = $('<div/>').append($organism_datasets_checkbox).append(data_type + ' - ' + description);
 					var $organism_datasets_label = $('<label/>').append($organism_datasets_checkbox_div);
 					$alphabet_fieldset.append($organism_datasets_label);
 					//dataset_i++;
@@ -107,51 +111,51 @@ $(function() { // document ready
 	});
 	$('.organism-checkbox').change(function(e) {
 		if ($(this).is(':checked')) {
-			$('.dataset-checkbox.' + $(this).attr('organism') + '.' + default_data_type).prop('checked', true).change();
+			$('.dataset-checkbox.' + $(this).attr('organism') + '.' + default_data_type).prop('checked', true).attr("checked", true).change();
 			//console.log('.datasets-checkbox.' + $(this).attr('organism') + '.' + default_data_type);
 		} else {
 			// uncheck all dataset checkboxes of the organism
-			$('.dataset-checkbox.' + $(this).attr('organism')).prop('checked', false).change();
+			$('.dataset-checkbox.' + $(this).attr('organism')).prop('checked', false).attr("checked", false).change();
 		}
 	});
 	$('.dataset-checkbox').change(function() {
 		if ($(this).is(':checked')) {
 			// check organism checkbox
-			$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', true);
+			$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', true).attr("checked", true);
 			default_data_type = $(this).attr('dataset-type');
 		} else {
 			//console.log($('.dataset-checkbox.' + $(this).attr('organism')).is(':checked'));
 			// if none of the dataset checkboxes are checked
 			if (!$('.dataset-checkbox.' + $(this).attr('organism')).is(':checked')) {
 				// uncheck the organism checkbox
-				$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', false);
+				$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', false).attr("checked", false);
 			}
 		}
 		setDatabaseType();
 	});
 	$('.all-organism-checkbox').change(function() {
 		if ($(this).is(':checked')) {
-			$('.all-dataset-checkbox.' + default_data_type).prop('checked', true);
+			$('.all-dataset-checkbox.' + default_data_type).prop('checked', true).attr("checked", true);
 			// check all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + default_data_type).prop('checked', true).change();
+			$('.dataset-checkbox.' + default_data_type).prop('checked', true).attr("checked", true).change();
 		} else {
 			// uncheck all dataset checkboxes of the organism
-			$('.all-dataset-checkbox').prop('checked', false).change();
+			$('.all-dataset-checkbox').prop('checked', false).attr("checked", false).change();
 		}
 	});
 	$('.all-dataset-checkbox').change(function() {
 		if ($(this).is(':checked')) {
 			// check organism checkbox
-			$('.all-organism-checkbox').prop('checked', true);
+			$('.all-organism-checkbox').prop('checked', true).attr("checked", true);
 			// check all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', true).change();
+			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', true).attr("checked", true).change();
 		} else {
 			// uncheck all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', false).change();
+			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', false).attr("checked", false).change();
 			// if none of the dataset checkboxes are checked
 			if (!$('.all-dataset-checkbox').is(':checked')) {
 				// uncheck the organism checkbox
-				$('.all-organism-checkbox').prop('checked', false);
+				$('.all-organism-checkbox').prop('checked', false).attr("checked", false);
 			}
 		}
 	});
@@ -212,7 +216,7 @@ $(function() { // document ready
 			$('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
 		}
 		// select first non disabled option
-		$('input.program:not([disabled])').first().prop('checked', true);
+		$('input.program:not([disabled])').first().prop('checked', true).attr("checked", true);
 		program_selected = $('input.program:not([disabled])').first().val();
 		$('.' + program_selected).mouseover();
         add_blast_options(program_selected.toUpperCase());
@@ -415,23 +419,26 @@ IENY';
         var html_content='';
         
         $('#fieldset-options-blast legend:first').html(blast_program+' Options');   //Show the option title
+        $('#max_target_seqs').val('100');
+        $('#evalue').val('10.0');
         
         switch(blast_program) {
             case 'BLASTN':
-                $('#word_size').val('11');
+                $('#word_size').val('28');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 28)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                  html_content = '\
-                                <a>Match score <input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10"></a><br/>\
-                                <a>Mismatch score <input TYPE="text" ID="penalty" NAME="penalty" VALUE="-3" SIZE="10"></a><br/>\
-                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="5" SIZE="10"></a><br/>\
-                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="2" SIZE="10"></a><br/>\
-                                <a>Strand </a>\
-                                <select id="strand" name="strand">\
+                                <table id="blastn-scoring-param"><tr><td><span title="Reward for a nucleotide match.  (Default: 1)">Match score </span></td><td><input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Penalty for a nucleotide mismatch.  (Default: -2)">Mismatch score </span></td><td><input TYPE="text" ID="penalty" NAME="penalty" VALUE="-2" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to open a gap.  (Default: 0)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="0" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to extend a gap.  (Default: 0)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="0" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td>\
+                                <td><select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
                                     <option value="plus">plus</option>\
                                     <option value="minus">minus</option>\
-                                </select>\
+                                </select></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -443,11 +450,12 @@ IENY';
             
             case 'TBLASTN':
                 $('#word_size').val('3');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                  html_content = '\
-                                <a>Matrix </a>\
-                                <select id="matrix" name="matrix">\
+                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
+                                <td><select id="matrix" name="matrix">\
                                     <option value="PAM30">PAM30</option>\
                                     <option value="PAM70">PAM70</option>\
                                     <option value="PAM250">PAM250</option>\
@@ -456,11 +464,11 @@ IENY';
                                     <option value="BLOSUM62" selected>BLOSUM62</option>\
                                     <option value="BLOSUM50">BLOSUM50</option>\
                                     <option value="BLOSUM45">BLOSUM45</option>\
-                                </select>\
-                                <br/>\
-                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"></a><br/>\
-                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"></a><br/>\
-                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"></a>\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10" class="input-fields"></td></tr>\
+								<tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -473,11 +481,12 @@ IENY';
             
             case 'TBLASTX':
                 $('#word_size').val('3');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                 html_content = '\
-                                <a>Matrix </a>\
-                                <select id="matrix" name="matrix">\
+                                <table id="tblastx-scoring-param"><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
+                                <td><select id="matrix" name="matrix">\
                                     <option value="PAM30">PAM30</option>\
                                     <option value="PAM70">PAM70</option>\
                                     <option value="PAM250">PAM250</option>\
@@ -486,15 +495,15 @@ IENY';
                                     <option value="BLOSUM62" selected>BLOSUM62</option>\
                                     <option value="BLOSUM50">BLOSUM50</option>\
                                     <option value="BLOSUM45">BLOSUM45</option>\
-                                </select>\
-                                <br/>\
-                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"></a><br/>\
-                                <a>Strand </a>\
-                                <select id="strand" name="strand">\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td>\
+                                <td><select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
                                     <option value="plus">plus</option>\
                                     <option value="minus">minus</option>\
-                                </select>\
+                                </select></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -507,11 +516,12 @@ IENY';
                 
             case 'BLASTP':
                 $('#word_size').val('3');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                 html_content = '\
-                                <a>Matrix </a>\
-                                <select id="matrix" name="matrix">\
+                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
+                                <td><select id="matrix" name="matrix">\
                                 <option value="PAM30">PAM30</option>\
                                 <option value="PAM70">PAM70</option>\
                                 <option value="PAM250">PAM250</option>\
@@ -520,11 +530,11 @@ IENY';
                                 <option value="BLOSUM62" selected>BLOSUM62</option>\
                                 <option value="BLOSUM50">BLOSUM50</option>\
                                 <option value="BLOSUM45">BLOSUM45</option>\
-                                </select>\
-                                <br/>\
-                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="11" SIZE="10"></a><br/>\
-                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"></a><br/>\
-                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"></a>\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 11)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -537,11 +547,12 @@ IENY';
                 
             case 'BLASTX':
                 $('#word_size').val('3');
+				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                 html_content = '\
-                                <a>Matrix </a>\
-                                <select id="matrix" name="matrix">\
+                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
+                                <td><select id="matrix" name="matrix">\
                                     <option value="PAM30">PAM30</option>\
                                     <option value="PAM70">PAM70</option>\
                                     <option value="PAM250">PAM250</option>\
@@ -550,18 +561,18 @@ IENY';
                                     <option value="BLOSUM62" selected>BLOSUM62</option>\
                                     <option value="BLOSUM50">BLOSUM50</option>\
                                     <option value="BLOSUM45">BLOSUM45</option>\
-                                </select>\
-                                <br/>\
-                                <a>Threshold <input TYPE="text" ID="threshold" NAME="threshold" VALUE="12" SIZE="10"></a><br/>\
-                                <a>Strand </a>\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 12)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="12" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td><td>\
                                 <select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
                                     <option value="plus">plus</option>\
                                     <option value="minus">minus</option>\
-                                </select>\
-                                <br/>\
-                                <a>Gap opening penalty <input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"></a><br/>\
-                                <a>Gap extension penalty <input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"></a>\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -572,7 +583,108 @@ IENY';
                 
                 break;
         }
+        
+        // Validate MainBlastForm form on keyup and submit
+        $("#MainBlastForm").validate({
+            rules: {
+                'query-sequence': {
+                    //'textarea_valid':'', 
+                    required: true
+                },
+                'organism-checkbox[]': {
+                    required: true
+                },
+                'dataset-checkbox[]': {
+                    required: true
+                },
+                evalue: {
+                    required: true,
+                    number: true
+                },
+                word_size: {
+                    required: true,
+                    number: true
+                },
+                reward: {
+                    required: true,
+                    number: true
+                },
+                penalty: {
+                    required: true,
+                    number: true
+                },
+                gapopen: {
+                    required: true,
+                    number: true
+                },
+                gapextend: {
+                    required: true,
+                    number: true
+                },
+                threshold: {
+                    required: true,
+                    number: true
+                }
+            },
+            messages: {
+                'query-sequence': {
+                    required: "No sequence found!"
+                },
+                'organism-checkbox[]': {
+                    required: "Please choose at least one organism"
+                },
+                'dataset-checkbox[]': {
+                    required: "Please choose the type of databases"
+                },
+                evalue: {
+                    required: "Please provide an E-value",
+                    number: "Please enter a valid number"
+                },
+                word_size: {
+                    required: "Please provide word size value",
+                    number: "Please enter a valid number"
+                },
+                reward: {
+                    required: "Please provide match score value",
+                    number: "Please enter a valid number"
+                },
+                penalty: {
+                    required: "Please provide mismatch score value",
+                    number: "Please enter a valid number"
+                },
+                gapopen: {
+                    required: "Please provide a value for gap opening penalty",
+                    number: "Please enter a valid number"
+                },
+                gapextend: {
+                    required: "Please provide a value for gap extension penalty",
+                    number: "Please enter a valid number"
+                },
+                threshold: {
+                    required: "Please provide a threshold",
+                    number: "Please enter a valid number"
+                }
+            },
+            errorPlacement: function (error, element){
+                switch (element.attr('name').toString()) {
+                    case 'organism-checkbox[]':
+                        error.insertAfter('#legend-Organisms');
+                        break;
+                    case 'dataset-checkbox[]':
+                        error.insertAfter('.dataset-title');
+                        break;
+                    default:
+                        error.insertAfter(element);
+                }
+            }
+        });
+        
+/*         $.validator.addMethod('textarea_valid', function(value, element, param) {
+            return $.trim(value) != '';
+        }, 'No any sequence found!'); 
+ */        
     }
+    
 	$('#low_complexity').change(function(e) {
 		if ($(this).is(':checked')) {
             $('#low_complexity_hidden').remove();
@@ -606,7 +718,17 @@ IENY';
         event.preventDefault();
         $(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
         
+        $('label.error').remove();
+        
     });
     
     add_blast_options('BLASTN'); //show initially
+        
+    
 });
+
+function On_Submit(){
+    if($("#MainBlastForm").valid()) {
+        $("#MainBlastForm").submit();
+    }
+}

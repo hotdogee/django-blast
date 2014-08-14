@@ -311,7 +311,7 @@ legend {
 	font-family: 'Droid Serif', serif;
 	text-shadow: 2px 2px 4px #aaa;
 	font-size: 1.3em;
-    margin-bottom: 0px;
+    margin-bottom: 3px;
 }
 
 .datasets-div legend {
@@ -346,3 +346,27 @@ legend {
 label {
 	display: block;
 }
+
+label.error {
+background: url('images/unchecked.gif') no-repeat;
+padding-left: 16px;
+margin-left: .3em;
+color: red;
+}
+
+#max_target_seqs, #matrix, #strand, .input-fields {
+  margin-bottom: 3px;
+}
+
+#tblastx-scoring-param {
+  width: 33.2%
+}
+
+#buttons {
+  margin-top: 12px;
+}
+
+.query-file {
+  margin-top: 10px;
+}
+

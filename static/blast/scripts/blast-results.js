@@ -8,109 +8,180 @@
     ///////////////////
     // Results Table //
     ///////////////////
-    $.fn.dataTable.TableTools.buttons.download = $.extend(
-        true,
-        $.fn.dataTable.TableTools.buttonBase,
-        {
-            'sAction': 'text',
-            'sTag': 'default',
-            'sFieldBoundary': '',
-            'sFieldSeperator': '\t',
-            'sNewLine': '<br>',
-            'sToolTip': '',
-            'sButtonClass': 'DTTT_button_text',
-            'sButtonClassHover': 'DTTT_button_text_hover',
-            'sButtonText': 'Download',
-            'mColumns': 'all',
-            'bHeader': true,
-            'bFooter': true,
-            'sDiv': '',
-            'fnMouseover': null,
-            'fnMouseout': null,
-            'fnClick': function (nButton, oConfig) {
-                var iframe = document.createElement('iframe');
-                iframe.style.height = '0px';
-                iframe.style.width = '0px';
-                iframe.src = oConfig.sUrl;
-                document.body.appendChild(iframe);
-            },
-            'fnSelect': null,
-            'fnComplete': null,
-            'fnInit': null
-        }
-    );
+    //$.fn.dataTable.TableTools.buttons.download = $.extend(
+    //    true,
+    //    $.fn.dataTable.TableTools.buttonBase,
+    //    {
+    //        'sAction': 'text',
+    //        'sTag': 'default',
+    //        'sFieldBoundary': '',
+    //        'sFieldSeperator': '\t',
+    //        'sNewLine': '<br>',
+    //        'sToolTip': '',
+    //        'sButtonClass': 'DTTT_button_text',
+    //        'sButtonClassHover': 'DTTT_button_text_hover',
+    //        'sButtonText': 'Download',
+    //        'mColumns': 'all',
+    //        'bHeader': true,
+    //        'bFooter': true,
+    //        'sDiv': '',
+    //        'fnMouseover': null,
+    //        'fnMouseout': null,
+    //        'fnClick': function (nButton, oConfig) {
+    //            var iframe = document.createElement('iframe');
+    //            iframe.style.height = '0px';
+    //            iframe.style.width = '0px';
+    //            iframe.src = oConfig.sUrl;
+    //            document.body.appendChild(iframe);
+    //        },
+    //        'fnSelect': null,
+    //        'fnComplete': null,
+    //        'fnInit': null
+    //    }
+    //);
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
-    var index_of_jbrowse = _.indexOf(results_col_names, 'jbrowse');
+    var index_of_blastdb = col_idx['blastdb']; // -1 if not present
+    var fixedColumns = 2;
+    // add header and footer for jbrowse if index != -1
+    if (index_of_blastdb != -1) {
+        $('#results-table thead tr').append('<th></th>');
+        $('#results-table tfoot tr').append('<th></th>');
+        fixedColumns = 3;
+    }
     var $results_table = $('#results-table').dataTable({
         scrollX: '100%',
         scrollY: '200px',
         dom:
             '<"' + toolbar_prefix + 'tl ui-corner-tr"Rifr>' +
             't' +
-            '<"' + toolbar_prefix + 'bl ui-corner-br"T><"clear">S',
-        //dom: 'RifrtTS',
+            '<"' + toolbar_prefix + 'bl ui-corner-br"<"btn-group dropup">>S',
+        //dom: 'Rifrt<"btn-group dropup">S',
         //"dom": 'T<"clear">lfrtip',
-        //deferRender: true,
+        deferRender: true,
         //bJQueryUI: true,
-        tableTools: {
-            sSwfPath: '/static/blast/swf/copy_csv_xls_pdf.swf',
-            aButtons: [
-                'copy',
-                'print',
-                {
-                    sExtends:    'collection',
-                    sButtonText: 'Save',
-                    aButtons: [{
-                        sExtends: 'download',
-                        sButtonText: 'Pairwise',
-                        sUrl: task_path + '.0'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'Query-anchored showing identities',
-                        sUrl: task_path + '.1'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'Flat query-anchored, show identities',
-                        sUrl: task_path + '.3'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'XML',
-                        sUrl: task_path + '.xml'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'Tabular',
-                        sUrl: task_path + '.tsv'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'CSV',
-                        sUrl: task_path + '.csv'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'BLAST archive format (ASN.1)',
-                        sUrl: task_path + '.asn'
-                    }]
-                }
-            ]
+        //tableTools: {
+        //    sSwfPath: '/static/blast/swf/copy_csv_xls_pdf.swf',
+        //    aButtons: [
+        //        'copy',
+        //        {
+        //            "sExtends": "print",
+        //            "sInfo": "Press escape when done."
+        //        },
+        //        {
+        //            sExtends:    'collection',
+        //            sButtonText: 'Save',
+        //            aButtons: [{
+        //                sExtends: 'download',
+        //                sButtonText: 'Pairwise',
+        //                sUrl: task_path + '.0'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'Query-anchored showing identities',
+        //                sUrl: task_path + '.1'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'Flat query-anchored, show identities',
+        //                sUrl: task_path + '.3'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'XML',
+        //                sUrl: task_path + '.xml'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'Tabular',
+        //                sUrl: task_path + '.tsv'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'CSV',
+        //                sUrl: task_path + '.csv'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'BLAST archive format (ASN.1)',
+        //                sUrl: task_path + '.asn'
+        //            }]
+        //        }
+        //    ]
+        //},
+        colReorder: {
+            'fixedColumns': fixedColumns,
+            realtime: true,
+            stateSave: true
         },
         order: [[ col_idx['qseqid'], 'asc' ]],
         //responsive: true,
         data: results_data,
         columns: _.map(results_col_names, function (name) {
-            col = { 'title': name };
-            if (name == 'jbrowse')
+            col = { 'title': results_col_names[col_idx[name]] };
+            if (name == 'blastdb') {
                 col['orderable'] = false;
+            }
             return col;
         }),
-        createdRow: function (row, data, dataIndex) {
-            if (data[index_of_jbrowse] != '') {
-                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" href="' + results_info['db_url'][results_info['sseqid_db'][data[col_idx['sseqid']]]] + '?task_id=' + task_id + '&dbname=' + data[index_of_jbrowse] + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
-                //<a class="btn btn-default" href="#" role="button">Link</a>
-                //http://gmod-dev.nal.usda.gov:8080/[ORGANISM]/jbrowse/?task_id=[TASK_ID]&dbname=[BLAST_DB]
+        "headerCallback": function (thead, data, start, end, display) {
+            $(thead).find('th').each(function (index) {
+                $(this).html('<a data-toggle="tooltip" data-placement="top" data-container="body" title="' + results_col_names_display[col_idx[$(this).text()]] + '"><span>' + results_col_names[col_idx[$(this).text()]] + '</span></a>');
+                $(this).children().tooltip()
+            });
+        },
+        rowCallback: function (row, data) {
+            var dbtitle = data[index_of_blastdb];
+            var $blastdb_td = $('td', row).eq(index_of_blastdb).addClass('center-cell')
+            if (dbtitle in results_info['db_url']) {
+                var sseqid = data[col_idx['sseqid']];
+                if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
+                    //>gnl|Ceratitis_capitata|cercap_Scaffold1
+                    sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
+                else if (/\|([^|]+)\|/.exec(sseqid) != null)
+                    //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
+                    sseqid = /\|([^|]+)\|/.exec(sseqid)[1];
+                var start_pos = data[col_idx['sstart']];
+                var end_pos = data[col_idx['send']];
+                if (end_pos < start_pos)
+                    end_pos = [start_pos, start_pos = end_pos][0];
+                start_pos -= 200;
+                if (start_pos < 0)
+                    start_pos = 0;
+                end_pos += 200;
+                if (end_pos > data[col_idx['slen']])
+                    end_pos = data[col_idx['slen']];
+                $blastdb_td.html('<a class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="right" data-container="body" title="View result in genome browser   " target="_blank" href=\'' + results_info['db_url'][dbtitle] + '?loc=' + sseqid + ':' + start_pos + '..' + end_pos + '&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://' + /http:\/\/([^\/]+)\//g.exec(document.URL)[1] + '/media/' + task_id + '/' + dbtitle + '.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"WebApollo/View/Track/DraggableHTMLFeatures","store":"url","style":{"renderClassName":"gray-center-10pct","subfeatureClasses":{"match_part":"blast-match_part"}}}]&tracks=BLAST+ Results\' role="button"><span class="glyphicon glyphicon-new-window"></span> ' + results_info['db_organism'][dbtitle] + '</a>');
+                //http://gmod-dev.nal.usda.gov:8080/anogla/jbrowse/?loc=Scaffold1:107901..161900&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://gmod-dev.nal.usda.gov/media/07b73d9a3dde4eac9faa9c4109f7cfb6/Agla_Btl03082013.genome_new_ids.fa.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"JBrowse/View/Track/CanvasFeatures","store":"url","glyph":"JBrowse/View/FeatureGlyph/ProcessedTranscript","subParts":"match_part","style":{"color":"blue","height":6,"connectorColor":"gray","connectorThickness":2}}]
+            } else {
+                $blastdb_td.html('<span data-toggle="tooltip" data-placement="right" title="' + dbtitle + '">' + results_info['db_organism'][dbtitle] + '</span>');
             }
+            $blastdb_td.children().tooltip();
         }
     });
     var results_table_api = $('#results-table').DataTable();
+    results_table_api.columns.adjust().draw();
+    // Download button menu
+    $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
+<span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>\
+</button>\
+<ul class="dropdown-menu" role="menu">\
+    <li><a href="' + task_path + '.0"><span class="glyphicon glyphicon-file"></span> Pairwise</a></li>\
+    <li><a href="' + task_path + '.1"><span class="glyphicon glyphicon-file"></span> Query-anchored showing identities</a></li>\
+    <li><a href="' + task_path + '.3"><span class="glyphicon glyphicon-file"></span> Flat query-anchored, show identities</a></li>\
+    <li><a href="' + task_path + '.xml"><span class="glyphicon glyphicon-file"></span> XML</a></li>\
+    <li><a href="' + task_path + '.tsv"><span class="glyphicon glyphicon-file"></span> Tabular</a></li>\
+    <li><a href="' + task_path + '.csv"><span class="glyphicon glyphicon-file"></span> CSV</a></li>\
+    <li><a href="' + task_path + '.asn"><span class="glyphicon glyphicon-file"></span> BLAST archive format (ASN.1)</a></li>\
+</ul>')
+    // Add per column filter input elements to tfoot
+    $('.dataTables_scrollFoot tfoot th').each(function () {
+        var title = $('.dataTables_scrollHead thead th').eq($(this).index()).find('a span').text();
+        $(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
+    });
+    results_table_api.columns().eq(0).each(function (colIdx) {
+        $('input', results_table_api.column(colIdx).footer()).on('keyup change', function () {
+            console.log(colIdx);
+            results_table_api
+                .column(colIdx)
+                .search(this.value)
+                .draw();
+        });
+    });
     //}).yadcf([{
     //    column_number: 0,
     //    filter_type: "multi_select"
@@ -130,9 +201,10 @@
     var $ui_corner_br = $('.ui-corner-br');
     var $dataTables_scrollHead = $('.dataTables_scrollHead');
     var $dataTables_scrollBody = $('.dataTables_scrollBody');
+    var $dataTables_scrollFoot = $('.dataTables_scrollFoot');
     function updateDataTableHeight() {
         // table_panel_div - top_bar - bottom_bar - table_header
-        var h = $table_panel.height() - $ui_corner_tr.outerHeight() - $ui_corner_br.outerHeight() - $dataTables_scrollHead.outerHeight();
+        var h = $table_panel.height() - $ui_corner_tr.outerHeight() - $ui_corner_br.outerHeight() - $dataTables_scrollHead.outerHeight() - $dataTables_scrollFoot.outerHeight();
         $dataTables_scrollBody.css('height', h);
         // trigger dataTables.scroller to recalculate how many rows its showing
         $(window).trigger('resize.DTS');
