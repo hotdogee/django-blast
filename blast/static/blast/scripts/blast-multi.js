@@ -419,6 +419,8 @@ IENY';
         var html_content='';
         
         $('#fieldset-options-blast legend:first').html(blast_program+' Options');   //Show the option title
+        $('#max_target_seqs').val('100');
+        $('#evalue').val('10');
         
         switch(blast_program) {
             case 'BLASTN':
