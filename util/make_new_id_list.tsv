@@ -15,7 +15,7 @@ Gerris buenoi	gerbue	Transcript	/app/data/BCM_i5k_pilot/gerbue/scaffold/analyses
 Homalodisca vitripennis	homvit	Transcript	/app/data/BCM_i5k_pilot/homvit/scaffold/analyses/BCM_version_0.5.3/consensus_gene_set/HVIT.fna	v0.5.3
 Latrodectus hesperus	lathes	Transcript	/app/data/BCM_i5k_pilot/lathes/scaffold/analyses/BCM_version_0.5.3/consensus_gene_set/LHES.fna	v0.5.3
 Limnephilus lunatus	limlun	Transcript	/app/data/BCM_i5k_pilot/limlun/scaffold/analyses/BCM_version_0.5.3/consensus_gene_set/LLUN.fna	v0.5.3
-Loxosceles reclusa	loxrec	Transcript	/app/data/BCM_i5k_pilot/loxrec/scaffold/analyses/BCM_version_0.5.3/consensus_gene_set/LREC.faa	v0.5.3
+Loxosceles reclusa	loxrec	Transcript	/app/data/BCM_i5k_pilot/loxrec/scaffold/analyses/BCM_version_0.5.3/consensus_gene_set/LREC.fna	v0.5.3
 Onthophagus taurus	onttau	Transcript	/app/data/BCM_i5k_pilot/onttau/scaffold/analyses/BCM_version_0.5.3/consensus_gene_set/OTAU.fna	v0.5.3
 Tigriopus californicus	tigcal	Transcript	/app/data/other_species/tigcal/scaffold/analyses/TCALIF_transcripts_v1.0.fasta	v1.0
 Agrilus planipennis	agrpla	Protein	/app/data/BCM_i5k_pilot/agrpla/scaffold/analyses/BCM_version_0.5.3/consensus_gene_set/APLA.faa	v0.5.3

@@ -1396,13 +1396,13 @@
   },
   {
     "fields": {
-      "description": "LREC_new_ids.faa",
-      "fasta_file": "/media/blastdb/LREC_new_ids.faa",
+      "description": "LREC_new_ids.fna",
+      "fasta_file": "/media/blastdb/LREC_new_ids.fna",
       "is_shown": true,
       "organism": [
         "loxrec"
       ],
-      "title": "LREC_new_ids.faa",
+      "title": "LREC_new_ids.fna",
       "type": [
         "Transcript"
       ]
