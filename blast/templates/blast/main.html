@@ -101,7 +101,7 @@ Enter here your input data as
 		blastx
 	</label>
 	<div id="blastProgramDescription">blastn - Nucleotide vs. Nucleotide</div>
-	<div>
+	<div id="buttons">
 		<INPUT TYPE="button" VALUE="Reset" CLASS="btn_reset">
 		<INPUT TYPE="button" VALUE="Search" onclick="On_Submit();">
 	</div>
@@ -111,21 +111,39 @@ Enter here your input data as
 <div id="blast_options">
     <fieldset id="fieldset-options-blast">
         <legend></legend>
-        <fieldset id="fieldset-options-blast-general-param">
-        <legend>General Parameters</legend>
-        <span title="Number of aligned sequences to keep.">Max target sequences </span>
-        <select id="max_target_seqs" name="max_target_seqs">
+        <fieldset id="fieldset-options-blast-general-param">        
+        <legend>General Parameters</legend>    
+        <table id="general-param-table">
+        <tr>
+        <td>
+            <span class="span-title" title="Number of aligned sequences to keep.">Max target sequences </span>
+        </td>
+        <td>
+          <select id="max_target_seqs" name="max_target_seqs">
             <option value="10">10</option>
             <option value="50">50</option>
             <option value="100" selected>100</option>
             <option value="250">250</option>
             <option value="500">500</option>
-        </select>
-        <br/>
-        <span title="Expect value (E) for saving hits.  (Default: 10.0)">Expect threshold </span>
-        <input TYPE="text" ID="evalue" NAME="evalue" VALUE="10.0" SIZE="10"><br/>
-        <span ID="span_word_size" title="Length of initial exact match. (Default: 28)">Word size </span>
-        <input TYPE="text" ID="word_size" NAME="word_size" VALUE="28" SIZE="10"><br/>
+          </select>
+        </td></tr>
+        <tr>
+          <td>
+            <span class="span-title" title="Expect value (E) for saving hits.  (Default: 10.0)">Expect threshold </span>
+          </td>
+          <td>
+          <input TYPE="text" ID="evalue" NAME="evalue" VALUE="10.0" SIZE="10" class="input-fields">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="span-title" ID="span_word_size" title="Length of initial exact match. (Default: 28)">Word size </span>
+          </td>
+          <td>
+            <input TYPE="text" ID="word_size" NAME="word_size" VALUE="28" SIZE="10" class="input-fields">
+          </td>
+        </tr>
+        </table>
         </fieldset>
         
         <fieldset id="fieldset-options-blast-scoring-param">
