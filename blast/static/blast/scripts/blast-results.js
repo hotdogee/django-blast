@@ -105,14 +105,14 @@
         //responsive: true,
         data: results_data,
         columns: _.map(results_col_names, function (name) {
-            col = { 'title': results_col_names_display[col_idx[name]] };
+            col = { 'title': results_col_names[col_idx[name]] };
             if (name == 'jbrowse')
                 col['orderable'] = false;
             return col;
         }),
-        "headerCallback": function( thead, data, start, end, display ) {
-            $(thead).find('th').each(function(index) {
-                $(this).html('<a data-toggle="tooltip" data-placement="top" data-container="body" title="' + results_col_names_display[$(this).attr('data-column-index')] + '"><span>' + results_col_names[$(this).attr('data-column-index')] + '</span></a>');
+        "headerCallback": function (thead, data, start, end, display) {
+            $(thead).find('th').each(function (index) {
+                $(this).html('<a data-toggle="tooltip" data-placement="top" data-container="body" title="' + results_col_names_display[col_idx[$(this).text()]] + '"><span>' + results_col_names[col_idx[$(this).text()]] + '</span></a>');
                 $(this).children().tooltip()
             });
         },
@@ -143,16 +143,16 @@
     });
     var results_table_api = $('#results-table').DataTable();
     $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
-    Download <span class="caret"></span>\
+<span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>\
 </button>\
 <ul class="dropdown-menu" role="menu">\
-    <li><a href="' + task_path + '.0">Pairwise</a></li>\
-    <li><a href="' + task_path + '.1">Query-anchored showing identities</a></li>\
-    <li><a href="' + task_path + '.3">Flat query-anchored, show identities</a></li>\
-    <li><a href="' + task_path + '.xml">XML</a></li>\
-    <li><a href="' + task_path + '.tsv">Tabular</a></li>\
-    <li><a href="' + task_path + '.csv">CSV</a></li>\
-    <li><a href="' + task_path + '.asn">BLAST archive format (ASN.1)</a></li>\
+    <li><a href="' + task_path + '.0"><span class="glyphicon glyphicon-file"></span> Pairwise</a></li>\
+    <li><a href="' + task_path + '.1"><span class="glyphicon glyphicon-file"></span> Query-anchored showing identities</a></li>\
+    <li><a href="' + task_path + '.3"><span class="glyphicon glyphicon-file"></span> Flat query-anchored, show identities</a></li>\
+    <li><a href="' + task_path + '.xml"><span class="glyphicon glyphicon-file"></span> XML</a></li>\
+    <li><a href="' + task_path + '.tsv"><span class="glyphicon glyphicon-file"></span> Tabular</a></li>\
+    <li><a href="' + task_path + '.csv"><span class="glyphicon glyphicon-file"></span> CSV</a></li>\
+    <li><a href="' + task_path + '.asn"><span class="glyphicon glyphicon-file"></span> BLAST archive format (ASN.1)</a></li>\
 </ul>')
     //}).yadcf([{
     //    column_number: 0,
