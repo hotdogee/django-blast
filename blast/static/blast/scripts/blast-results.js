@@ -162,10 +162,18 @@
     <li><a href="' + task_path + '.csv"><span class="glyphicon glyphicon-file"></span> CSV</a></li>\
     <li><a href="' + task_path + '.asn"><span class="glyphicon glyphicon-file"></span> BLAST archive format (ASN.1)</a></li>\
 </ul>')
-    // Add filter input elements to tfoot
+    // Add per column filter input elements to tfoot
     $('.dataTables_scrollFoot tfoot th').each(function () {
         var title = $('.dataTables_scrollHead thead th').eq($(this).index()).find('a span').text();
         $(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
+    });
+    results_table_api.columns().eq(0).each(function (colIdx) {
+        $('input', results_table_api.column(colIdx).footer()).on('keyup change', function () {
+            results_table_api
+                .column(colIdx)
+                .search(this.value)
+                .draw();
+        });
     });
     //}).yadcf([{
     //    column_number: 0,

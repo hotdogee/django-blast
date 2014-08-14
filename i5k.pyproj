@@ -387,6 +387,7 @@
   <ItemGroup>
     <Content Include="app\static\app\scripts\jquery.gh-readme.js" />
     <Content Include="app\static\app\scripts\marked.min.js" />
+    <Content Include="app\templates\app\layout-iframe.html" />
     <Content Include="blast\bin_linux\blastdbcmd" />
     <Content Include="blast\bin_linux\blastn" />
     <Content Include="blast\bin_linux\blastp" />
@@ -1202,6 +1203,7 @@
     <Content Include="blast\static\blast\scripts\underscore.js" />
     <Content Include="blast\static\blast\swf\copy_csv_xls.swf" />
     <Content Include="blast\static\blast\swf\copy_csv_xls_pdf.swf" />
+    <Content Include="blast\templates\blast\main-iframe.html" />
     <Content Include="blast\templates\blast\results.html" />
     <Content Include="blast\templates\blast\main.html" />
     <Content Include="blast\bin_win\makeblastdb.exe" />
