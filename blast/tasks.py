@@ -67,6 +67,8 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
             db_url = dict(JbrowseSetting.objects.select_related('blastdb').filter(blast_db__title__in=set(sseqid_db.values())).values_list('blast_db__title', 'url'))
             with open(path.join(basedir, 'info.json'), 'wb') as f:
                 json.dump({'sseqid_db': sseqid_db, 'db_organism': db_organism, 'db_url': db_url, 'line_num_list': line_num_list}, f)
+            with open(json_path, 'wb') as f:
+                json.dump([[sseqid_db[hsp_dict_list[i]['sseqid']]] + hsp for i, hsp in enumerate(hsp_list)], f)
             # group hsps by database, need to sort before doing groupby
             sorted_hsp_dict_list = sorted([hsp for hsp in hsp_dict_list if sseqid_db[hsp['sseqid']] in db_url], key=lambda a: sseqid_db[a['sseqid']])
             for db_name, db_hsp_dict_list in groupby(sorted_hsp_dict_list, key=lambda a: sseqid_db[a['sseqid']]):
@@ -129,17 +131,9 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                                 fgff.write('\t'.join([gff_item[c] for c in gff_col_names]) + '\n')
                                 match_part_id += 1
                             match_id += 1
-            with open(json_path, 'wb') as f:
-                if len(sorted_hsp_dict_list) == 0:
-                    json.dump(hsp_list, f)
-                    result_status = 'NO_GFF'
-                else:
-                    json.dump([[db_organism[sseqid_db[hsp_dict_list[i]['sseqid']]] if sseqid_db[hsp_dict_list[i]['sseqid']] in db_url else ''] + hsp for i, hsp in enumerate(hsp_list)], f)
-                    result_status = 'SUCCESS'
+            result_status = 'SUCCESS'
         except Exception, e:
-            print Exception, e
-            with open(json_path, 'wb') as f:
-                json.dump(hsp_list, f)
+            # print Exception, e
             result_status = 'NO_GFF'
     record.result_status = result_status
     record.result_date = datetime.utcnow().replace(tzinfo=utc)

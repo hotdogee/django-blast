@@ -41,10 +41,10 @@
     //);
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
-    var index_of_jbrowse = _.indexOf(results_col_names, 'jbrowse'); // -1 if not present
+    var index_of_blastdb = col_idx['blastdb']; // -1 if not present
     var fixedColumns = 2;
     // add header and footer for jbrowse if index != -1
-    if (index_of_jbrowse != -1) {
+    if (index_of_blastdb != -1) {
         $('#results-table thead tr').append('<th></th>');
         $('#results-table tfoot tr').append('<th></th>');
         fixedColumns = 3;
@@ -113,8 +113,9 @@
         data: results_data,
         columns: _.map(results_col_names, function (name) {
             col = { 'title': results_col_names[col_idx[name]] };
-            if (name == 'jbrowse')
+            if (name == 'blastdb') {
                 col['orderable'] = false;
+            }
             return col;
         }),
         "headerCallback": function (thead, data, start, end, display) {
@@ -124,7 +125,8 @@
             });
         },
         rowCallback: function (row, data) {
-            if (index_of_jbrowse > -1 && data[index_of_jbrowse] != '') {
+            var dbtitle = data[index_of_blastdb];
+            if (dbtitle in results_info['db_url']) {
                 var sseqid = data[col_idx['sseqid']];
                 if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
                     //>gnl|Ceratitis_capitata|cercap_Scaffold1
@@ -142,13 +144,15 @@
                 end_pos += 200;
                 if (end_pos > data[col_idx['slen']])
                     end_pos = data[col_idx['slen']];
-                var dbtitle = results_info['sseqid_db'][data[col_idx['sseqid']]];
-                $('td', row).eq(index_of_jbrowse).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href=\'' + results_info['db_url'][dbtitle] + '?loc=' + sseqid + ':' + start_pos + '..' + end_pos + '&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://' + /http:\/\/([^\/]+)\//g.exec(document.URL)[1] + '/media/' + task_id + '/' + dbtitle + '.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"WebApollo/View/Track/DraggableHTMLFeatures","store":"url","style":{"renderClassName":"gray-center-10pct","subfeatureClasses":{"match_part":"blast-match_part"}}}]&tracks=BLAST+ Results\' role="button"><span class="glyphicon glyphicon-new-window"></span> ' + data[index_of_jbrowse] + '</a>');
+                $('td', row).eq(index_of_blastdb).addClass('center-cell').html('<a class="btn btn-primary btn-xs" target="_blank" href=\'' + results_info['db_url'][dbtitle] + '?loc=' + sseqid + ':' + start_pos + '..' + end_pos + '&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://' + /http:\/\/([^\/]+)\//g.exec(document.URL)[1] + '/media/' + task_id + '/' + dbtitle + '.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"WebApollo/View/Track/DraggableHTMLFeatures","store":"url","style":{"renderClassName":"gray-center-10pct","subfeatureClasses":{"match_part":"blast-match_part"}}}]&tracks=BLAST+ Results\' role="button"><span class="glyphicon glyphicon-new-window"></span> ' + results_info['db_organism'][dbtitle] + '</a>');
                 //http://gmod-dev.nal.usda.gov:8080/anogla/jbrowse/?loc=Scaffold1:107901..161900&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://gmod-dev.nal.usda.gov/media/07b73d9a3dde4eac9faa9c4109f7cfb6/Agla_Btl03082013.genome_new_ids.fa.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"JBrowse/View/Track/CanvasFeatures","store":"url","glyph":"JBrowse/View/FeatureGlyph/ProcessedTranscript","subParts":"match_part","style":{"color":"blue","height":6,"connectorColor":"gray","connectorThickness":2}}]
+            } else {
+                $('td', row).eq(index_of_blastdb).addClass('center-cell').html(results_info['db_organism'][dbtitle]);
             }
         }
     });
     var results_table_api = $('#results-table').DataTable();
+    results_table_api.columns.adjust().draw();
     // Download button menu
     $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
 <span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>\
