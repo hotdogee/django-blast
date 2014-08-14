@@ -8,37 +8,37 @@
     ///////////////////
     // Results Table //
     ///////////////////
-    $.fn.dataTable.TableTools.buttons.download = $.extend(
-        true,
-        $.fn.dataTable.TableTools.buttonBase,
-        {
-            'sAction': 'text',
-            'sTag': 'default',
-            'sFieldBoundary': '',
-            'sFieldSeperator': '\t',
-            'sNewLine': '<br>',
-            'sToolTip': '',
-            'sButtonClass': 'DTTT_button_text',
-            'sButtonClassHover': 'DTTT_button_text_hover',
-            'sButtonText': 'Download',
-            'mColumns': 'all',
-            'bHeader': true,
-            'bFooter': true,
-            'sDiv': '',
-            'fnMouseover': null,
-            'fnMouseout': null,
-            'fnClick': function (nButton, oConfig) {
-                var iframe = document.createElement('iframe');
-                iframe.style.height = '0px';
-                iframe.style.width = '0px';
-                iframe.src = oConfig.sUrl;
-                document.body.appendChild(iframe);
-            },
-            'fnSelect': null,
-            'fnComplete': null,
-            'fnInit': null
-        }
-    );
+    //$.fn.dataTable.TableTools.buttons.download = $.extend(
+    //    true,
+    //    $.fn.dataTable.TableTools.buttonBase,
+    //    {
+    //        'sAction': 'text',
+    //        'sTag': 'default',
+    //        'sFieldBoundary': '',
+    //        'sFieldSeperator': '\t',
+    //        'sNewLine': '<br>',
+    //        'sToolTip': '',
+    //        'sButtonClass': 'DTTT_button_text',
+    //        'sButtonClassHover': 'DTTT_button_text_hover',
+    //        'sButtonText': 'Download',
+    //        'mColumns': 'all',
+    //        'bHeader': true,
+    //        'bFooter': true,
+    //        'sDiv': '',
+    //        'fnMouseover': null,
+    //        'fnMouseout': null,
+    //        'fnClick': function (nButton, oConfig) {
+    //            var iframe = document.createElement('iframe');
+    //            iframe.style.height = '0px';
+    //            iframe.style.width = '0px';
+    //            iframe.src = oConfig.sUrl;
+    //            document.body.appendChild(iframe);
+    //        },
+    //        'fnSelect': null,
+    //        'fnComplete': null,
+    //        'fnInit': null
+    //    }
+    //);
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
     var index_of_jbrowse = _.indexOf(results_col_names, 'jbrowse'); // -1 if not present
@@ -49,7 +49,7 @@
             '<"' + toolbar_prefix + 'tl ui-corner-tr"Rifr>' +
             't' +
             '<"' + toolbar_prefix + 'bl ui-corner-br"<"btn-group dropup">>S',
-        //dom: 'RifrtTS',
+        //dom: 'Rifrt<"btn-group dropup">S',
         //"dom": 'T<"clear">lfrtip',
         //deferRender: true,
         //bJQueryUI: true,

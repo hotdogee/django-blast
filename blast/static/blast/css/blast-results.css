@@ -12,7 +12,7 @@ div.DTS tbody tr.even.highlight {
 .nal-footer {
     position: absolute;
     bottom: 0;
-    margin: 14px;
+    margin: 17px;
     right: 0;
 }
 
@@ -23,4 +23,12 @@ div.DTS tbody tr.even.highlight {
 
 .dataTables_scroll {
     font-family: 'Source Code Pro', monospace;
+}
+
+#results-table_filter label {
+    margin: 0;
+}
+
+.dataTables_wrapper .dataTables_info {
+    padding: 5px;
 }
