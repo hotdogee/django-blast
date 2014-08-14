@@ -429,16 +429,16 @@ IENY';
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                  html_content = '\
-                                <span title="Reward for a nucleotide match.  (Default: 1)">Match score </span><input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10"><br/>\
-                                <span title="Penalty for a nucleotide mismatch.  (Default: -2)">Mismatch score </span><input TYPE="text" ID="penalty" NAME="penalty" VALUE="-2" SIZE="10"><br/>\
-                                <span title="Cost to open a gap.  (Default: 0)">Gap opening penalty </span><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="0" SIZE="10"><br/>\
-                                <span title="Cost to extend a gap.  (Default: 0)">Gap extension penalty </span><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="0" SIZE="10"><br/>\
-                                <span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span>\
-                                <select id="strand" name="strand">\
+                                <table id="blastn-scoring-param"><tr><td><span title="Reward for a nucleotide match.  (Default: 1)">Match score </span></td><td><input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Penalty for a nucleotide mismatch.  (Default: -2)">Mismatch score </span></td><td><input TYPE="text" ID="penalty" NAME="penalty" VALUE="-2" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to open a gap.  (Default: 0)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="0" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to extend a gap.  (Default: 0)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="0" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td>\
+                                <td><select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
                                     <option value="plus">plus</option>\
                                     <option value="minus">minus</option>\
-                                </select>\
+                                </select></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -454,8 +454,8 @@ IENY';
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                  html_content = '\
-                                <span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span>\
-                                <select id="matrix" name="matrix">\
+                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
+                                <td><select id="matrix" name="matrix">\
                                     <option value="PAM30">PAM30</option>\
                                     <option value="PAM70">PAM70</option>\
                                     <option value="PAM250">PAM250</option>\
@@ -464,11 +464,11 @@ IENY';
                                     <option value="BLOSUM62" selected>BLOSUM62</option>\
                                     <option value="BLOSUM50">BLOSUM50</option>\
                                     <option value="BLOSUM45">BLOSUM45</option>\
-                                </select>\
-                                <br/>\
-                                <span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"><br/>\
-								<span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"><br/>\
-                                <span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"><br/>\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10" class="input-fields"></td></tr>\
+								<tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -485,8 +485,8 @@ IENY';
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                 html_content = '\
-                                <span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span>\
-                                <select id="matrix" name="matrix">\
+                                <table id="tblastx-scoring-param"><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
+                                <td><select id="matrix" name="matrix">\
                                     <option value="PAM30">PAM30</option>\
                                     <option value="PAM70">PAM70</option>\
                                     <option value="PAM250">PAM250</option>\
@@ -495,15 +495,15 @@ IENY';
                                     <option value="BLOSUM62" selected>BLOSUM62</option>\
                                     <option value="BLOSUM50">BLOSUM50</option>\
                                     <option value="BLOSUM45">BLOSUM45</option>\
-                                </select>\
-                                <br/>\
-                                <span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10"><br/>\
-                                <span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span>\
-                                <select id="strand" name="strand">\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td>\
+                                <td><select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
                                     <option value="plus">plus</option>\
                                     <option value="minus">minus</option>\
-                                </select>\
+                                </select></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -520,8 +520,8 @@ IENY';
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                 html_content = '\
-                                <span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span>\
-                                <select id="matrix" name="matrix">\
+                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
+                                <td><select id="matrix" name="matrix">\
                                 <option value="PAM30">PAM30</option>\
                                 <option value="PAM70">PAM70</option>\
                                 <option value="PAM250">PAM250</option>\
@@ -530,11 +530,11 @@ IENY';
                                 <option value="BLOSUM62" selected>BLOSUM62</option>\
                                 <option value="BLOSUM50">BLOSUM50</option>\
                                 <option value="BLOSUM45">BLOSUM45</option>\
-                                </select>\
-                                <br/>\
-                                <span title="Minimum score to add a word to the BLAST lookup table.  (Default: 11)">Threshold </span><input TYPE="text" ID="threshold" NAME="threshold" VALUE="11" SIZE="10"><br/>\
-                                <span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"><br/>\
-                                <span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"><br/>\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 11)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
@@ -551,8 +551,8 @@ IENY';
                 $('#fieldset-options-blast-scoring-param legend ~ *').remove();
                 
                 html_content = '\
-                                <span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span>\
-                                <select id="matrix" name="matrix">\
+                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
+                                <td><select id="matrix" name="matrix">\
                                     <option value="PAM30">PAM30</option>\
                                     <option value="PAM70">PAM70</option>\
                                     <option value="PAM250">PAM250</option>\
@@ -561,18 +561,18 @@ IENY';
                                     <option value="BLOSUM62" selected>BLOSUM62</option>\
                                     <option value="BLOSUM50">BLOSUM50</option>\
                                     <option value="BLOSUM45">BLOSUM45</option>\
-                                </select>\
-                                <br/>\
-                                <span title="Minimum score to add a word to the BLAST lookup table.  (Default: 12)">Threshold </span><input TYPE="text" ID="threshold" NAME="threshold" VALUE="12" SIZE="10"><br/>\
-                                <span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span>\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 12)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="12" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td><td>\
                                 <select id="strand" name="strand">\
                                     <option value="both" selected>both</option>\
                                     <option value="plus">plus</option>\
                                     <option value="minus">minus</option>\
-                                </select>\
-                                <br/>\
-                                <span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10"><br/>\
-                                <span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10"><br/>\
+                                </select></td>\
+                                </tr>\
+                                <tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
+                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
                                ';
                 $('#fieldset-options-blast-scoring-param legend').after(html_content);
                 
