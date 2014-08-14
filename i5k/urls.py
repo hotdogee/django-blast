@@ -13,7 +13,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^home$', 'app.views.home', name='home'),
-    url(r'^contact$', 'app.views.contact', name='contact'),
+    #url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
     url(r'^login/$',
         'django.contrib.auth.views.login',
