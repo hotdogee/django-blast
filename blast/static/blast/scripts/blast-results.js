@@ -58,7 +58,7 @@
             '<"' + toolbar_prefix + 'bl ui-corner-br"<"btn-group dropup">>S',
         //dom: 'Rifrt<"btn-group dropup">S',
         //"dom": 'T<"clear">lfrtip',
-        //deferRender: true,
+        deferRender: true,
         //bJQueryUI: true,
         //tableTools: {
         //    sSwfPath: '/static/blast/swf/copy_csv_xls_pdf.swf',
@@ -169,6 +169,7 @@
     });
     results_table_api.columns().eq(0).each(function (colIdx) {
         $('input', results_table_api.column(colIdx).footer()).on('keyup change', function () {
+            console.log(colIdx);
             results_table_api
                 .column(colIdx)
                 .search(this.value)
