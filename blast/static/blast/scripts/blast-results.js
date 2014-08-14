@@ -48,51 +48,54 @@
         dom:
             '<"' + toolbar_prefix + 'tl ui-corner-tr"Rifr>' +
             't' +
-            '<"' + toolbar_prefix + 'bl ui-corner-br"T><"clear">S',
+            '<"' + toolbar_prefix + 'bl ui-corner-br"<"btn-group dropup">>S',
         //dom: 'RifrtTS',
         //"dom": 'T<"clear">lfrtip',
         //deferRender: true,
         //bJQueryUI: true,
-        tableTools: {
-            sSwfPath: '/static/blast/swf/copy_csv_xls_pdf.swf',
-            aButtons: [
-                'copy',
-                'print',
-                {
-                    sExtends:    'collection',
-                    sButtonText: 'Save',
-                    aButtons: [{
-                        sExtends: 'download',
-                        sButtonText: 'Pairwise',
-                        sUrl: task_path + '.0'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'Query-anchored showing identities',
-                        sUrl: task_path + '.1'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'Flat query-anchored, show identities',
-                        sUrl: task_path + '.3'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'XML',
-                        sUrl: task_path + '.xml'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'Tabular',
-                        sUrl: task_path + '.tsv'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'CSV',
-                        sUrl: task_path + '.csv'
-                    }, {
-                        sExtends: 'download',
-                        sButtonText: 'BLAST archive format (ASN.1)',
-                        sUrl: task_path + '.asn'
-                    }]
-                }
-            ]
-        },
+        //tableTools: {
+        //    sSwfPath: '/static/blast/swf/copy_csv_xls_pdf.swf',
+        //    aButtons: [
+        //        'copy',
+        //        {
+        //            "sExtends": "print",
+        //            "sInfo": "Press escape when done."
+        //        },
+        //        {
+        //            sExtends:    'collection',
+        //            sButtonText: 'Save',
+        //            aButtons: [{
+        //                sExtends: 'download',
+        //                sButtonText: 'Pairwise',
+        //                sUrl: task_path + '.0'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'Query-anchored showing identities',
+        //                sUrl: task_path + '.1'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'Flat query-anchored, show identities',
+        //                sUrl: task_path + '.3'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'XML',
+        //                sUrl: task_path + '.xml'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'Tabular',
+        //                sUrl: task_path + '.tsv'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'CSV',
+        //                sUrl: task_path + '.csv'
+        //            }, {
+        //                sExtends: 'download',
+        //                sButtonText: 'BLAST archive format (ASN.1)',
+        //                sUrl: task_path + '.asn'
+        //            }]
+        //        }
+        //    ]
+        //},
         colReorder: {
             fixedColumns: 3,
             realtime: true,
@@ -139,6 +142,18 @@
         }
     });
     var results_table_api = $('#results-table').DataTable();
+    $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
+    Download <span class="caret"></span>\
+</button>\
+<ul class="dropdown-menu" role="menu">\
+    <li><a href="' + task_path + '.0">Pairwise</a></li>\
+    <li><a href="' + task_path + '.1">Query-anchored showing identities</a></li>\
+    <li><a href="' + task_path + '.3">Flat query-anchored, show identities</a></li>\
+    <li><a href="' + task_path + '.xml">XML</a></li>\
+    <li><a href="' + task_path + '.tsv">Tabular</a></li>\
+    <li><a href="' + task_path + '.csv">CSV</a></li>\
+    <li><a href="' + task_path + '.asn">BLAST archive format (ASN.1)</a></li>\
+</ul>')
     //}).yadcf([{
     //    column_number: 0,
     //    filter_type: "multi_select"
