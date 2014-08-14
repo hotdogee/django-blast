@@ -154,7 +154,7 @@ def retrieve(request, task_id='1'):
                 results_col_names = blast_info['col_names']
                 results_col_names_display = blast_col_names_display
                 results_col_names = ['blastdb'] + results_col_names
-                results_col_names_display = ['View result in genome browser'] + results_col_names_display
+                results_col_names_display = ['BLAST Database Title'] + results_col_names_display
                 return render(
                     request,
                     'blast/results.html', {
