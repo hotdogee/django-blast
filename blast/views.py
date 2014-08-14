@@ -43,7 +43,7 @@ blast_info = {
     },
 }
 
-def create(request):
+def create(request, iframe=False):
     #return HttpResponse("BLAST Page: create.")
     if request.method == 'GET':
         # build dataset_list = [['Genome Assembly', 'Nucleotide', 'Agla_Btl03082013.genome_new_ids.fa', 'Anoplophora glabripennis'],]
@@ -53,6 +53,7 @@ def create(request):
             'title': 'BLAST Query', 
             'blastdb_list': json.dumps(blastdb_list), 
             'blastdb_type_counts': blastdb_type_counts,
+            'iframe': iframe
         })
     elif request.method == 'POST':
         # setup file paths

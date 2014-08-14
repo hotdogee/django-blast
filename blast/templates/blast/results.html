@@ -35,34 +35,36 @@
 
 {% block content-fluid %}
 <div vertical layout style="height: 100%;">
-<div horizontal layout style="height: 38%;">
-<div style="width: 50%; height: 100%; position: relative;">
-<div style="height: 38px; margin: 0;padding: 12px 24px; position: absolute; white-space: nowrap;">
-<h1 style="font-size: 18px; margin: 0;">Query Coverage Graph - <span id="query-canvas-name"></span></h1>
-</div>
-<div style="width: 100%; position: absolute; top: 38px; bottom: 0;">
-<canvas id="query-canvas"></canvas>
-</div>
-</div>
-<core-splitter id="graph-splitter" direction="left" disableSelection></core-splitter>
-<div flex style="width: 50%; height: 100%; position: relative;">
-<div style="height: 38px; margin: 0;padding: 12px 24px; position: absolute; white-space: nowrap;">
-<h1 style="font-size: 18px; margin: 0;">Subject Coverage Graph - <span id="subject-canvas-name"></span></h1>
-</div>
-<div style="width: 100%; position: absolute; top: 38px; bottom: 0;">
-<canvas id="subject-canvas"></canvas>
-</div>
-</div>
-</div>
-<core-splitter id="horizontal-splitter" direction="up" disableSelection></core-splitter>
-<div flex horizontal layout style="height: 70%;">
-<div id="table-panel" style="width: 50%; overflow: hidden;">
-<table id="results-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
-</table>
-</div>
-<core-splitter direction="left" allowOverflow disableSelection></core-splitter>
-<code-mirror flex>{{ results_detail|safe }}</code-mirror>
-</div>
+    <div horizontal layout style="height: 38%;">
+        <div style="width: 50%; height: 100%; position: relative;">
+            <div style="height: 38px; margin: 0;padding: 12px 24px; position: absolute; white-space: nowrap;">
+                <h1 style="font-size: 18px; margin: 0;">Query Coverage Graph - <span id="query-canvas-name"></span></h1>
+            </div>
+            <div style="width: 100%; position: absolute; top: 38px; bottom: 0;">
+                <canvas id="query-canvas"></canvas>
+            </div>
+        </div>
+        <core-splitter id="graph-splitter" direction="left" disableSelection></core-splitter>
+        <div flex style="width: 50%; height: 100%; position: relative;">
+            <div style="height: 38px; margin: 0;padding: 12px 24px; position: absolute; white-space: nowrap;">
+                <h1 style="font-size: 18px; margin: 0;">Subject Coverage Graph - <span id="subject-canvas-name"></span></h1>
+            </div>
+            <div style="width: 100%; position: absolute; top: 38px; bottom: 0;">
+                <canvas id="subject-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+    <core-splitter id="horizontal-splitter" direction="up" disableSelection></core-splitter>
+    <div flex horizontal layout style="height: 70%;">
+        <div id="table-panel" style="width: 50%; overflow: hidden;">
+            <table id="results-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
+                <tfoot><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>
+            </table>
+        </div>
+        <core-splitter direction="left" allowOverflow disableSelection></core-splitter>
+        <code-mirror flex>{{ results_detail|safe }}</code-mirror>
+    </div>
 </div>
 {% endblock %}
 

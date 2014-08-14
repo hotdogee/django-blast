@@ -42,6 +42,13 @@
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
     var index_of_jbrowse = _.indexOf(results_col_names, 'jbrowse'); // -1 if not present
+    var fixedColumns = 2;
+    // add header and footer for jbrowse if index != -1
+    if (index_of_jbrowse != -1) {
+        $('#results-table thead tr').append('<th></th>');
+        $('#results-table tfoot tr').append('<th></th>');
+        fixedColumns = 3;
+    }
     var $results_table = $('#results-table').dataTable({
         scrollX: '100%',
         scrollY: '200px',
@@ -97,7 +104,7 @@
         //    ]
         //},
         colReorder: {
-            fixedColumns: 3,
+            'fixedColumns': fixedColumns,
             realtime: true,
             stateSave: true
         },
@@ -142,6 +149,7 @@
         }
     });
     var results_table_api = $('#results-table').DataTable();
+    // Download button menu
     $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
 <span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>\
 </button>\
@@ -154,6 +162,11 @@
     <li><a href="' + task_path + '.csv"><span class="glyphicon glyphicon-file"></span> CSV</a></li>\
     <li><a href="' + task_path + '.asn"><span class="glyphicon glyphicon-file"></span> BLAST archive format (ASN.1)</a></li>\
 </ul>')
+    // Add filter input elements to tfoot
+    $('.dataTables_scrollFoot tfoot th').each(function () {
+        var title = $('.dataTables_scrollHead thead th').eq($(this).index()).find('a span').text();
+        $(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
+    });
     //}).yadcf([{
     //    column_number: 0,
     //    filter_type: "multi_select"
@@ -173,9 +186,10 @@
     var $ui_corner_br = $('.ui-corner-br');
     var $dataTables_scrollHead = $('.dataTables_scrollHead');
     var $dataTables_scrollBody = $('.dataTables_scrollBody');
+    var $dataTables_scrollFoot = $('.dataTables_scrollFoot');
     function updateDataTableHeight() {
         // table_panel_div - top_bar - bottom_bar - table_header
-        var h = $table_panel.height() - $ui_corner_tr.outerHeight() - $ui_corner_br.outerHeight() - $dataTables_scrollHead.outerHeight();
+        var h = $table_panel.height() - $ui_corner_tr.outerHeight() - $ui_corner_br.outerHeight() - $dataTables_scrollHead.outerHeight() - $dataTables_scrollFoot.outerHeight();
         $dataTables_scrollBody.css('height', h);
         // trigger dataTables.scroller to recalculate how many rows its showing
         $(window).trigger('resize.DTS');

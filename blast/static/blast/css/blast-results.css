@@ -32,3 +32,7 @@ div.DTS tbody tr.even.highlight {
 .dataTables_wrapper .dataTables_info {
     padding: 5px;
 }
+
+.col-search-input {
+    width: 100%;
+}

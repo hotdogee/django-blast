@@ -1,5 +1,18 @@
 {% extends "app/layout.html" %}
 
+{% block head-scripts %}
+{% if iframe == True %}
+<style>
+nav {
+    display: none;
+}
+body {
+    padding-top: 0px;
+}
+</style>
+{% endif %}
+{% endblock %}
+
 {% block scripts %}
     {% load staticfiles %}
     <link type="text/css" rel="stylesheet" media="all" href="{% static 'blast/css/main.css' %}" />
