@@ -316,7 +316,7 @@ $(function() { // document ready
 		$('#blastProgramDescription').text('blastx - Translated Nucleotide vs. Peptide');
 	});
 	$('#fieldset-program').mouseleave(function() {
-		$('.' + program_selected).mouseover();
+		$('.' + $('input.program:checked').val()).mouseover();
 	});
 	
 	// example sequences for testing
@@ -421,6 +421,7 @@ IENY';
         $('#fieldset-options-blast legend:first').html(blast_program+' Options');   //Show the option title
         $('#max_target_seqs').val('100');
         $('#evalue').val('10.0');
+        $('#fieldset-options-blast label.error').remove();
         
         switch(blast_program) {
             case 'BLASTN':
@@ -667,6 +668,9 @@ IENY';
             },
             errorPlacement: function (error, element){
                 switch (element.attr('name').toString()) {
+                    case 'query-sequence':
+                        error.insertAfter('#legend-sequence');
+                        break;
                     case 'organism-checkbox[]':
                         error.insertAfter('#legend-Organisms');
                         break;
