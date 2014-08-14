@@ -2,11 +2,13 @@
 {% block content %}
 {% if isNoHits %}
 <h2>No Hits Found</h2>
-<h3>No hits found on your query. <a href="{% url 'blast:create' %}">Try another.</a></h3>
+<!--<h3>No hits found on your query. <a href="{% url 'blast:create' %}">Try another.</a></h3>-->
+<h3>No hits found on your query. <a href="../blast">Try another.</a></h3>
 {% elif isExpired %}
 <h2>Query Expired</h2>
 <h3>Submission time: {{ enqueue_date }}</h3>
-<p>Your query is expired. Please <a href="{% url 'blast:create' %}">try another query.</a></p>
+<!--<p>Your query is expired. Please <a href="{% url 'blast:create' %}">try another query.</a></p>-->
+<p>Your query is expired. Please <a href="../blast">try another query.</a></p>
 {% else %}
 <h2>Query Submitted</h2>
 <h3>Submission time: {{ enqueue_date }}</h3>
