@@ -311,7 +311,7 @@ legend {
 	font-family: 'Droid Serif', serif;
 	text-shadow: 2px 2px 4px #aaa;
 	font-size: 1.3em;
-    margin-bottom: 0px;
+    margin-bottom: 3px;
 }
 
 .datasets-div legend {
@@ -369,3 +369,4 @@ color: red;
 .query-file {
   margin-top: 10px;
 }
+
