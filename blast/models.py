@@ -100,7 +100,7 @@ class BlastDb(models.Model):
         if platform == 'win32':
             bin_name = 'bin_win'
         makeblastdb_path = os.path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'makeblastdb')
-        args = [makeblastdb_path, '-in', self.fasta_file.path_full, '-dbtype', self.type.molecule_type, '-hash_index']
+        args = [makeblastdb_path, '-in', self.fasta_file.path_full, '-dbtype', self.type.molecule_type, '-hash_index', '-parse_seqids']
         if self.title:
             args += ['-title', self.title]
         if self.organism.tax_id:

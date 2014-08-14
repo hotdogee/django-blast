@@ -69,3 +69,33 @@ Parasteatoda tepidariorum	partep	Protein	PTEP_new_ids.faa
 Trichogramma pretiosum	tripre	Genome Assembly	Tpre_FINAL.scaffolds_new_ids.fa
 Trichogramma pretiosum	tripre	Transcript	TPRE_new_ids.fna
 Trichogramma pretiosum	tripre	Protein	TPRE_new_ids.faa
+Agrilus_planipennis	agrpla	Genome Assembly	Aplan.scaffolds.50_new_ids.fa
+Agrilus_planipennis	agrpla	Transcript	APLA_new_ids.fna
+Agrilus_planipennis	agrpla	Protein	APLA_new_ids.faa
+Centruroides_exilicauda	cenexi	Genome Assembly	Cscul.scaffolds.50_new_ids.fa
+Centruroides_exilicauda	cenexi	Transcript	CSCU_new_ids.fna
+Centruroides_exilicauda	cenexi	Protein	CSCU_new_ids.faa
+Copidosoma_floridanum	copflo	Genome Assembly	Cflo.scaffolds_new_ids.fa
+Copidosoma_floridanum	copflo	Transcript	CFLO_new_ids.fna
+Copidosoma_floridanum	copflo	Protein	CFLO_new_ids.faa
+Gerris_buenoi	gerbue	Genome Assembly	Gbue.scaffolds.50_new_ids.fa
+Gerris_buenoi	gerbue	Transcript	GBUE_new_ids.fna
+Gerris_buenoi	gerbue	Protein	GBUE_new_ids.faa
+Homalodisca_vitripennis	homvit	Genome Assembly	Hvit.scaffolds.50_new_ids.fa
+Homalodisca_vitripennis	homvit	Transcript	HVIT_new_ids.fna
+Homalodisca_vitripennis	homvit	Protein	HVIT_new_ids.faa
+Latrodectus_hesperus	lathes	Genome Assembly	Lhes.scaffolds_new_ids.fa
+Latrodectus_hesperus	lathes	Transcript	LHES_new_ids.fna
+Latrodectus_hesperus	lathes	Protein	LHES_new_ids.faa
+Limnephilus_lunatus	limlun	Genome Assembly	Llun.scaffolds_new_ids.fa
+Limnephilus_lunatus	limlun	Transcript	LLUN_new_ids.fna
+Limnephilus_lunatus	limlun	Protein	LLUN_new_ids.faa
+Loxosceles_reclusa	loxrec	Genome Assembly	Lrec.scaffolds_new_ids.fa
+Loxosceles_reclusa	loxrec	Transcript	LREC_new_ids.faa
+Loxosceles_reclusa	loxrec	Protein	LREC_new_ids.faa
+Onthophagus_taurus	onttau	Genome Assembly	Otaur.scaffolds_new_ids.fa
+Onthophagus_taurus	onttau	Transcript	OTAU_new_ids.fna
+Onthophagus_taurus	onttau	Protein	OTAU_new_ids.faa
+Tigriopus_californicus	tigcal	Genome Assembly	TCALIF_genome_v1.0_new_ids.fasta
+Tigriopus_californicus	tigcal	Transcript	TCALIF_transcripts_v1.0_new_ids.fasta
+Tigriopus_californicus	tigcal	Protein	TCALIF_proteins_v1.0_new_ids.fasta

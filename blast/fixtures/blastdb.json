@@ -1063,5 +1063,455 @@
       ]
     },
     "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "Aplan.scaffolds.50_new_ids.fa",
+      "fasta_file": "/media/blastdb/Aplan.scaffolds.50_new_ids.fa",
+      "is_shown": true,
+      "organism": [
+        "agrpla"
+      ],
+      "title": "Aplan.scaffolds.50_new_ids.fa",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "APLA_new_ids.fna",
+      "fasta_file": "/media/blastdb/APLA_new_ids.fna",
+      "is_shown": true,
+      "organism": [
+        "agrpla"
+      ],
+      "title": "APLA_new_ids.fna",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "APLA_new_ids.faa",
+      "fasta_file": "/media/blastdb/APLA_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "agrpla"
+      ],
+      "title": "APLA_new_ids.faa",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "Cscul.scaffolds.50_new_ids.fa",
+      "fasta_file": "/media/blastdb/Cscul.scaffolds.50_new_ids.fa",
+      "is_shown": true,
+      "organism": [
+        "cenexi"
+      ],
+      "title": "Cscul.scaffolds.50_new_ids.fa",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "CSCU_new_ids.fna",
+      "fasta_file": "/media/blastdb/CSCU_new_ids.fna",
+      "is_shown": true,
+      "organism": [
+        "cenexi"
+      ],
+      "title": "CSCU_new_ids.fna",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "CSCU_new_ids.faa",
+      "fasta_file": "/media/blastdb/CSCU_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "cenexi"
+      ],
+      "title": "CSCU_new_ids.faa",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "Cflo.scaffolds_new_ids.fa",
+      "fasta_file": "/media/blastdb/Cflo.scaffolds_new_ids.fa",
+      "is_shown": true,
+      "organism": [
+        "copflo"
+      ],
+      "title": "Cflo.scaffolds_new_ids.fa",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "CFLO_new_ids.fna",
+      "fasta_file": "/media/blastdb/CFLO_new_ids.fna",
+      "is_shown": true,
+      "organism": [
+        "copflo"
+      ],
+      "title": "CFLO_new_ids.fna",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "CFLO_new_ids.faa",
+      "fasta_file": "/media/blastdb/CFLO_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "copflo"
+      ],
+      "title": "CFLO_new_ids.faa",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "Gbue.scaffolds.50_new_ids.fa",
+      "fasta_file": "/media/blastdb/Gbue.scaffolds.50_new_ids.fa",
+      "is_shown": true,
+      "organism": [
+        "gerbue"
+      ],
+      "title": "Gbue.scaffolds.50_new_ids.fa",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "GBUE_new_ids.fna",
+      "fasta_file": "/media/blastdb/GBUE_new_ids.fna",
+      "is_shown": true,
+      "organism": [
+        "gerbue"
+      ],
+      "title": "GBUE_new_ids.fna",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "GBUE_new_ids.faa",
+      "fasta_file": "/media/blastdb/GBUE_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "gerbue"
+      ],
+      "title": "GBUE_new_ids.faa",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "Hvit.scaffolds.50_new_ids.fa",
+      "fasta_file": "/media/blastdb/Hvit.scaffolds.50_new_ids.fa",
+      "is_shown": true,
+      "organism": [
+        "homvit"
+      ],
+      "title": "Hvit.scaffolds.50_new_ids.fa",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "HVIT_new_ids.fna",
+      "fasta_file": "/media/blastdb/HVIT_new_ids.fna",
+      "is_shown": true,
+      "organism": [
+        "homvit"
+      ],
+      "title": "HVIT_new_ids.fna",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "HVIT_new_ids.faa",
+      "fasta_file": "/media/blastdb/HVIT_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "homvit"
+      ],
+      "title": "HVIT_new_ids.faa",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "Lhes.scaffolds_new_ids.fa",
+      "fasta_file": "/media/blastdb/Lhes.scaffolds_new_ids.fa",
+      "is_shown": true,
+      "organism": [
+        "lathes"
+      ],
+      "title": "Lhes.scaffolds_new_ids.fa",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "LHES_new_ids.fna",
+      "fasta_file": "/media/blastdb/LHES_new_ids.fna",
+      "is_shown": true,
+      "organism": [
+        "lathes"
+      ],
+      "title": "LHES_new_ids.fna",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "LHES_new_ids.faa",
+      "fasta_file": "/media/blastdb/LHES_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "lathes"
+      ],
+      "title": "LHES_new_ids.faa",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "Llun.scaffolds_new_ids.fa",
+      "fasta_file": "/media/blastdb/Llun.scaffolds_new_ids.fa",
+      "is_shown": true,
+      "organism": [
+        "limlun"
+      ],
+      "title": "Llun.scaffolds_new_ids.fa",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "LLUN_new_ids.fna",
+      "fasta_file": "/media/blastdb/LLUN_new_ids.fna",
+      "is_shown": true,
+      "organism": [
+        "limlun"
+      ],
+      "title": "LLUN_new_ids.fna",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "LLUN_new_ids.faa",
+      "fasta_file": "/media/blastdb/LLUN_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "limlun"
+      ],
+      "title": "LLUN_new_ids.faa",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "Lrec.scaffolds_new_ids.fa",
+      "fasta_file": "/media/blastdb/Lrec.scaffolds_new_ids.fa",
+      "is_shown": true,
+      "organism": [
+        "loxrec"
+      ],
+      "title": "Lrec.scaffolds_new_ids.fa",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "LREC_new_ids.faa",
+      "fasta_file": "/media/blastdb/LREC_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "loxrec"
+      ],
+      "title": "LREC_new_ids.faa",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "LREC_new_ids.faa",
+      "fasta_file": "/media/blastdb/LREC_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "loxrec"
+      ],
+      "title": "LREC_new_ids.faa",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "Otaur.scaffolds_new_ids.fa",
+      "fasta_file": "/media/blastdb/Otaur.scaffolds_new_ids.fa",
+      "is_shown": true,
+      "organism": [
+        "onttau"
+      ],
+      "title": "Otaur.scaffolds_new_ids.fa",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "OTAU_new_ids.fna",
+      "fasta_file": "/media/blastdb/OTAU_new_ids.fna",
+      "is_shown": true,
+      "organism": [
+        "onttau"
+      ],
+      "title": "OTAU_new_ids.fna",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "OTAU_new_ids.faa",
+      "fasta_file": "/media/blastdb/OTAU_new_ids.faa",
+      "is_shown": true,
+      "organism": [
+        "onttau"
+      ],
+      "title": "OTAU_new_ids.faa",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "TCALIF_genome_v1.0_new_ids.fasta",
+      "fasta_file": "/media/blastdb/TCALIF_genome_v1.0_new_ids.fasta",
+      "is_shown": true,
+      "organism": [
+        "tigcal"
+      ],
+      "title": "TCALIF_genome_v1.0_new_ids.fasta",
+      "type": [
+        "Genome Assembly"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "TCALIF_transcripts_v1.0_new_ids.fasta",
+      "fasta_file": "/media/blastdb/TCALIF_transcripts_v1.0_new_ids.fasta",
+      "is_shown": true,
+      "organism": [
+        "tigcal"
+      ],
+      "title": "TCALIF_transcripts_v1.0_new_ids.fasta",
+      "type": [
+        "Transcript"
+      ]
+    },
+    "model": "blast.blastdb"
+  },
+  {
+    "fields": {
+      "description": "TCALIF_proteins_v1.0_new_ids.fasta",
+      "fasta_file": "/media/blastdb/TCALIF_proteins_v1.0_new_ids.fasta",
+      "is_shown": true,
+      "organism": [
+        "tigcal"
+      ],
+      "title": "TCALIF_proteins_v1.0_new_ids.fasta",
+      "type": [
+        "Protein"
+      ]
+    },
+    "model": "blast.blastdb"
   }
 ]

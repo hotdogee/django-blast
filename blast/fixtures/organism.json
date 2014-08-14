@@ -205,5 +205,95 @@
     "tax_id": 7493
   },
   "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Centruroides exilicauda",
+    "description": "Centruroides exilicauda, the Baja California bark scorpion, is a species of bark scorpion found in Baja California. It is closely related to the Arizona bark scorpion (Centruroides sculpturatus), but is not considered dangerous. Previously only distinguished by geographic range, the two variants were classified in 1980 as the same species. Subsequently, differences in venom toxicity were recorded, and in 2004, DNA analysis  showed them to be separate species.",
+    "short_name": "cenexi",
+    "tax_id": 6879
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Copidosoma floridanum",
+    "description": "Copidosoma floridanum is a species of wasp in the family Encyrtidae and is primarily a parasitoid of moths in the subfamily Plusiinae. It has the largest recorded brood of any parasitoidal insect, at 3,055 individuals. The life cycle begins when a female oviposits into the eggs of a suitable host species, laying one or two eggs per host. Each egg divides repeatedly and develops into a brood of multiple individuals, a phenomenon called polyembryony. The larvae grow inside their host, breaking free at the end of the host's own larval stage.\r\nA cosmopolitan species, Copidosoma floridanum is distributed worldwide. Because of its significance to agriculture as pest control and its phylogenic relationship with other important species, the wasp's genome is being sequenced by the Human Genome Sequencing Center as part of the i5K project, which aims to sequence the genomes of 5,000 arthropods.\r\n",
+    "short_name": "copflo",
+    "tax_id": 29053
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Gerris buenoi",
+    "description": "Gerris is a bug genus in the family Gerridae (water striders).\r\n",
+    "short_name": "gerbue",
+    "tax_id": 56086
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Homalodisca vitripennis",
+    "description": "The glassy-winged sharpshooter (Homalodisca vitripennis, formerly known as H. coagulata) is a large leafhopper insect from the family Cicadellidae, similar to other species of sharpshooter.\r\n",
+    "short_name": "homvit",
+    "tax_id": 197043
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Latrodectus hesperus",
+    "description": "Latrodectus hesperus, the western black widow spider or western widow, is a venomous spider species found in western regions of North America. The female's body is 14\u201316\u00a0mm (1/2 in) in length and is black, often with an hourglass-shaped red mark on the lower abdomen. This \"hourglass\" mark can be yellow, and on rare occasions, white. The male of the species is around half this length and generally a tan color with lighter striping on the abdomen. The population was previously described as a subspecies of Latrodectus mactans and it is closely related to the northern species Latrodectus variolus. The species, as with others of the genus, build irregular or \"messy\" webs: Unlike the spiral webs or the tunnel-shaped webs of other spiders, the strands of a Latrodectus web have no apparent organization. Female black widows have potent venom composed of neurotoxins. Fatalities usually only happen with children and the elderly, however medical treatment may be required for others as well. However, the male black widow is harmless to humans. The female's consumption of the male after courtship, a cannibalistic and suicidal behaviour observed in Latrodectus hasseltii (Australia's redback), is rare in this species. Male western widows may breed several times during their relatively short lifespans. Males are known to show preference for mating with well-fed females over starved ones, taking cues from the females' webs.\r\nThe ultimate strength and other physical properties of L. hesperus silk were found to be similar to the properties of silk from orb-weaving spiders that had been tested in other studies. The ultimate strength for the three kinds of silk measured in the study was about 1000 MPa. The ultimate strength reported in a previous study for Nephila edulis was 1290 MPa \u00b1 160 MPa",
+    "short_name": "lathes",
+    "tax_id": 256737
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Limnephilus lunatus",
+    "description": "",
+    "short_name": "limlun",
+    "tax_id": 1218281
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Loxosceles reclusa",
+    "description": "The brown recluse spider or fiddleback spider, Loxosceles reclusa, Sicariidae (formerly placed in a family \"Loxoscelidae\") is a spider with a venomous bite.\r\nBrown recluse spiders are usually between 6\u201320\u00a0mm, but may grow larger. While typically light to medium brown, they range in color from cream-colored to dark brown or blackish gray. The cephalothorax and abdomen may not necessarily be the same color. These spiders usually have markings on the dorsal side of their cephalothorax, with a black line coming from it that looks like a violin with the neck of the violin pointing to the rear of the spider, resulting in the nicknames fiddleback spider, brown fiddler, or violin spider.\r\n",
+    "short_name": "loxrec",
+    "tax_id": 6921
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Onthophagus taurus",
+    "description": "The taurus scarab (Onthophagus taurus) is a species of dung beetle in the genus Onthophagus.\r\nDung beetles have been utilized in the breakdown of manure on sheep and dairy farms worldwide. In September 2013 O.\u00a0taurus was released for the first time in New Zealand, in the Gore District of Southland. These beetles pull the manure into the ground to create their brood balls, which they use as egg chambers. This increases grazing space for cattle, reduces habitats for flies and bacteria, and reduces the need for chemical fertilizers. It can pull a weight of 1141 times his own body mass.",
+    "short_name": "onttau",
+    "tax_id": 166361
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Tigriopus californicus",
+    "description": "Tigriopus californicus is an intertidal copepod species that occurs on the Pacific coast of North America. This species has been the subject of numerous scientific studies on subjects ranging from ecology and evolution to neurobiology.\r\n",
+    "short_name": "tigcal",
+    "tax_id": 6832
+  },
+  "model": "blast.organism"
+},
+{
+  "fields": {
+    "display_name": "Agrilus planipennis",
+    "description": "The emerald ash borer (Agrilus planipennis) is a green beetle native to Asia and Eastern Russia. Outside its native region, the emerald ash borer (also referred to as EAB) is an invasive species, and emerald ash borer infestation is highly destructive to ash trees in its introduced range. The emerald ash borer was first discovered in America in June 2002 in Michigan. It is believed to have been brought to America unintentionally in ash wood which was used to stabilize crates during shipping.\r\n",
+    "short_name": "agrpla",
+    "tax_id": 224129
+  },
+  "model": "blast.organism"
 }
 ]
