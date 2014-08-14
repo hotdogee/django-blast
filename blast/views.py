@@ -150,12 +150,17 @@ def retrieve(request, task_id='1'):
                 results_detail = ''
                 with open(file_prefix + '.0', 'rb') as f:
                     results_detail = f.read()
+                results_col_names = blast_info['col_names']
+                results_col_names_display = blast_col_names_display
+                if r.result_status == 'SUCCESS':
+                    results_col_names = ['jbrowse'] + results_col_names
+                    results_col_names_display = ['View result in genome browser'] + results_col_names_display
                 return render(
                     request,
                     'blast/results.html', {
                         'title': 'BLAST Result',
-                        'results_col_names': json.dumps(['jbrowse'] + blast_info['col_names']),
-                        'results_col_names_display': json.dumps(['View result in genome browser'] + blast_col_names_display),
+                        'results_col_names': json.dumps(results_col_names),
+                        'results_col_names_display': json.dumps(results_col_names_display),
                         'results_data': results_data,
                         'results_detail': results_detail,
                         'results_info': results_info,

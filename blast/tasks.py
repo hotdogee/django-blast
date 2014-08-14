@@ -130,12 +130,16 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                                 match_part_id += 1
                             match_id += 1
             with open(json_path, 'wb') as f:
-                json.dump([[db_organism[sseqid_db[hsp_dict_list[i]['sseqid']]] if sseqid_db[hsp_dict_list[i]['sseqid']] in db_url else ''] + hsp for i, hsp in enumerate(hsp_list)], f)
-            result_status = 'SUCCESS'
+                if len(sorted_hsp_dict_list) == 0:
+                    json.dump(hsp_list, f)
+                    result_status = 'NO_GFF'
+                else:
+                    json.dump([[db_organism[sseqid_db[hsp_dict_list[i]['sseqid']]] if sseqid_db[hsp_dict_list[i]['sseqid']] in db_url else ''] + hsp for i, hsp in enumerate(hsp_list)], f)
+                    result_status = 'SUCCESS'
         except Exception, e:
             print Exception, e
             with open(json_path, 'wb') as f:
-                json.dump([hsp + [''] for i, hsp in enumerate(hsp_list)], f)
+                json.dump(hsp_list, f)
             result_status = 'NO_GFF'
     record.result_status = result_status
     record.result_date = datetime.utcnow().replace(tzinfo=utc)

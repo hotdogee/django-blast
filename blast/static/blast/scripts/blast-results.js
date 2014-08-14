@@ -41,7 +41,7 @@
     );
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
-    var index_of_jbrowse = _.indexOf(results_col_names, 'jbrowse');
+    var index_of_jbrowse = _.indexOf(results_col_names, 'jbrowse'); // -1 if not present
     var $results_table = $('#results-table').dataTable({
         scrollX: '100%',
         scrollY: '200px',
@@ -114,7 +114,7 @@
             });
         },
         rowCallback: function (row, data) {
-            if (data[index_of_jbrowse] != '') {
+            if (index_of_jbrowse > -1 && data[index_of_jbrowse] != '') {
                 var sseqid = data[col_idx['sseqid']];
                 if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
                     //>gnl|Ceratitis_capitata|cercap_Scaffold1
