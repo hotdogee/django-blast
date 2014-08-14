@@ -3,7 +3,7 @@ import json
 
 TSV_FILENAME = 'dataset_list.tsv'
 BLASTDB_URL_ROOT = '/media/blastdb/'
-DUMP_FILENAME = 'jbrowsesetting.json'
+DUMP_FILENAME = 'jbrowsesetting-stage.json'
 
 fixture_list = []
 # read tsv
@@ -14,7 +14,7 @@ with open(TSV_FILENAME, 'rb') as f:
             fixture_item = {
                 'model': 'blast.jbrowsesetting',
                 'fields': {
-                    'url': 'http://gmod-dev.nal.usda.gov:8080/%s/jbrowse/' % short_name,
+                    'url': 'http://apollo.nal.usda.gov/%s/jbrowse/' % short_name,
                     'blast_db': [BLASTDB_URL_ROOT + fasta_filename],
                 }
             }
