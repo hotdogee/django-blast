@@ -14,7 +14,7 @@ with open(TSV_FILENAME, 'rb') as f:
             fixture_item = {
                 'model': 'blast.jbrowsesetting',
                 'fields': {
-                    'url': 'http://apollo.nal.usda.gov/%s/jbrowse/' % short_name,
+                    'url': 'https://apollo.nal.usda.gov/%s/jbrowse/' % short_name,
                     'blast_db': [BLASTDB_URL_ROOT + fasta_filename],
                 }
             }

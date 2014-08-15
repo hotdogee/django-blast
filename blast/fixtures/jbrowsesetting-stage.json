@@ -4,7 +4,7 @@
       "blast_db": [
         "/media/blastdb/Agla_Btl03082013.genome_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/anogla/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/anogla/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -13,7 +13,7 @@
       "blast_db": [
         "/media/blastdb/Aros01112013-genome_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/athros/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/athros/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -22,7 +22,7 @@
       "blast_db": [
         "/media/blastdb/Ccap01172013-genome_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/cercap/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/cercap/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -31,7 +31,7 @@
       "blast_db": [
         "/media/blastdb/Clec_Bbug02212013.genome_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/cimlec/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/cimlec/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -40,7 +40,7 @@
       "blast_db": [
         "/media/blastdb/diaci1.1_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/diacit/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/diacit/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -49,7 +49,7 @@
       "blast_db": [
         "/media/blastdb/Dbia02082011-genome.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/drobia/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/drobia/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -58,7 +58,7 @@
       "blast_db": [
         "/media/blastdb/Dbip02082011-genome.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/drobip/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/drobip/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -67,7 +67,7 @@
       "blast_db": [
         "/media/blastdb/Dele02082011-genome.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/droele/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/droele/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -76,7 +76,7 @@
       "blast_db": [
         "/media/blastdb/Deug05112011.genome.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/droeug/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/droeug/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -85,7 +85,7 @@
       "blast_db": [
         "/media/blastdb/Dfic02082011-genome.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/drofic/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/drofic/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -94,7 +94,7 @@
       "blast_db": [
         "/media/blastdb/Dkik02082011-genome.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/drokik/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/drokik/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -103,7 +103,7 @@
       "blast_db": [
         "/media/blastdb/Drho05162011.genome.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/drorho/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/drorho/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -112,7 +112,7 @@
       "blast_db": [
         "/media/blastdb/Dtak02082011-genome.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/drotak/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/drotak/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -121,7 +121,7 @@
       "blast_db": [
         "/media/blastdb/Edan07162013.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/ephdan/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/ephdan/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -130,7 +130,7 @@
       "blast_db": [
         "/media/blastdb/Eaff_11172013.genome_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/euraff/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/euraff/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -139,7 +139,7 @@
       "blast_db": [
         "/media/blastdb/Focc_FINAL.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/fraocc/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/fraocc/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -148,7 +148,7 @@
       "blast_db": [
         "/media/blastdb/Lful_Scha04012013-genome_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/ladful/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/ladful/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -157,7 +157,7 @@
       "blast_db": [
         "/media/blastdb/Ldec.genome.10062013_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/lepdec/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/lepdec/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -166,7 +166,7 @@
       "blast_db": [
         "/media/blastdb/Ofas.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/oncfas/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/oncfas/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -175,7 +175,7 @@
       "blast_db": [
         "/media/blastdb/Oabi11242013.genome_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/oruabi/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/oruabi/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -184,7 +184,7 @@
       "blast_db": [
         "/media/blastdb/Pven10162013.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/pacven/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/pacven/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -193,7 +193,7 @@
       "blast_db": [
         "/media/blastdb/Ptep01282013.genome_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/partep/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/partep/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -202,7 +202,7 @@
       "blast_db": [
         "/media/blastdb/Tpre_FINAL.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/tripre/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/tripre/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -211,7 +211,7 @@
       "blast_db": [
         "/media/blastdb/Aplan.scaffolds.50_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/agrpla/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/agrpla/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -220,7 +220,7 @@
       "blast_db": [
         "/media/blastdb/Cscul.scaffolds.50_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/cenexi/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/cenexi/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -229,7 +229,7 @@
       "blast_db": [
         "/media/blastdb/Cflo.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/copflo/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/copflo/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -238,7 +238,7 @@
       "blast_db": [
         "/media/blastdb/Gbue.scaffolds.50_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/gerbue/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/gerbue/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -247,7 +247,7 @@
       "blast_db": [
         "/media/blastdb/Hvit.scaffolds.50_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/homvit/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/homvit/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -256,7 +256,7 @@
       "blast_db": [
         "/media/blastdb/Lhes.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/lathes/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/lathes/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -265,7 +265,7 @@
       "blast_db": [
         "/media/blastdb/Llun.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/limlun/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/limlun/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -274,7 +274,7 @@
       "blast_db": [
         "/media/blastdb/Lrec.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/loxrec/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/loxrec/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -283,7 +283,7 @@
       "blast_db": [
         "/media/blastdb/Otaur.scaffolds_new_ids.fa"
       ],
-      "url": "http://apollo.nal.usda.gov/onttau/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/onttau/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   },
@@ -292,7 +292,7 @@
       "blast_db": [
         "/media/blastdb/TCALIF_genome_v1.0_new_ids.fasta"
       ],
-      "url": "http://apollo.nal.usda.gov/tigcal/jbrowse/"
+      "url": "https://apollo.nal.usda.gov/tigcal/jbrowse/"
     },
     "model": "blast.jbrowsesetting"
   }
