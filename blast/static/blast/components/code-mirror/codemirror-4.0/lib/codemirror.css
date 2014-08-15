@@ -1,8 +1,7 @@
 /* BASICS */
-@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700);
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
-  font-family: 'Source Code Pro', monospace;
+  font-family: 'Inconsolata', monospace;
   height: 300px;
 }
 .CodeMirror-scroll {

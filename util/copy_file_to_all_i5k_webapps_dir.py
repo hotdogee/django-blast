@@ -8,7 +8,7 @@ if __name__ == "__main__":
     #parser.add_argument('files', metavar='FILE', type=str, nargs='+', help='source file to copy')
     #args = parser.parse_args()
     WEBAPPS_ROOT = r'/app/local/tomcat/webapps'
-    FILE_LIST = [r'anogla/jbrowse/contrib_styles.css']
+    FILE_LIST = [r'euraff/jbrowse/contrib_styles.css']
     #FILE_LIST = args.files
     #print FILE_LIST
     # get dir list

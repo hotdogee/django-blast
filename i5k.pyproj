@@ -1172,7 +1172,7 @@
     <Content Include="blast\static\blast\dataTables\js\dataTables.scroller.js" />
     <Content Include="blast\static\blast\dataTables\js\dataTables.scroller.min.js" />
     <Content Include="blast\static\blast\dataTables\js\dataTables.tableTools.js" />
-    <Content Include="blast\static\blast\dataTables\js\jquery.dataTables.js" />
+    <Content Include="blast\static\blast\dataTables\js\jquery.dataTables-hotdogee.js" />
     <Content Include="blast\static\blast\dataTables\js\jquery.dataTables.min.js" />
     <Content Include="blast\static\blast\dataTables\js\jquery.js" />
     <Content Include="blast\static\blast\dataTables\js\dataTables.fixedHeader.js" />
@@ -1183,7 +1183,6 @@
     <Content Include="blast\static\blast\css\bootstrap-select.css" />
     <Content Include="blast\static\blast\scripts\bootstrap-select-hotdogee.js" />
     <Content Include="blast\static\blast\css\bootstrap-select.min.css" />
-    <Content Include="blast\static\blast\scripts\bootstrap-select.min.js" />
     <Content Include="blast\static\blast\scripts\codemirror-compressed.js" />
     <Content Include="blast\static\blast\scripts\codemirror.js" />
     <Content Include="blast\static\blast\scripts\dataTables.jqueryui.js" />

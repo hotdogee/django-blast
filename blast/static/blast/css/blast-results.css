@@ -12,8 +12,17 @@ div.DTS tbody tr.even.highlight {
 .nal-footer {
     position: absolute;
     bottom: 0;
-    margin: 17px;
-    right: 0;
+    margin: 1px;
+    right: 14px;
+    font-family: 'Tangerine', serif;
+    font-size: 28px;
+    text-shadow: 3px 3px 7px #443A3A;
+    color: black;
+}
+
+.graph-title {
+    font-size: 18px;
+    margin: 0;
 }
 
 .center-cell {
@@ -22,7 +31,7 @@ div.DTS tbody tr.even.highlight {
 }
 
 .dataTables_scroll {
-    font-family: 'Source Code Pro', monospace;
+    font-family: 'Inconsolata', monospace;
 }
 
 #results-table_filter label {
@@ -40,4 +49,22 @@ div.DTS tbody tr.even.highlight {
 .tooltip-inner {
     white-space:pre;
     max-width:none;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    margin-left: 0;
+}
+
+.dataTables_wrapper .dataTables_filter .input-group {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 319px;
+    margin: 7px;
+}
+
+table.dataTable tfoot th {
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
 }

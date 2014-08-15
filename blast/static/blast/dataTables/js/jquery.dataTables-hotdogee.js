@@ -2663,18 +2663,23 @@
 		var language = settings.oLanguage;
 		var previousSearch = settings.oPreviousSearch;
 		var features = settings.aanFeatures;
-		var input = '<input type="search" class="'+classes.sFilterInput+'"/>';
+		//var input = '<input type="search" class="'+classes.sFilterInput+'"/>';
 	
-		var str = language.sSearch;
-		str = str.match(/_INPUT_/) ?
-			str.replace('_INPUT_', input) :
-			str+input;
+		//var str = language.sSearch;
+		//str = str.match(/_INPUT_/) ?
+		//	str.replace('_INPUT_', input) :
+		//	str+input;
 	
+		//var filter = $('<div/>', {
+		//		'id': ! features.f ? tableId+'_filter' : null,
+		//		'class': classes.sFilter
+		//	} )
+		//	.append($('<label/>').append(str));
+		var str = '<div class="input-group"><div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div><input type="search" class="form-control" autocomplete="off"/></div>'
 		var filter = $('<div/>', {
-				'id': ! features.f ? tableId+'_filter' : null,
-				'class': classes.sFilter
-			} )
-			.append( $('<label/>' ).append( str ) );
+		    'id': !features.f ? tableId + '_filter' : null,
+		    'class': classes.sFilter + ' form-group pull-right'
+		}).append(str);
 	
 		var searchFn = function() {
 			/* Update all other filter input elements for the new display */
@@ -2697,7 +2702,7 @@
 		};
 		var jqFilter = $('input', filter)
 			.val( previousSearch.sSearch )
-			.attr( 'placeholder', language.sSearchPlaceholder )
+			.attr( 'placeholder', 'Search' )
 			.bind(
 				'keyup.DT search.DT input.DT paste.DT cut.DT',
 				_fnDataSource( settings ) === 'ssp' ?

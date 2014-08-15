@@ -173,7 +173,7 @@
     $('.dataTables_scrollFoot tfoot th').each(function (i) {
         var title = $('.dataTables_scrollHead thead th').eq($(this).index()).find('a span').text();
         if (i == 0) { // blastdb
-            var select = $('<select class="selectpicker dropup" data-style="btn-sm" data-container="body" data-width="100px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
+            var select = $('<select class="selectpicker dropup" data-style="btn-sm" data-container="body" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
             .appendTo($(this).empty())
             .on('change', function () {
                 // build search string '|'.join
@@ -225,7 +225,7 @@
     // Draw initial graph with first row
     var row_data = results_table_api.row(0).data();
     // initial update, wait till core-splitter loads
-    var report_panel_width = 820;
+    var report_panel_width = 777;
     var cm = null;
     $(window).on('polymer-ready', function () {
         var w = $(window).width() - report_panel_width

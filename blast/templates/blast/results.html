@@ -39,7 +39,7 @@
     <div horizontal layout style="height: 38%;">
         <div style="width: 50%; height: 100%; position: relative;">
             <div style="height: 38px; margin: 0;padding: 12px 24px; position: absolute; white-space: nowrap;">
-                <h1 style="font-size: 18px; margin: 0;">Query Coverage Graph - <span id="query-canvas-name"></span></h1>
+                <span class="graph-title">Query Coverage Graph - <span id="query-canvas-name"></span></span>
             </div>
             <div style="width: 100%; position: absolute; top: 38px; bottom: 0;">
                 <canvas id="query-canvas"></canvas>
@@ -48,7 +48,7 @@
         <core-splitter id="graph-splitter" direction="left" disableSelection></core-splitter>
         <div flex style="width: 50%; height: 100%; position: relative;">
             <div style="height: 38px; margin: 0;padding: 12px 24px; position: absolute; white-space: nowrap;">
-                <h1 style="font-size: 18px; margin: 0;">Subject Coverage Graph - <span id="subject-canvas-name"></span></h1>
+                <span class="graph-title">Subject Coverage Graph - <span id="subject-canvas-name"></span></span>
             </div>
             <div style="width: 100%; position: absolute; top: 38px; bottom: 0;">
                 <canvas id="subject-canvas"></canvas>
@@ -72,7 +72,7 @@
 {% block scripts %}
 <script src="{% static 'blast/scripts/jquery-ui.min.js' %}"></script>
 <script src="{% static 'blast/scripts/dragscrollable.js' %}"></script>
-<script src="{% static 'blast/dataTables/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'blast/dataTables/js/jquery.dataTables-hotdogee.js' %}"></script>
 <script src="{% static 'blast/dataTables/js/dataTables.scroller.js' %}"></script>
 <script src="{% static 'blast/dataTables/js/dataTables.colReorder.min.js' %}"></script>
 <script src="{% static 'blast/dataTables/js/dataTables.bootstrap.js' %}"></script>

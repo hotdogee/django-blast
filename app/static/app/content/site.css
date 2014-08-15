@@ -1,5 +1,8 @@
 ﻿/* Set padding to keep content from hitting the edges */
-body { padding-top: 50px; }
+body {
+    padding-top: 50px;
+    font-family: 'Open Sans', sans-serif;
+}
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
