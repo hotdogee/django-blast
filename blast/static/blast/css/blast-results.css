@@ -36,3 +36,8 @@ div.DTS tbody tr.even.highlight {
 .col-search-input {
     width: 100%;
 }
+
+.tooltip-inner {
+    white-space:pre;
+    max-width:none;
+}
