@@ -536,7 +536,7 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
                 'organism-checkbox[]': {
                     required: true
                 },
-                'dataset-checkbox[]': {
+                'db-name': {
                     required: true
                 },
                 evalue: {
@@ -575,7 +575,7 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
                 'organism-checkbox[]': {
                     required: "Please choose at least one organism"
                 },
-                'dataset-checkbox[]': {
+                'db-name': {
                     required: "Please choose the type of databases"
                 },
                 evalue: {
@@ -615,7 +615,7 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
                     case 'organism-checkbox[]':
                         error.insertAfter('#legend-Organisms');
                         break;
-                    case 'dataset-checkbox[]':
+                    case 'db-name':
                         error.insertAfter('.dataset-title');
                         break;
                     default:
