@@ -88,7 +88,7 @@ $(function() { // document ready
 						'value': file_name,
 						'organism': organism_id,
 						'dataset-type': data_type_class,
-						'class': 'dataset-checkbox ' + organism_id + ' ' + data_type_class + ' ' + alphabet_class + ' dataset-group',
+						'class': 'dataset-checkbox ' + organism_id + ' ' + data_type_class + ' ' + alphabet_class,
 					});
 					var $organism_datasets_checkbox_div = $('<div/>').append($organism_datasets_checkbox).append(data_type + ' - ' + description);
 					var $organism_datasets_label = $('<label/>').append($organism_datasets_checkbox_div);
@@ -537,11 +537,8 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
                     required: true
                 },
                 'db-name': {
-                    require_from_group: [1, ".dataset-group"]
+                    required: true
                 },
-				'dataset-checkbox[]': {
-					require_from_group: [1, ".dataset-group"]
-				},
                 evalue: {
                     required: true,
                     number: true
@@ -578,11 +575,8 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
                 'organism-checkbox[]': {
                     required: "Please choose at least one organism"
                 },
-				'dataset-checkbox[]': {
-					require_from_group: "Please choose the type of databases"
-				},
                 'db-name': {
-                    require_from_group: "Please choose the type of databases"
+                    required: "Please choose the type of databases"
                 },
                 evalue: {
                     required: "Please provide an E-value",
@@ -620,9 +614,6 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
                         break;
                     case 'organism-checkbox[]':
                         error.insertAfter('#legend-Organisms');
-                        break;
-                    case 'dataset-checkbox[]':
-                        error.insertAfter('.dataset-title');
                         break;
                     case 'db-name':
                         error.insertAfter('.dataset-title');

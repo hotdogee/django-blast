@@ -23,7 +23,6 @@ body {
     </script>
     <script type="text/javascript" src="{% static 'blast/scripts/blast-multi.js' %}"></script>
     <script type="text/javascript" src="{% static 'blast/scripts/jquery.validate.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'blast/scripts/additional-methods.min.js' %}"></script>
     
 {% endblock %}
 
@@ -46,12 +45,12 @@ body {
 			<div class="dataset-title">All organisms</div>
 			<fieldset class="nucleotide">
 				<legend>Nucleotide</legend>
-				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly dataset-group">Genome Assembly - {{ blastdb_type_counts.genome_assembly }} databases</label></div>
-				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript dataset-group">Transcript - {{ blastdb_type_counts.transcript }} databases</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly">Genome Assembly - {{ blastdb_type_counts.genome_assembly }} databases</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript">Transcript - {{ blastdb_type_counts.transcript }} databases</label></div>
 			</fieldset>
 			<fieldset class="peptide">
 				<legend>Peptide</legend>
-				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein dataset-group">Protein - {{ blastdb_type_counts.protein }} databases</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein">Protein - {{ blastdb_type_counts.protein }} databases</label></div>
 			</fieldset>
 		</div>
 	</div>
