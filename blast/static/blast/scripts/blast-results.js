@@ -173,7 +173,18 @@
     $('.dataTables_scrollFoot tfoot th').each(function (i) {
         var title = $('.dataTables_scrollHead thead th').eq($(this).index()).find('a span').text();
         if (i == 0) { // blastdb
-            $(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
+            var select = $('<select class="selectpicker dropup" data-style="btn-sm" data-container="body" data-width="100px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
+            .appendTo($(this).empty())
+            .on('change', function () {
+                // build search string '|'.join
+                var search_str = $('.dataTables_scrollFoot option:selected').map(function(){return this.value;}).get().join('|');
+                results_table_api.column(i).search(search_str, true, false).draw();
+            });
+            results_table_api.column(i).data().unique().sort().each(function (d, j) {
+                select.append('<option value="' + d + '">' + d + '</option>')
+            });
+            select.selectpicker();
+            //$(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
         } else {
             $(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
         }

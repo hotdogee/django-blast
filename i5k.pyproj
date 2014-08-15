@@ -1180,6 +1180,10 @@
     <Content Include="blast\static\blast\scripts\blast-results.js" />
     <Content Include="blast\static\blast\scripts\blast-multi.js" />
     <Content Include="blast\static\blast\scripts\blastdb-admin.js" />
+    <Content Include="blast\static\blast\css\bootstrap-select.css" />
+    <Content Include="blast\static\blast\scripts\bootstrap-select-hotdogee.js" />
+    <Content Include="blast\static\blast\css\bootstrap-select.min.css" />
+    <Content Include="blast\static\blast\scripts\bootstrap-select.min.js" />
     <Content Include="blast\static\blast\scripts\codemirror-compressed.js" />
     <Content Include="blast\static\blast\scripts\codemirror.js" />
     <Content Include="blast\static\blast\scripts\dataTables.jqueryui.js" />
