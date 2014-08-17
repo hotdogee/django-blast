@@ -181,7 +181,7 @@
         var id = 'results-table-' + i + '-filter';
         var title = col_setting.sName || id;
         if (type == 'choice') { // blastdb
-            var select = $('<select id="' + id + '" class="selectpicker dropup" data-style="btn-sm" data-container="body" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
+            var select = $('<select id="' + id + '" class="selectpicker dropup" data-style="btn-sm" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
             .appendTo($(this).empty())
             .on('change', function () {
                 // build search string '|'.join

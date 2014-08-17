@@ -2702,7 +2702,7 @@
 		};
 		var jqFilter = $('input', filter)
 			.val( previousSearch.sSearch )
-			.attr( 'placeholder', 'Search' )
+			.attr( 'placeholder', 'Find in table' )
 			.bind(
 				'keyup.DT search.DT input.DT paste.DT cut.DT',
 				_fnDataSource( settings ) === 'ssp' ?
@@ -3563,86 +3563,81 @@
 		 *        table - scroll foot table
 		 *          tfoot - tfoot
 		 */
-		var scroller = $( _div, { 'class': classes.sScrollWrapper } )
+		var scroller = $(_div, {'class': classes.sScrollWrapper});
+		var scrollHead = $(_div, {'class': classes.sScrollHead})
+			.css({
+				overflow: 'hidden',
+				position: 'relative',
+				border: 0,
+				width: scrollX ? size(scrollX) : '100%'
+			})
 			.append(
-				$(_div, { 'class': classes.sScrollHead } )
-					.css( {
-						overflow: 'hidden',
-						position: 'relative',
-						border: 0,
-						width: scrollX ? size(scrollX) : '100%'
-					} )
+				$(_div, { 'class': classes.sScrollHeadInner })
+					.css({
+						'box-sizing': 'content-box',
+						width: scroll.sXInner || '100%'
+					})
 					.append(
-						$(_div, { 'class': classes.sScrollHeadInner } )
-							.css( {
-								'box-sizing': 'content-box',
-								width: scroll.sXInner || '100%'
-							} )
+						headerClone
+							.removeAttr('id')
+							.css('margin-left', 0)
 							.append(
-								headerClone
-									.removeAttr('id')
-									.css( 'margin-left', 0 )
-									.append(
-										table.children('thead')
-									)
+								table.children('thead')
 							)
 					)
-					.append( captionSide === 'top' ? caption : null )
 			)
-			.append(
-				$(_div, { 'class': classes.sScrollBody } )
-					.css( {
-						overflow: 'auto',
-						height: size( scrollY ),
-						width: size( scrollX )
-					} )
-					.append( table )
-			);
-	
-		if ( footer ) {
-			scroller.append(
-				$(_div, { 'class': classes.sScrollFoot } )
-					.css( {
-						overflow: 'hidden',
-						border: 0,
-						width: scrollX ? size(scrollX) : '100%'
-					} )
-					.append(
-						$(_div, { 'class': classes.sScrollFootInner } )
-							.append(
-								footerClone
-									.removeAttr('id')
-									.css( 'margin-left', 0 )
-									.append(
-										table.children('tfoot')
-									)
-							)
-					)
-					.append( captionSide === 'bottom' ? caption : null )
-			);
+			.append(captionSide === 'top' ? caption : null)
+            .appendTo(scroller);
+		var scrollBody = $(_div, { 'class': classes.sScrollBody })
+			.css({
+				overflow: 'auto',
+				height: size(scrollY),
+				width: size(scrollX)
+			})
+			.append(table)
+            .appendTo(scroller);
+		var scrollFoot = null;
+		if (footer) {
+		    scrollFoot = $(_div, { 'class': classes.sScrollFoot })
+				.css({
+					'overflow': 'visible', // hotdogee: don't clip drop up menus, but have to scroll with offset left
+					border: 0,
+					width: scrollX ? size(scrollX) : '100%',
+					position: 'relative',
+                    left: 0,
+				})
+				.append(
+					$(_div, { 'class': classes.sScrollFootInner })
+						.append(
+							footerClone
+								.removeAttr('id')
+								.css('margin-left', 0)
+								.append(
+									table.children('tfoot')
+								)
+						)
+				)
+				.append(captionSide === 'bottom' ? caption : null)
+                .appendTo(scroller);
 		}
-	
-		var children = scroller.children();
-		var scrollHead = children[0];
-		var scrollBody = children[1];
-		var scrollFoot = footer ? children[2] : null;
 	
 		// When the body is scrolled, then we also want to scroll the headers
-		if ( scrollX ) {
-			$(scrollBody).scroll( function (e) {
-				var scrollLeft = this.scrollLeft;
-	
-				scrollHead.scrollLeft = scrollLeft;
-	
-				if ( footer ) {
-					scrollFoot.scrollLeft = scrollLeft;
-				}
-			} );
+		if (scrollX) {
+		    var lastPos = scrollBody.scroll(function () {
+		        var newPos = this.scrollLeft;
+		        if (newPos !== lastPos) {
+		            lastPos = newPos;
+		            scrollHead.scrollLeft(newPos);
+		            if (footer) {
+		                scrollFoot.offset({ left: -newPos })
+		            }
+		        }
+		    }).scrollLeft();
 		}
 	
-		settings.nScrollHead = scrollHead;
-		settings.nScrollBody = scrollBody;
-		settings.nScrollFoot = scrollFoot;
+		settings.nScrollHead = scrollHead[0];
+		settings.nScrollBody = scrollBody[0];
+		settings.nScrollFoot = scrollFoot[0];
 	
 		// On redraw - align columns
 		settings.aoDrawCallback.push( {

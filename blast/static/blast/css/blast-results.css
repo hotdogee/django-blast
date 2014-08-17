@@ -95,6 +95,9 @@ table.dataTable tfoot th {
     vertical-align: middle;
     padding: 8px;
 }
+.dataTables_scrollFootInner {
+    background-color: white;
+}
 
 .nal-footer {
     position: absolute;
