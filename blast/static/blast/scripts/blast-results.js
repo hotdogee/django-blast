@@ -112,9 +112,13 @@
         //responsive: true,
         data: results_data,
         columns: _.map(results_col_names, function (name) {
-            col = { 'title': results_col_names[col_idx[name]] };
+            col = {
+                'title': name,
+                'name': name.toLowerCase().replace(' ', '-')
+            };
             if (name == 'blastdb') {
                 col['orderable'] = false;
+                col['type'] = 'choice';
             }
             return col;
         }),
@@ -154,7 +158,7 @@
             $blastdb_td.children().tooltip();
         }
     });
-    var results_table_api = $('#results-table').DataTable();
+    var results_table_api = $results_table.api(); // $('#results-table').DataTable()
     results_table_api.columns.adjust().draw();
     // Download button menu
     $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
@@ -171,29 +175,36 @@
 </ul>')
     // Add per column filter input elements to tfoot
     $('.dataTables_scrollFoot tfoot th').each(function (i) {
-        var title = $('.dataTables_scrollHead thead th').eq($(this).index()).find('a span').text();
-        if (i == 0) { // blastdb
-            var select = $('<select class="selectpicker dropup" data-style="btn-sm" data-container="body" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
+        var col_setting = results_table_api.settings()[0].aoColumns[i];
+        var type = col_setting.sType
+        var id = 'results-table-' + i + '-filter';
+        var title = col_setting.sName || id;
+        if (type == 'choice') { // blastdb
+            var select = $('<select id="' + id + '" class="selectpicker dropup" data-style="btn-sm" data-container="body" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
             .appendTo($(this).empty())
             .on('change', function () {
                 // build search string '|'.join
-                var search_str = $('.dataTables_scrollFoot option:selected').map(function(){return this.value;}).get().join('|');
+                var search_str = $('#' + id + ' option:selected').map(function () { return this.value; }).get().join('|');
                 results_table_api.column(i).search(search_str, true, false).draw();
             });
             results_table_api.column(i).data().unique().sort().each(function (d, j) {
                 select.append('<option value="' + d + '">' + d + '</option>')
             });
             select.selectpicker();
-            //$(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
+        } else if (type == 'num') {
+            var input = $('<div class="btn-group dropup" data-container="body"><button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-filter"></span> <span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button><div class="dropdown-menu" role="menu"><p><input type="text" class="col-search-input-min ' + title + '" placeholder="Min" /> - <input type="text" class="col-search-input-max ' + title + '" placeholder="Max" /></p><div id="slider-range"></div></div></div>')
+            .appendTo($(this).empty());
+            //$('.col-search-input.' + title).on('keyup change', function () {
+            //    results_table_api.column(i).search(this.value).draw();
+            //});
         } else {
-            $(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
+            var input = $('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' search" />')
+            .appendTo($(this).empty())
+            .on('keyup change', function () {
+                //console.log(colIdx);
+                results_table_api.column(i).search(this.value).draw();
+            });
         }
-    });
-    results_table_api.columns().eq(0).each(function (colIdx) {
-        $('input', results_table_api.column(colIdx).footer()).on('keyup change', function () {
-            //console.log(colIdx);
-            results_table_api.column(colIdx).search(this.value).draw();
-        });
     });
     //}).yadcf([{
     //    column_number: 0,
@@ -209,7 +220,7 @@
      * Table resize events
      */
     // Calculate dataTables_scrollBody height
-    var $table_panel = $('#table-panel');
+    var $table_container = $('#table-container');
     var $ui_corner_tr = $('.ui-corner-tr');
     var $ui_corner_br = $('.ui-corner-br');
     var $dataTables_scrollHead = $('.dataTables_scrollHead');
@@ -217,7 +228,7 @@
     var $dataTables_scrollFoot = $('.dataTables_scrollFoot');
     function updateDataTableHeight() {
         // table_panel_div - top_bar - bottom_bar - table_header
-        var h = $table_panel.height() - $ui_corner_tr.outerHeight() - $ui_corner_br.outerHeight() - $dataTables_scrollHead.outerHeight() - $dataTables_scrollFoot.outerHeight();
+        var h = $table_container.height() - $ui_corner_tr.outerHeight() - $ui_corner_br.outerHeight() - $dataTables_scrollHead.outerHeight() - $dataTables_scrollFoot.outerHeight();
         $dataTables_scrollBody.css('height', h);
         // trigger dataTables.scroller to recalculate how many rows its showing
         $(window).trigger('resize.DTS');
@@ -230,7 +241,7 @@
     $(window).on('polymer-ready', function () {
         var w = $(window).width() - report_panel_width
         w = w < report_panel_width ? $(window).width() / 2 : w
-        $table_panel.width(w);
+        $table_container.width(w);
         updateDataTableHeight();
         var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
         $('.ui-corner-bl').append(footer);
@@ -261,7 +272,7 @@
     $(window).resize(function () {
         var w = $(window).width() - report_panel_width
         w = w < report_panel_width ? $(window).width() / 2 : w
-        $table_panel.width(w);
+        $table_container.width(w);
         updateDataTableHeight();
     });
     // only the horizontal-splitter changes height, track event defined by polymer

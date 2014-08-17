@@ -1,4 +1,50 @@
-﻿.table-hover > tbody > tr:hover > td,
+﻿/* Panel layout */
+#result-container {
+    height: 100%;
+}
+
+#top-side-by-side-container {
+    height: 38%;
+}
+
+#bottom-side-by-side-container {
+    /*height: 70%;*/
+}
+
+.graph-container {
+    width: 50%; height: 100%; position: relative;
+}
+
+.graph-title-container {
+    height: 38px; margin: 0;padding: 12px 24px; position: absolute; white-space: nowrap;
+}
+
+.graph-title {
+    font-size: 18px;
+    margin: 0;
+}
+
+.graph-canvas-container {
+    width: 100%; position: absolute; top: 38px; bottom: 0;
+}
+
+#table-container {
+    width: 50%; overflow: hidden;
+}
+
+/* Alignment graphs */
+.graph-title {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* Datatables */
+.tooltip-inner {
+    white-space:pre;
+    max-width:none;
+}
+
+.table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th,
 .highlight,
 .table-striped > tbody > tr.highlight:nth-child(odd) > td,
@@ -9,46 +55,12 @@ div.DTS tbody tr.even.highlight {
     background-color: #f8f887;
 }
 
-.nal-footer {
-    position: absolute;
-    bottom: 0;
-    margin: 1px;
-    right: 14px;
-    font-family: 'Tangerine', serif;
-    font-size: 28px;
-    text-shadow: 3px 3px 7px #443A3A;
-    color: black;
-}
-
-.graph-title {
-    font-size: 18px;
-    margin: 0;
-}
-
-.center-cell {
-    text-align: center;
-    vertical-align: middle;
-}
-
 .dataTables_scroll {
     font-family: 'Inconsolata', monospace;
 }
 
-#results-table_filter label {
-    margin: 0;
-}
-
 .dataTables_wrapper .dataTables_info {
     padding: 5px;
-}
-
-.col-search-input {
-    width: 100%;
-}
-
-.tooltip-inner {
-    white-space:pre;
-    max-width:none;
 }
 
 .dataTables_wrapper .dataTables_filter input {
@@ -63,8 +75,31 @@ div.DTS tbody tr.even.highlight {
     margin: 7px;
 }
 
+#results-table_filter label {
+    margin: 0;
+}
+
 table.dataTable tfoot th {
-    text-align: center;
     vertical-align: middle;
     padding: 8px;
+}
+
+.nal-footer {
+    position: absolute;
+    bottom: 0;
+    margin: 1px;
+    right: 14px;
+    font-family: 'Tangerine', serif;
+    font-size: 28px;
+    text-shadow: 3px 3px 7px #443A3A;
+    color: black;
+}
+
+.center-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.col-search-input {
+    width: 100%;
 }
