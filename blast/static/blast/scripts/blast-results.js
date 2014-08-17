@@ -119,6 +119,7 @@
             if (name == 'blastdb') {
                 col['orderable'] = false;
                 col['type'] = 'choice';
+                col['className'] = 'center-cell';
             }
             return col;
         }),
@@ -130,7 +131,7 @@
         },
         rowCallback: function (row, data) {
             var dbtitle = data[index_of_blastdb];
-            var $blastdb_td = $('td', row).eq(index_of_blastdb).addClass('center-cell')
+            var $blastdb_td = $('td', row).eq(index_of_blastdb); // .addClass('center-cell')
             if (dbtitle in results_info['db_url']) {
                 var sseqid = data[col_idx['sseqid']];
                 if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)

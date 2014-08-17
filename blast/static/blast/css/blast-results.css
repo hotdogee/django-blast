@@ -76,7 +76,7 @@ div.DTS tbody tr.even.highlight {
 }
 
 .dataTables_wrapper .ui-toolbar {
-    padding: 4px 10px;
+    padding: 7px;
 }
 
 #results-table_filter label {
@@ -84,7 +84,7 @@ div.DTS tbody tr.even.highlight {
 }
 
 table.dataTable thead > tr > th {
-    padding: 4px 18px 4px 8px; /*10px 18px*/
+    padding: 12px 18px 12px 8px; /*10px 18px*/
 }
 
 table.dataTable tbody td {
