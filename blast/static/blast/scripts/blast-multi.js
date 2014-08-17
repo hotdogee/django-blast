@@ -660,7 +660,6 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
         $('.all-organism-checkbox').change();
         $('.program').attr('disabled', false).removeClass('disabled-radio');
         add_blast_options('BLASTN');
-        event.preventDefault();
         $(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
         
         $('label.error').remove();
