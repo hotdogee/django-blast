@@ -27,7 +27,7 @@ for (var i = 0; i < dataset_list_count; i++) {
 	if ($.inArray(alphabet, alphabet_list) < 0) {
 		alphabet_list.push(alphabet);
 	}
-	dataset_dict[organism_name][alphabet].push([file_name, data_type]); // add info
+	dataset_dict[organism_name][alphabet].push([file_name, data_type, description]); // add info
 }
 // for IE6,7,8
 if (!Array.prototype.indexOf) {
