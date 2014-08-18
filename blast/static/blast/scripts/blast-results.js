@@ -557,7 +557,8 @@ $(function () { // document ready
     $(window).resize(function () {
         var w = $(window).width() - report_panel_width
         w = w < report_panel_width ? $(window).width() / 2 : w
-        $table_container.width(w);
+        $("#bottom-side-by-side-container").data("kendoSplitter").size(".k-pane:first", w)
+        //$table_container.width(w);
         updateDataTableHeight();
     });
     // only the horizontal-splitter changes height, track event defined by polymer
