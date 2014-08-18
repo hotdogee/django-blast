@@ -245,62 +245,63 @@ $(function() { // document ready
 		return result;
 	}
 	
-	$('#query-textarea').keyup(function() {
-		// parse only the first 100 chars for speed
-		//console.log($('#query-textarea').val());
-		var lines = $('#query-textarea').val().substring(0, 200).match(/[^\r\n]+/g);
-		if (lines == null) {
-			setQueryType('');
-			return;
-		}
-		var line_count = lines.length;
-		var seq_count = 0;
-		var alphabets = {};
-		// http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml
-		var normal_nucleic_codes = 'ATCGN';
-		var valid_amino_codes = 'ABCDEFGHIKLMNPQRSTUVWXYZ*';
-		var amino_only_codes = 'EFILPQZX*';
-		for (var i = 0; i < line_count; i++) {
-			//console.log(i + ' ' + lines[i]);
-			var line = $.trim(lines[i]).toUpperCase();
-			if (line[0] == '>') {
-				seq_count++;
-			} else {
-				// check_alphabet(line);
-				for (var j = 0; j < line.length; j++) {
-					if (!(line[j] in alphabets)) {
-						alphabets[line[j]] = 1;
-					} else {
-						alphabets[line[j]]++;
-					}
-				}
-			}
-		}
-		//console.log(alphabets);
-		var valid_amino_count = sum(filter_key(alphabets, function(key) {
-			return valid_amino_codes.indexOf(key) != -1;
-		}));
-		var amino_only_count = sum(filter_key(alphabets, function(key) {
-			return amino_only_codes.indexOf(key) != -1;
-		}));
-		var normal_nucleic_count = sum(filter_key(alphabets, function(key) {
-			return normal_nucleic_codes.indexOf(key) != -1;
-		}));
-		var total_count = sum(alphabets);
-		// Too many degenerate codes within an input nucleotide query will cause blast.cgi to 
-		// reject the input. For protein queries, too many nucleotide-like code (A,C,G,T,N) may also 
-		// cause similar rejection.
-		if (total_count == 0) {
-			setQueryType('');
-		} else if ((normal_nucleic_count / total_count) > 0.6 && amino_only_count == 0){
-			setQueryType('nucleotide');
-		} else if (valid_amino_count == total_count){
-			setQueryType('peptide');
-		} else {
-			setQueryType('invalid');
-		}
-		//console.log(query_type, normal_nucleic_count, total_count);
-	});
+	var parseTextarea = _.debounce(function () {
+	    // parse only the first 100 chars for speed
+	    //console.log($('#query-textarea').val());
+	    var lines = $('#query-textarea').val().substring(0, 1000).match(/[^\r\n]+/g);
+	    if (lines == null) {
+	        setQueryType('');
+	        return;
+	    }
+	    var line_count = lines.length;
+	    var seq_count = 0;
+	    var alphabets = {};
+	    // http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml
+	    var normal_nucleic_codes = 'ATCGN';
+	    var valid_amino_codes = 'ABCDEFGHIKLMNPQRSTUVWXYZ*';
+	    var amino_only_codes = 'EFILPQZX*';
+	    for (var i = 0; i < line_count; i++) {
+	        //console.log(i + ' ' + lines[i]);
+	        var line = $.trim(lines[i]).toUpperCase();
+	        if (line[0] == '>') {
+	            seq_count++;
+	        } else {
+	            // check_alphabet(line);
+	            for (var j = 0; j < line.length; j++) {
+	                if (!(line[j] in alphabets)) {
+	                    alphabets[line[j]] = 1;
+	                } else {
+	                    alphabets[line[j]]++;
+	                }
+	            }
+	        }
+	    }
+	    //console.log(alphabets);
+	    var valid_amino_count = sum(filter_key(alphabets, function (key) {
+	        return valid_amino_codes.indexOf(key) != -1;
+	    }));
+	    var amino_only_count = sum(filter_key(alphabets, function (key) {
+	        return amino_only_codes.indexOf(key) != -1;
+	    }));
+	    var normal_nucleic_count = sum(filter_key(alphabets, function (key) {
+	        return normal_nucleic_codes.indexOf(key) != -1;
+	    }));
+	    var total_count = sum(alphabets);
+	    // Too many degenerate codes within an input nucleotide query will cause blast.cgi to 
+	    // reject the input. For protein queries, too many nucleotide-like code (A,C,G,T,N) may also 
+	    // cause similar rejection.
+	    if (total_count == 0) {
+	        setQueryType('');
+	    } else if ((normal_nucleic_count / total_count) > 0.6 && amino_only_count == 0) {
+	        setQueryType('nucleotide');
+	    } else if (valid_amino_count == total_count) {
+	        setQueryType('peptide');
+	    } else {
+	        setQueryType('invalid');
+	    }
+	    //console.log(query_type, normal_nucleic_count, total_count);
+	}, 150);
+	$('#query-textarea').keyup(parseTextarea);
 	
 	 // blast program descriptions for labels and their radio buttons
 	$('.blastn').mouseover(function() {
