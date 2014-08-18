@@ -84,7 +84,7 @@ div.DTS tbody tr.even.highlight {
 }
 
 table.dataTable thead > tr > th {
-    padding: 12px 18px 12px 8px; /*10px 18px*/
+    padding: 12px 14px 12px 8px; /*10px 18px*/
 }
 
 table.dataTable tbody td {
