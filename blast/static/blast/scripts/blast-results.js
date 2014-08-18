@@ -575,6 +575,12 @@ $(function () { // document ready
             cm.setCursor({ line: results_info['line_num_list'][this_row.index()], ch: 0 })
             cm.curOp.cursorActivityHandlers = false; // don't fire event
         });
+        cm.operation(function () {
+            //$('.CodeMirror')[0].CodeMirror.scrollTo(0, 2976+551/2-42)
+            var info = cm.getScrollInfo();
+            cm.scrollTo(0, info.top + info.clientHeight / 2 - 42);
+            cm.curOp.cursorActivityHandlers = false; // don't fire event
+        });
     });
     // Order event
     var order = results_table_api.order();
@@ -724,7 +730,13 @@ $(function () { // document ready
                 cm.operation(function () {
                     cm.scrollIntoView({ line: results_info['line_num_list'][$row.index()], ch: 0 }, cm.getScrollInfo().clientHeight / 2)
                     cm.setCursor({ line: results_info['line_num_list'][$row.index()], ch: 0 })
-                    cm.curOp.cursorActivity = false; // don't fire event
+                    cm.curOp.cursorActivityHandlers = false; // don't fire event
+                });
+                cm.operation(function () {
+                    //$('.CodeMirror')[0].CodeMirror.scrollTo(0, 2976+551/2-42)
+                    var info = cm.getScrollInfo();
+                    cm.scrollTo(0, info.top + info.clientHeight / 2 - 42);
+                    cm.curOp.cursorActivityHandlers = false; // don't fire event
                 });
             };
         });
