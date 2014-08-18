@@ -1,47 +1,77 @@
-﻿$(function () { // document ready
+﻿(function () {
+    function decimalAdjust(type, value, exp) {
+        // If the exp is undefined or zero...
+        if (typeof exp === 'undefined' || +exp === 0) {
+            return Math[type](value);
+        }
+        value = +value;
+        exp = +exp;
+        // If the value is not a number or the exp is not an integer...
+        if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+            return NaN;
+        }
+        // Shift
+        value = value.toString().split('e');
+        value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+        // Shift back
+        value = value.toString().split('e');
+        return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+    }
+    // Decimal round
+    if (!Math.round10) {
+        Math.round10 = function (value, exp) {
+            return decimalAdjust('round', value, exp);
+        };
+    }
+    // Decimal floor
+    if (!Math.floor10) {
+        Math.floor10 = function (value, exp) {
+            return decimalAdjust('floor', value, exp);
+        };
+    }
+    // Decimal ceil
+    if (!Math.ceil10) {
+        Math.ceil10 = function (value, exp) {
+            return decimalAdjust('ceil', value, exp);
+        };
+    }
+})();
+$(function () { // document ready
     //////////////////
     // Prepare Data //
     //////////////////
     // convert arrays to objects
     //var results_db = _.map(results_data, function (row) { return _.object(results_col_names, row); });
     var col_idx = _.object(results_col_names, _.range(results_col_names.length));
+    ////////////
+    // Layout //
+    ////////////
+    $("#top-side-by-side-container").kendoSplitter({
+        panes: [
+            { collapsible: false, size: '50%' },
+            { collapsible: true }
+        ]
+    });
+    ////////////////
+    // CodeMirror //
+    ////////////////
+    var code_mirror = CodeMirror($('#results-text')[0], {
+        value: results_detail,
+        theme: 'xq-light',
+        tabSize: 2,
+        lineNumbers: true,
+        styleActiveLine: true,
+        readOnly: true,
+        viewportMargin: 15,
+        gutters: ["CodeMirror-linenumbers"]
+    });
     ///////////////////
     // Results Table //
     ///////////////////
-    //$.fn.dataTable.TableTools.buttons.download = $.extend(
-    //    true,
-    //    $.fn.dataTable.TableTools.buttonBase,
-    //    {
-    //        'sAction': 'text',
-    //        'sTag': 'default',
-    //        'sFieldBoundary': '',
-    //        'sFieldSeperator': '\t',
-    //        'sNewLine': '<br>',
-    //        'sToolTip': '',
-    //        'sButtonClass': 'DTTT_button_text',
-    //        'sButtonClassHover': 'DTTT_button_text_hover',
-    //        'sButtonText': 'Download',
-    //        'mColumns': 'all',
-    //        'bHeader': true,
-    //        'bFooter': true,
-    //        'sDiv': '',
-    //        'fnMouseover': null,
-    //        'fnMouseout': null,
-    //        'fnClick': function (nButton, oConfig) {
-    //            var iframe = document.createElement('iframe');
-    //            iframe.style.height = '0px';
-    //            iframe.style.width = '0px';
-    //            iframe.src = oConfig.sUrl;
-    //            document.body.appendChild(iframe);
-    //        },
-    //        'fnSelect': null,
-    //        'fnComplete': null,
-    //        'fnInit': null
-    //    }
-    //);
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
     var index_of_blastdb = col_idx['blastdb']; // -1 if not present
+    var index_of_sseqid = col_idx['sseqid']; // -1 if not present
     var fixedColumns = 2;
     // add header and footer for jbrowse if index != -1
     if (index_of_blastdb != -1) {
@@ -60,49 +90,6 @@
         //"dom": 'T<"clear">lfrtip',
         //deferRender: true,
         //bJQueryUI: true,
-        //tableTools: {
-        //    sSwfPath: '/static/blast/swf/copy_csv_xls_pdf.swf',
-        //    aButtons: [
-        //        'copy',
-        //        {
-        //            "sExtends": "print",
-        //            "sInfo": "Press escape when done."
-        //        },
-        //        {
-        //            sExtends:    'collection',
-        //            sButtonText: 'Save',
-        //            aButtons: [{
-        //                sExtends: 'download',
-        //                sButtonText: 'Pairwise',
-        //                sUrl: task_path + '.0'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'Query-anchored showing identities',
-        //                sUrl: task_path + '.1'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'Flat query-anchored, show identities',
-        //                sUrl: task_path + '.3'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'XML',
-        //                sUrl: task_path + '.xml'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'Tabular',
-        //                sUrl: task_path + '.tsv'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'CSV',
-        //                sUrl: task_path + '.csv'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'BLAST archive format (ASN.1)',
-        //                sUrl: task_path + '.asn'
-        //            }]
-        //        }
-        //    ]
-        //},
         colReorder: {
             'fixedColumns': fixedColumns,
             realtime: true,
@@ -112,29 +99,37 @@
         //responsive: true,
         data: results_data,
         columns: _.map(results_col_names, function (name) {
-            col = { 'title': results_col_names[col_idx[name]] };
+            col = {
+                'title': name,
+                'name': name.toLowerCase().replace(' ', '-')
+            };
             if (name == 'blastdb') {
                 col['orderable'] = false;
+                col['type'] = 'choice';
+                col['className'] = 'center-cell';
             }
             return col;
         }),
         "headerCallback": function (thead, data, start, end, display) {
             $(thead).find('th').each(function (index) {
+                $(this).children().tooltip('destroy'); // remove old tooltip
                 $(this).html('<a data-toggle="tooltip" data-placement="top" data-container="body" title="' + results_col_names_display[col_idx[$(this).text()]] + '"><span>' + results_col_names[col_idx[$(this).text()]] + '</span></a>');
-                $(this).children().tooltip()
+                $(this).children().tooltip();
             });
         },
         rowCallback: function (row, data) {
+            var sseqid = data[index_of_sseqid];
+            if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
+                //>gnl|Ceratitis_capitata|cercap_Scaffold1
+                sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
+            else if (/\|([^|]+)\|/.exec(sseqid) != null)
+                //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
+                sseqid = /\|([^|]+)\|/.exec(sseqid)[1];
+            var $sseqid_td = $('td', row).eq(index_of_sseqid); // .addClass('center-cell')
+            $sseqid_td.html(sseqid);
             var dbtitle = data[index_of_blastdb];
-            var $blastdb_td = $('td', row).eq(index_of_blastdb).addClass('center-cell')
+            var $blastdb_td = $('td', row).eq(index_of_blastdb); // .addClass('center-cell')
             if (dbtitle in results_info['db_url']) {
-                var sseqid = data[col_idx['sseqid']];
-                if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
-                    //>gnl|Ceratitis_capitata|cercap_Scaffold1
-                    sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
-                else if (/\|([^|]+)\|/.exec(sseqid) != null)
-                    //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
-                    sseqid = /\|([^|]+)\|/.exec(sseqid)[1];
                 var start_pos = data[col_idx['sstart']];
                 var end_pos = data[col_idx['send']];
                 if (end_pos < start_pos)
@@ -154,7 +149,7 @@
             $blastdb_td.children().tooltip();
         }
     });
-    var results_table_api = $('#results-table').DataTable();
+    var results_table_api = $results_table.api(); // $('#results-table').DataTable()
     results_table_api.columns.adjust().draw();
     // Download button menu
     $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
@@ -169,31 +164,341 @@
     <li><a href="' + task_path + '.csv"><span class="glyphicon glyphicon-file"></span> CSV</a></li>\
     <li><a href="' + task_path + '.asn"><span class="glyphicon glyphicon-file"></span> BLAST archive format (ASN.1)</a></li>\
 </ul>')
+    var filters = {};
     // Add per column filter input elements to tfoot
     $('.dataTables_scrollFoot tfoot th').each(function (i) {
-        var title = $('.dataTables_scrollHead thead th').eq($(this).index()).find('a span').text();
-        if (i == 0) { // blastdb
-            var select = $('<select class="selectpicker dropup" data-style="btn-sm" data-container="body" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
+        var col_setting = results_table_api.settings()[0].aoColumns[i];
+        var type = col_setting.sType
+        var id = 'results-table-' + i + '-filter';
+        var title = col_setting.sName || id;
+        if (type == 'choice') { // blastdb
+            var db_list = results_table_api.column(i).data().unique().sort();
+            var select = $('<select id="' + id + '" class="selectpicker dropup show-menu-arrow" data-style="btn-sm btn-default" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
             .appendTo($(this).empty())
             .on('change', function () {
                 // build search string '|'.join
-                var search_str = $('.dataTables_scrollFoot option:selected').map(function(){return this.value;}).get().join('|');
-                results_table_api.column(i).search(search_str, true, false).draw();
+                var $toggle = $('#' + id + '+.bootstrap-select .dropdown-toggle');
+                var $title = $('#' + id + '+.bootstrap-select .title');
+                var selected_options = $('#' + id + ' option:selected').map(function () { return this.value; }).get();
+                $title.text(selected_options.length + ' of ' + db_list.length);
+                if (selected_options.length == db_list.length) {
+                    $toggle.removeClass('btn-success');
+                    results_table_api.column(i).search('', true, false).draw();
+                } else {
+                    $toggle.addClass('btn-success');
+                    results_table_api.column(i).search(selected_options.join('|') || '^$', true, false).draw();
+                }
             });
-            results_table_api.column(i).data().unique().sort().each(function (d, j) {
-                select.append('<option value="' + d + '">' + d + '</option>')
+            db_list.each(function (d, j) {
+                select.append('<option selected value="' + d + '">' + d + '</option>')
             });
             select.selectpicker();
-            //$(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
+        } else if (title == 'evalue') {
+            //var is_last_col = i == col_idx.length - 1;
+            // use log slider for evalue
+            var data = results_table_api.column(i).data();
+            var min = _.min(data);
+            var max = _.max(data);
+            var min_log = min;
+            var max_log = max;
+            // remove 0
+            if (max == 0) { // all 0
+                min_log = -324;
+                max_log = -324; // Math.pow(10, -324) == 0
+            } else if (min == 0) {
+                //Math.ceil(Math.log(1e-323) / Math.log(10))
+                min_log = _.min(_.filter(data, function (num) { return num != 0; }));
+                min_log = Math.ceil(Math.log(min_log) / Math.log(10)) - 1;
+                max_log = Math.ceil(Math.log(max) / Math.log(10));
+            } else {
+                min_log = Math.ceil(Math.log(min) / Math.log(10)) - 1;
+                max_log = Math.ceil(Math.log(max) / Math.log(10));
+            }
+            min = 0;
+            max = Math.round10(Math.pow(10, max_log), max_log);
+            var input = $('<div class="btn-group dropup show-menu-arrow">\
+<button id="' + id + '-toggle" type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">\
+<span class="glyphicon glyphicon-filter">\
+</span>\
+<span class="caret">\
+</span>\
+<span class="sr-only">Toggle Dropdown</span>\
+</button>\
+<div class="dropdown-menu range-filter" role="menu"><div class="arrow"></div>\
+<div class="popover-title">' + title + ' filter</div>\
+<div class="input-group label-row">\
+<label for="' + id + '-input-min">Min</label>\
+<div class="input-group-addon"></div>\
+<label for="' + id + '-input-max">Max</label></div>\
+<div class="input-group">\
+<input id="' + id + '-input-min" type="text" class="form-control col-search-input-min ' + title + '" placeholder="Min"/>\
+<div class="input-group-addon">-</div>\
+<input id="' + id + '-input-max" type="text" class="form-control col-search-input-max ' + title + '" placeholder="Max"/>\
+</div><br>\
+<div id="' + id + '-slider" class="slider"></div>\
+</div></div>').appendTo($(this).empty());
+            var $toggle = $('#' + id + '-toggle');
+            var $slider = $('#' + id + '-slider');
+            var $input_min = $('#' + id + '-input-min');
+            var $input_max = $('#' + id + '-input-max');
+            filters['min_' + i] = {
+                'enabled': false,
+                'filter': function (rd) {
+                    var i_min = $input_min.val() * 1;
+                    var val = rd[i] * 1;
+                    if (!_.isNaN(val) && (_.isNaN(i_min) || i_min <= val))
+                        return true;
+                    else
+                        return false;
+                }
+            };
+            filters['max_' + i] = {
+                'enabled': false,
+                'filter': function (rd) {
+                    var i_max = $input_max.val() * 1;
+                    var val = rd[i] * 1;
+                    if (!_.isNaN(val) && (_.isNaN(i_max) || i_max >= val))
+                        return true;
+                    else
+                        return false;
+                }
+            };
+            var draw_table = function () {
+                if ($input_min.val() == min)
+                    filters['min_' + i]['enabled'] = false;
+                else
+                    filters['min_' + i]['enabled'] = true;
+                if ($input_max.val() == max)
+                    filters['max_' + i]['enabled'] = false;
+                else
+                    filters['max_' + i]['enabled'] = true;
+                if ($input_min.val() == min && $input_max.val() == max) {
+                    $toggle.removeClass('btn-success');
+                } else {
+                    $toggle.addClass('btn-success');
+                }
+                results_table_api.draw();
+            }
+            $slider.slider({
+                range: true,
+                min: min_log,
+                max: max_log,
+                values: [min_log, max_log],
+                change: function (event, ui) {
+                    draw_table();
+                },
+                slide: function (event, ui) {
+                    // check for 0
+                    if (ui.values[0] == min_log)
+                        $input_min.val(0);
+                    else
+                        $input_min.val(Math.round10(Math.pow(10, ui.values[0]), ui.values[0]));
+                    $input_max.val(Math.round10(Math.pow(10, ui.values[1]), ui.values[1]));
+                    //console.log(ui.values[0], Math.round10(Math.pow(10, ui.values[0]), ui.values[0]), ui.values[1], Math.round10(Math.pow(10, ui.values[1]), ui.values[1]));
+                }
+            });
+            $input_min.val(min);
+            $input_max.val(max);
+            $input_min.on('keyup', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_min) && min <= i_min && i_max >= i_min) {
+                    $slider.slider("values", 0, Math.log(i_min) / Math.log(10));
+                }
+            });
+            $input_min.on('change', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_min) && $input_min.val() != '') {
+                    if (i_min > i_max)
+                        i_min = i_max;
+                    else if (i_min < min)
+                        i_min = min;
+                    $input_min.val(i_min);
+                    $slider.slider("values", 0, Math.log(i_min) / Math.log(10));
+                } else {
+                    $input_min.val(min);
+                    $slider.slider("values", 0, min_log);
+                }
+            });
+            $input_max.on('keyup', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_max) && i_min <= i_max && max >= i_max) {
+                    $slider.slider("values", 1, Math.log(i_max) / Math.log(10));
+                }
+            });
+            $input_max.on('change', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_max) && $input_max.val() != '') {
+                    if (i_max < i_min)
+                        i_max = i_min;
+                    else if (i_max > max)
+                        i_max = max;
+                    $input_max.val(i_max);
+                    $slider.slider("values", 1, Math.log(i_max) / Math.log(10));
+                } else {
+                    $input_max.val(max);
+                    $slider.slider("values", 1, max_log);
+                }
+            });
+        } else if (type == 'num') {
+            //var is_last_col = i == col_idx.length - 1;
+            var data = results_table_api.column(i).data();
+            var min = Math.floor(_.min(data));
+            var max = Math.ceil(_.max(data));
+            var input = $('<div class="btn-group dropup show-menu-arrow">\
+<button id="' + id + '-toggle" type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">\
+<span class="glyphicon glyphicon-filter">\
+</span>\
+<span class="caret">\
+</span>\
+<span class="sr-only">Toggle Dropdown</span>\
+</button>\
+<div class="dropdown-menu range-filter" role="menu"><div class="arrow"></div>\
+<div class="popover-title">' + title + ' filter</div>\
+<div class="input-group label-row">\
+<label for="' + id + '-input-min">Min</label>\
+<div class="input-group-addon"></div>\
+<label for="' + id + '-input-max">Max</label></div>\
+<div class="input-group">\
+<input id="' + id + '-input-min" type="number" min="' + min + '" max="' + max + '" class="form-control col-search-input-min ' + title + '" placeholder="Min" />\
+<div class="input-group-addon">-</div>\
+<input id="' + id + '-input-max" type="number" min="' + min + '" max="' + max + '" class="form-control col-search-input-max ' + title + '" placeholder="Max" />\
+</div><br>\
+<div id="' + id + '-slider" class="slider"></div>\
+</div></div>').appendTo($(this).empty());
+            var $toggle = $('#' + id + '-toggle');
+            var $slider = $('#' + id + '-slider');
+            var $input_min = $('#' + id + '-input-min');
+            var $input_max = $('#' + id + '-input-max');
+            filters['min_' + i] = {
+                'enabled': false,
+                'filter': function (rd) {
+                    var i_min = $input_min.val() * 1;
+                    var val = rd[i] * 1;
+                    if (!_.isNaN(val) && (_.isNaN(i_min) || i_min <= val))
+                        return true;
+                    else
+                        return false;
+                }
+            };
+            filters['max_' + i] = {
+                'enabled': false,
+                'filter': function (rd) {
+                    var i_max = $input_max.val() * 1;
+                    var val = rd[i] * 1;
+                    if (!_.isNaN(val) && (_.isNaN(i_max) || i_max >= val))
+                        return true;
+                    else
+                        return false;
+                }
+            };
+            var draw_table = function () {
+                if ($input_min.val() == min)
+                    filters['min_' + i]['enabled'] = false;
+                else
+                    filters['min_' + i]['enabled'] = true;
+                if ($input_max.val() == max)
+                    filters['max_' + i]['enabled'] = false;
+                else
+                    filters['max_' + i]['enabled'] = true;
+                if ($input_min.val() == min && $input_max.val() == max) {
+                    $toggle.removeClass('btn-success');
+                } else {
+                    $toggle.addClass('btn-success');
+                }
+                results_table_api.draw();
+            }
+            $slider.slider({
+                range: true,
+                min: min,
+                max: max,
+                values: [min, max],
+                change: function (event, ui) {
+                    draw_table();
+                },
+                slide: function (event, ui) {
+                    $input_min.val(ui.values[0]);
+                    $input_max.val(ui.values[1]);
+                }
+            });
+            $input_min.val(min);
+            $input_max.val(max);
+            $input_min.on('keyup', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_min) && min <= i_min && i_max >= i_min) {
+                    $slider.slider("values", 0, i_min);
+                }
+            });
+            $input_min.on('change', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_min) && $input_min.val() != '') {
+                    if (i_min > i_max)
+                        i_min = i_max;
+                    else if (i_min < min)
+                        i_min = min;
+                    $input_min.val(i_min);
+                    $slider.slider("values", 0, i_min);
+                } else {
+                    $input_min.val(min);
+                    $slider.slider("values", 0, min);
+                }
+            });
+            $input_max.on('keyup', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_max) && i_min <= i_max && max >= i_max) {
+                    $slider.slider("values", 1, i_max);
+                }
+            });
+            $input_max.on('change', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_max) && $input_max.val() != '') {
+                    if (i_max < i_min)
+                        i_max = i_min;
+                    else if (i_max > max)
+                        i_max = max;
+                    $input_max.val(i_max);
+                    $slider.slider("values", 1, i_max);
+                } else {
+                    $input_max.val(max);
+                    $slider.slider("values", 1, max);
+                }
+            });
         } else {
-            $(this).html('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' Search" />');
+            var input = $('<div id="' + id + '" class="input-group"><div class="input-group-addon input-sm"><span class="glyphicon glyphicon-search"></div><input type="text" class="form-control input-sm col-search-input ' + title + '" placeholder="' + title + ' filter" /></div></div>').appendTo($(this).empty());
+            $('input', input).on('keyup change', function () {
+                //console.log(colIdx);
+                if (this.value == '') {
+                    $('#' + id).removeClass('has-success');
+                } else {
+                    $('#' + id).addClass('has-success');
+                }
+                results_table_api.column(i).search(this.value).draw();
+            });
         }
+        $(this).addClass('center-cell');
     });
-    results_table_api.columns().eq(0).each(function (colIdx) {
-        $('input', results_table_api.column(colIdx).footer()).on('keyup change', function () {
-            //console.log(colIdx);
-            results_table_api.column(colIdx).search(this.value).draw();
-        });
+    $("#result-container").kendoSplitter({
+        orientation: "vertical",
+        panes: [
+            { collapsible: true, size: '38%' },
+            { collapsible: false }
+        ]
+    });
+    $results_table.dataTableExt.afnFiltering.push(
+        function (oSettings, aData, iDataIndex) {
+            return _.every(_.map(_.filter(filters, function (f) { return f['enabled']; }), function (f, key) { return f['filter'](this); }, aData));
+        }
+    );
+    // Fix input element click problem
+    $('.dropdown-menu.range-filter').click(function (e) {
+        e.stopPropagation();
     });
     //}).yadcf([{
     //    column_number: 0,
@@ -209,7 +514,7 @@
      * Table resize events
      */
     // Calculate dataTables_scrollBody height
-    var $table_panel = $('#table-panel');
+    var $table_container = $('#table-container');
     var $ui_corner_tr = $('.ui-corner-tr');
     var $ui_corner_br = $('.ui-corner-br');
     var $dataTables_scrollHead = $('.dataTables_scrollHead');
@@ -217,7 +522,7 @@
     var $dataTables_scrollFoot = $('.dataTables_scrollFoot');
     function updateDataTableHeight() {
         // table_panel_div - top_bar - bottom_bar - table_header
-        var h = $table_panel.height() - $ui_corner_tr.outerHeight() - $ui_corner_br.outerHeight() - $dataTables_scrollHead.outerHeight() - $dataTables_scrollFoot.outerHeight();
+        var h = $table_container.height() - $ui_corner_tr.outerHeight() - $ui_corner_br.outerHeight() - $dataTables_scrollHead.outerHeight() - $dataTables_scrollFoot.outerHeight();
         $dataTables_scrollBody.css('height', h);
         // trigger dataTables.scroller to recalculate how many rows its showing
         $(window).trigger('resize.DTS');
@@ -225,47 +530,31 @@
     // Draw initial graph with first row
     var row_data = results_table_api.row(0).data();
     // initial update, wait till core-splitter loads
-    var report_panel_width = 777;
-    var cm = null;
-    $(window).on('polymer-ready', function () {
-        var w = $(window).width() - report_panel_width
-        w = w < report_panel_width ? $(window).width() / 2 : w
-        $table_panel.width(w);
-        updateDataTableHeight();
-        var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
-        $('.ui-corner-bl').append(footer);
-        // text result event setup
-        cm = $('code-mirror')[0].mirror;
-        cm.on('cursorActivity', function () {
-            //console.log('cm.getCursor() = ' + cm.getCursor().line);
-            var filtered = results_info['line_num_list'].filter(function (i) { return i <= cm.getCursor().line + 3 });
-            var i = 0;
-            if (filtered.length > 0)
-                i = filtered.length - 1;
-            //console.log(i);
-            // get row
-            var row = results_table_api.row(i);
-            row_data = row.data();
-            renderAlignmentGraph('query-canvas', row_data);
-            renderAlignmentGraph('subject-canvas', row_data);
-            // is filtered?
-            // Get data as ordered and filtered in datatable
-            var table_data = results_table_api.rows({ search: 'applied' }).data();
-            var i = _.indexOf(table_data, row_data);
-            results_table_api.scroller().scrollToRow(i, false);
-            $(results_table_api.rows().nodes()).removeClass('highlight');
-            var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
-            $row.addClass('highlight');
-        })
-    });
-    $(window).resize(function () {
-        var w = $(window).width() - report_panel_width
-        w = w < report_panel_width ? $(window).width() / 2 : w
-        $table_panel.width(w);
-        updateDataTableHeight();
-    });
+    var cm = code_mirror;
+    // text result event setup
+    cm.on('cursorActivity', function () {
+        //console.log('cm.getCursor() = ' + cm.getCursor().line);
+        var filtered = results_info['line_num_list'].filter(function (i) { return i <= cm.getCursor().line + 3 });
+        var i = 0;
+        if (filtered.length > 0)
+            i = filtered.length - 1;
+        //console.log(i);
+        // get row
+        var row = results_table_api.row(i);
+        row_data = row.data();
+        renderAlignmentGraph('query-canvas', row_data);
+        renderAlignmentGraph('subject-canvas', row_data);
+        // is filtered?
+        // Get data as ordered and filtered in datatable
+        var table_data = results_table_api.rows({ search: 'applied' }).data();
+        var i = _.indexOf(table_data, row_data);
+        results_table_api.scroller().scrollToRow(i, false);
+        $(results_table_api.rows().nodes()).removeClass('highlight');
+        var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
+        $row.addClass('highlight');
+    })
     // only the horizontal-splitter changes height, track event defined by polymer
-    $('#horizontal-splitter').on('track', function () {
+    $("#result-container").data("kendoSplitter").bind('resize', function () {
         updateDataTableHeight();
     });
     /*
@@ -284,7 +573,7 @@
         cm.operation(function () {
             cm.scrollIntoView({ line: results_info['line_num_list'][this_row.index()], ch: 0 }, cm.getScrollInfo().clientHeight / 2)
             cm.setCursor({ line: results_info['line_num_list'][this_row.index()], ch: 0 })
-            cm.curOp.cursorActivity = false; // don't fire event
+            cm.curOp.cursorActivityHandlers = false; // don't fire event
         });
     });
     // Order event
@@ -340,17 +629,10 @@
         renderAlignmentGraph('query-canvas', row_data);
         renderAlignmentGraph('subject-canvas', row_data);
     };
-    $(window).on('polymer-ready', function () {
-        updateAlignmentGraph()
-        results_table_api.columns.adjust().draw();
-    });
-    $(window).resize(function () {
+    $("#result-container").data("kendoSplitter").bind('resize', function () {
         updateAlignmentGraph()
     });
-    $('#horizontal-splitter').on('track', function () {
-        updateAlignmentGraph()
-    });
-    $('#graph-splitter').on('track', function () {
+    $("#top-side-by-side-container").data("kendoSplitter").bind('resize', function () {
         updateAlignmentGraph()
     });
     function renderAlignmentGraph(canvas_name, row_data) {
@@ -459,7 +741,7 @@
             // Create slider
             var sliderDiv = document.createElement('div');
             sliderDiv.id = lane_size_slider_id;
-            sliderDiv.style.margin = '32px 25px';
+            sliderDiv.style.margin = '32px 13px';
             sliderDiv.style.position = 'absolute';
             sliderDiv.style.top = '0';
             sliderDiv.style.right = '0';
@@ -483,7 +765,32 @@
         // Draw Chart
         chart.draw();
     }
-    /////////////////
-    // Text Report //
-    /////////////////
+    ////////////
+    // Resize //
+    ////////////
+    var report_panel_width = 777;
+    var lazyLayout = _.throttle(function () {
+        var w = $(window).width() - report_panel_width
+        w = w < report_panel_width ? $(window).width() / 2 : w
+        $("#bottom-side-by-side-container").data("kendoSplitter").size(".k-pane:first", w)
+        //$table_container.width(w);
+        updateDataTableHeight();
+        updateAlignmentGraph()
+        results_table_api.columns.adjust().draw();
+    }, 200, { leading: false });
+    $(window).resize(lazyLayout);
+    var w = $(window).width() - report_panel_width
+    w = w < report_panel_width ? $(window).width() / 2 : w
+    $("#bottom-side-by-side-container").kendoSplitter({
+        panes: [
+            { collapsible: false, size: w },
+            { collapsible: true }
+        ]
+    });
+    $table_container.width(w);
+    updateDataTableHeight();
+    updateAlignmentGraph()
+    results_table_api.columns.adjust().draw();
+    var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
+    $('.ui-corner-bl').append(footer);
 });
