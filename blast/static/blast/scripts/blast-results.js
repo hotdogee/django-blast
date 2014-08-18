@@ -112,8 +112,9 @@ $(function () { // document ready
         }),
         "headerCallback": function (thead, data, start, end, display) {
             $(thead).find('th').each(function (index) {
+                $(this).children().tooltip('destroy'); // remove old tooltip
                 $(this).html('<a data-toggle="tooltip" data-placement="top" data-container="body" title="' + results_col_names_display[col_idx[$(this).text()]] + '"><span>' + results_col_names[col_idx[$(this).text()]] + '</span></a>');
-                $(this).children().tooltip()
+                $(this).children().tooltip();
             });
         },
         rowCallback: function (row, data) {
