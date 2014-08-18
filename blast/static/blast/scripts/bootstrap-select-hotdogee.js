@@ -317,7 +317,7 @@
         title = typeof this.options.title !== 'undefined' ? this.options.title : this.options.noneSelectedText;
       }
       if (typeof this.options.icon !== 'undefined') {
-          title = '<span class="glyphicon glyph' + this.options.icon + '"></span> ' + title;
+          title = '<span class="glyphicon glyph' + this.options.icon + '"></span> <span class="title">' + title + '</span>';
       }
 
       this.$button.attr('title', $.trim($("<div/>").html(title).text()).replace(/\s\s+/g, ' '));

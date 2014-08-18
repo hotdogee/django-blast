@@ -229,15 +229,25 @@ $(function () { // document ready
         var id = 'results-table-' + i + '-filter';
         var title = col_setting.sName || id;
         if (type == 'choice') { // blastdb
-            var select = $('<select id="' + id + '" class="selectpicker dropup show-menu-arrow" data-style="btn-sm" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
+            var db_list = results_table_api.column(i).data().unique().sort();
+            var select = $('<select id="' + id + '" class="selectpicker dropup show-menu-arrow" data-style="btn-sm btn-default" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
             .appendTo($(this).empty())
             .on('change', function () {
                 // build search string '|'.join
-                var search_str = $('#' + id + ' option:selected').map(function () { return this.value; }).get().join('|');
-                results_table_api.column(i).search(search_str, true, false).draw();
+                var $toggle = $('#' + id + '+.bootstrap-select .dropdown-toggle');
+                var $title = $('#' + id + '+.bootstrap-select .title');
+                var selected_options = $('#' + id + ' option:selected').map(function () { return this.value; }).get();
+                $title.text(selected_options.length + ' of ' + db_list.length);
+                if (selected_options.length == db_list.length) {
+                    $toggle.removeClass('btn-success');
+                    results_table_api.column(i).search('', true, false).draw();
+                } else {
+                    $toggle.addClass('btn-success');
+                    results_table_api.column(i).search(selected_options.join('|') || '^$', true, false).draw();
+                }
             });
-            results_table_api.column(i).data().unique().sort().each(function (d, j) {
-                select.append('<option value="' + d + '">' + d + '</option>')
+            db_list.each(function (d, j) {
+                select.append('<option selected value="' + d + '">' + d + '</option>')
             });
             select.selectpicker();
         } else if (title == 'evalue') {
@@ -518,10 +528,14 @@ $(function () { // document ready
                 }
             });
         } else {
-            var input = $('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' search" />')
-            .appendTo($(this).empty())
-            .on('keyup change', function () {
+            var input = $('<div id="' + id + '" class="input-group"><div class="input-group-addon input-sm"><span class="glyphicon glyphicon-search"></div><input type="text" class="form-control input-sm col-search-input ' + title + '" placeholder="' + title + '" /></div></div>').appendTo($(this).empty());
+            $('input', input).on('keyup change', function () {
                 //console.log(colIdx);
+                if (this.value == '') {
+                    $('#' + id).removeClass('has-success');
+                } else {
+                    $('#' + id).addClass('has-success');
+                }
                 results_table_api.column(i).search(this.value).draw();
             });
         }
