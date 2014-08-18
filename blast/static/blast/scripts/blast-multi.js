@@ -48,6 +48,18 @@ $(function() { // document ready
 	///////////////////////////////
 	// HTML STRUCTURE GENERATION //
 	///////////////////////////////
+	
+	//Reset all element if reload of previous page when back button is pressed
+	if($('#click_submit_hidden').val() == 'true') {
+		$('#click_submit_hidden').val('false');
+        $('#query-textarea').val('');
+		$(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
+        $('.all-organism-checkbox').prop("checked", false).attr("checked", false);
+        $('.all-organism-checkbox').change();
+        $('.program').attr('disabled', false).removeClass('disabled-radio');
+		chooseProgram();
+	}
+	
 	var organism_list_count = organism_list.length;
 	var alphabet_list_count = alphabet_list.length;
 	for (var i = 0; i < organism_list_count; i++) {
@@ -113,51 +125,51 @@ $(function() { // document ready
 	});
 	$('.organism-checkbox').change(function(e) {
 		if ($(this).is(':checked')) {
-			$('.dataset-checkbox.' + $(this).attr('organism') + '.' + default_data_type).prop('checked', true).attr("checked", true).change();
+			$('.dataset-checkbox.' + $(this).attr('organism') + '.' + default_data_type).prop('checked', true).change();
 			//console.log('.datasets-checkbox.' + $(this).attr('organism') + '.' + default_data_type);
 		} else {
 			// uncheck all dataset checkboxes of the organism
-			$('.dataset-checkbox.' + $(this).attr('organism')).prop('checked', false).attr("checked", false).change();
+			$('.dataset-checkbox.' + $(this).attr('organism')).prop('checked', false).change();
 		}
 	});
 	$('.dataset-checkbox').change(function() {
 		if ($(this).is(':checked')) {
 			// check organism checkbox
-			$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', true).attr("checked", true);
+			$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', true);
 			default_data_type = $(this).attr('dataset-type');
 		} else {
 			//console.log($('.dataset-checkbox.' + $(this).attr('organism')).is(':checked'));
 			// if none of the dataset checkboxes are checked
 			if (!$('.dataset-checkbox.' + $(this).attr('organism')).is(':checked')) {
 				// uncheck the organism checkbox
-				$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', false).attr("checked", false);
+				$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', false);
 			}
 		}
 		setDatabaseType();
 	});
 	$('.all-organism-checkbox').change(function() {
 		if ($(this).is(':checked')) {
-			$('.all-dataset-checkbox.' + default_data_type).prop('checked', true).attr("checked", true);
+			$('.all-dataset-checkbox.' + default_data_type).prop('checked', true);
 			// check all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + default_data_type).prop('checked', true).attr("checked", true).change();
+			$('.dataset-checkbox.' + default_data_type).prop('checked', true).change();
 		} else {
 			// uncheck all dataset checkboxes of the organism
-			$('.all-dataset-checkbox').prop('checked', false).attr("checked", false).change();
+			$('.all-dataset-checkbox').prop('checked', false).change();
 		}
 	});
 	$('.all-dataset-checkbox').change(function() {
 		if ($(this).is(':checked')) {
 			// check organism checkbox
-			$('.all-organism-checkbox').prop('checked', true).attr("checked", true);
+			$('.all-organism-checkbox').prop('checked', true);
 			// check all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', true).attr("checked", true).change();
+			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', true).change();
 		} else {
 			// uncheck all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', false).attr("checked", false).change();
+			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', false).change();
 			// if none of the dataset checkboxes are checked
 			if (!$('.all-dataset-checkbox').is(':checked')) {
 				// uncheck the organism checkbox
-				$('.all-organism-checkbox').prop('checked', false).attr("checked", false);
+				$('.all-organism-checkbox').prop('checked', false);
 			}
 		}
 	});
@@ -200,28 +212,28 @@ $(function() { // document ready
 	
 	var program_selected = 'blastn';
 	var chooseProgram = _.debounce(function () {
-	    $('.program').attr('disabled', false).removeClass('disabled-radio');
-	    if (db_type == 'nucleotide') {
-	        $('.blastp').attr('disabled', 'disabled').addClass('disabled-radio');
-	        $('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
-	    } else if (db_type == 'peptide') {
-	        $('.blastn').attr('disabled', 'disabled').addClass('disabled-radio');
-	        $('.tblastn').attr('disabled', 'disabled').addClass('disabled-radio');
-	        $('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
-	    }
-	    if (query_type == 'nucleotide') {
-	        $('.blastp').attr('disabled', 'disabled').addClass('disabled-radio');
-	        $('.tblastn').attr('disabled', 'disabled').addClass('disabled-radio');
-	    } else if (query_type == 'peptide') {
-	        $('.blastn').attr('disabled', 'disabled').addClass('disabled-radio');
-	        $('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
-	        $('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
-	    }
-	    // select first non disabled option
-	    $('input.program:not([disabled])').first().prop('checked', true).attr("checked", true);
-	    program_selected = $('input.program:not([disabled])').first().val();
-	    $('.' + program_selected).mouseover();
-	    add_blast_options(program_selected.toUpperCase());
+		$('.program').attr('disabled', false).removeClass('disabled-radio');
+		if (db_type == 'nucleotide') {
+			$('.blastp').attr('disabled', 'disabled').addClass('disabled-radio');
+			$('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
+		} else if (db_type == 'peptide') {
+			$('.blastn').attr('disabled', 'disabled').addClass('disabled-radio');
+			$('.tblastn').attr('disabled', 'disabled').addClass('disabled-radio');
+			$('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
+		}
+		if (query_type == 'nucleotide') {
+			$('.blastp').attr('disabled', 'disabled').addClass('disabled-radio');
+			$('.tblastn').attr('disabled', 'disabled').addClass('disabled-radio');
+		} else if (query_type == 'peptide') {
+			$('.blastn').attr('disabled', 'disabled').addClass('disabled-radio');
+			$('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
+			$('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
+		}
+		// select first non disabled option
+		$('input.program:not([disabled])').first().prop('checked', true);
+		program_selected = $('input.program:not([disabled])').first().val();
+		$('.' + program_selected).mouseover();
+        add_blast_options(program_selected.toUpperCase());
 	}, 90);
 	
 	
@@ -246,60 +258,60 @@ $(function() { // document ready
 	}
 	
 	var parseTextarea = _.debounce(function () {
-	    // parse only the first 100 chars for speed
-	    //console.log($('#query-textarea').val());
+		// parse only the first 100 chars for speed
+		//console.log($('#query-textarea').val());
 	    var lines = $('#query-textarea').val().substring(0, 1000).match(/[^\r\n]+/g);
-	    if (lines == null) {
-	        setQueryType('');
-	        return;
-	    }
-	    var line_count = lines.length;
-	    var seq_count = 0;
-	    var alphabets = {};
-	    // http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml
-	    var normal_nucleic_codes = 'ATCGN';
-	    var valid_amino_codes = 'ABCDEFGHIKLMNPQRSTUVWXYZ*';
-	    var amino_only_codes = 'EFILPQZX*';
-	    for (var i = 0; i < line_count; i++) {
-	        //console.log(i + ' ' + lines[i]);
-	        var line = $.trim(lines[i]).toUpperCase();
-	        if (line[0] == '>') {
-	            seq_count++;
-	        } else {
-	            // check_alphabet(line);
-	            for (var j = 0; j < line.length; j++) {
-	                if (!(line[j] in alphabets)) {
-	                    alphabets[line[j]] = 1;
-	                } else {
-	                    alphabets[line[j]]++;
-	                }
-	            }
-	        }
-	    }
-	    //console.log(alphabets);
+		if (lines == null) {
+			setQueryType('');
+			return;
+		}
+		var line_count = lines.length;
+		var seq_count = 0;
+		var alphabets = {};
+		// http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml
+		var normal_nucleic_codes = 'ATCGN';
+		var valid_amino_codes = 'ABCDEFGHIKLMNPQRSTUVWXYZ*';
+		var amino_only_codes = 'EFILPQZX*';
+		for (var i = 0; i < line_count; i++) {
+			//console.log(i + ' ' + lines[i]);
+			var line = $.trim(lines[i]).toUpperCase();
+			if (line[0] == '>') {
+				seq_count++;
+			} else {
+				// check_alphabet(line);
+				for (var j = 0; j < line.length; j++) {
+					if (!(line[j] in alphabets)) {
+						alphabets[line[j]] = 1;
+					} else {
+						alphabets[line[j]]++;
+					}
+				}
+			}
+		}
+		//console.log(alphabets);
 	    var valid_amino_count = sum(filter_key(alphabets, function (key) {
-	        return valid_amino_codes.indexOf(key) != -1;
-	    }));
+			return valid_amino_codes.indexOf(key) != -1;
+		}));
 	    var amino_only_count = sum(filter_key(alphabets, function (key) {
-	        return amino_only_codes.indexOf(key) != -1;
-	    }));
+			return amino_only_codes.indexOf(key) != -1;
+		}));
 	    var normal_nucleic_count = sum(filter_key(alphabets, function (key) {
-	        return normal_nucleic_codes.indexOf(key) != -1;
-	    }));
-	    var total_count = sum(alphabets);
-	    // Too many degenerate codes within an input nucleotide query will cause blast.cgi to 
-	    // reject the input. For protein queries, too many nucleotide-like code (A,C,G,T,N) may also 
-	    // cause similar rejection.
-	    if (total_count == 0) {
-	        setQueryType('');
+			return normal_nucleic_codes.indexOf(key) != -1;
+		}));
+		var total_count = sum(alphabets);
+		// Too many degenerate codes within an input nucleotide query will cause blast.cgi to 
+		// reject the input. For protein queries, too many nucleotide-like code (A,C,G,T,N) may also 
+		// cause similar rejection.
+		if (total_count == 0) {
+			setQueryType('');
 	    } else if ((normal_nucleic_count / total_count) > 0.6 && amino_only_count == 0) {
-	        setQueryType('nucleotide');
+			setQueryType('nucleotide');
 	    } else if (valid_amino_count == total_count) {
-	        setQueryType('peptide');
-	    } else {
-	        setQueryType('invalid');
-	    }
-	    //console.log(query_type, normal_nucleic_count, total_count);
+			setQueryType('peptide');
+		} else {
+			setQueryType('invalid');
+		}
+		//console.log(query_type, normal_nucleic_count, total_count);
 	}, 150);
 	$('#query-textarea').keyup(parseTextarea);
 	
@@ -362,170 +374,14 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
         var html_content='';
         
         $('#fieldset-options-blast legend:first').html(blast_program+' Options');   //Show the option title
-        $('#max_target_seqs').val('100');
-        $('#evalue').val('10.0');
         $('#fieldset-options-blast label.error').remove();
+		$('.parms').hide().addClass('unselected_parms');
+		$('.' + blast_program.toLowerCase() + '-parms').show();
+		$('.' + blast_program.toLowerCase() + '-parms').removeClass('unselected_parms');
         
-        switch(blast_program) {
-            case 'BLASTN':
-                $('#word_size').val('28');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 28)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
+		$('.chk_low_complexity').change();
+		$('.chk_soft_masking').change();
                 
-                 html_content = '\
-                                <table id="blastn-scoring-param"><tr><td><span title="Reward for a nucleotide match.  (Default: 1)">Match score </span></td><td><input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Penalty for a nucleotide mismatch.  (Default: -2)">Mismatch score </span></td><td><input TYPE="text" ID="penalty" NAME="penalty" VALUE="-2" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to open a gap.  (Default: 0)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="0" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to extend a gap.  (Default: 0)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="0" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td>\
-                                <td><select id="strand" name="strand">\
-                                    <option value="both" selected>both</option>\
-                                    <option value="plus">plus</option>\
-                                    <option value="minus">minus</option>\
-                                </select></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
-                $('#soft_masking').prop("checked", true).attr("checked", true);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-
-                break;
-            
-            case 'TBLASTN':
-                $('#word_size').val('3');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
-                
-                 html_content = '\
-                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
-                                <td><select id="matrix" name="matrix">\
-                                    <option value="PAM30">PAM30</option>\
-                                    <option value="PAM70">PAM70</option>\
-                                    <option value="PAM250">PAM250</option>\
-                                    <option value="BLOSUM90">BLOSUM90</option>\
-                                    <option value="BLOSUM80">BLOSUM80</option>\
-                                    <option value="BLOSUM62" selected>BLOSUM62</option>\
-                                    <option value="BLOSUM50">BLOSUM50</option>\
-                                    <option value="BLOSUM45">BLOSUM45</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10" class="input-fields"></td></tr>\
-								<tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
-                $('#soft_masking').prop("checked", false).attr("checked", false);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-                
-                break;
-            
-            case 'TBLASTX':
-                $('#word_size').val('3');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
-                
-                html_content = '\
-                                <table id="tblastx-scoring-param"><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
-                                <td><select id="matrix" name="matrix">\
-                                    <option value="PAM30">PAM30</option>\
-                                    <option value="PAM70">PAM70</option>\
-                                    <option value="PAM250">PAM250</option>\
-                                    <option value="BLOSUM90">BLOSUM90</option>\
-                                    <option value="BLOSUM80">BLOSUM80</option>\
-                                    <option value="BLOSUM62" selected>BLOSUM62</option>\
-                                    <option value="BLOSUM50">BLOSUM50</option>\
-                                    <option value="BLOSUM45">BLOSUM45</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td>\
-                                <td><select id="strand" name="strand">\
-                                    <option value="both" selected>both</option>\
-                                    <option value="plus">plus</option>\
-                                    <option value="minus">minus</option>\
-                                </select></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
-                $('#soft_masking').prop("checked", false).attr("checked", false);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-                
-                break;
-                
-            case 'BLASTP':
-                $('#word_size').val('3');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
-                
-                html_content = '\
-                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
-                                <td><select id="matrix" name="matrix">\
-                                <option value="PAM30">PAM30</option>\
-                                <option value="PAM70">PAM70</option>\
-                                <option value="PAM250">PAM250</option>\
-                                <option value="BLOSUM90">BLOSUM90</option>\
-                                <option value="BLOSUM80">BLOSUM80</option>\
-                                <option value="BLOSUM62" selected>BLOSUM62</option>\
-                                <option value="BLOSUM50">BLOSUM50</option>\
-                                <option value="BLOSUM45">BLOSUM45</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 11)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", false).attr("checked", false);
-                $('#soft_masking').prop("checked", false).attr("checked", false);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="low_complexity_hidden" NAME="low_complexity" VALUE="no">').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-                
-                break;
-                
-            case 'BLASTX':
-                $('#word_size').val('3');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
-                
-                html_content = '\
-                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
-                                <td><select id="matrix" name="matrix">\
-                                    <option value="PAM30">PAM30</option>\
-                                    <option value="PAM70">PAM70</option>\
-                                    <option value="PAM250">PAM250</option>\
-                                    <option value="BLOSUM90">BLOSUM90</option>\
-                                    <option value="BLOSUM80">BLOSUM80</option>\
-                                    <option value="BLOSUM62" selected>BLOSUM62</option>\
-                                    <option value="BLOSUM50">BLOSUM50</option>\
-                                    <option value="BLOSUM45">BLOSUM45</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 12)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="12" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td><td>\
-                                <select id="strand" name="strand">\
-                                    <option value="both" selected>both</option>\
-                                    <option value="plus">plus</option>\
-                                    <option value="minus">minus</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
-                $('#soft_masking').prop("checked", false).attr("checked", false);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-                
-                break;
         }
         
         // Validate MainBlastForm form on keyup and submit
@@ -623,35 +479,9 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
                     default:
                         error.insertAfter(element);
                 }
-            }
-        });
-        
-/*         $.validator.addMethod('textarea_valid', function(value, element, param) {
-            return $.trim(value) != '';
-        }, 'No any sequence found!'); 
- */        
-    }
-    
-	$('#low_complexity').change(function(e) {
-		if ($(this).is(':checked')) {
-            $('#low_complexity_hidden').remove();
-        }
-        else {
-            $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="low_complexity_hidden" NAME="low_complexity" VALUE="no">');
-            
         }
     });
     
-	$('#soft_masking').change(function(e) {
-		if ($(this).is(':checked')) {
-            $('#soft_masking_hidden').remove();
-        }
-        else {
-            $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-            
-        }
-    });
-
     $('input.program:radio').click(function() {
         add_blast_options($('input.program:checked').val().toUpperCase());
 	});
@@ -668,13 +498,33 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
         
     });
     
+	$('.chk_low_complexity').change(function() {
+		if ($('#'+$('input.program:checked').val()+'_chk_low_complexity').is(':checked')) {
+			$('#low_complexity_hidden').val('yes');
+		}else {
+			$('#low_complexity_hidden').val('no');
+		}
+    });
+    
+	$('.chk_soft_masking').change(function() {
+		if ($('#'+$('input.program:checked').val()+'_chk_soft_masking').is(':checked')) {
+			$('#soft_masking_hidden').val('true');
+		}else {
+			$('#soft_masking_hidden').val('false');
+		}
+	});
+	
     add_blast_options('BLASTN'); //show initially
         
-    
 });
 
 function On_Submit(){
     if($("#MainBlastForm").valid()) {
-        $("#MainBlastForm").submit();
+		$('.unselected_parms').remove();
+		$('#click_submit_hidden').val('true');	//Use for a back button is pressed. See line 52. 
+        $('#MainBlastForm').submit();
     }
 }
+
+//prevention of cache pages
+$(window).unload(function () { });
