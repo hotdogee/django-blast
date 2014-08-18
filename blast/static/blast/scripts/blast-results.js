@@ -553,14 +553,6 @@ $(function () { // document ready
         var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
         $row.addClass('highlight');
     })
-    var report_panel_width = 777;
-    $(window).resize(function () {
-        var w = $(window).width() - report_panel_width
-        w = w < report_panel_width ? $(window).width() / 2 : w
-        $("#bottom-side-by-side-container").data("kendoSplitter").size(".k-pane:first", w)
-        //$table_container.width(w);
-        updateDataTableHeight();
-    });
     // only the horizontal-splitter changes height, track event defined by polymer
     $("#result-container").data("kendoSplitter").bind('resize', function () {
         updateDataTableHeight();
@@ -637,9 +629,6 @@ $(function () { // document ready
         renderAlignmentGraph('query-canvas', row_data);
         renderAlignmentGraph('subject-canvas', row_data);
     };
-    $(window).resize(function () {
-        updateAlignmentGraph()
-    });
     $("#result-container").data("kendoSplitter").bind('resize', function () {
         updateAlignmentGraph()
     });
@@ -776,23 +765,32 @@ $(function () { // document ready
         // Draw Chart
         chart.draw();
     }
-    /////////////////
-    // Text Report //
-    /////////////////
-    //$(window).on('polymer-ready', function () {
+    ////////////
+    // Resize //
+    ////////////
+    var report_panel_width = 777;
+    var lazyLayout = _.throttle(function () {
         var w = $(window).width() - report_panel_width
         w = w < report_panel_width ? $(window).width() / 2 : w
-        $("#bottom-side-by-side-container").kendoSplitter({
-            panes: [
-                { collapsible: false, size: w },
-                { collapsible: true }
-            ]
-        });
-        $table_container.width(w);
+        $("#bottom-side-by-side-container").data("kendoSplitter").size(".k-pane:first", w)
+        //$table_container.width(w);
         updateDataTableHeight();
-        var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
-        $('.ui-corner-bl').append(footer);
         updateAlignmentGraph()
         results_table_api.columns.adjust().draw();
-    //});
+    }, 100, { leading: false });
+    $(window).resize(lazyLayout);
+    var w = $(window).width() - report_panel_width
+    w = w < report_panel_width ? $(window).width() / 2 : w
+    $("#bottom-side-by-side-container").kendoSplitter({
+        panes: [
+            { collapsible: false, size: w },
+            { collapsible: true }
+        ]
+    });
+    $table_container.width(w);
+    updateDataTableHeight();
+    updateAlignmentGraph()
+    results_table_api.columns.adjust().draw();
+    var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
+    $('.ui-corner-bl').append(footer);
 });
