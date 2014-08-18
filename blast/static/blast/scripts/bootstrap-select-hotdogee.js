@@ -123,7 +123,7 @@
       var inputGroup = this.$element.parent().hasClass('input-group') ? ' input-group-btn' : '';
       var autofocus = this.autofocus ? ' autofocus' : '';
       var header = this.options.header ? '<div class="popover-title"><button type="button" class="close" aria-hidden="true">&times;</button>' + this.options.header + '</div>' : '';
-      var searchbox = this.options.liveSearch ? '<div class="bootstrap-select-searchbox input-group"><div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div><input type="text" class="input-block-level form-control" autocomplete="off" placeholder="Search"/></div>' : '';
+      var searchbox = this.options.liveSearch ? '<div class="bootstrap-select-searchbox input-group"><div class="input-group-addon input-sm""><span class="glyphicon glyphicon-search"></span></div><input type="text" class="input-block-level input-sm" form-control" autocomplete="off" placeholder="blastdb filter"/></div>' : '';
       var actionsbox = this.options.actionsBox ? '<div class="bs-actionsbox">' +
           '<div class="btn-group btn-block">' +
           '<button class="actions-btn bs-select-all btn btn-sm btn-default">' +
