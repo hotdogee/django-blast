@@ -124,3 +124,41 @@ table.dataTable tbody td.center-cell {
 .col-search-input {
     width: 100%;
 }
+
+.range-filter .popover-title {
+    /*font-weight: bold;*/
+}
+
+.range-filter .input-group.label-row {
+    margin: 10px 10px 0px;
+}
+
+.range-filter .input-group.label-row .input-group-addon {
+    background-color: #fff;
+    border: 1px solid #fff;
+}
+
+.range-filter .input-group {
+    margin: 0px 10px 10px;
+}
+
+.range-filter .slider {
+    margin: -11px 30px 13px;
+}
+
+.dropdown-menu.range-filter {
+    width: 260px;
+    left: -109px; /* 250/2-(1+10+20/2)=104 */
+}
+
+.dataTables_scrollFoot th:last-child .dropdown-menu.range-filter {
+    width: 250px;
+    left: auto;
+    right: 0;
+}
+
+.dataTables_scrollFoot th:nth-last-child(2) .dropdown-menu.range-filter {
+    width: 250px;
+    left: auto;
+    right: 0;
+}

@@ -1,4 +1,51 @@
-﻿$(function () { // document ready
+﻿(function () {
+    /**
+	 * Decimal adjustment of a number.
+	 *
+	 * @param	{String}	type	The type of adjustment.
+	 * @param	{Number}	value	The number.
+	 * @param	{Integer}	exp		The exponent (the 10 logarithm of the adjustment base).
+	 * @returns	{Number}			The adjusted value.
+	 */
+    function decimalAdjust(type, value, exp) {
+        // If the exp is undefined or zero...
+        if (typeof exp === 'undefined' || +exp === 0) {
+            return Math[type](value);
+        }
+        value = +value;
+        exp = +exp;
+        // If the value is not a number or the exp is not an integer...
+        if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+            return NaN;
+        }
+        // Shift
+        value = value.toString().split('e');
+        value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+        // Shift back
+        value = value.toString().split('e');
+        return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+    }
+
+    // Decimal round
+    if (!Math.round10) {
+        Math.round10 = function (value, exp) {
+            return decimalAdjust('round', value, exp);
+        };
+    }
+    // Decimal floor
+    if (!Math.floor10) {
+        Math.floor10 = function (value, exp) {
+            return decimalAdjust('floor', value, exp);
+        };
+    }
+    // Decimal ceil
+    if (!Math.ceil10) {
+        Math.ceil10 = function (value, exp) {
+            return decimalAdjust('ceil', value, exp);
+        };
+    }
+})();
+$(function () { // document ready
     //////////////////
     // Prepare Data //
     //////////////////
@@ -174,6 +221,7 @@
     <li><a href="' + task_path + '.csv"><span class="glyphicon glyphicon-file"></span> CSV</a></li>\
     <li><a href="' + task_path + '.asn"><span class="glyphicon glyphicon-file"></span> BLAST archive format (ASN.1)</a></li>\
 </ul>')
+    var filters = {};
     // Add per column filter input elements to tfoot
     $('.dataTables_scrollFoot tfoot th').each(function (i) {
         var col_setting = results_table_api.settings()[0].aoColumns[i];
@@ -181,7 +229,7 @@
         var id = 'results-table-' + i + '-filter';
         var title = col_setting.sName || id;
         if (type == 'choice') { // blastdb
-            var select = $('<select id="' + id + '" class="selectpicker dropup" data-style="btn-sm" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
+            var select = $('<select id="' + id + '" class="selectpicker dropup show-menu-arrow" data-style="btn-sm" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
             .appendTo($(this).empty())
             .on('change', function () {
                 // build search string '|'.join
@@ -192,12 +240,283 @@
                 select.append('<option value="' + d + '">' + d + '</option>')
             });
             select.selectpicker();
+        } else if (title == 'evalue') {
+            //var is_last_col = i == col_idx.length - 1;
+            // use log slider for evalue
+            var data = results_table_api.column(i).data();
+            var min = _.min(data);
+            var max = _.max(data);
+            var min_log = min;
+            var max_log = max;
+            // remove 0
+            if (max == 0) { // all 0
+                min_log = -324;
+                max_log = -324; // Math.pow(10, -324) == 0
+            } else if (min == 0) {
+                //Math.ceil(Math.log(1e-323) / Math.log(10))
+                min_log = _.min(_.filter(data, function (num) { return num != 0; }));
+                min_log = Math.ceil(Math.log(min_log) / Math.log(10)) - 1;
+                max_log = Math.ceil(Math.log(max) / Math.log(10));
+            } else {
+                min_log = Math.ceil(Math.log(min) / Math.log(10)) - 1;
+                max_log = Math.ceil(Math.log(max) / Math.log(10));
+            }
+            min = 0;
+            max = Math.round10(Math.pow(10, max_log), max_log);
+            var input = $('<div class="btn-group dropup show-menu-arrow">\
+<button id="' + id + '-toggle" type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">\
+<span class="glyphicon glyphicon-filter">\
+</span>\
+<span class="caret">\
+</span>\
+<span class="sr-only">Toggle Dropdown</span>\
+</button>\
+<div class="dropdown-menu range-filter" role="menu"><div class="arrow"></div>\
+<div class="popover-title">' + title + ' filter</div>\
+<div class="input-group label-row">\
+<label for="' + id + '-input-min">Min</label>\
+<div class="input-group-addon"></div>\
+<label for="' + id + '-input-max">Max</label></div>\
+<div class="input-group">\
+<input id="' + id + '-input-min" type="text" class="form-control col-search-input-min ' + title + '" placeholder="Min"/>\
+<div class="input-group-addon">-</div>\
+<input id="' + id + '-input-max" type="text" class="form-control col-search-input-max ' + title + '" placeholder="Max"/>\
+</div><br>\
+<div id="' + id + '-slider" class="slider"></div>\
+</div></div>').appendTo($(this).empty());
+            var $toggle = $('#' + id + '-toggle');
+            var $slider = $('#' + id + '-slider');
+            var $input_min = $('#' + id + '-input-min');
+            var $input_max = $('#' + id + '-input-max');
+            filters['min_' + i] = {
+                'enabled': false,
+                'filter': function (rd) {
+                    var i_min = $input_min.val() * 1;
+                    var val = rd[i] * 1;
+                    if (!_.isNaN(val) && (_.isNaN(i_min) || i_min <= val))
+                        return true;
+                    else
+                        return false;
+                }
+            };
+            filters['max_' + i] = {
+                'enabled': false,
+                'filter': function (rd) {
+                    var i_max = $input_max.val() * 1;
+                    var val = rd[i] * 1;
+                    if (!_.isNaN(val) && (_.isNaN(i_max) || i_max >= val))
+                        return true;
+                    else
+                        return false;
+                }
+            };
+            var draw_table = function () {
+                if ($input_min.val() == min)
+                    filters['min_' + i]['enabled'] = false;
+                else
+                    filters['min_' + i]['enabled'] = true;
+                if ($input_max.val() == max)
+                    filters['max_' + i]['enabled'] = false;
+                else
+                    filters['max_' + i]['enabled'] = true;
+                if ($input_min.val() == min && $input_max.val() == max) {
+                    $toggle.removeClass('btn-success');
+                } else {
+                    $toggle.addClass('btn-success');
+                }
+                results_table_api.draw();
+            }
+            $slider.slider({
+                range: true,
+                min: min_log,
+                max: max_log,
+                values: [min_log, max_log],
+                change: function (event, ui) {
+                    draw_table();
+                },
+                slide: function (event, ui) {
+                    // check for 0
+                    if (ui.values[0] == min_log)
+                        $input_min.val(0);
+                    else
+                        $input_min.val(Math.round10(Math.pow(10, ui.values[0]), ui.values[0]));
+                    $input_max.val(Math.round10(Math.pow(10, ui.values[1]), ui.values[1]));
+                    //console.log(ui.values[0], Math.round10(Math.pow(10, ui.values[0]), ui.values[0]), ui.values[1], Math.round10(Math.pow(10, ui.values[1]), ui.values[1]));
+                }
+            });
+            $input_min.val(min);
+            $input_max.val(max);
+            $input_min.on('keyup', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_min) && min <= i_min && i_max >= i_min) {
+                    $slider.slider("values", 0, Math.log(i_min) / Math.log(10));
+                }
+            });
+            $input_min.on('change', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_min) && $input_min.val() != '') {
+                    if (i_min > i_max)
+                        i_min = i_max;
+                    else if (i_min < min)
+                        i_min = min;
+                    $input_min.val(i_min);
+                    $slider.slider("values", 0, Math.log(i_min) / Math.log(10));
+                } else {
+                    $input_min.val(min);
+                    $slider.slider("values", 0, min_log);
+                }
+            });
+            $input_max.on('keyup', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_max) && i_min <= i_max && max >= i_max) {
+                    $slider.slider("values", 1, Math.log(i_max) / Math.log(10));
+                }
+            });
+            $input_max.on('change', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_max) && $input_max.val() != '') {
+                    if (i_max < i_min)
+                        i_max = i_min;
+                    else if (i_max > max)
+                        i_max = max;
+                    $input_max.val(i_max);
+                    $slider.slider("values", 1, Math.log(i_max) / Math.log(10));
+                } else {
+                    $input_max.val(max);
+                    $slider.slider("values", 1, max_log);
+                }
+            });
         } else if (type == 'num') {
-            var input = $('<div class="btn-group dropup" data-container="body"><button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-filter"></span> <span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button><div class="dropdown-menu" role="menu"><p><input type="text" class="col-search-input-min ' + title + '" placeholder="Min" /> - <input type="text" class="col-search-input-max ' + title + '" placeholder="Max" /></p><div id="slider-range"></div></div></div>')
-            .appendTo($(this).empty());
-            //$('.col-search-input.' + title).on('keyup change', function () {
-            //    results_table_api.column(i).search(this.value).draw();
-            //});
+            //var is_last_col = i == col_idx.length - 1;
+            var data = results_table_api.column(i).data();
+            var min = Math.floor(_.min(data));
+            var max = Math.ceil(_.max(data));
+            var input = $('<div class="btn-group dropup show-menu-arrow">\
+<button id="' + id + '-toggle" type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">\
+<span class="glyphicon glyphicon-filter">\
+</span>\
+<span class="caret">\
+</span>\
+<span class="sr-only">Toggle Dropdown</span>\
+</button>\
+<div class="dropdown-menu range-filter" role="menu"><div class="arrow"></div>\
+<div class="popover-title">' + title + ' filter</div>\
+<div class="input-group label-row">\
+<label for="' + id + '-input-min">Min</label>\
+<div class="input-group-addon"></div>\
+<label for="' + id + '-input-max">Max</label></div>\
+<div class="input-group">\
+<input id="' + id + '-input-min" type="number" min="' + min + '" max="' + max + '" class="form-control col-search-input-min ' + title + '" placeholder="Min" />\
+<div class="input-group-addon">-</div>\
+<input id="' + id + '-input-max" type="number" min="' + min + '" max="' + max + '" class="form-control col-search-input-max ' + title + '" placeholder="Max" />\
+</div><br>\
+<div id="' + id + '-slider" class="slider"></div>\
+</div></div>').appendTo($(this).empty());
+            var $toggle = $('#' + id + '-toggle');
+            var $slider = $('#' + id + '-slider');
+            var $input_min = $('#' + id + '-input-min');
+            var $input_max = $('#' + id + '-input-max');
+            filters['min_' + i] = {
+                'enabled': false,
+                'filter': function (rd) {
+                    var i_min = $input_min.val() * 1;
+                    var val = rd[i] * 1;
+                    if (!_.isNaN(val) && (_.isNaN(i_min) || i_min <= val))
+                        return true;
+                    else
+                        return false;
+                }
+            };
+            filters['max_' + i] = {
+                'enabled': false,
+                'filter': function (rd) {
+                    var i_max = $input_max.val() * 1;
+                    var val = rd[i] * 1;
+                    if (!_.isNaN(val) && (_.isNaN(i_max) || i_max >= val))
+                        return true;
+                    else
+                        return false;
+                }
+            };
+            var draw_table = function () {
+                if ($input_min.val() == min)
+                    filters['min_' + i]['enabled'] = false;
+                else
+                    filters['min_' + i]['enabled'] = true;
+                if ($input_max.val() == max)
+                    filters['max_' + i]['enabled'] = false;
+                else
+                    filters['max_' + i]['enabled'] = true;
+                if ($input_min.val() == min && $input_max.val() == max) {
+                    $toggle.removeClass('btn-success');
+                } else {
+                    $toggle.addClass('btn-success');
+                }
+                results_table_api.draw();
+            }
+            $slider.slider({
+                range: true,
+                min: min,
+                max: max,
+                values: [min, max],
+                change: function (event, ui) {
+                    draw_table();
+                },
+                slide: function (event, ui) {
+                    $input_min.val(ui.values[0]);
+                    $input_max.val(ui.values[1]);
+                }
+            });
+            $input_min.val(min);
+            $input_max.val(max);
+            $input_min.on('keyup', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_min) && min <= i_min && i_max >= i_min) {
+                    $slider.slider("values", 0, i_min);
+                }
+            });
+            $input_min.on('change', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_min) && $input_min.val() != '') {
+                    if (i_min > i_max)
+                        i_min = i_max;
+                    else if (i_min < min)
+                        i_min = min;
+                    $input_min.val(i_min);
+                    $slider.slider("values", 0, i_min);
+                } else {
+                    $input_min.val(min);
+                    $slider.slider("values", 0, min);
+                }
+            });
+            $input_max.on('keyup', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_max) && i_min <= i_max && max >= i_max) {
+                    $slider.slider("values", 1, i_max);
+                }
+            });
+            $input_max.on('change', function () {
+                var i_min = $input_min.val() * 1;
+                var i_max = $input_max.val() * 1;
+                if (!_.isNaN(i_max) && $input_max.val() != '') {
+                    if (i_max < i_min)
+                        i_max = i_min;
+                    else if (i_max > max)
+                        i_max = max;
+                    $input_max.val(i_max);
+                    $slider.slider("values", 1, i_max);
+                } else {
+                    $input_max.val(max);
+                    $slider.slider("values", 1, max);
+                }
+            });
         } else {
             var input = $('<input type="text" class="col-search-input ' + title + '" placeholder="' + title + ' search" />')
             .appendTo($(this).empty())
@@ -206,6 +525,16 @@
                 results_table_api.column(i).search(this.value).draw();
             });
         }
+        $(this).addClass('center-cell');
+    });
+    $results_table.dataTableExt.afnFiltering.push(
+        function (oSettings, aData, iDataIndex) {
+            return _.every(_.map(_.filter(filters, function (f) { return f['enabled']; }), function (f, key) { return f['filter'](this); }, aData));
+        }
+    );
+    // Fix input element click problem
+    $('.dropdown-menu.range-filter').click(function (e) {
+        e.stopPropagation();
     });
     //}).yadcf([{
     //    column_number: 0,
