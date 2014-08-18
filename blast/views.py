@@ -161,8 +161,8 @@ def retrieve(request, task_id='1'):
                         'title': 'BLAST Result',
                         'results_col_names': json.dumps(results_col_names),
                         'results_col_names_display': json.dumps(results_col_names_display),
+                        'results_detail': json.dumps(results_detail),
                         'results_data': results_data,
-                        'results_detail': results_detail,
                         'results_info': results_info,
                         'task_id': task_id,
                     })

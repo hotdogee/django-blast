@@ -118,38 +118,37 @@
     },
 
     createDropdown: function () {
-      //If we are multiple, then add the show-tick class by default
-      var multiple = this.multiple ? ' show-tick' : '';
-      var inputGroup = this.$element.parent().hasClass('input-group') ? ' input-group-btn' : '';
-      var autofocus = this.autofocus ? ' autofocus' : '';
-      var header = this.options.header ? '<div class="popover-title"><button type="button" class="close" aria-hidden="true">&times;</button>' + this.options.header + '</div>' : '';
-      var searchbox = this.options.liveSearch ? '<div class="bootstrap-select-searchbox input-group"><div class="input-group-addon input-sm""><span class="glyphicon glyphicon-search"></span></div><input type="text" class="input-block-level input-sm" form-control" autocomplete="off" placeholder="blastdb filter"/></div>' : '';
-      var actionsbox = this.options.actionsBox ? '<div class="bs-actionsbox">' +
-          '<div class="btn-group btn-block">' +
-          '<button class="actions-btn bs-select-all btn btn-sm btn-default">' +
-          'Select All' +
-          '</button>' +
-          '<button class="actions-btn bs-deselect-all btn btn-sm btn-default">' +
-          'Deselect All' +
-          '</button>' +
-          '</div>' +
-          '</div>' : '';
-      var drop =
-          '<div class="btn-group bootstrap-select' + multiple + inputGroup + '">' +
-              '<button type="button" class="btn dropdown-toggle selectpicker" data-toggle="dropdown"' + autofocus + '>' +
-              '<span class="filter-option pull-left"></span>&nbsp;' +
-              '<span class="caret"></span>' +
-              '</button>' +
-              '<div class="dropdown-menu open">' +
-              header +
-              searchbox +
-              actionsbox +
-              '<ul class="dropdown-menu inner selectpicker" role="menu">' +
-              '</ul>' +
-              '</div>' +
-              '</div>';
+        //If we are multiple, then add the show-tick class by default
+        var multiple = this.multiple ? ' show-tick' : '';
+        var inputGroup = this.$element.parent().hasClass('input-group') ? ' input-group-btn' : '';
+        var autofocus = this.autofocus ? ' autofocus' : '';
+        var header = this.options.header ? '<div class="popover-title"><button type="button" class="close" aria-hidden="true">&times;</button>' + this.options.header + '</div>' : '';
+        var searchbox = this.options.liveSearch ? '<div class="bootstrap-select-searchbox input-group"><div class="input-group-addon input-sm""><span class="glyphicon glyphicon-search"></span></div><input type="text" class="input-block-level input-sm" form-control" autocomplete="off" placeholder="blastdb filter"/></div>' : '';
+        var actionsbox = this.options.actionsBox ? '<div class="bs-actionsbox">' +
+            '<div class="btn-group btn-block">' +
+            '<button class="actions-btn bs-select-all btn btn-sm btn-default">' +
+            'Select All' +
+            '</button>' +
+            '<button class="actions-btn bs-deselect-all btn btn-sm btn-default">' +
+            'Deselect All' +
+            '</button>' +
+            '</div>' +
+            '</div>' : '';
+        var drop = '<div class="btn-group bootstrap-select' + multiple + inputGroup + '">' +
+            '<button type="button" class="btn dropdown-toggle selectpicker" data-toggle="dropdown"' + autofocus + '>' +
+            '<span class="filter-option pull-left"></span>&nbsp;' +
+            '<span class="caret"></span>' +
+            '</button>' +
+            '<div class="dropdown-menu open">' +
+            header +
+            searchbox +
+            actionsbox +
+            '<ul class="dropdown-menu inner selectpicker" role="menu">' +
+            '</ul>' +
+            '</div>' +
+            '</div>';
 
-      return $(drop);
+        return $(drop);
     },
 
     createView: function () {

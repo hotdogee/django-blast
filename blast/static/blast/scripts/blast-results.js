@@ -1,12 +1,4 @@
 ﻿(function () {
-    /**
-	 * Decimal adjustment of a number.
-	 *
-	 * @param	{String}	type	The type of adjustment.
-	 * @param	{Number}	value	The number.
-	 * @param	{Integer}	exp		The exponent (the 10 logarithm of the adjustment base).
-	 * @returns	{Number}			The adjusted value.
-	 */
     function decimalAdjust(type, value, exp) {
         // If the exp is undefined or zero...
         if (typeof exp === 'undefined' || +exp === 0) {
@@ -25,7 +17,6 @@
         value = value.toString().split('e');
         return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
     }
-
     // Decimal round
     if (!Math.round10) {
         Math.round10 = function (value, exp) {
@@ -52,40 +43,31 @@ $(function () { // document ready
     // convert arrays to objects
     //var results_db = _.map(results_data, function (row) { return _.object(results_col_names, row); });
     var col_idx = _.object(results_col_names, _.range(results_col_names.length));
+    ////////////
+    // Layout //
+    ////////////
+    $("#top-side-by-side-container").kendoSplitter({
+        panes: [
+            { collapsible: false, size: '50%' },
+            { collapsible: true }
+        ]
+    });
+    ////////////////
+    // CodeMirror //
+    ////////////////
+    var code_mirror = CodeMirror($('#results-text')[0], {
+        value: results_detail,
+        theme: 'xq-light',
+        tabSize: 2,
+        lineNumbers: true,
+        styleActiveLine: true,
+        readOnly: true,
+        viewportMargin: 15,
+        gutters: ["CodeMirror-linenumbers"]
+    });
     ///////////////////
     // Results Table //
     ///////////////////
-    //$.fn.dataTable.TableTools.buttons.download = $.extend(
-    //    true,
-    //    $.fn.dataTable.TableTools.buttonBase,
-    //    {
-    //        'sAction': 'text',
-    //        'sTag': 'default',
-    //        'sFieldBoundary': '',
-    //        'sFieldSeperator': '\t',
-    //        'sNewLine': '<br>',
-    //        'sToolTip': '',
-    //        'sButtonClass': 'DTTT_button_text',
-    //        'sButtonClassHover': 'DTTT_button_text_hover',
-    //        'sButtonText': 'Download',
-    //        'mColumns': 'all',
-    //        'bHeader': true,
-    //        'bFooter': true,
-    //        'sDiv': '',
-    //        'fnMouseover': null,
-    //        'fnMouseout': null,
-    //        'fnClick': function (nButton, oConfig) {
-    //            var iframe = document.createElement('iframe');
-    //            iframe.style.height = '0px';
-    //            iframe.style.width = '0px';
-    //            iframe.src = oConfig.sUrl;
-    //            document.body.appendChild(iframe);
-    //        },
-    //        'fnSelect': null,
-    //        'fnComplete': null,
-    //        'fnInit': null
-    //    }
-    //);
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
     var index_of_blastdb = col_idx['blastdb']; // -1 if not present
@@ -108,49 +90,6 @@ $(function () { // document ready
         //"dom": 'T<"clear">lfrtip',
         //deferRender: true,
         //bJQueryUI: true,
-        //tableTools: {
-        //    sSwfPath: '/static/blast/swf/copy_csv_xls_pdf.swf',
-        //    aButtons: [
-        //        'copy',
-        //        {
-        //            "sExtends": "print",
-        //            "sInfo": "Press escape when done."
-        //        },
-        //        {
-        //            sExtends:    'collection',
-        //            sButtonText: 'Save',
-        //            aButtons: [{
-        //                sExtends: 'download',
-        //                sButtonText: 'Pairwise',
-        //                sUrl: task_path + '.0'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'Query-anchored showing identities',
-        //                sUrl: task_path + '.1'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'Flat query-anchored, show identities',
-        //                sUrl: task_path + '.3'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'XML',
-        //                sUrl: task_path + '.xml'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'Tabular',
-        //                sUrl: task_path + '.tsv'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'CSV',
-        //                sUrl: task_path + '.csv'
-        //            }, {
-        //                sExtends: 'download',
-        //                sButtonText: 'BLAST archive format (ASN.1)',
-        //                sUrl: task_path + '.asn'
-        //            }]
-        //        }
-        //    ]
-        //},
         colReorder: {
             'fixedColumns': fixedColumns,
             realtime: true,
@@ -544,6 +483,13 @@ $(function () { // document ready
         }
         $(this).addClass('center-cell');
     });
+    $("#result-container").kendoSplitter({
+        orientation: "vertical",
+        panes: [
+            { collapsible: true, size: '38%' },
+            { collapsible: false }
+        ]
+    });
     $results_table.dataTableExt.afnFiltering.push(
         function (oSettings, aData, iDataIndex) {
             return _.every(_.map(_.filter(filters, function (f) { return f['enabled']; }), function (f, key) { return f['filter'](this); }, aData));
@@ -583,39 +529,30 @@ $(function () { // document ready
     // Draw initial graph with first row
     var row_data = results_table_api.row(0).data();
     // initial update, wait till core-splitter loads
+    var cm = code_mirror;
+    // text result event setup
+    cm.on('cursorActivity', function () {
+        //console.log('cm.getCursor() = ' + cm.getCursor().line);
+        var filtered = results_info['line_num_list'].filter(function (i) { return i <= cm.getCursor().line + 3 });
+        var i = 0;
+        if (filtered.length > 0)
+            i = filtered.length - 1;
+        //console.log(i);
+        // get row
+        var row = results_table_api.row(i);
+        row_data = row.data();
+        renderAlignmentGraph('query-canvas', row_data);
+        renderAlignmentGraph('subject-canvas', row_data);
+        // is filtered?
+        // Get data as ordered and filtered in datatable
+        var table_data = results_table_api.rows({ search: 'applied' }).data();
+        var i = _.indexOf(table_data, row_data);
+        results_table_api.scroller().scrollToRow(i, false);
+        $(results_table_api.rows().nodes()).removeClass('highlight');
+        var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
+        $row.addClass('highlight');
+    })
     var report_panel_width = 777;
-    var cm = null;
-    $(window).on('polymer-ready', function () {
-        var w = $(window).width() - report_panel_width
-        w = w < report_panel_width ? $(window).width() / 2 : w
-        $table_container.width(w);
-        updateDataTableHeight();
-        var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
-        $('.ui-corner-bl').append(footer);
-        // text result event setup
-        cm = $('code-mirror')[0].mirror;
-        cm.on('cursorActivity', function () {
-            //console.log('cm.getCursor() = ' + cm.getCursor().line);
-            var filtered = results_info['line_num_list'].filter(function (i) { return i <= cm.getCursor().line + 3 });
-            var i = 0;
-            if (filtered.length > 0)
-                i = filtered.length - 1;
-            //console.log(i);
-            // get row
-            var row = results_table_api.row(i);
-            row_data = row.data();
-            renderAlignmentGraph('query-canvas', row_data);
-            renderAlignmentGraph('subject-canvas', row_data);
-            // is filtered?
-            // Get data as ordered and filtered in datatable
-            var table_data = results_table_api.rows({ search: 'applied' }).data();
-            var i = _.indexOf(table_data, row_data);
-            results_table_api.scroller().scrollToRow(i, false);
-            $(results_table_api.rows().nodes()).removeClass('highlight');
-            var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
-            $row.addClass('highlight');
-        })
-    });
     $(window).resize(function () {
         var w = $(window).width() - report_panel_width
         w = w < report_panel_width ? $(window).width() / 2 : w
@@ -623,7 +560,7 @@ $(function () { // document ready
         updateDataTableHeight();
     });
     // only the horizontal-splitter changes height, track event defined by polymer
-    $('#horizontal-splitter').on('track', function () {
+    $("#result-container").data("kendoSplitter").bind('resize', function () {
         updateDataTableHeight();
     });
     /*
@@ -698,17 +635,13 @@ $(function () { // document ready
         renderAlignmentGraph('query-canvas', row_data);
         renderAlignmentGraph('subject-canvas', row_data);
     };
-    $(window).on('polymer-ready', function () {
-        updateAlignmentGraph()
-        results_table_api.columns.adjust().draw();
-    });
     $(window).resize(function () {
         updateAlignmentGraph()
     });
-    $('#horizontal-splitter').on('track', function () {
+    $("#result-container").data("kendoSplitter").bind('resize', function () {
         updateAlignmentGraph()
     });
-    $('#graph-splitter').on('track', function () {
+    $("#top-side-by-side-container").data("kendoSplitter").bind('resize', function () {
         updateAlignmentGraph()
     });
     function renderAlignmentGraph(canvas_name, row_data) {
@@ -844,4 +777,20 @@ $(function () { // document ready
     /////////////////
     // Text Report //
     /////////////////
+    //$(window).on('polymer-ready', function () {
+        var w = $(window).width() - report_panel_width
+        w = w < report_panel_width ? $(window).width() / 2 : w
+        $("#bottom-side-by-side-container").kendoSplitter({
+            panes: [
+                { collapsible: false, size: w },
+                { collapsible: true }
+            ]
+        });
+        $table_container.width(w);
+        updateDataTableHeight();
+        var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
+        $('.ui-corner-bl').append(footer);
+        updateAlignmentGraph()
+        results_table_api.columns.adjust().draw();
+    //});
 });

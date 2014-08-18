@@ -1,14 +1,99 @@
-﻿/* Panel layout */
+﻿
+.k-splitter .k-ghost-splitbar-horizontal, .k-splitter .k-splitbar-horizontal {
+    top: 0;
+    width: 12px;
+    border-width: 0;
+    background: #efefef url('images/handle.svg') no-repeat center;
+}
+.k-ghost-splitbar-vertical, .k-splitbar-vertical {
+    left: 0;
+    height: 12px;
+    border-width: 0;
+    background: #efefef url('images/handle-h.svg') no-repeat center;
+}
+.k-splitbar:hover {
+    background-color: #ddd;
+    border-color: transparent;
+}
+.k-splitbar {
+    box-shadow: inset 0 0 2px 1px #ccc;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.k-splitbar-horizontal .k-collapse-next, .k-splitbar-horizontal .k-expand-prev {
+    margin-top: 12px;
+    width: 12px;
+    left: 0;
+    background-position: -1px -142px;
+}
+
+.k-splitbar-horizontal-hover > .k-collapse-next, .k-splitbar-horizontal-hover > .k-expand-prev {
+    margin-top: 12px;
+    width: 12px;
+    left: 0;
+    background-position: -17px -142px;
+}
+
+.k-splitbar-horizontal .k-collapse-prev, .k-splitbar-horizontal .k-expand-next {
+    margin-top: 12px;
+    width: 12px;
+    left: 0;
+    background-position: -2px -174px;
+}
+
+.k-splitbar-horizontal-hover > .k-collapse-prev, .k-splitbar-horizontal-hover > .k-expand-next {
+    margin-top: 12px;
+    width: 12px;
+    left: 0;
+    background-position: -18px -174px;
+}
+
+.k-splitbar-vertical .k-collapse-prev, .k-splitbar-vertical .k-expand-next {
+    margin-left: 12px;
+    height: 12px;
+    background-position: 2px -131px;
+}
+
+.k-splitbar-vertical-hover > .k-collapse-prev, .k-splitbar-vertical-hover > .k-expand-next {
+    background-position: -14px -131px;
+}
+
+.k-splitbar-vertical .k-collapse-next, .k-splitbar-vertical .k-expand-prev {
+    margin-left: 12px;
+    height: 12px;
+    background-position: 2px -162px;
+}
+
+.k-splitbar-vertical-hover > .k-collapse-next, .k-splitbar-vertical-hover > .k-expand-prev {
+    margin-left: 12px;
+    height: 12px;
+    background-position: -14px -162px;
+}
+
+body {
+    overflow: hidden;
+}
+
+.pane-content {
+    padding: 0 10px;
+}
+
+/* Panel layout */
 #result-container {
     height: 100%;
 }
 
 #top-side-by-side-container {
     height: 38%;
+    overflow: hidden;
 }
 
 #bottom-side-by-side-container {
     /*height: 70%;*/
+    /*height: 100%;
+    width: 100%;*/
+    overflow: hidden;
 }
 
 .graph-container {
@@ -36,6 +121,15 @@
 .graph-title {
     font-size: 18px;
     margin: 0;
+}
+
+/* CodeMirror */
+.CodeMirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
 }
 
 /* Datatables */
@@ -108,6 +202,7 @@ table.dataTable tfoot th {
     font-size: 28px;
     text-shadow: 3px 3px 7px #443A3A;
     color: black;
+    line-height: 1.428571429;
 }
 
 .center-cell {
