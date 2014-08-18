@@ -126,7 +126,7 @@ $(function () { // document ready
                 //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
                 sseqid = /\|([^|]+)\|/.exec(sseqid)[1];
             var $sseqid_td = $('td', row).eq(index_of_sseqid); // .addClass('center-cell')
-            //$sseqid_td.html(sseqid);
+            $sseqid_td.html(sseqid);
             var dbtitle = data[index_of_blastdb];
             var $blastdb_td = $('td', row).eq(index_of_blastdb); // .addClass('center-cell')
             if (dbtitle in results_info['db_url']) {
@@ -777,7 +777,7 @@ $(function () { // document ready
         updateDataTableHeight();
         updateAlignmentGraph()
         results_table_api.columns.adjust().draw();
-    }, 100, { leading: false });
+    }, 200, { leading: false });
     $(window).resize(lazyLayout);
     var w = $(window).width() - report_panel_width
     w = w < report_panel_width ? $(window).width() / 2 : w
