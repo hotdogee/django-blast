@@ -741,7 +741,7 @@ $(function () { // document ready
             // Create slider
             var sliderDiv = document.createElement('div');
             sliderDiv.id = lane_size_slider_id;
-            sliderDiv.style.margin = '32px 25px';
+            sliderDiv.style.margin = '32px 13px';
             sliderDiv.style.position = 'absolute';
             sliderDiv.style.top = '0';
             sliderDiv.style.right = '0';
