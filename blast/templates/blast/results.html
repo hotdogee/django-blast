@@ -6,6 +6,7 @@
 {% endblock%}
 
 {% block head-scripts %}
+    <script type="text/javascript" src="{% static 'blast/components/platform/platform.js' %}"></script>
     <link rel="import" href="{% static 'blast/components/core-splitter/core-splitter.html' %}" />
     <link rel="import" href="{% static 'blast/components/code-mirror/code-mirror.html' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/jquery-ui.min.css' %}" />
@@ -35,7 +36,7 @@
 {% endblock %}
 
 {% block content-fluid %}
-<div vertical layout id="result-container">
+<div unresolved vertical layout id="result-container">
     <div horizontal layout id="top-side-by-side-container">
         <div class="graph-container">
             <div class="graph-title-container">
