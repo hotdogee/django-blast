@@ -579,7 +579,7 @@ $(function () { // document ready
         cm.operation(function () {
             cm.scrollIntoView({ line: results_info['line_num_list'][this_row.index()], ch: 0 }, cm.getScrollInfo().clientHeight / 2)
             cm.setCursor({ line: results_info['line_num_list'][this_row.index()], ch: 0 })
-            cm.curOp.cursorActivity = false; // don't fire event
+            cm.curOp.cursorActivityHandlers = false; // don't fire event
         });
     });
     // Order event
