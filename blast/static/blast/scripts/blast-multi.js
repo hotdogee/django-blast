@@ -199,30 +199,31 @@ $(function() { // document ready
 	}
 	
 	var program_selected = 'blastn';
-	function chooseProgram() {
-		$('.program').attr('disabled', false).removeClass('disabled-radio');
-		if (db_type == 'nucleotide') {
-			$('.blastp').attr('disabled', 'disabled').addClass('disabled-radio');
-			$('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
-		} else if (db_type == 'peptide') {
-			$('.blastn').attr('disabled', 'disabled').addClass('disabled-radio');
-			$('.tblastn').attr('disabled', 'disabled').addClass('disabled-radio');
-			$('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
-		}
-		if (query_type == 'nucleotide') {
-			$('.blastp').attr('disabled', 'disabled').addClass('disabled-radio');
-			$('.tblastn').attr('disabled', 'disabled').addClass('disabled-radio');
-		} else if (query_type == 'peptide') {
-			$('.blastn').attr('disabled', 'disabled').addClass('disabled-radio');
-			$('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
-			$('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
-		}
-		// select first non disabled option
-		$('input.program:not([disabled])').first().prop('checked', true).attr("checked", true);
-		program_selected = $('input.program:not([disabled])').first().val();
-		$('.' + program_selected).mouseover();
-        add_blast_options(program_selected.toUpperCase());
-	}
+	var chooseProgram = _.debounce(function () {
+	    $('.program').attr('disabled', false).removeClass('disabled-radio');
+	    if (db_type == 'nucleotide') {
+	        $('.blastp').attr('disabled', 'disabled').addClass('disabled-radio');
+	        $('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
+	    } else if (db_type == 'peptide') {
+	        $('.blastn').attr('disabled', 'disabled').addClass('disabled-radio');
+	        $('.tblastn').attr('disabled', 'disabled').addClass('disabled-radio');
+	        $('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
+	    }
+	    if (query_type == 'nucleotide') {
+	        $('.blastp').attr('disabled', 'disabled').addClass('disabled-radio');
+	        $('.tblastn').attr('disabled', 'disabled').addClass('disabled-radio');
+	    } else if (query_type == 'peptide') {
+	        $('.blastn').attr('disabled', 'disabled').addClass('disabled-radio');
+	        $('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
+	        $('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
+	    }
+	    // select first non disabled option
+	    $('input.program:not([disabled])').first().prop('checked', true).attr("checked", true);
+	    program_selected = $('input.program:not([disabled])').first().val();
+	    $('.' + program_selected).mouseover();
+	    add_blast_options(program_selected.toUpperCase());
+	}, 90);
+	
 	
 	function sum(obj) {
 		var sum = 0;

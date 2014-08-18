@@ -1,29 +1,28 @@
 {% extends "app/layout.html" %}
+{% load staticfiles %}
 
 {% block head-scripts %}
-{% if iframe == True %}
-<style>
-nav {
-    display: none;
-}
-body {
-    padding-top: 0px;
-}
-</style>
-{% endif %}
-{% endblock %}
-
-{% block scripts %}
-    {% load staticfiles %}
+    {% if iframe == True %}
+    <style>
+    nav {
+        display: none;
+    }
+    body {
+        padding-top: 0px;
+    }
+    </style>
+    {% endif %}
     <link type="text/css" rel="stylesheet" media="all" href="{% static 'blast/css/main.css' %}" />
-    <script type="text/javascript" src="{% static 'blast/scripts/jquery-1.11.1.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'blast/scripts/jquery.hoverIntent.minified.js' %}"></script>
     <script>
     var dataset_list = {{ blastdb_list|safe }};
     </script>
-    <script type="text/javascript" src="{% static 'blast/scripts/blast-multi.js' %}"></script>
-    <script type="text/javascript" src="{% static 'blast/scripts/jquery.validate.min.js' %}"></script>
-    
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'blast/scripts/underscore-min.js' %}"></script>
+    <script src="{% static 'blast/scripts/jquery.hoverIntent.minified.js' %}"></script>
+    <script src="{% static 'blast/scripts/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'blast/scripts/blast-multi.js' %}"></script>
 {% endblock %}
 
 {% block content %}
