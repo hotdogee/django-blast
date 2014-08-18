@@ -89,6 +89,7 @@ $(function () { // document ready
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
     var task_path = '/media/' + task_id + '/' + task_id;
     var index_of_blastdb = col_idx['blastdb']; // -1 if not present
+    var index_of_sseqid = col_idx['sseqid']; // -1 if not present
     var fixedColumns = 2;
     // add header and footer for jbrowse if index != -1
     if (index_of_blastdb != -1) {
@@ -177,16 +178,18 @@ $(function () { // document ready
             });
         },
         rowCallback: function (row, data) {
+            var sseqid = data[index_of_sseqid];
+            if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
+                //>gnl|Ceratitis_capitata|cercap_Scaffold1
+                sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
+            else if (/\|([^|]+)\|/.exec(sseqid) != null)
+                //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
+                sseqid = /\|([^|]+)\|/.exec(sseqid)[1];
+            var $sseqid_td = $('td', row).eq(index_of_sseqid); // .addClass('center-cell')
+            //$sseqid_td.html(sseqid);
             var dbtitle = data[index_of_blastdb];
             var $blastdb_td = $('td', row).eq(index_of_blastdb); // .addClass('center-cell')
             if (dbtitle in results_info['db_url']) {
-                var sseqid = data[col_idx['sseqid']];
-                if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
-                    //>gnl|Ceratitis_capitata|cercap_Scaffold1
-                    sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
-                else if (/\|([^|]+)\|/.exec(sseqid) != null)
-                    //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
-                    sseqid = /\|([^|]+)\|/.exec(sseqid)[1];
                 var start_pos = data[col_idx['sstart']];
                 var end_pos = data[col_idx['send']];
                 if (end_pos < start_pos)
