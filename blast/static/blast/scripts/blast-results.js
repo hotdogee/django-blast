@@ -173,7 +173,7 @@ $(function () { // document ready
         var title = col_setting.sName || id;
         if (type == 'choice') { // blastdb
             var db_list = results_table_api.column(i).data().unique().sort();
-            var select = $('<select id="' + id + '" class="selectpicker dropup show-menu-arrow" data-style="btn-sm btn-default" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter"></select>')
+            var select = $('<select id="' + id + '" class="selectpicker dropup show-menu-arrow" data-style="btn-sm btn-default" data-width="91px" multiple data-live-search="true" data-actions-box="true" multiple data-selected-text-format="count" data-count-selected-text="{0} of {1}" title="Filter" data-icon="icon-filter" data-size="10"></select>')
             .appendTo($(this).empty())
             .on('change', function () {
                 // build search string '|'.join
