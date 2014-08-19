@@ -229,12 +229,13 @@ $(function() { // document ready
 			$('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
 			$('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
 		}
+		query_type = '';
 		// select first non disabled option
 		$('input.program:not([disabled])').first().prop('checked', true);
 		program_selected = $('input.program:not([disabled])').first().val();
 		$('.' + program_selected).mouseover();
         add_blast_options(program_selected.toUpperCase());
-	}, 30);
+	}, 90);
 	
 	
 	function sum(obj) {
@@ -312,7 +313,7 @@ $(function() { // document ready
 			setQueryType('invalid');
 		}
 		//console.log(query_type, normal_nucleic_count, total_count);
-	}, 30);
+	}, 150);
 	$('#query-textarea').keyup(parseTextarea);
 	
 	 // blast program descriptions for labels and their radio buttons
@@ -492,10 +493,10 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
         $('.all-organism-checkbox').change();
         $('.program').attr('disabled', false).removeClass('disabled-radio');
         add_blast_options('BLASTN');
-        $(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
+        //$(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
         
         $('label.error').remove();
-        
+        $('#MainBlastForm')[0].reset();
     });
     
 	$('.chk_low_complexity').change(function() {
