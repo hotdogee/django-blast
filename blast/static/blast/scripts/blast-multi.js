@@ -235,7 +235,7 @@ $(function() { // document ready
 		program_selected = $('input.program:not([disabled])').first().val();
 		$('.' + program_selected).mouseover();
         add_blast_options(program_selected.toUpperCase());
-	}, 90);
+	}, 30);
 	
 	
 	function sum(obj) {
@@ -313,7 +313,7 @@ $(function() { // document ready
 			setQueryType('invalid');
 		}
 		//console.log(query_type, normal_nucleic_count, total_count);
-	}, 150);
+	}, 30);
 	$('#query-textarea').keyup(parseTextarea);
 	
 	 // blast program descriptions for labels and their radio buttons
