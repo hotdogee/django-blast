@@ -105,6 +105,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'axes.middleware.FailedLoginMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -128,6 +129,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'axes',
     'app',
     'blast',
     # Uncomment the next line to enable the admin:
@@ -209,10 +211,12 @@ SUIT_CONFIG = {
             {'model': 'jbrowsesetting'},
             {'model': 'sequence'},
         )},
-        #'auth',
-        {'app': 'auth', 'label': 'Auth', 'icon':'icon-lock', 'models': (
-            {'model': 'user'},
-            {'model': 'group'},
+        # auth and axes
+        {'label': 'Auth', 'icon':'icon-lock', 'models': (
+            {'model': 'auth.user'},
+            {'model': 'auth.group'},
+            {'model': 'axes.accessattempt'},
+            {'model': 'axes.accesslog'},
         )},
         {'label': 'File Browser', 'icon':'icon-hdd', 'url': 'fb_browse'},
     ),
@@ -268,3 +272,13 @@ VIRTUALENV_ROOT = 'virtualenv/py2.7'
 USE_PROD_SETTINGS = False
 if USE_PROD_SETTINGS:
     from settings_prod import *
+
+# django-axes
+AXES_LOGIN_FAILURE_LIMIT = 3
+AXES_LOCK_OUT_AT_FAILURE = True
+AXES_USE_USER_AGENT = True
+AXES_COOLOFF_TIME = 1 # 1 hour
+AXES_LOGGER = 'axes.watch_login'
+AXES_LOCKOUT_TEMPLATE = 'app/login_lockout.html'
+AXES_LOCKOUT_URL = None
+AXES_VERBOSE = True

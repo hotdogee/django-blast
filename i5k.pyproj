@@ -29,6 +29,21 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="axes\admin.py" />
+    <Compile Include="axes\decorators.py" />
+    <Compile Include="axes\management\commands\axes_list_attempts.py" />
+    <Compile Include="axes\management\commands\axes_reset.py" />
+    <Compile Include="axes\management\commands\__init__.py" />
+    <Compile Include="axes\management\__init__.py" />
+    <Compile Include="axes\middleware.py" />
+    <Compile Include="axes\models.py" />
+    <Compile Include="axes\signals.py" />
+    <Compile Include="axes\tests.py" />
+    <Compile Include="axes\test_settings.py" />
+    <Compile Include="axes\test_urls.py" />
+    <Compile Include="axes\utils.py" />
+    <Compile Include="axes\views.py" />
+    <Compile Include="axes\__init__.py" />
     <Compile Include="blast\admin.py">
       <SubType>Code</SubType>
     </Compile>
@@ -98,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
+    <Folder Include="axes\" />
+    <Folder Include="axes\management\" />
+    <Folder Include="axes\management\commands\" />
     <Folder Include="blast\" />
     <Folder Include="blast\bin_linux\" />
     <Folder Include="blast\bin_win\" />
@@ -389,6 +407,7 @@
     <Content Include="app\static\app\scripts\jquery-1.11.1.min.js" />
     <Content Include="app\static\app\scripts\jquery.gh-readme.js" />
     <Content Include="app\static\app\scripts\marked.min.js" />
+    <Content Include="app\templates\app\login_lockout.html" />
     <Content Include="blast\bin_linux\blastdbcmd" />
     <Content Include="blast\bin_linux\blastn" />
     <Content Include="blast\bin_linux\blastp" />
