@@ -61,6 +61,10 @@ class AccessAttempt(CommonAccess):
     def __unicode__(self):
         return six.u('Attempted Access: %s') % self.attempt_time
 
+    class Meta:
+        verbose_name = 'lockout status'
+        verbose_name_plural = 'lockout status'
+
 
 class AccessLog(CommonAccess):
     logout_time = models.DateTimeField(
@@ -70,3 +74,6 @@ class AccessLog(CommonAccess):
 
     def __unicode__(self):
         return six.u('Access Log for %s @ %s') % (self.username, self.attempt_time)
+
+    class Meta:
+        verbose_name = 'sign in log'
