@@ -121,9 +121,9 @@ $(function () { // document ready
             if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
                 //>gnl|Ceratitis_capitata|cercap_Scaffold1
                 sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
-            else if (/\|([^|]+)\|/.exec(sseqid) != null)
-                //>diacit|scaffold149842.1|size221|ref0023013|ref0159280
-                sseqid = /\|([^|]+)\|/.exec(sseqid)[1];
+            else if (/\|([^|]+)$/.exec(sseqid) != null)
+                //>gnl|Drosophila_ficusphila_transcript_v0.5.3|DFIC013799-RA
+                sseqid = /\|([^|]+)$/.exec(sseqid)[1];
             var $sseqid_td = $('td', row).eq(index_of_sseqid); // .addClass('center-cell')
             $sseqid_td.html(sseqid);
             var dbtitle = data[index_of_blastdb];
