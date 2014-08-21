@@ -24,7 +24,7 @@ setInterval( function(){retrieve();},2000);
 function retrieve() {
 $.ajax({
 type: 'GET',
-url: '/media/{{task_id}}/status.json',
+url: '/media/blast/task/{{task_id}}/status.json',
 dataType: "json",
 error: function (){
 // do nothing

@@ -58,7 +58,7 @@ def create(request, iframe=False):
     elif request.method == 'POST':
         # setup file paths
         task_id = uuid4().hex # TODO: Create from hash of input to check for duplicate inputs
-        file_prefix = path.join(settings.MEDIA_ROOT, task_id, task_id)
+        file_prefix = path.join(settings.MEDIA_ROOT, 'blast', 'task', task_id, task_id)
         query_filename = file_prefix + '.in'
         asn_filename = file_prefix + '.asn'
         if not path.exists(path.dirname(query_filename)):
@@ -141,9 +141,9 @@ def retrieve(request, task_id='1'):
         # if result is generated and not expired
         if r.result_date and (r.result_date.replace(tzinfo=None) >= (datetime.utcnow()+ timedelta(days=-7))):
             if r.result_status in set(['SUCCESS', 'NO_GFF']):
-                file_prefix = path.join(settings.MEDIA_ROOT, task_id, task_id)
+                file_prefix = path.join(settings.MEDIA_ROOT, 'blast', 'task', task_id, task_id)
                 results_info = ''
-                with open(path.join(settings.MEDIA_ROOT, task_id, 'info.json'), 'rb') as f:
+                with open(path.join(settings.MEDIA_ROOT, 'blast', 'task', task_id, 'info.json'), 'rb') as f:
                     results_info = f.read()
                 results_data = ''
                 with open(file_prefix + '.json', 'rb') as f:
@@ -201,7 +201,7 @@ def read_gff3(request, task_id, dbname):
     output = '##gff-version 3\n'
     try:
         if request.method == 'GET':
-            with open(path.join(settings.MEDIA_ROOT, task_id, dbname) + '.gff', 'rb') as f:
+            with open(path.join(settings.MEDIA_ROOT, 'blast', 'task', task_id, dbname) + '.gff', 'rb') as f:
                 output = f.read()
     finally:
         return HttpResponse(output)
