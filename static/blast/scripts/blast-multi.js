@@ -3,6 +3,8 @@
 // DATA PROCESSING //
 /////////////////////
 //var dataset_list = [['Genome Assembly', 'Nucleotide', 'Agla_Btl03082013.genome_new_ids.fa', 'Anoplophora glabripennis'], ['Genome Assembly', 'Nucleotide', 'Aros01112013-genome_new_ids.fa', 'Athalia rosae'], ['Genome Assembly', 'Nucleotide', 'Ccap01172013-genome_new_ids.fa', 'Ceratitis capitata'], ['Genome Assembly', 'Nucleotide', 'Clec_Bbug02212013.genome_new_ids.fa', 'Cimex lectularius'], ['Genome Assembly', 'Nucleotide', 'diaci1.1_new_ids.fa', 'Diaphorina citri'], ['Genome Assembly', 'Nucleotide', 'Edan07162013.scaffolds_new_ids.fa', 'Ephemera danica'], ['Genome Assembly', 'Nucleotide', 'Eaff_11172013.genome_new_ids.fa', 'Eurytemora affinis'], ['Genome Assembly', 'Nucleotide', 'Focc_FINAL.scaffolds_new_ids.fa', 'Frankliniella occidentalis'], ['Genome Assembly', 'Nucleotide', 'Lful_Scha04012013-genome_new_ids.fa', 'Ladona fulva'], ['Genome Assembly', 'Nucleotide', 'Ldec.genome.10062013_new_ids.fa', 'Leptinotarsa decemlineata'], ['Genome Assembly', 'Nucleotide', 'Ofas.scaffolds_new_ids.fa', 'Oncopeltus fasciatus'], ['Genome Assembly', 'Nucleotide', 'Oabi11242013.genome_new_ids.fa', 'Orussus abietinus'], ['Genome Assembly', 'Nucleotide', 'Pven10162013.scaffolds_new_ids.fa', 'Pachypsylla venusta'], ['Genome Assembly', 'Nucleotide', 'Ptep01282013.genome_new_ids.fa', 'Parasteatoda tepidariorum'], ['Genome Assembly', 'Nucleotide', 'Tpre_FINAL.scaffolds_new_ids.fa', 'Trichogramma pretiosum'], ['Transcript', 'Nucleotide', 'AGLA_new_ids.fna', 'Anoplophora glabripennis'], ['Transcript', 'Nucleotide', 'AROS_new_ids.fna', 'Athalia rosae'], ['Transcript', 'Nucleotide', 'CCAP_new_ids.fna', 'Ceratitis capitata'], ['Transcript', 'Nucleotide', 'CLEC_new_ids.fna', 'Cimex lectularius'], ['Transcript', 'Nucleotide', 'maker_genes_diaci1.1_transcripts_NALmod_new_ids.fasta', 'Diaphorina citri'], ['Transcript', 'Nucleotide', 'EDAN_new_ids.fna', 'Ephemera danica'], ['Transcript', 'Nucleotide', 'EAFF_new_ids.fna', 'Eurytemora affinis'], ['Transcript', 'Nucleotide', 'FOCC_new_ids.fna', 'Frankliniella occidentalis'], ['Transcript', 'Nucleotide', 'LFUL_new_ids.fna', 'Ladona fulva'], ['Transcript', 'Nucleotide', 'LDEC_new_ids.fna', 'Leptinotarsa decemlineata'], ['Transcript', 'Nucleotide', 'OFAS_new_ids.fna', 'Oncopeltus fasciatus'], ['Transcript', 'Nucleotide', 'OABI_new_ids.fna', 'Orussus abietinus'], ['Transcript', 'Nucleotide', 'PVEN_new_ids.fna', 'Pachypsylla venusta'], ['Transcript', 'Nucleotide', 'PTEP_new_ids.fna', 'Parasteatoda tepidariorum'], ['Transcript', 'Nucleotide', 'TPRE_new_ids.fna', 'Trichogramma pretiosum'], ['Protein', 'Peptide', 'AGLA_new_ids.faa', 'Anoplophora glabripennis'], ['Protein', 'Peptide', 'AROS_new_ids.faa', 'Athalia rosae'], ['Protein', 'Peptide', 'CCAP_new_ids.faa', 'Ceratitis capitata'], ['Protein', 'Peptide', 'CLEC_new_ids.faa', 'Cimex lectularius'], ['Protein', 'Peptide', 'maker_genes_diaci1.1_proteins_NALmod_new_ids.fasta', 'Diaphorina citri'], ['Protein', 'Peptide', 'EDAN_new_ids.faa', 'Ephemera danica'], ['Protein', 'Peptide', 'EAFF_new_ids.faa', 'Eurytemora affinis'], ['Protein', 'Peptide', 'FOCC_new_ids.faa', 'Frankliniella occidentalis'], ['Protein', 'Peptide', 'LFUL_new_ids.faa', 'Ladona fulva'], ['Protein', 'Peptide', 'LDEC_new_ids.faa', 'Leptinotarsa decemlineata'], ['Protein', 'Peptide', 'OFAS_new_ids.faa', 'Oncopeltus fasciatus'], ['Protein', 'Peptide', 'OABI_new_ids.faa', 'Orussus abietinus'], ['Protein', 'Peptide', 'PVEN_new_ids.faa', 'Pachypsylla venusta'], ['Protein', 'Peptide', 'PTEP_new_ids.faa', 'Parasteatoda tepidariorum'], ['Protein', 'Peptide', 'TPRE_new_ids.faa', 'Trichogramma pretiosum']];
+// Sort dataset_list by organism
+
 var dataset_dict = {};
 var organism_list = [];
 var alphabet_list = [];
@@ -46,6 +48,18 @@ $(function() { // document ready
 	///////////////////////////////
 	// HTML STRUCTURE GENERATION //
 	///////////////////////////////
+	
+	//Reset all element if reload of previous page when back button is pressed
+	if($('#click_submit_hidden').val() == 'true') {
+		$('#click_submit_hidden').val('false');
+        $('#query-textarea').val('');
+		$(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
+        $('.all-organism-checkbox').prop("checked", false).attr("checked", false);
+        $('.all-organism-checkbox').change();
+        $('.program').attr('disabled', false).removeClass('disabled-radio');
+		chooseProgram();
+	}
+	
 	var organism_list_count = organism_list.length;
 	var alphabet_list_count = alphabet_list.length;
 	for (var i = 0; i < organism_list_count; i++) {
@@ -111,51 +125,51 @@ $(function() { // document ready
 	});
 	$('.organism-checkbox').change(function(e) {
 		if ($(this).is(':checked')) {
-			$('.dataset-checkbox.' + $(this).attr('organism') + '.' + default_data_type).prop('checked', true).attr("checked", true).change();
+			$('.dataset-checkbox.' + $(this).attr('organism') + '.' + default_data_type).prop('checked', true).change();
 			//console.log('.datasets-checkbox.' + $(this).attr('organism') + '.' + default_data_type);
 		} else {
 			// uncheck all dataset checkboxes of the organism
-			$('.dataset-checkbox.' + $(this).attr('organism')).prop('checked', false).attr("checked", false).change();
+			$('.dataset-checkbox.' + $(this).attr('organism')).prop('checked', false).change();
 		}
 	});
 	$('.dataset-checkbox').change(function() {
 		if ($(this).is(':checked')) {
 			// check organism checkbox
-			$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', true).attr("checked", true);
+			$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', true);
 			default_data_type = $(this).attr('dataset-type');
 		} else {
 			//console.log($('.dataset-checkbox.' + $(this).attr('organism')).is(':checked'));
 			// if none of the dataset checkboxes are checked
 			if (!$('.dataset-checkbox.' + $(this).attr('organism')).is(':checked')) {
 				// uncheck the organism checkbox
-				$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', false).attr("checked", false);
+				$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', false);
 			}
 		}
 		setDatabaseType();
 	});
 	$('.all-organism-checkbox').change(function() {
 		if ($(this).is(':checked')) {
-			$('.all-dataset-checkbox.' + default_data_type).prop('checked', true).attr("checked", true);
+			$('.all-dataset-checkbox.' + default_data_type).prop('checked', true);
 			// check all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + default_data_type).prop('checked', true).attr("checked", true).change();
+			$('.dataset-checkbox.' + default_data_type).prop('checked', true).change();
 		} else {
 			// uncheck all dataset checkboxes of the organism
-			$('.all-dataset-checkbox').prop('checked', false).attr("checked", false).change();
+			$('.all-dataset-checkbox').prop('checked', false).change();
 		}
 	});
 	$('.all-dataset-checkbox').change(function() {
 		if ($(this).is(':checked')) {
 			// check organism checkbox
-			$('.all-organism-checkbox').prop('checked', true).attr("checked", true);
+			$('.all-organism-checkbox').prop('checked', true);
 			// check all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', true).attr("checked", true).change();
+			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', true).change();
 		} else {
 			// uncheck all dataset checkboxes with the dataset type
-			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', false).attr("checked", false).change();
+			$('.dataset-checkbox.' + $(this).attr('dataset-type')).prop('checked', false).change();
 			// if none of the dataset checkboxes are checked
 			if (!$('.all-dataset-checkbox').is(':checked')) {
 				// uncheck the organism checkbox
-				$('.all-organism-checkbox').prop('checked', false).attr("checked", false);
+				$('.all-organism-checkbox').prop('checked', false);
 			}
 		}
 	});
@@ -197,7 +211,7 @@ $(function() { // document ready
 	}
 	
 	var program_selected = 'blastn';
-	function chooseProgram() {
+	var chooseProgram = _.debounce(function () {
 		$('.program').attr('disabled', false).removeClass('disabled-radio');
 		if (db_type == 'nucleotide') {
 			$('.blastp').attr('disabled', 'disabled').addClass('disabled-radio');
@@ -215,12 +229,14 @@ $(function() { // document ready
 			$('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
 			$('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
 		}
+		query_type = '';
 		// select first non disabled option
-		$('input.program:not([disabled])').first().prop('checked', true).attr("checked", true);
+		$('input.program:not([disabled])').first().prop('checked', true);
 		program_selected = $('input.program:not([disabled])').first().val();
 		$('.' + program_selected).mouseover();
         add_blast_options(program_selected.toUpperCase());
-	}
+	}, 30);
+	
 	
 	function sum(obj) {
 		var sum = 0;
@@ -242,10 +258,10 @@ $(function() { // document ready
 		return result;
 	}
 	
-	$('#query-textarea').keyup(function() {
+	var parseTextarea = _.debounce(function () {
 		// parse only the first 100 chars for speed
 		//console.log($('#query-textarea').val());
-		var lines = $('#query-textarea').val().substring(0, 200).match(/[^\r\n]+/g);
+	    var lines = $('#query-textarea').val().substring(0, 1000).match(/[^\r\n]+/g);
 		if (lines == null) {
 			setQueryType('');
 			return;
@@ -274,13 +290,13 @@ $(function() { // document ready
 			}
 		}
 		//console.log(alphabets);
-		var valid_amino_count = sum(filter_key(alphabets, function(key) {
+	    var valid_amino_count = sum(filter_key(alphabets, function (key) {
 			return valid_amino_codes.indexOf(key) != -1;
 		}));
-		var amino_only_count = sum(filter_key(alphabets, function(key) {
+	    var amino_only_count = sum(filter_key(alphabets, function (key) {
 			return amino_only_codes.indexOf(key) != -1;
 		}));
-		var normal_nucleic_count = sum(filter_key(alphabets, function(key) {
+	    var normal_nucleic_count = sum(filter_key(alphabets, function (key) {
 			return normal_nucleic_codes.indexOf(key) != -1;
 		}));
 		var total_count = sum(alphabets);
@@ -289,15 +305,16 @@ $(function() { // document ready
 		// cause similar rejection.
 		if (total_count == 0) {
 			setQueryType('');
-		} else if ((normal_nucleic_count / total_count) > 0.6 && amino_only_count == 0){
+	    } else if ((normal_nucleic_count / total_count) > 0.6 && amino_only_count == 0) {
 			setQueryType('nucleotide');
-		} else if (valid_amino_count == total_count){
+	    } else if (valid_amino_count == total_count) {
 			setQueryType('peptide');
 		} else {
 			setQueryType('invalid');
 		}
 		//console.log(query_type, normal_nucleic_count, total_count);
-	});
+	}, 30);
+	$('#query-textarea').keyup(parseTextarea);
 	
 	 // blast program descriptions for labels and their radio buttons
 	$('.blastn').mouseover(function() {
@@ -316,79 +333,18 @@ $(function() { // document ready
 		$('#blastProgramDescription').text('blastx - Translated Nucleotide vs. Peptide');
 	});
 	$('#fieldset-program').mouseleave(function() {
-		$('.' + program_selected).mouseover();
+		$('.' + $('input.program:checked').val()).mouseover();
 	});
 	
 	// example sequences for testing
-	var ex_nucleotide = '>Contig1\n\
-AATAAAATAAAATAAAATAAAATAAAATAAAATAAAATAAAATAAAATAAAATAAAATAA\
-AGTAAAATAAAATAAAATAAAATAAAATGAAAAAGAATAAAATAAAACAAAGCTAAATTA\
-AAATAAACTGAACAAAATAGAATAAAAAAATTAATTTTTTCCACTTACAATGGCTTATGT\
-ACATGAAAGTATCTGTATCTAGCGATTATTATGCAAATATAAAATGCGCTTCCATGGCTC\
-GCCTAGCAAAGCAGCCACAAAACTGCCCTGCACTACAAACACCACTACACCAGAATTGAA\
-ATCTCGGAAACGACTTTTGAATTGTAAAATCATGTTGAACTTTGACTTTGAATGGCAGCC\
-TATCTGGCGGCGCTAACAGTTTGACTGACAGTGTGTGACTGGCAGTTTTCGTGCAATACA\
-CACCTGATTATTGAATGTGAATAAATGTATTAATAAATTTATGCATGTTATGTACATACA\
-TACGAGTACATAAGTAGATATTTAAATCCCTGCTCATCATTTGGCCTTTTGTTTGTTAAT\
-TAAAATGTTTCCCAGAACTGTAACTGCTGTCAAACGATTGTTGGCTTTACCGTTGCTGTT\
-CTTGTTCTCGTTATTGCTGTTGTTGTTGTTAGTTTGCTTACAATATATGCCAATAAAACT\
-ACAATATAAATGTCAGTATTTGGGCGCCTTGTTGCTTTATTGATTATTTGTTTGAATTTG\
-TCCTTATTGTTGCAGTTGTTGGTATTGCTGTTGTTGCTGATGGCCTGCTTGCATTTTACA\
-GCTATAATTAGTAGTCGAGTTTAGCAAACAACACTTTTGCTACTTGTTTGCTGGCTTTAT\
-GCGTGCGTATTTTGATGTGTATATACATATATATGTGTGTGTGCATATTAGTATGTATGT\
-GATACTTACCAGGTTGCGGTTGCGGTTATTCCAATGTAATGCAGTTGACTTTTCATTTGT\
-AAATATATATATTTAAAGTCGCCGCTGGCAATGCTTAATATACCCACACTTAACGGTATA\
-TGTATTTATATATATATACCTACATATTTTTGATCATCCCCAATAAGTGTAGGTCTTCCT\
-CCTCTCACAGCTGGGGTGATGTCACATCATCCATACGAACGACATGACACTGTCTGTTGA\
-TTGTTGATTTGAAAAAGAGTCAGCATGTCTGAAACACTACGTGGTGCCGAATAGCTTGAA\
-GGGGTCCTCCGCAGTTCTGGCGGAGCCTTTGATATTACTTAGTGTTAGTATACACAGGCA\
-TATAAGTTTTTCTCGGATACCAAACTCAGGCTAGAAAGTGAGGTCTTTGCCAAGATTTGG\
-CGCATGGTGGATTTATTACATCTAAAGCTACACTGATAAGGTCCAAGCAGTTCGTTGAAG\
-GTGGGCTTTAATCTTTCACACAATATGCTCGCTAGAACCTTATATGCGATATCGTGGAGG\
-CTCATATCATAATAATTGGCGAAGACTGTAGTCTCCCTAGAGAGCGCACTTAGGTTCCAA\
-TCATCGAATATGCCTTCATCCGACCATATTATGCTTAGAAGCTAATACATGCACCACGTC\
-AGTTCTTCGCCGTCGTGCACAGCTCTCCAGGATACTGATCGGCTCCGGCTACTACGCATC\
-TTAGCTTCTTTCTTTTTTGTTTGCAAATAGGACTTGCTTCCTTCTTCAGCTATCGGTATC\
-TATCCCATCCACACTGGTTGTGGTAGATCGCAACGTTCGAAAATATTCTTCTTCCTCTTC\
-TCTTTACTACGGCATGGCATCTCCCGTTTTACCGGCCCTTCTTTTATAATTGTCGGAAAC\
-CAATAATTTTGCTTAAGGCTACACTTAAAGAGGTGGAAATTCTGTTCCACAGCGCAATTA\
-TATCGGTTGCCAACGAGCGTTCTTAGAGAGAGAAAAGAGAGAGAGGGAGATATAGAGAAG\n\
->Contig2\n\
-TTTAATTCTGCTTCAAACGATTGCGGGCCAGAACTGTCTCTACATTTGGGTGCGAGATCA\
-CAGGCAACATCACAAGTTCAGTGATACCGACGCAGATCCACACAATGCCCACAGAGGATT\
-CTTCTTTTCTCACGTCGGATGGCTGATGAGCAAAAAACATCCGGCTGTGATTGAAAAAGG\
-CAAGACCATAGACATGTCCGACTTGGAGGCCGACTGGTTGGTGATGTTTCAAAAGGAGTA\
-AGTATATTATTATTGGTTTGCGACATTCGTTGGAGATGTCAATAGTATGAACAATTTGAC\
-TTTGACTTTTTGAGGTTTCGAGAGATACATAGCTGTCTTCTTCAGAAGAATGATGTGAAT\
-GGTTTGATATACAATTCTAAAAAGTACAGTGGAGTACAACTCTAAAGCCAAAGCTTCTCA\
-GTTATATTGTTCAGGACAGCTTCATCATGGAGTTGCAAGGCAACTGTACTCTTCTGGTTC\
-TGGATGTCTTTGGAGAAGAAATTTGTTCATAATGCCCACGGAATCGACCTTCGTGGGGTT\
-CGTGGCCCTCGGCGAAGGTTGGCACAACTACCATCATTCCTTCCCCTGGGACTACCGTGC\
-TGCTGAACTGGGTTCCAAGTATTGCCTGACGACTTACGTGATCGACTTTTTGTCTTACTT\
-CGGCCTGGCATACGACCTAAAGTCTGCCCCATACACCATGATAGAAAAGAGAGCGTTAAG\
-AACGGGAGACGGTACGCATCAGGTGTACGGTTTTAAGAAGATCAAGATGGGCGAGATTGC\
-TGAGGTGGTCAATGAAGCTAACGACGAGAAGAAGTACGAAGTGGAGGAAAATATTATCGG\
-GAAGGGCAAGAAGATCTTTCCGGAAGTTAGCCAGAGGGTAATGGCCGTGCAGGGGTAAAA\
-TAAGTGTAATTATTAGTTAAAGGCGCTTTCCTTTCGTGTTGCATCACAACATTTTCTCGA\
-CTACCATGTTGTTGCCTCATTTTTTTACTGATCACATTCCTACAGGACAGTTGAGTTATG\
-TTAGATTAATGGAACTTTTTCTAAGTTTAAAGGGGATTTTTTAAGTAAAAATAAGCAAAA\
-TATTTTGAGGTAATTTTGGTCCAAATTAAACATTTCGAAGATATAGGCCTTTAATTTTTC\
-TTTTCAATTATGAAATTTAAAAAGTCAATTGTATTTTCTTTTTTTATTTTTATAACTATA\
-TTGCTTTTCTAGTAATTGAAAAATTTGAGTTGGAACCTTACAACTACGAAAAAATTTCAG\
-AGTTTTTATAATTTAATTCAAAATTATACATATATAGAAATTATGGCTTAACTATGTCTT\
-TATAGGTATTGTTTAAAACCATTTAAGTTTATTTAAATATAAAGATGGGCAAAACATTGT\
-CCTCCTCAAAAGTGTGTGATAAAATCGTACTTTCCAATATGGTAGTCGACAAAATATGAG\
-TATTTTTGATACATTTCTATTAGATATGAATGTGATATTTTAGTTTTTACTAATATGTGG\
-GTATCTTTGAAGTATTTTAACACACTATTTTTAAACTAATTTCCTAGCGATTACGTTGTA\
-AAAACCAAAGAAAGGGGAAATTTGGAATATTGAATAATATGTTTAGTATTTCACTAAGGG\
-CTTTATGATAGTCAAATGTTTGGCCATTTAGAGATAAATAAGAAAGAATCGATTAAGAAA\
-TAGACAAGCGGTGGTAAAATTAGAATATATATAATATATACATCACATA';
-	var ex_peptide = '>gi|5524211|gb|AAD44166.1| cytochrome b [Elephas maximus maximus]\n\
-LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLV\
-EWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFLG\
-LLILILLLLLLALLSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVIL\
-GLMPFLHTSKHRSMMLRPLSQALFWTLTMDLLTLTWIGSQPVEYPYTIIGQMASILYFSIILAFLPIAGX\
-IENY';
+	var ex_nucleotide = ">AI134428 GH11893.5prime GH Drosophila melanogaster head pOT2 Drosophila melanogaster cDNA clone GH11893 5prime similar to M21017: D.melanogaster 18S, 5.8S 2S and 28S rRNA genes, complete, and 18S rRNA gene, 5' end, clone pDm238., mRNA sequence\n\
+TTATATGCTTGTCTCAAAGATTAAGCCATGCATGTCTAAGTACACACGAATTAAAAGTGAAACCGCAAAAGGCTCATTATATCAGTTATGGTTCCTTAGATCGTTAACAGTTACTTGGATAACTGTGGTAATTCTAGAGCTAATACATGCAATTAAAACATGAACCTTATGGGACATGTGCTTTTATTAGGCTAAAACCAAGCGATCGCAAGATCGTTATATTGGTTGAACTCTAGATAACATGCAGATCGTATGGTCTTGTACCGACGACAGATCTTTCAAATGTCTGCCCTATCAACTTTTGATGGTAGTATCTAGGACTACCATGGTTGCAACGGGTAACGGGGAATCAGGGTTCGATTCCGGAGAGGGAGCCTGAGAAACGGCTACCACATCTAAGGAAGGCAGCAGGCGCGTAAATTACCCACTCCCAGCTCGGGGAGGTAGTGACGAAAAATAACAATACAGGACTCATATCCGAGGCCCTGTAATTGGAATGAGTACACTAAAAAAAAAAAAAATAGAAAAAAAGAAAAATTAAAAATTTAAAAAAAATAAAAAA\n\
+>TCALIF_07877-PA transcript Name:'Similar to Actin, muscle (Manduca sexta)' offset:143 AED:0.01 eAED:0.01 QI:143|1|0.5|1|1|1|2|0|376\n\
+TCGACCTCCGAGGTCGACTATAAAAGACCTCGGCGCTTTAGTTCGGTGTCACAGATTGTTTCCAGCATCTGCATACGGAGCACCGCTCTCGTTGATCCCATCTTTTTCTCCATTCCCAAACCTCCGAAAACTCTACCTTCAACATGTGTGACGAGGATGTTGCCGCTTTGGTCGTTGACAACGGCTCCGGTATGTGCAAGGCCGGATTCGCCGGTGACGATGCTCCCCGTGCAGTGTTCCCCTCCATTGTCGGCCGCCCCAGACATCAGGGTGTGATGGTCGGTATGGGACAAAAGGACGCCTATGTGGGTGATGAGGCCCAATCCAAGCGTGGTATCTTGACCCTCAAGTACCCCGTGGAGCACGGGATCATCACCAACTGGGACGATATGGAGAAAATCTGGCATCACACCTTCTACAACGAGCTCCGTGTGGCCCCCGAGGAGCAGCCCGTCCTCTTGACTGAGGCCCCCTTGAACCCCAAGGCCAACCGAGAGAAGATGACTCAAATCATGTTCGAGACCTTCAACATGCCCGCCATGTACGTGGCCATCCAAGCCGTGCTCTCCCTGTACGCCTCCGGTCGTACCACCGGTATCGTCATGGACTCCGGCGACGGTGTGTCCCACACCGTGCCCATCTATGAAGGTTACGCCCTGCCCCACGCCATCCTCCGTCTGGACTTGGCTGGCCGTGAGCTCACCAACTACTTGATGAAGATCCTCACCGAGCGCGGTTACTCGTTCACCACCACCGCCGAGCGCGAGATCGTGCGCGACATCAAGGAGAAGCTCTGCTACGTGGCCCTGGACTTTGAGCAGGAAATGGCCACGGCCGCCGCCTCCACCTCCCTGGAGAAGTCCTACGAGCTTCCCGACGGCCAAGTCATCACCATTGGCAACGAGCGCTTCCGCGCCCCTGAGGCCCTCTTCCAACCTTCCTTCTTGGGTATGGAATCCTGCGGCATCCACGAGACCACCTACAACTCCATCATGAAGTGCGACGTGGACATCCGTAAGGACTTGTACGCCAACACCGTCATGTCCGGCGGCACCACCATGTACCCCGGTATCGCCGATCGTATGCAGAAGGAGATCACCGCCTTGGCTCCCTCCACCATTAAGATCAAGATCATCGCTCCCCCTGAGAGGAAATACTCCGTCTGGATCGGAGGCTCCATCTTGGCTTCCCTGTCCACCTTCCAACAGATGTGGATCTCCAAGCAGGAGTACGACGAGTGCGGTCCCTCCATTGTCCATCGCAAGTGCTTCTAA\n";
+	var ex_peptide = ">M.tuberculosis H37Rv|Rv2565|Rv2565\n\
+MTTARRRPKRRGTDARTALRNVPILADIDDEQLERLATTVERRHVPANQWLFHAGEPADSIYIVDSGRFVAVAPEGHVFAEMASGDSIGDLGVIAGAARSAGVRALRDGVVWRIAAETFTDMLEATPLLQSAMLRAMARMLRQSRPAKTARRPRVIGVVSNGDTAAAPMVDAIATSLDSHGRTAVIAPPVETTSAVQEYDELVEAFSETLDRAERSNDWVLVVADRGAGDLWRHYVSAQSDRLVVLVDQRYPPDAVDSLATQRPVHLITCLAEPDPSWWDRLAPVSHHPANSDGFGALARRIAGRSLGLVMAGGGARGLAHFGVYQELTEAGVVIDRFGGTSSGAIASAAFALGMDAGDAIAAAREFIAGSDPLGDYTIPISALTRGGRVDRLVQGFFGNTLIEHLPRGFFSVSADMITGDQIIHRRGSVSGAVRASISIPGLIPPVHNGEQLLVDGGLLNNLPANVMCADTDGEVICVDLRRTFVPSKGFGLLPPIVTPPGLLRRLLTGTDNALPPLQETLLRAFDLAASTANLRELPRVAAIIEPDVSKIGVLNFKQIDAALEAGRMAARAALQAQPDLVR\n\
+>TCALIF_07877-PA protein Name:'Similar to Actin, muscle (Manduca sexta)' AED:0.01 eAED:0.01 QI:143|1|0.5|1|1|1|2|0|376\n\
+MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNWDDMEKIWHHTFYNELRVAPEEQPVLLTEAPLNPKANREKMTQIMFETFNMPAMYVAIQAVLSLYASGRTTGIVMDSGDGVSHTVPIYEGYALPHAILRLDLAGRELTNYLMKILTERGYSFTTTAEREIVRDIKEKLCYVALDFEQEMATAAASTSLEKSYELPDGQVITIGNERFRAPEALFQPSFLGMESCGIHETTYNSIMKCDVDIRKDLYANTVMSGGTTMYPGIADRMQKEITALAPSTIKIKIIAPPERKYSVWIGGSILASLSTFQQMWISKQEYDECGPSIVHRKCF\n";
    	$('.load-nucleotide').click(function() {
 		$('#query-textarea').val(ex_nucleotide);
 		$('#query-textarea').keyup();
@@ -419,169 +375,14 @@ IENY';
         var html_content='';
         
         $('#fieldset-options-blast legend:first').html(blast_program+' Options');   //Show the option title
-        $('#max_target_seqs').val('100');
-        $('#evalue').val('10.0');
+        $('#fieldset-options-blast label.error').remove();
+		$('.parms').hide().addClass('unselected_parms');
+		$('.' + blast_program.toLowerCase() + '-parms').show();
+		$('.' + blast_program.toLowerCase() + '-parms').removeClass('unselected_parms');
         
-        switch(blast_program) {
-            case 'BLASTN':
-                $('#word_size').val('28');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 28)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
+		$('.chk_low_complexity').change();
+		$('.chk_soft_masking').change();
                 
-                 html_content = '\
-                                <table id="blastn-scoring-param"><tr><td><span title="Reward for a nucleotide match.  (Default: 1)">Match score </span></td><td><input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Penalty for a nucleotide mismatch.  (Default: -2)">Mismatch score </span></td><td><input TYPE="text" ID="penalty" NAME="penalty" VALUE="-2" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to open a gap.  (Default: 0)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="0" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to extend a gap.  (Default: 0)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="0" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td>\
-                                <td><select id="strand" name="strand">\
-                                    <option value="both" selected>both</option>\
-                                    <option value="plus">plus</option>\
-                                    <option value="minus">minus</option>\
-                                </select></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
-                $('#soft_masking').prop("checked", true).attr("checked", true);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-
-                break;
-            
-            case 'TBLASTN':
-                $('#word_size').val('3');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
-                
-                 html_content = '\
-                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
-                                <td><select id="matrix" name="matrix">\
-                                    <option value="PAM30">PAM30</option>\
-                                    <option value="PAM70">PAM70</option>\
-                                    <option value="PAM250">PAM250</option>\
-                                    <option value="BLOSUM90">BLOSUM90</option>\
-                                    <option value="BLOSUM80">BLOSUM80</option>\
-                                    <option value="BLOSUM62" selected>BLOSUM62</option>\
-                                    <option value="BLOSUM50">BLOSUM50</option>\
-                                    <option value="BLOSUM45">BLOSUM45</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10" class="input-fields"></td></tr>\
-								<tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
-                $('#soft_masking').prop("checked", false).attr("checked", false);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-                
-                break;
-            
-            case 'TBLASTX':
-                $('#word_size').val('3');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
-                
-                html_content = '\
-                                <table id="tblastx-scoring-param"><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
-                                <td><select id="matrix" name="matrix">\
-                                    <option value="PAM30">PAM30</option>\
-                                    <option value="PAM70">PAM70</option>\
-                                    <option value="PAM250">PAM250</option>\
-                                    <option value="BLOSUM90">BLOSUM90</option>\
-                                    <option value="BLOSUM80">BLOSUM80</option>\
-                                    <option value="BLOSUM62" selected>BLOSUM62</option>\
-                                    <option value="BLOSUM50">BLOSUM50</option>\
-                                    <option value="BLOSUM45">BLOSUM45</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 13)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="13" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td>\
-                                <td><select id="strand" name="strand">\
-                                    <option value="both" selected>both</option>\
-                                    <option value="plus">plus</option>\
-                                    <option value="minus">minus</option>\
-                                </select></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
-                $('#soft_masking').prop("checked", false).attr("checked", false);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-                
-                break;
-                
-            case 'BLASTP':
-                $('#word_size').val('3');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
-                
-                html_content = '\
-                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
-                                <td><select id="matrix" name="matrix">\
-                                <option value="PAM30">PAM30</option>\
-                                <option value="PAM70">PAM70</option>\
-                                <option value="PAM250">PAM250</option>\
-                                <option value="BLOSUM90">BLOSUM90</option>\
-                                <option value="BLOSUM80">BLOSUM80</option>\
-                                <option value="BLOSUM62" selected>BLOSUM62</option>\
-                                <option value="BLOSUM50">BLOSUM50</option>\
-                                <option value="BLOSUM45">BLOSUM45</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 11)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", false).attr("checked", false);
-                $('#soft_masking').prop("checked", false).attr("checked", false);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="low_complexity_hidden" NAME="low_complexity" VALUE="no">').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-                
-                break;
-                
-            case 'BLASTX':
-                $('#word_size').val('3');
-				$('#span_word_size').attr('title', 'Length of initial exact match. (Default: 3)');
-                $('#fieldset-options-blast-scoring-param legend ~ *').remove();
-                
-                html_content = '\
-                                <table><tr><td><span title="Scoring matrix name.  (Default: BLOSUM62)">Matrix </span></td>\
-                                <td><select id="matrix" name="matrix">\
-                                    <option value="PAM30">PAM30</option>\
-                                    <option value="PAM70">PAM70</option>\
-                                    <option value="PAM250">PAM250</option>\
-                                    <option value="BLOSUM90">BLOSUM90</option>\
-                                    <option value="BLOSUM80">BLOSUM80</option>\
-                                    <option value="BLOSUM62" selected>BLOSUM62</option>\
-                                    <option value="BLOSUM50">BLOSUM50</option>\
-                                    <option value="BLOSUM45">BLOSUM45</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Minimum score to add a word to the BLAST lookup table.  (Default: 12)">Threshold </span></td><td><input TYPE="text" ID="threshold" NAME="threshold" VALUE="12" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td><td>\
-                                <select id="strand" name="strand">\
-                                    <option value="both" selected>both</option>\
-                                    <option value="plus">plus</option>\
-                                    <option value="minus">minus</option>\
-                                </select></td>\
-                                </tr>\
-                                <tr><td><span title="Cost to open a gap.  (Default: 11)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="11" SIZE="10" class="input-fields"></td></tr>\
-                                <tr><td><span title="Cost to extend a gap.  (Default: 1)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="1" SIZE="10" class="input-fields"></td></tr></table>\
-                               ';
-                $('#fieldset-options-blast-scoring-param legend').after(html_content);
-                
-                $('#low_complexity').attr("value", "yes").prop("checked", true).attr("checked", true);
-                $('#soft_masking').prop("checked", false).attr("checked", false);
-                $('#fieldset-options-blast-filter-param input:hidden').remove();
-                $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-                
-                break;
         }
         
         // Validate MainBlastForm form on keyup and submit
@@ -594,7 +395,7 @@ IENY';
                 'organism-checkbox[]': {
                     required: true
                 },
-                'dataset-checkbox[]': {
+                'db-name': {
                     required: true
                 },
                 evalue: {
@@ -633,7 +434,7 @@ IENY';
                 'organism-checkbox[]': {
                     required: "Please choose at least one organism"
                 },
-                'dataset-checkbox[]': {
+                'db-name': {
                     required: "Please choose the type of databases"
                 },
                 evalue: {
@@ -667,44 +468,21 @@ IENY';
             },
             errorPlacement: function (error, element){
                 switch (element.attr('name').toString()) {
+                    case 'query-sequence':
+                        error.insertAfter('#legend-sequence');
+                        break;
                     case 'organism-checkbox[]':
                         error.insertAfter('#legend-Organisms');
                         break;
-                    case 'dataset-checkbox[]':
+                    case 'db-name':
                         error.insertAfter('.dataset-title');
                         break;
                     default:
                         error.insertAfter(element);
                 }
-            }
-        });
-        
-/*         $.validator.addMethod('textarea_valid', function(value, element, param) {
-            return $.trim(value) != '';
-        }, 'No any sequence found!'); 
- */        
-    }
-    
-	$('#low_complexity').change(function(e) {
-		if ($(this).is(':checked')) {
-            $('#low_complexity_hidden').remove();
-        }
-        else {
-            $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="low_complexity_hidden" NAME="low_complexity" VALUE="no">');
-            
         }
     });
     
-	$('#soft_masking').change(function(e) {
-		if ($(this).is(':checked')) {
-            $('#soft_masking_hidden').remove();
-        }
-        else {
-            $('#fieldset-options-blast-filter-param').append('<input type="hidden" ID="soft_masking_hidden" NAME="soft_masking" VALUE="false">');
-            
-        }
-    });
-
     $('input.program:radio').click(function() {
         add_blast_options($('input.program:checked').val().toUpperCase());
 	});
@@ -715,20 +493,39 @@ IENY';
         $('.all-organism-checkbox').change();
         $('.program').attr('disabled', false).removeClass('disabled-radio');
         add_blast_options('BLASTN');
-        event.preventDefault();
-        $(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
+        //$(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
         
         $('label.error').remove();
-        
+        $('#MainBlastForm')[0].reset();
     });
     
+	$('.chk_low_complexity').change(function() {
+		if ($('#'+$('input.program:checked').val()+'_chk_low_complexity').is(':checked')) {
+			$('#low_complexity_hidden').val('yes');
+		}else {
+			$('#low_complexity_hidden').val('no');
+		}
+    });
+    
+	$('.chk_soft_masking').change(function() {
+		if ($('#'+$('input.program:checked').val()+'_chk_soft_masking').is(':checked')) {
+			$('#soft_masking_hidden').val('true');
+		}else {
+			$('#soft_masking_hidden').val('false');
+		}
+	});
+	
     add_blast_options('BLASTN'); //show initially
         
-    
 });
 
 function On_Submit(){
     if($("#MainBlastForm").valid()) {
-        $("#MainBlastForm").submit();
+		$('.unselected_parms').remove();
+		$('#click_submit_hidden').val('true');	//Use for a back button is pressed. See line 52. 
+        $('#MainBlastForm').submit();
     }
 }
+
+//prevention of cache pages
+$(window).unload(function () { });

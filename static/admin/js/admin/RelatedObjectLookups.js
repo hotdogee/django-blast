@@ -36,8 +36,7 @@ function showRelatedObjectLookupPopup(triggeringLink) {
     } else {
         href = triggeringLink.href + '?_popup=1';
     }
-    // GRAPPELLI CUSTOM: changed width
-    var win = window.open(href, name, 'height=500,width=1000,resizable=yes,scrollbars=yes');
+    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
     win.focus();
     return false;
 }
@@ -50,17 +49,7 @@ function dismissRelatedLookupPopup(win, chosenId) {
     } else {
         document.getElementById(name).value = chosenId;
     }
-    // GRAPPELLI CUSTOM: element focus
-    elem.focus();
     win.close();
-}
-
-// GRAPPELLI CUSTOM
-function removeRelatedObject(triggeringLink) {
-    var id = triggeringLink.id.replace(/^remove_/, '');
-    var elem = document.getElementById(id);
-    elem.value = "";
-    elem.focus();
 }
 
 function showAddAnotherPopup(triggeringLink) {
@@ -72,8 +61,7 @@ function showAddAnotherPopup(triggeringLink) {
     } else {
         href  += '&_popup=1';
     }
-    // GRAPPELLI CUSTOM: changed width
-    var win = window.open(href, name, 'height=500,width=1000,resizable=yes,scrollbars=yes');
+    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
     win.focus();
     return false;
 }
@@ -98,7 +86,6 @@ function dismissAddAnotherPopup(win, newId, newRepr) {
             } else {
                 elem.value = newId;
             }
-            elem.focus();
         }
     } else {
         var toId = name + "_to";
