@@ -398,3 +398,11 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+#box-organism label {
+    margin-bottom: 0px;
+}
+
+#box-organism label div {
+    padding: 2px 0px 2px;
+}
