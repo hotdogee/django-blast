@@ -118,7 +118,7 @@ $(function () { // document ready
         },
         rowCallback: function (row, data) {
             var sseqid = data[index_of_sseqid];
-            if (/\|[^|_]+?_([^|]+)$/g.exec(sseqid) != null)
+            if (/\|\w\w\w\w\w\w_([^|]+)$/g.exec(sseqid) != null)
                 //>gnl|Ceratitis_capitata|cercap_Scaffold1
                 sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
             else if (/\|([^|]+)$/.exec(sseqid) != null)
