@@ -66,7 +66,7 @@ class BlastDb(models.Model):
     organism = models.ForeignKey(Organism) # 
     type = models.ForeignKey(SequenceType) # 
     #fasta_file = models.FileField(upload_to='blastdb') # upload file
-    fasta_file = FileBrowseField('FASTA file path', max_length=100, directory='blastdb/', extensions='FASTA', format='FASTA')
+    fasta_file = FileBrowseField('FASTA file path', max_length=100, directory='blast/db/', extensions='FASTA', format='FASTA')
     title = models.CharField(max_length=200, unique=True, help_text='This is passed into makeblast -title') # makeblastdb -title
     description = models.TextField(blank=True) # shown in blast db selection ui
     is_shown = models.BooleanField(default=None, help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui

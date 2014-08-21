@@ -47,7 +47,21 @@
     <Compile Include="blast\admin.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="blast\api.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="blast\apps.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="blast\migrations\0001_initial.py" />
+    <Compile Include="blast\migrations\0002_auto_20140814_1243.py" />
+    <Compile Include="blast\migrations\0003_auto_20140820_1618.py" />
+    <Compile Include="blast\migrations\0004_auto_20140821_1111.py" />
+    <Compile Include="blast\migrations\__init__.py" />
+    <Compile Include="blast\permissions.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="blast\serializers.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="util\blast2gff3.py" />
@@ -119,6 +133,7 @@
     <Folder Include="blast\" />
     <Folder Include="blast\bin_linux\" />
     <Folder Include="blast\bin_win\" />
+    <Folder Include="blast\migrations\" />
     <Folder Include="blast\static\" />
     <Folder Include="blast\static\blast\components\" />
     <Folder Include="blast\static\blast\components\code-mirror\" />
