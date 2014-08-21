@@ -69,7 +69,6 @@ $(function () { // document ready
     // Results Table //
     ///////////////////
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
-    var task_path = '/media/' + task_id + '/' + task_id;
     var index_of_blastdb = col_idx['blastdb']; // -1 if not present
     var index_of_sseqid = col_idx['sseqid']; // -1 if not present
     var fixedColumns = 2;
@@ -152,6 +151,7 @@ $(function () { // document ready
     var results_table_api = $results_table.api(); // $('#results-table').DataTable()
     results_table_api.columns.adjust().draw();
     // Download button menu
+    var task_path = '/media/blast/task/' + task_id + '/' + task_id;
     $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
 <span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>\
 </button>\
