@@ -165,7 +165,7 @@ class Sequence(models.Model):
     '''
     key = models.AutoField(primary_key=True)
     blast_db = models.ForeignKey(BlastDb, verbose_name='BLAST DB') # 
-    id = models.CharField(max_length=200, db_index=True) # gi|45478711|ref|NC_005816.1|
+    id = models.CharField(max_length=200, unique=True) # gi|45478711|ref|NC_005816.1|
     length = models.PositiveIntegerField() # 
     seq_start_pos = models.BigIntegerField() # used for file.seek(offset), marks start of '>'
     seq_end_pos = models.BigIntegerField() # used to calculate file.read(size)
