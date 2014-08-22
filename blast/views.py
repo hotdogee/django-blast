@@ -128,6 +128,11 @@ def create(request, iframe=False):
             record.save()
 
             run_blast_task.delay(task_id, args_list, file_prefix, blast_info)
+
+            # generate status.json for frontend statu checking
+            with open(path.join(path.dirname(file_prefix), 'status.json'), 'wb') as f:
+                json.dump({'status': 'pending'}, f)
+
             # debug
             #run_blast_task.delay(task_id, args_list, file_prefix, blast_info).get()
             return redirect('blast:retrieve', task_id)

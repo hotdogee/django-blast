@@ -6,14 +6,19 @@ from .models import BlastQueryRecord, Sequence, BlastDb, JbrowseSetting
 from os import path, stat
 from pytz import utc
 from itertools import groupby
+from celery.utils.log import get_task_logger
 import csv
 import json
+
+logger = get_task_logger(__name__)
 
 @shared_task() # ignore_result=True
 def run_blast_task(task_id, args_list, file_prefix, blast_info):
     import django
     django.setup()
     
+    logger.info("blast_task_id: %s" % (task_id,))
+
     # update dequeue time
     record = BlastQueryRecord.objects.get(task_id__exact=task_id)
     record.dequeue_date = datetime.utcnow().replace(tzinfo=utc)
@@ -140,6 +145,5 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
     record.save()
 
     # generate status.json for frontend statu checking
-    statusdir = path.dirname(file_prefix + '.in')
-    with open(path.join(statusdir, 'status.json'), 'wb') as f:
+    with open(path.join(path.dirname(file_prefix), 'status.json'), 'wb') as f:
         json.dump({'status': 'done'}, f)
