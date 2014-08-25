@@ -29,8 +29,11 @@ dataType: "json",
 error: function (){
 // do nothing
 },
-success: function () {
-window.location.reload(1);
+success: function (data) {
+    console.log(data['status']);
+    if (data['status'] == 'done') {
+        window.location.reload(1);
+    }
 }
 });
 };
