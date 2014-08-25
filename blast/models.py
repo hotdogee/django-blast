@@ -171,7 +171,7 @@ class Sequence(models.Model):
     seq_end_pos = models.BigIntegerField() # used to calculate file.read(size)
     modified_date = models.DateTimeField(auto_now_add=True)
 
-    def get_entry(self):
+    def fasta_seq(self):
         if not os.path.isfile(self.blast_db.fasta_file.path_full):
             return 'FASTA file not found.'
         with open(self.blast_db.fasta_file.path_full, 'rb') as f:
