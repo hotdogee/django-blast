@@ -1,5 +1,5 @@
 ﻿/* Set padding to keep content from hitting the edges */
-body {
+body.padtop {
     padding-top: 50px;
     font-family: 'Open Sans', sans-serif;
     margin: 0;
