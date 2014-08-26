@@ -210,3 +210,17 @@ def read_gff3(request, task_id, dbname):
                 output = f.read()
     finally:
         return HttpResponse(output)
+
+def status(request, task_id):
+    if request.method == 'GET':
+        status_file_path = path.join(settings.MEDIA_ROOT, 'blast', 'task', task_id, 'status.json')
+        status = {'status': 'unknown'}
+        if path.isfile(status_file_path):
+            with open(status_file_path, 'rb') as f:
+                status = f.read()
+
+        return HttpResponse(status)
+
+
+
+        

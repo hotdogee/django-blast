@@ -24,13 +24,13 @@ setInterval( function(){retrieve();},2000);
 function retrieve() {
 $.ajax({
 type: 'GET',
-url: '/media/blast/task/{{task_id}}/status.json',
+url: './{{task_id}}/status',
 dataType: "json",
 error: function (){
 // do nothing
 },
 success: function (data) {
-    console.log(data['status']);
+    //console.log(data['status']);
     if (data['status'] == 'done') {
         window.location.reload(1);
     }
