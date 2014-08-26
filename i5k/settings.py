@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'axes',
     'rest_framework',
+    'rest_framework_swagger',
     'app',
     'blast',
     # Uncomment the next line to enable the admin:
@@ -296,5 +297,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
-    'PAGINATE_BY': 100
+    'PAGINATE_BY': 100,
+    'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
 }

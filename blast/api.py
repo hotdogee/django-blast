@@ -5,35 +5,49 @@ class FASTARenderer(renderers.BaseRenderer):
     format = 'fasta'
 
     def render(self, data, media_type=None, renderer_context=None):
-        return data.encode(self.charset)
-
+        if 'results' in data:
+            return ''.join([seq['fasta_seq'] for seq in data['results']])
+        elif 'fasta_seq' in data:
+            return data['fasta_seq']
+        else:
+            return ''
 
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
-#from rest_framework.response import Response
-#from rest_framework.views import APIView
-
-#class UserCountView(APIView):
-#    """
-#    A view that returns the count of active users, in JSON or YAML.
-#    """
-#    renderer_classes = (JSONRenderer, YAMLRenderer)
-
-#    def get(self, request, format=None):
-#        user_count = User.objects.filter(active=True).count()
-#        content = {'user_count': user_count}
-#        return Response(content)
-
-
 from rest_framework import viewsets
-from .models import Sequence
-from .serializers import SequenceSerializer
+from .models import Organism, SequenceType, BlastDb, Sequence
+from .serializers import OrganismSerializer, SequenceTypeSerializer, BlastDbSerializer, SequenceSerializer
+
+class OrganismViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Retrieve organisms.
+    """
+    queryset = Organism.objects.all()
+    serializer_class = OrganismSerializer
+    lookup_field = 'short_name'
+
+class SequenceTypeViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Retrieve sequence types.
+    """
+    queryset = SequenceType.objects.all()
+    serializer_class = SequenceTypeSerializer
+    lookup_field = 'dataset_type'
+
+class BlastDbViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Retrieve BLAST databases.
+    """
+    queryset = BlastDb.objects.all()
+    serializer_class = BlastDbSerializer
+    lookup_field = 'title'
+    lookup_value_regex = '[^/]+'
 
 class SequenceViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    A ViewSet for retrieving fasta sequences.
+    Retrieve fasta sequences.
     """
     queryset = Sequence.objects.all()
     serializer_class = SequenceSerializer
-    renderer_classes = (JSONRenderer, BrowsableAPIRenderer)
+    renderer_classes = (JSONRenderer, BrowsableAPIRenderer, FASTARenderer)
     lookup_field = 'id'
     lookup_value_regex = '[^/]+'

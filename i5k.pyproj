@@ -109,6 +109,15 @@
     <Compile Include="rest_framework\views.py" />
     <Compile Include="rest_framework\viewsets.py" />
     <Compile Include="rest_framework\__init__.py" />
+    <Compile Include="rest_framework_swagger\apidocview.py" />
+    <Compile Include="rest_framework_swagger\docgenerator.py" />
+    <Compile Include="rest_framework_swagger\introspectors.py" />
+    <Compile Include="rest_framework_swagger\models.py" />
+    <Compile Include="rest_framework_swagger\tests.py" />
+    <Compile Include="rest_framework_swagger\urlparser.py" />
+    <Compile Include="rest_framework_swagger\urls.py" />
+    <Compile Include="rest_framework_swagger\views.py" />
+    <Compile Include="rest_framework_swagger\__init__.py" />
     <Compile Include="util\blast2gff3.py" />
     <Compile Include="blast\models.py" />
     <Compile Include="blast\tests.py" />
@@ -432,6 +441,15 @@
     <Folder Include="rest_framework\templates\rest_framework\" />
     <Folder Include="rest_framework\templatetags\" />
     <Folder Include="rest_framework\utils\" />
+    <Folder Include="rest_framework_swagger\" />
+    <Folder Include="rest_framework_swagger\static\" />
+    <Folder Include="rest_framework_swagger\static\rest_framework_swagger\" />
+    <Folder Include="rest_framework_swagger\static\rest_framework_swagger\css\" />
+    <Folder Include="rest_framework_swagger\static\rest_framework_swagger\images\" />
+    <Folder Include="rest_framework_swagger\static\rest_framework_swagger\lib\" />
+    <Folder Include="rest_framework_swagger\static\rest_framework_swagger\lib\shred\" />
+    <Folder Include="rest_framework_swagger\templates\" />
+    <Folder Include="rest_framework_swagger\templates\rest_framework_swagger\" />
     <Folder Include="suit\" />
     <Folder Include="suit\static\" />
     <Folder Include="suit\static\admin\" />
@@ -474,6 +492,7 @@
     <Folder Include="templates\" />
     <Folder Include="templates\admin\" />
     <Folder Include="templates\filebrowser\" />
+    <Folder Include="templates\rest_framework_swagger\" />
     <Folder Include="templates\rest_framework\" />
     <Folder Include="util\" />
   </ItemGroup>
@@ -1552,6 +1571,29 @@
     <Content Include="rest_framework\templates\rest_framework\login.html" />
     <Content Include="rest_framework\templates\rest_framework\login_base.html" />
     <Content Include="rest_framework\templates\rest_framework\raw_data_form.html" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\css\highlight.default.css" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\css\hotdogee.css" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\css\rest_framework_swagger.css" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\css\screen.css" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\images\logo_small.png" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\images\pet_store_api.png" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\images\throbber.gif" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\images\wordnik_api.png" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\backbone-min.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\handlebars-1.0.0.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\highlight.7.3.pack.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\jquery-1.8.0.min.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\jquery.ba-bbq.min.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\jquery.cookie.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\jquery.slideto.min.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\jquery.wiggle.min.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\shred.bundle.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\shred\content.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\swagger.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\lib\underscore-min.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\swagger-ui.js" />
+    <Content Include="rest_framework_swagger\static\rest_framework_swagger\swagger-ui.min.js" />
+    <Content Include="rest_framework_swagger\templates\rest_framework_swagger\index.html" />
     <Content Include="run_celery.cmd" />
     <Content Include="suit\static\admin\css\forms.css" />
     <Content Include="suit\static\cms\css\pages.css" />
@@ -1678,6 +1720,7 @@
     <Content Include="templates\admin\base_site.html" />
     <Content Include="templates\filebrowser\custom_field.html" />
     <Content Include="templates\rest_framework\api.html" />
+    <Content Include="templates\rest_framework_swagger\index.html" />
     <Content Include="util\blastdb.json" />
     <Content Include="util\dataset_list.tsv" />
   </ItemGroup>

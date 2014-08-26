@@ -5,7 +5,9 @@
 
 {% block navbar%}
     <li><a href="{% url 'blast:api-root' %}">API</a></li>
+    <li><a href="{% url 'blast:django.swagger.base.view' %}">API docs</a></li>
 {% endblock%}
+
 {% block title %}API Browser | i5k - BLAST{% endblock %}
 
 {% block head-scripts %}
@@ -14,7 +16,7 @@
 <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/hotdogee.css" %}"/>
 {% endblock %}
 
-{% block bodyclass %}container{% endblock %}
+{% block bodyclass %}{% endblock %}
 
 {% block content %}
 {% block breadcrumbs %}

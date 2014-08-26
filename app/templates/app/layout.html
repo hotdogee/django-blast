@@ -14,7 +14,7 @@
 {% block head-scripts %}{% endblock %}
 </head>
 
-<body class="{% block bodyclass %}{% endblock %}">
+<body class="{% block bodyclass %}{% endblock %} padtop">
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
@@ -45,7 +45,7 @@
             </div>
         </div>
     </nav>
-    
+{% block content-body %}{% endblock %}
     <div class="container-fluid" style="height: 100%;">
 {% block content-fluid %}
         <div class="container body-content">
