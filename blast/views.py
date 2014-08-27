@@ -79,11 +79,6 @@ def create(request, iframe=False):
         else:
             return render(request, 'blast/invalid_query.html', {'title': 'Invalid Query',})
 
-        print 'query-sequence: ', request.POST['query-sequence']
-        print 'db-name: ', request.POST.getlist('db-name')
-        print 'program: ', request.POST['program']
-        print 'max_target_seqs: ', request.POST['max_target_seqs']
-
         chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can access the file
 
         # build blast command
@@ -106,8 +101,6 @@ def create(request, iframe=False):
                 else:
                     input_opt.append('-'+blast_option)
                 input_opt.append(request.POST[blast_option])
-                print blast_option, ': ', request.POST[blast_option]
-
             
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
             args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']]
