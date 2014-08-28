@@ -103,7 +103,7 @@ def create(request, iframe=False):
                 input_opt.append(request.POST[blast_option])
             
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
-            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '1']]
+            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '4']]
             args_list[0].extend(input_opt)
 
             # convert to multiple formats
