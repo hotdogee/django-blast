@@ -101,7 +101,6 @@ def create(request, iframe=False):
                 else:
                     input_opt.append('-'+blast_option)
                 input_opt.append(request.POST[blast_option])
-
             
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
             args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']]
@@ -130,8 +129,13 @@ def create(request, iframe=False):
             run_blast_task.delay(task_id, args_list, file_prefix, blast_info)
 
             # generate status.json for frontend statu checking
-            with open(path.join(path.dirname(file_prefix), 'status.json'), 'wb') as f:
-                json.dump({'status': 'pending'}, f)
+            with open(query_filename, 'r') as f: # count number of query sequence by counting '>'
+                qstr = f.read()
+                seq_count = qstr.count('>')
+                if (seq_count == 0):
+                    seq_count = 1
+                with open(path.join(path.dirname(file_prefix), 'status.json'), 'wb') as f:
+                    json.dump({'status': 'pending', 'seq_count': seq_count}, f)
 
             # debug
             #run_blast_task.delay(task_id, args_list, file_prefix, blast_info).get()
@@ -217,10 +221,18 @@ def status(request, task_id):
         status = {'status': 'unknown'}
         if path.isfile(status_file_path):
             with open(status_file_path, 'rb') as f:
-                status = f.read()
-
-        return HttpResponse(status)
-
-
-
-        
+                statusdata = json.load(f)
+                if statusdata['status'] == 'done':
+                    return HttpResponse(json.dumps(statusdata))
+                elif statusdata['status'] == 'pending':
+                    asn_path = path.join(settings.MEDIA_ROOT, 'blast', 'task', task_id, (task_id+'.asn'))
+                    if path.isfile(asn_path):
+                        with open(asn_path, 'r') as asn_f:
+                            astr = asn_f.read()
+                            processed_seq_count = astr.count('title \"')
+                            statusdata['processed'] = processed_seq_count
+                    else:
+                        statusdata['processed'] = 0
+                    return HttpResponse(json.dumps(statusdata))
+        else:
+            return HttpResponse('Invalid Post')
