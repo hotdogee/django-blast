@@ -90,7 +90,7 @@ $(function () { // document ready
         //deferRender: true,
         //bJQueryUI: true,
         colReorder: {
-            'fixedColumns': fixedColumns,
+            fixedColumns: fixedColumns,
             realtime: true,
             stateSave: true
         },
@@ -106,10 +106,75 @@ $(function () { // document ready
                 col['orderable'] = false;
                 col['type'] = 'choice';
                 col['className'] = 'center-cell';
+                col['render'] = function (dbtitle, type, row, meta) {
+                    if (type == "display") {
+                        var sseqid = row[index_of_sseqid];
+                        if (/\|\w\w\w\w\w\w_([^|]+)$/g.exec(sseqid) != null)
+                            //>gnl|Ceratitis_capitata|cercap_Scaffold1
+                            sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
+                        else if (/\|([^|]+)$/.exec(sseqid) != null)
+                            //>gnl|Drosophila_ficusphila_transcript_v0.5.3|DFIC013799-RA
+                            sseqid = /\|([^|]+)$/.exec(sseqid)[1];
+                        if (dbtitle in results_info['db_url']) {
+                            var start_pos = row[col_idx['sstart']];
+                            var end_pos = row[col_idx['send']];
+                            if (end_pos < start_pos)
+                                end_pos = [start_pos, start_pos = end_pos][0];
+                            start_pos -= 200;
+                            if (start_pos < 0)
+                                start_pos = 0;
+                            end_pos += 200;
+                            if (end_pos > row[col_idx['slen']])
+                                end_pos = row[col_idx['slen']];
+                            return '<a class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="right" data-container="body" title="' + dbtitle + '\nClick to view in genome browser" target="_blank" href=\'' + results_info['db_url'][dbtitle] + '?loc=' + sseqid + ':' + start_pos + '..' + end_pos + '&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"' + /^(https?:\/\/)/g.exec(results_info['db_url'][dbtitle])[1] + /https?:\/\/([^\/]+)\//g.exec(document.URL)[1] + '/media/blast/task/' + task_id + '/' + dbtitle + '.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"WebApollo/View/Track/DraggableHTMLFeatures","store":"url","style":{"renderClassName":"gray-center-10pct","subfeatureClasses":{"match_part":"blast-match_part"}}}]&tracks=BLAST+ Results\' role="button"><span class="glyphicon glyphicon-new-window"></span> ' + results_info['db_organism'][dbtitle] + '</a>';
+                            //http://gmod-dev.nal.usda.gov:8080/anogla/jbrowse/?loc=Scaffold1:107901..161900&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://gmod-dev.nal.usda.gov/media/07b73d9a3dde4eac9faa9c4109f7cfb6/Agla_Btl03082013.genome_new_ids.fa.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"JBrowse/View/Track/CanvasFeatures","store":"url","glyph":"JBrowse/View/FeatureGlyph/ProcessedTranscript","subParts":"match_part","style":{"color":"blue","height":6,"connectorColor":"gray","connectorThickness":2}}]
+                        } else {
+                            return '<span data-toggle="tooltip" data-placement="right" title="' + dbtitle + '">' + results_info['db_organism'][dbtitle] + '</span>';
+                        }
+                    }
+                    return dbtitle;
+                }
+            } else if (name == 'sseqid') {
+                col['render'] = function (sseqid, type, row, meta) {
+                    if (type == "display") {
+                        if (/\|\w\w\w\w\w\w_([^|]+)$/g.exec(sseqid) != null)
+                            //>gnl|Ceratitis_capitata|cercap_Scaffold1
+                            sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
+                        else if (/\|([^|]+)$/.exec(sseqid) != null)
+                            //>gnl|Drosophila_ficusphila_transcript_v0.5.3|DFIC013799-RA
+                            sseqid = /\|([^|]+)$/.exec(sseqid)[1];
+                        var idx = meta.row;
+                        if (idx == 1)
+                            console.log('col["render"](' + sseqid + ')');
+                        return sseqid;
+//                        return '<span>' + sseqid + '\
+//<button class="btn btn-primary btn-xs btn-fasta pull-right" data-toggle="modal" data-target="#fasta-model-' + idx + '" data-remote="">\
+//    <span class="glyphicon glyphicon-chevron-right"></span> FASTA\
+//</button></span>\
+//<div class="modal fade" id="fasta-model-' + idx + '" tabindex="-1" role="dialog" aria-labelledby="fasta-model-' + idx + '-label" aria-hidden="true">\
+//  <div class="modal-dialog">\
+//    <div class="modal-content">\
+//      <div class="modal-header">\
+//        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\
+//        <h4 class="modal-title" id="fasta-model-' + idx + '-label">FASTA Sequences</h4>\
+//      </div>\
+//      <div class="modal-body">\
+//        Fetching FASTA Sequence...\
+//      </div>\
+//      <div class="modal-footer">\
+//        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
+//      </div>\
+//    </div>\
+//  </div>\
+//</div>\
+//';
+                    }
+                    return sseqid;
+                }
             }
             return col;
         }),
-        "headerCallback": function (thead, data, start, end, display) {
+        headerCallback: function (thead, data, start, end, display) {
             $(thead).find('th').each(function (index) {
                 $(this).children().tooltip('destroy'); // remove old tooltip
                 $(this).html('<a data-toggle="tooltip" data-placement="top" data-container="body" title="' + results_col_names_display[col_idx[$(this).text()]] + '"><span>' + results_col_names[col_idx[$(this).text()]] + '</span></a>');
@@ -117,38 +182,12 @@ $(function () { // document ready
             });
         },
         rowCallback: function (row, data) {
-            var sseqid = data[index_of_sseqid];
-            if (/\|\w\w\w\w\w\w_([^|]+)$/g.exec(sseqid) != null)
-                //>gnl|Ceratitis_capitata|cercap_Scaffold1
-                sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
-            else if (/\|([^|]+)$/.exec(sseqid) != null)
-                //>gnl|Drosophila_ficusphila_transcript_v0.5.3|DFIC013799-RA
-                sseqid = /\|([^|]+)$/.exec(sseqid)[1];
-            var $sseqid_td = $('td', row).eq(index_of_sseqid); // .addClass('center-cell')
-            $sseqid_td.html(sseqid);
-            var dbtitle = data[index_of_blastdb];
             var $blastdb_td = $('td', row).eq(index_of_blastdb); // .addClass('center-cell')
-            if (dbtitle in results_info['db_url']) {
-                var start_pos = data[col_idx['sstart']];
-                var end_pos = data[col_idx['send']];
-                if (end_pos < start_pos)
-                    end_pos = [start_pos, start_pos = end_pos][0];
-                start_pos -= 200;
-                if (start_pos < 0)
-                    start_pos = 0;
-                end_pos += 200;
-                if (end_pos > data[col_idx['slen']])
-                    end_pos = data[col_idx['slen']];
-                $blastdb_td.html('<a class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="right" data-container="body" title="' + dbtitle + '\nClick to view in genome browser" target="_blank" href=\'' + results_info['db_url'][dbtitle] + '?loc=' + sseqid + ':' + start_pos + '..' + end_pos + '&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"' + /^(https?:\/\/)/g.exec(results_info['db_url'][dbtitle])[1] + /https?:\/\/([^\/]+)\//g.exec(document.URL)[1] + '/media/blast/task/' + task_id + '/' + dbtitle + '.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"WebApollo/View/Track/DraggableHTMLFeatures","store":"url","style":{"renderClassName":"gray-center-10pct","subfeatureClasses":{"match_part":"blast-match_part"}}}]&tracks=BLAST+ Results\' role="button"><span class="glyphicon glyphicon-new-window"></span> ' + results_info['db_organism'][dbtitle] + '</a>');
-                //http://gmod-dev.nal.usda.gov:8080/anogla/jbrowse/?loc=Scaffold1:107901..161900&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://gmod-dev.nal.usda.gov/media/07b73d9a3dde4eac9faa9c4109f7cfb6/Agla_Btl03082013.genome_new_ids.fa.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"JBrowse/View/Track/CanvasFeatures","store":"url","glyph":"JBrowse/View/FeatureGlyph/ProcessedTranscript","subParts":"match_part","style":{"color":"blue","height":6,"connectorColor":"gray","connectorThickness":2}}]
-            } else {
-                $blastdb_td.html('<span data-toggle="tooltip" data-placement="right" title="' + dbtitle + '">' + results_info['db_organism'][dbtitle] + '</span>');
-            }
             $blastdb_td.children().tooltip();
         }
     });
     var results_table_api = $results_table.api(); // $('#results-table').DataTable()
-    results_table_api.columns.adjust().draw();
+    //results_table_api.columns.adjust().draw();
     // Download button menu
     var task_path = '/media/blast/task/' + task_id + '/' + task_id;
     $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
@@ -609,6 +648,9 @@ $(function () { // document ready
     //    var ind = $(this).index();
     //    $('td:nth-child(' + (ind + 1) + ')').css('background-color', '');
     //});
+    $results_table.on('click', '.btn-fasta', function () {
+        $($(this).data("target") + ' .modal-body').html($(this).data("target"));
+    });
         
     /////////////////////
     // Alignment Graph //
