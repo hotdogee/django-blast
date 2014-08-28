@@ -24,6 +24,14 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
     record.dequeue_date = datetime.utcnow().replace(tzinfo=utc)
     record.save()
 
+    # update status from 'pending' to 'running' for frontend
+    with open(path.join(path.dirname(file_prefix), 'status.json'), 'r') as f:
+        statusdata = json.load(f)
+        statusdata['status'] = 'running'
+
+    with open(path.join(path.dirname(file_prefix), 'status.json'), 'w') as f:
+        json.dump(statusdata, f)
+
     # run
     for args in args_list:
         Popen(args, stdin=PIPE, stdout=PIPE).wait()
