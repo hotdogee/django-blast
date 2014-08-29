@@ -84,11 +84,15 @@ $(function () { // document ready
         dom:
             '<"' + toolbar_prefix + 'tl ui-corner-tr"Rifr>' +
             't' +
-            '<"' + toolbar_prefix + 'bl ui-corner-br"<"btn-group dropup">>S',
+            '<"' + toolbar_prefix + 'bl ui-corner-br"<"btn-download btn-group dropup">T>S',
         //dom: 'Rifrt<"btn-group dropup">S',
         //"dom": 'T<"clear">lfrtip',
         //deferRender: true,
         //bJQueryUI: true,
+        tableTools: {
+            sRowSelect: "os",
+            aButtons: [],
+        },
         colReorder: {
             fixedColumns: fixedColumns,
             realtime: true,
@@ -190,7 +194,7 @@ $(function () { // document ready
     //results_table_api.columns.adjust().draw();
     // Download button menu
     var task_path = '/media/blast/task/' + task_id + '/' + task_id;
-    $('.ui-corner-br .btn-group').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
+    $('.btn-download').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
 <span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>\
 </button>\
 <ul class="dropdown-menu" role="menu">\
@@ -595,6 +599,13 @@ $(function () { // document ready
     $("#result-container").data("kendoSplitter").bind('resize', function () {
         updateDataTableHeight();
     });
+    // Active rows
+    var oTT = TableTools.fnGetInstance('results-table');
+    var active_rows = [];
+    $results_table.on('click', 'tr', function () {
+        active_rows = oTT.fnGetSelectedIndexes();
+        console.log(active_rows);
+    });
     /*
      * data row mouse over event
      */
@@ -846,5 +857,5 @@ $(function () { // document ready
     results_table_api.columns.adjust().draw();
     var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
     $('.ui-corner-bl').append(footer);
-    console.log('checkpoint!');
+    //console.log('checkpoint!');
 });

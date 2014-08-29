@@ -39,5 +39,5 @@ THE SOFTWARE.
 .cm-s-xq-light span.cm-attribute {color: #7F007F;}
 .cm-s-xq-light span.cm-error {color: #f00;}
 
-.cm-s-xq-light .CodeMirror-activeline-background {background: #f8f887 !important;}
+.cm-s-xq-light .CodeMirror-activeline-background {background: #f8bb5d !important;}
 .cm-s-xq-light .CodeMirror-matchingbracket {outline:1px solid grey;color:black !important;background:yellow;}

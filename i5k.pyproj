@@ -1340,6 +1340,7 @@
     <Content Include="blast\static\blast\dataTables\js\dataTables.scroller.js" />
     <Content Include="blast\static\blast\dataTables\js\dataTables.scroller.min.js" />
     <Content Include="blast\static\blast\dataTables\js\dataTables.tableTools.js" />
+    <Content Include="blast\static\blast\dataTables\js\dataTables.tableTools.min.js" />
     <Content Include="blast\static\blast\dataTables\js\jquery.dataTables-hotdogee.js" />
     <Content Include="blast\static\blast\dataTables\js\jquery.dataTables.min.js" />
     <Content Include="blast\static\blast\dataTables\js\jquery.js" />
