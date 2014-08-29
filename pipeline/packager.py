@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from os.path import normpath # hotdogee
 
 from django.contrib.staticfiles.finders import find
 from django.core.files.base import ContentFile
@@ -41,7 +42,7 @@ class Package(object):
 
     @property
     def output_filename(self):
-        return self.config.get('output_filename')
+        return normpath(self.config.get('output_filename')) # hotdogee
 
     @property
     def extra_context(self):

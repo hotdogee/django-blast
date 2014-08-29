@@ -199,7 +199,7 @@ class Compressor(object):
     def relative_path(self, absolute_path, output_filename):
         """Rewrite paths relative to the output stylesheet path"""
         absolute_path = posixpath.join(settings.PIPELINE_ROOT, absolute_path)
-        output_path = posixpath.join(settings.PIPELINE_ROOT, posixpath.dirname(output_filename))
+        output_path = posixpath.join(settings.PIPELINE_ROOT, posixpath.dirname(output_filename.replace('\\', '/'))) # hotdogee
         return relpath(absolute_path, output_path)
 
     def read_bytes(self, path):

@@ -318,6 +318,23 @@ PIPELINE_CSS = {
         ),
         'output_filename': 'app/content/app-layout.min.css',
     },
+    'blast-results': {
+        'source_filenames': (
+            'blast/css/codemirror.css',
+            'blast/css/xq-light.css',
+            'blast/css/kendo.common-bootstrap.core.css',
+            'blast/css/kendo.bootstrap.min.css',
+            'blast/css/jquery-ui.min.css',
+            'blast/css/dataTables.jqueryui.css',
+            'blast/dataTables/css/jquery.dataTables.min.css',
+            'blast/dataTables/css/dataTables.scroller.min.css',
+            'blast/dataTables/css/dataTables.colReorder.min.css',
+            'blast/dataTables/css/dataTables.bootstrap.css',
+            'blast/css/bootstrap-select.min.css',
+            'blast/css/blast-results.css',
+        ),
+        'output_filename': 'blast/css/blast-results.min.css',
+    },
 }
 
 PIPELINE_JS = {
@@ -328,5 +345,22 @@ PIPELINE_JS = {
             'app/scripts/respond.js',
         ),
         'output_filename': 'app/scripts/app-layout.min.js',
-    }
+    },
+    'blast-results': {
+        'source_filenames': (
+            'blast/scripts/codemirror-compressed.js',
+            'blast/scripts/kendo-hotdogee.js',
+            'blast/scripts/jquery-ui.min.js',
+            'blast/scripts/dragscrollable.js',
+            'blast/dataTables/js/jquery.dataTables-hotdogee.js',
+            'blast/dataTables/js/dataTables.scroller.js',
+            'blast/dataTables/js/dataTables.colReorder.min.js',
+            'blast/dataTables/js/dataTables.bootstrap.js',
+            'blast/scripts/underscore-min.js',
+            'blast/scripts/scribl.1.1.4.js',
+            'blast/scripts/bootstrap-select-hotdogee.js',
+            'blast/scripts/blast-results.js',
+        ),
+        'output_filename': 'blast/scripts/blast-results.min.js',
+    },
 }
