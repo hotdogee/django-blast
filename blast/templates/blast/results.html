@@ -24,10 +24,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.colVis.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'blast/css/jquery.dataTables.yadcf.css' %}" />
     -->
-    <script src="{% static 'blast/scripts/jquery-1.11.1.min.js' %}"></script>
     <script>
-    //$('body').attr('unresolved', ''); // To fit polymer's requirement for <body>
-    //$('body').attr('fullbleed', ''); // To fit polymer's requirement for <body>
     var results_col_names = {{ results_col_names|safe }};
     var results_col_names_display = {{ results_col_names_display|safe }};
     var results_detail = {{ results_detail|safe }};
@@ -64,7 +61,16 @@
                 <tfoot><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>
             </table>
         </div>
-        <div id="results-text"></div>
+        <div id="text-container">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#text-report" role="tab" data-toggle="tab">Text Report</a></li>
+                <li><a href="#fasta-sequences" role="tab" data-toggle="tab">FASTA Sequences</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="text-report"></div>
+                <div class="tab-pane fade" id="fasta-sequences"></div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

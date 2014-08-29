@@ -6,3 +6,5 @@ Pillow==2.2.2
 django-filter==0.7
 djangorestframework==2.3.14
 Markdown==2.4.1
+cssmin==0.2.0
+jsmin==2.0.11
