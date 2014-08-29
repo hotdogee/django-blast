@@ -325,7 +325,6 @@ PIPELINE_CSS = {
             'blast/css/kendo.common-bootstrap.core.css',
             'blast/css/kendo.bootstrap.min.css',
             'blast/css/jquery-ui.min.css',
-            'blast/css/dataTables.jqueryui.css',
             'blast/dataTables/css/jquery.dataTables.min.css',
             'blast/dataTables/css/dataTables.scroller.min.css',
             'blast/dataTables/css/dataTables.colReorder.min.css',
