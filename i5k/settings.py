@@ -2,7 +2,7 @@
 from os import path
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
@@ -86,8 +86,8 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    #'pipeline.finders.PipelineFinder',
-    #'pipeline.finders.CachedFileFinder',
+    'pipeline.finders.PipelineFinder',
+    'pipeline.finders.CachedFileFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -313,8 +313,8 @@ PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.JSMinCompressor'
 PIPELINE_CSS = {
     'app-layout': {
         'source_filenames': (
-            'app/content/bootstrap.min.css',
             'app/content/site.css',
+            'app/content/bootstrap.min.css',
         ),
         'output_filename': 'app/content/app-layout.min.css',
     },
