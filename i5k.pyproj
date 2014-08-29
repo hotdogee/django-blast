@@ -1293,7 +1293,6 @@
     <Content Include="blast\static\blast\dataTables\css\dataTables.responsive.scss" />
     <Content Include="blast\static\blast\dataTables\css\dataTables.scroller.css" />
     <Content Include="blast\static\blast\dataTables\css\dataTables.scroller.min.css" />
-    <Content Include="blast\static\blast\dataTables\css\dataTables.tableTools.css" />
     <Content Include="blast\static\blast\dataTables\css\jquery.dataTables.css" />
     <Content Include="blast\static\blast\dataTables\css\jquery.dataTables.min.css" />
     <Content Include="blast\static\blast\dataTables\css\jquery.dataTables_themeroller.css" />
