@@ -103,7 +103,7 @@ def create(request, iframe=False):
                 input_opt.append(request.POST[blast_option])
             
             program_path = path.join(settings.PROJECT_ROOT, 'blast', bin_name, request.POST['program'])
-            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '6']]
+            args_list = [[program_path, '-query', query_filename, '-db', db_list, '-outfmt', '11', '-out', asn_filename, '-num_threads', '4']]
             args_list[0].extend(input_opt)
 
             # convert to multiple formats
@@ -222,9 +222,7 @@ def status(request, task_id):
         if path.isfile(status_file_path):
             with open(status_file_path, 'rb') as f:
                 statusdata = json.load(f)
-                if statusdata['status'] == 'done':
-                    return HttpResponse(json.dumps(statusdata))
-                elif statusdata['status'] == 'pending':
+                if statusdata['status'] == 'running':
                     asn_path = path.join(settings.MEDIA_ROOT, 'blast', 'task', task_id, (task_id+'.asn'))
                     if path.isfile(asn_path):
                         with open(asn_path, 'r') as asn_f:
@@ -233,6 +231,7 @@ def status(request, task_id):
                             statusdata['processed'] = processed_seq_count
                     else:
                         statusdata['processed'] = 0
-                    return HttpResponse(json.dumps(statusdata))
-        else:
-            return HttpResponse('Invalid Post')
+                return HttpResponse(json.dumps(statusdata))
+        return HttpResponse(json.dumps(status))
+    else:
+        return HttpResponse('Invalid Post')
