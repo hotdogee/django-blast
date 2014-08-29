@@ -2,7 +2,7 @@
 from os import path
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
@@ -354,6 +354,7 @@ PIPELINE_JS = {
             'blast/dataTables/js/jquery.dataTables-hotdogee.js',
             'blast/dataTables/js/dataTables.scroller.js',
             'blast/dataTables/js/dataTables.colReorder.min.js',
+            'blast/dataTables/js/dataTables.tableTools.min.js',
             'blast/dataTables/js/dataTables.bootstrap.js',
             'blast/scripts/underscore-min.js',
             'blast/scripts/scribl.1.1.4.js',

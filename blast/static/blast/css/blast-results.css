@@ -169,6 +169,20 @@ div.DTS tbody tr.even.highlight {
     background-color: #f8f887;
 }
 
+#results-table tr.active:nth-child(odd) td, #results-table tr.active:nth-child(odd) th {
+    background-color: #f8bb5d;
+}
+
+#results-table tr.active td, #results-table tr.active th {
+    background-color: #faca7c;
+    color: black;
+}
+
+#results-table tr.active:hover td, #results-table tr.active:hover th {
+    background-color: #f8e27a !important;
+}
+
+
 .dataTables_scroll {
     font-family: 'Inconsolata', monospace;
 }
