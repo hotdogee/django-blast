@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 from celery import shared_task
+from celery.task.schedules import crontab
+from celery.decorators import periodic_task
 from subprocess import Popen, PIPE
 from datetime import datetime
 from .models import BlastQueryRecord, Sequence, BlastDb, JbrowseSetting
@@ -155,3 +157,7 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
     # generate status.json for frontend statu checking
     with open(path.join(path.dirname(file_prefix), 'status.json'), 'wb') as f:
         json.dump({'status': 'done'}, f)
+
+@periodic_task(run_every=(crontab(hour='0', minute='10'))) # Execute daily at midnight
+def remove_files():
+    logger.info("[test] remove expired files.")
