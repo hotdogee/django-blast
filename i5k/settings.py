@@ -86,7 +86,8 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.FileSystemFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'pipeline.finders.PipelineFinder',
+    #'pipeline.finders.CachedFileFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -132,6 +133,7 @@ INSTALLED_APPS = (
     'axes',
     'rest_framework',
     'rest_framework_swagger',
+    'pipeline',
     'app',
     'blast',
     # Uncomment the next line to enable the admin:
@@ -299,4 +301,32 @@ REST_FRAMEWORK = {
     ],
     'PAGINATE_BY': 100,
     'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
+}
+
+# django-pipeline
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
+PIPELINE_CSSMIN_BINARY = 'cssmin'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.JSMinCompressor'
+
+PIPELINE_CSS = {
+    'app-layout': {
+        'source_filenames': (
+            'app/content/bootstrap.min.css',
+            'app/content/site.css',
+        ),
+        'output_filename': 'app/content/app-layout.min.css',
+    },
+}
+
+PIPELINE_JS = {
+    'app-layout': {
+        'source_filenames': (
+            'app/scripts/jquery-1.11.1.min.js',
+            'app/scripts/bootstrap.js',
+            'app/scripts/respond.js',
+        ),
+        'output_filename': 'app/scripts/app-layout.min.js',
+    }
 }

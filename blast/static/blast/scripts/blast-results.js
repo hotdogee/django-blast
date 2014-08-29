@@ -55,7 +55,7 @@ $(function () { // document ready
     ////////////////
     // CodeMirror //
     ////////////////
-    var code_mirror = CodeMirror($('#results-text')[0], {
+    var code_mirror = CodeMirror($('#text-report')[0], {
         value: results_detail,
         theme: 'xq-light',
         tabSize: 2,
@@ -144,8 +144,8 @@ $(function () { // document ready
                             //>gnl|Drosophila_ficusphila_transcript_v0.5.3|DFIC013799-RA
                             sseqid = /\|([^|]+)$/.exec(sseqid)[1];
                         var idx = meta.row;
-                        if (idx == 1)
-                            console.log('col["render"](' + sseqid + ')');
+                        //if (idx == 1)
+                        //    console.log('col["render"](' + sseqid + ')');
                         return sseqid;
 //                        return '<span>' + sseqid + '\
 //<button class="btn btn-primary btn-xs btn-fasta pull-right" data-toggle="modal" data-target="#fasta-model-' + idx + '" data-remote="">\
@@ -846,4 +846,5 @@ $(function () { // document ready
     results_table_api.columns.adjust().draw();
     var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
     $('.ui-corner-bl').append(footer);
+    console.log('checkpoint!');
 });

@@ -2671,11 +2671,6 @@ div.k-flatcolorpicker {
   background-color: transparent;
   background-image: none;
 }
-.k-flatcolorpicker .k-selected-color {
-  background-image: url("textures/transtexture.png");
-  background-position: 50% 50%;
-  text-align: right;
-}
 .k-flatcolorpicker .k-selected-color input.k-color-value {
   font-family: Consolas, "Ubuntu Mono", "Lucida Console", "Courier New", monospace;
   padding: .75em .3em .65em 1em;
@@ -2771,12 +2766,6 @@ div.k-flatcolorpicker {
   background: -left-linear-gradient(left,#ff0000 0%,#ffff00 16%,#00ff00 33%,#00ffff 50%,#0000ff 67%,#ff00ff 84%,#ff0004 100%);
   /* W3C */
 }
-.k-flatcolorpicker .k-transparency-slider .k-slider-track {
-  background-image: url("textures/transparency.png");
-  background-size: 100% auto;
-  background-position: 100% 50%;
-  background-repeat: no-repeat;
-}
 .k-flatcolorpicker .k-controls {
   margin-top: 10px;
   margin-bottom: 5px;
@@ -2807,14 +2796,6 @@ div.k-flatcolorpicker {
 }
 .k-ie9 .k-flatcolorpicker .k-hsv-gradient {
   background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+), url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMCIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-}
-.k-ie7 .k-flatcolorpicker .k-hue-slider .k-slider-track,
-.k-ie8 .k-flatcolorpicker .k-hue-slider .k-slider-track {
-  background: url("textures/hue.png") repeat 0 50%;
-}
-.k-ie7 .k-flatcolorpicker .k-transparency-slider .k-slider-track,
-.k-ie8 .k-flatcolorpicker .k-transparency-slider .k-slider-track {
-  background: url("textures/transparency.png") repeat 0 50%;
 }
 .k-ie7 .k-flatcolorpicker .k-hsv-gradient,
 .k-ie8 .k-flatcolorpicker .k-hsv-gradient {
