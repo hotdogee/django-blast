@@ -259,6 +259,14 @@ LOGGING = {
 }
 
 # Celery Settings
+from kombu import Exchange, Queue
+CELERY_DEFAULT_QUEUE = 'i5k'
+CELERY_DEFAULT_EXCHANGE = 'i5k'
+CELERY_DEFAULT_EXCHANGE_TYPE = 'direct'
+CELERY_DEFAULT_ROUTING_KEY = 'i5k'
+CELERY_QUEUES = ( 
+    Queue('i5k', Exchange('i5k'), routing_key='i5k'),
+)
 BROKER_URL = 'amqp://'
 CELERY_RESULT_BACKEND = 'amqp://'
 CELERY_TASK_SERIALIZER = 'json'
