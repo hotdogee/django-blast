@@ -10,7 +10,7 @@ CELERYD_CHDIR="/path/to/i5k"
 CELERYD_MULTI="/path/to/i5k/virtualenv/py2.7/bin/celery multi"
 
 # Extra arguments
-CELERYD_OPTS="--app=i5k --concurrency=3"
+CELERYD_OPTS="--app=i5k --concurrency=3 -Q i5k"
 
 # Create log/pid dirs, if they don't already exist
 CELERY_CREATE_DIRS=1
