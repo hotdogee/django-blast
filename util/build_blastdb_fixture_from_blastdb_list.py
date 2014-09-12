@@ -2,7 +2,7 @@
 import json
 
 TSV_FILENAME = 'i5k_blastdb_list.tsv'
-BLASTDB_URL_ROOT = '/media/blast/db/'
+BLASTDB_URL_ROOT = '/blast/db/'
 DUMP_FILENAME = 'blastdb.json'
 
 fixture_list = []
