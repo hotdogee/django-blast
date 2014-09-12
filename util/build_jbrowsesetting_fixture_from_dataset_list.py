@@ -2,9 +2,9 @@
 import json
 
 TSV_FILENAME = 'i5k_blastdb_list.tsv'
-BLASTDB_URL_ROOT = '/media/blast/db/'
-#DUMP_FILENAME = 'jbrowsesetting-stage.json'
-DUMP_FILENAME = 'jbrowsesetting.json'
+BLASTDB_URL_ROOT = '/blast/db/'
+DUMP_FILENAME = 'jbrowsesetting-stage.json'
+#DUMP_FILENAME = 'jbrowsesetting.json'
 
 fixture_list = []
 # read tsv
@@ -15,8 +15,8 @@ with open(TSV_FILENAME, 'rb') as f:
             fixture_item = {
                 'model': 'blast.jbrowsesetting',
                 'fields': {
-                    #'url': 'https://apollo.nal.usda.gov/%s/jbrowse/' % short_name,
-                    'url': 'http://gmod-dev.nal.usda.gov:8080/%s/jbrowse/' % short_name,
+                    'url': 'https://apollo.nal.usda.gov/%s/jbrowse/' % short_name,
+                    #'url': 'http://gmod-dev.nal.usda.gov:8080/%s/jbrowse/' % short_name,
                     'blast_db': [BLASTDB_URL_ROOT + fasta_filename],
                 }
             }
