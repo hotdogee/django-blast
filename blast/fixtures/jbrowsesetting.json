@@ -2,7 +2,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Agla_Btl03082013.genome_new_ids.fa"
+        "Agla_Btl03082013.genome_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/anogla/jbrowse/"
     },
@@ -11,7 +11,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Aros01112013-genome_new_ids.fa"
+        "Aros01112013-genome_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/athros/jbrowse/"
     },
@@ -20,7 +20,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Ccap01172013-genome_new_ids.fa"
+        "Ccap01172013-genome_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/cercap/jbrowse/"
     },
@@ -29,7 +29,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Clec_Bbug02212013.genome_new_ids.fa"
+        "Clec_Bbug02212013.genome_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/cimlec/jbrowse/"
     },
@@ -38,7 +38,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/diaci1.1_new_ids.fa"
+        "diaci1.1_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/diacit/jbrowse/"
     },
@@ -47,7 +47,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Dbia02082011-genome.fa"
+        "Dbia02082011-genome.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/drobia/jbrowse/"
     },
@@ -56,7 +56,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Dbip02082011-genome.fa"
+        "Dbip02082011-genome.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/drobip/jbrowse/"
     },
@@ -65,7 +65,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Dele02082011-genome.fa"
+        "Dele02082011-genome.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/droele/jbrowse/"
     },
@@ -74,7 +74,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Deug05112011.genome.fa"
+        "Deug05112011.genome.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/droeug/jbrowse/"
     },
@@ -83,7 +83,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Dfic02082011-genome.fa"
+        "Dfic02082011-genome.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/drofic/jbrowse/"
     },
@@ -92,7 +92,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Dkik02082011-genome.fa"
+        "Dkik02082011-genome.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/drokik/jbrowse/"
     },
@@ -101,7 +101,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Drho05162011.genome.fa"
+        "Drho05162011.genome.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/drorho/jbrowse/"
     },
@@ -110,7 +110,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Dtak02082011-genome.fa"
+        "Dtak02082011-genome.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/drotak/jbrowse/"
     },
@@ -119,7 +119,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Edan07162013.scaffolds_new_ids.fa"
+        "Edan07162013.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/ephdan/jbrowse/"
     },
@@ -128,7 +128,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Eaff_11172013.genome_new_ids.fa"
+        "Eaff_11172013.genome_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/euraff/jbrowse/"
     },
@@ -137,7 +137,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Focc_FINAL.scaffolds_new_ids.fa"
+        "Focc_FINAL.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/fraocc/jbrowse/"
     },
@@ -146,7 +146,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Lful_Scha04012013-genome_new_ids.fa"
+        "Lful_Scha04012013-genome_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/ladful/jbrowse/"
     },
@@ -155,7 +155,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Ldec.genome.10062013_new_ids.fa"
+        "Ldec.genome.10062013_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/lepdec/jbrowse/"
     },
@@ -164,7 +164,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Ofas.scaffolds_new_ids.fa"
+        "Ofas.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/oncfas/jbrowse/"
     },
@@ -173,7 +173,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Oabi11242013.genome_new_ids.fa"
+        "Oabi11242013.genome_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/oruabi/jbrowse/"
     },
@@ -182,7 +182,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Pven10162013.scaffolds_new_ids.fa"
+        "Pven10162013.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/pacven/jbrowse/"
     },
@@ -191,7 +191,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Ptep01282013.genome_new_ids.fa"
+        "Ptep01282013.genome_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/partep/jbrowse/"
     },
@@ -200,7 +200,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Tpre_FINAL.scaffolds_new_ids.fa"
+        "Tpre_FINAL.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/tripre/jbrowse/"
     },
@@ -209,7 +209,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Aplan.scaffolds.50_new_ids.fa"
+        "Aplan.scaffolds.50_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/agrpla/jbrowse/"
     },
@@ -218,7 +218,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Cscul.scaffolds.50_new_ids.fa"
+        "Cscul.scaffolds.50_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/cenexi/jbrowse/"
     },
@@ -227,7 +227,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Cflo.scaffolds_new_ids.fa"
+        "Cflo.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/copflo/jbrowse/"
     },
@@ -236,7 +236,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Gbue.scaffolds.50_new_ids.fa"
+        "Gbue.scaffolds.50_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/gerbue/jbrowse/"
     },
@@ -245,7 +245,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Hvit.scaffolds.50_new_ids.fa"
+        "Hvit.scaffolds.50_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/homvit/jbrowse/"
     },
@@ -254,7 +254,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Lhes.scaffolds_new_ids.fa"
+        "Lhes.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/lathes/jbrowse/"
     },
@@ -263,7 +263,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Llun.scaffolds_new_ids.fa"
+        "Llun.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/limlun/jbrowse/"
     },
@@ -272,7 +272,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Lrec.scaffolds_new_ids.fa"
+        "Lrec.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/loxrec/jbrowse/"
     },
@@ -281,7 +281,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/Otaur.scaffolds_new_ids.fa"
+        "Otaur.scaffolds_new_ids.fa"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/onttau/jbrowse/"
     },
@@ -290,7 +290,7 @@
   {
     "fields": {
       "blast_db": [
-        "/blast/db/TCALIF_genome_v1.0_new_ids.fasta"
+        "TCALIF_genome_v1.0_new_ids.fasta"
       ],
       "url": "http://gmod-dev.nal.usda.gov:8080/tigcal/jbrowse/"
     },
