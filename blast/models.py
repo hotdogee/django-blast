@@ -59,7 +59,7 @@ class SequenceType(models.Model):
 
 class BlastDbManager(models.Manager):
     def get_by_natural_key(self, fasta_file):
-        return self.get(fasta_file=fasta_file)
+        return self.get(title=fasta_file)
 
 class BlastDb(models.Model):
     objects = BlastDbManager()
@@ -149,10 +149,10 @@ class BlastDb(models.Model):
             return 1, str(e), ''
 
     def natural_key(self):
-        return (str(self.fasta_file),)
+        return (str(self.title),)
 
     def __unicode__(self):
-        return str(self.fasta_file)
+        return str(self.title)
 
     class Meta:
         verbose_name = 'BLAST database'
