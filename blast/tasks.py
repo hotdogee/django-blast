@@ -68,7 +68,6 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
             hsp_list = [[type_func[convert](value) for convert, value in zip(blast_info['col_types'], row)] for row in csv.reader(f)]
         # generate gff3 files
         try:
-            overlap_cutoff = 5
             blast_program = path.basename(args_list[0][0])
             basedir = path.dirname(csv_path)
             gff_col_names = 'seqid source type start end score strand phase attributes'.split()
@@ -84,6 +83,7 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                 json.dump({'sseqid_db': sseqid_db, 'db_organism': db_organism, 'db_url': db_url, 'line_num_list': line_num_list}, f)
             with open(json_path, 'wb') as f:
                 json.dump([[sseqid_db[hsp_dict_list[i]['sseqid']]] + hsp for i, hsp in enumerate(hsp_list)], f)
+            overlap_cutoff = 5
             # group hsps by database, need to sort before doing groupby
             sorted_hsp_dict_list = sorted([hsp for hsp in hsp_dict_list if sseqid_db[hsp['sseqid']] in db_url], key=lambda a: sseqid_db[a['sseqid']])
             for db_name, db_hsp_dict_list in groupby(sorted_hsp_dict_list, key=lambda a: sseqid_db[a['sseqid']]):
@@ -91,9 +91,9 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                     fgff.write('##gff-version 3\n')
                     match_id = 1
                     match_part_id = 1
-                    # sort before groupby
+                    # sort before groupby using key = qseqid + sseqid + qstrand + sstrand
                     sorted_db_hsp_dict_list = sorted(db_hsp_dict_list, key=lambda x: x['qseqid'] + x['sseqid'] + x['qstrand'] + x['sstrand'])
-                    # group hsps with the same key = qseqid + sseqid + sstrand, sort groups asc on sstart or send according to sstrand
+                    # group hsps with the same key = qseqid + sseqid + qstrand + sstrand, sort groups asc on sstart or send according to sstrand
                     for key_db_hsp_dict_list in [sorted(hsps, key=lambda h: (h['sstart'], h['send']) if h['sstrand'] == '+' else (h['send'], h['sstart'])) for _, hsps in groupby(sorted_db_hsp_dict_list, key=lambda x: x['qseqid'] + x['sseqid'] + x['qstrand'] + x['sstrand'])]:
                         # seqid parsing currently customized for i5k
                         seqid = key_db_hsp_dict_list[0]['sseqid'] if len(key_db_hsp_dict_list[0]['sseqid'].split('|')) < 2 else key_db_hsp_dict_list[0]['sseqid'].split('|')[1]
