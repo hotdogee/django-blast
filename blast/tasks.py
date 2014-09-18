@@ -3,7 +3,7 @@ from celery import shared_task
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 from subprocess import Popen, PIPE
-from datetime import datetime
+from datetime import datetime, timedelta
 from .models import BlastQueryRecord, Sequence, BlastDb, JbrowseSetting
 from os import path, stat
 from pytz import utc
@@ -160,4 +160,11 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
 
 @periodic_task(run_every=(crontab(hour='0', minute='10'))) # Execute daily at midnight
 def remove_files():
-    logger.info("[test] remove expired files.")
+    from django.conf import settings
+    from shutil import rmtree
+    logger.info('removing expired files (under test, not working actually)')
+    for expired_task in BlastQueryRecord.objects.filter(result_date__lt=(datetime.utcnow().replace(tzinfo=utc) + timedelta(days=-7))):
+        task_path = path.join(settings.MEDIA_ROOT, 'blast', 'task', expired_task.task_id)
+        if path.exists(task_path):
+            #rmtree(task_path)
+            logger.info('removed directory %s' % (task_path))
