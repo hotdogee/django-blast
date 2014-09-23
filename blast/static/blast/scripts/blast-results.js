@@ -52,6 +52,36 @@ $(function () { // document ready
             { collapsible: true }
         ]
     });
+    /////////////////////////
+    // Hover and Selection //
+    /////////////////////////
+    // State variables
+    var last_focus_row_index = 0;
+    var State = Backbone.Model.extend({
+        defaults: {
+            'hover': null,
+            'selected': []
+        },
+        focus_row_index: function() {
+            var focus_row_index = this.get('hover');
+            if (focus_row_index == null) {
+                selected = this.get('selected');
+                if (selected.length > 0)
+                    focus_row_index = selected[0];
+                else
+                    focus_row_index = last_focus_row_index;
+            }
+            last_focus_row_index = focus_row_index;
+            return focus_row_index;
+        }
+    });
+    var s = new State;
+    s.on('change:hover', function (model, value, options) {
+        //console.log('change:hover - ' + value);
+    });
+    s.on('change:selected', function (model, value, options) {
+        //console.log('change:selected - ' + value);
+    });
     ////////////////
     // CodeMirror //
     ////////////////
@@ -65,6 +95,45 @@ $(function () { // document ready
         viewportMargin: 15,
         gutters: ["CodeMirror-linenumbers"]
     });
+    // Selected line changed event
+    code_mirror.on('cursorActivity', function (instance) {
+        //console.log('code_mirror.getCursor() = ' + code_mirror.getCursor().line);
+        var filtered = results_info['line_num_list'].filter(function (i) { return i <= code_mirror.getCursor().line + 3 });
+        var i = 0;
+        if (filtered.length > 0)
+            i = filtered.length - 1;
+        s.set({ 'selected': [i] }, { 'set_by': instance });
+    })
+    function code_mirror_select_hsp(row_idx) {
+        code_mirror.operation(function () {
+            code_mirror.scrollIntoView({ line: results_info['line_num_list'][row_idx], ch: 0 }, code_mirror.getScrollInfo().clientHeight / 2)
+            code_mirror.setCursor({ line: results_info['line_num_list'][row_idx], ch: 0 })
+            code_mirror.curOp.cursorActivityHandlers = false; // don't fire event
+        });
+        code_mirror.operation(function () {
+            //$('.CodeMirror')[0].CodeMirror.scrollTo(0, 2976+551/2-42)
+            var info = code_mirror.getScrollInfo();
+            code_mirror.scrollTo(0, info.top + info.clientHeight / 2 - 42);
+            code_mirror.curOp.cursorActivityHandlers = false; // don't fire event
+        });
+    }
+    s.on('change:hover', function (model, value, options) {
+        if (options.set_by == this)
+            return;
+        if (value != null)
+            code_mirror_select_hsp(value)
+        else {
+            selected = s.get('selected')
+            if (selected.length > 0)
+                code_mirror_select_hsp(selected[0])
+        }
+    }, code_mirror);
+    s.on('change:selected', function (model, value, options) {
+        if (options.set_by == this)
+            return;
+        if (value.length > 0)
+            code_mirror_select_hsp(value[0])
+    }, code_mirror);
     ///////////////////
     // Results Table //
     ///////////////////
@@ -192,7 +261,9 @@ $(function () { // document ready
     });
     var results_table_api = $results_table.api(); // $('#results-table').DataTable()
     //results_table_api.columns.adjust().draw();
-    // Download button menu
+    ///////////////////
+    // Download Menu //
+    ///////////////////
     var task_path = /(https?:\/\/.*?)\/(?:blast)*/g.exec(document.URL)[1] + '/media/blast/task/' + task_id + '/' + task_id;
     $('.btn-download').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
 <span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>\
@@ -206,6 +277,9 @@ $(function () { // document ready
     <li><a href="' + task_path + '.csv"><span class="glyphicon glyphicon-file"></span> CSV</a></li>\
     <li><a href="' + task_path + '.asn"><span class="glyphicon glyphicon-file"></span> BLAST archive format (ASN.1)</a></li>\
 </ul>')
+    ///////////////////
+    // Table Filters //
+    ///////////////////
     var filters = {};
     // Add per column filter input elements to tfoot
     $('.dataTables_scrollFoot tfoot th').each(function (i) {
@@ -542,19 +616,9 @@ $(function () { // document ready
     $('.dropdown-menu.range-filter').click(function (e) {
         e.stopPropagation();
     });
-    //}).yadcf([{
-    //    column_number: 0,
-    //    filter_type: "multi_select"
-    //}, {
-    //    column_number: 1,
-    //    filter_type: "multi_select"
-    //}, {
-    //    column_number: 2,
-    //    filter_type: "range_number"
-    //}]);
-    /*
-     * Table resize events
-     */
+    //////////////////
+    // Resize Event //
+    //////////////////
     // Calculate dataTables_scrollBody height
     var $table_container = $('#table-container');
     var $ui_corner_tr = $('.ui-corner-tr');
@@ -569,69 +633,100 @@ $(function () { // document ready
         // trigger dataTables.scroller to recalculate how many rows its showing
         $(window).trigger('resize.DTS');
     };
+    // only the horizontal-splitter changes height
+    $("#result-container").data("kendoSplitter").bind('resize', function () {
+        updateDataTableHeight();
+    });
     // Draw initial graph with first row
     var row_data = results_table_api.row(0).data();
     // initial update, wait till core-splitter loads
-    var cm = code_mirror;
-    // text result event setup
-    cm.on('cursorActivity', function () {
-        //console.log('cm.getCursor() = ' + cm.getCursor().line);
-        var filtered = results_info['line_num_list'].filter(function (i) { return i <= cm.getCursor().line + 3 });
-        var i = 0;
-        if (filtered.length > 0)
-            i = filtered.length - 1;
-        //console.log(i);
+    //var cm = code_mirror;
+    //// text result event setup
+    //cm.on('cursorActivity', function () {
+    //    //console.log('cm.getCursor() = ' + cm.getCursor().line);
+    //    var filtered = results_info['line_num_list'].filter(function (i) { return i <= cm.getCursor().line + 3 });
+    //    var i = 0;
+    //    if (filtered.length > 0)
+    //        i = filtered.length - 1;
+    //    //console.log(i);
+    //    // get row
+    //    var row = results_table_api.row(i);
+    //    row_data = row.data();
+    //    renderAlignmentGraph('query-canvas', row_data);
+    //    renderAlignmentGraph('subject-canvas', row_data);
+    //    // is filtered?
+    //    // Get data as ordered and filtered in datatable
+    //    var table_data = results_table_api.rows({ search: 'applied' }).data();
+    //    var i = _.indexOf(table_data, row_data);
+    //    results_table_api.scroller().scrollToRow(i, false);
+    //    $(results_table_api.rows().nodes()).removeClass('highlight');
+    //    var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
+    //    $row.addClass('highlight');
+    //})
+    // Selected
+    var oTT = TableTools.fnGetInstance('results-table');
+    $results_table.on('click', 'tr', function () {
+        s.set({ 'selected': oTT.fnGetSelectedIndexes() }, { 'set_by': $results_table });
+    });
+    // Hover
+    $results_table.on('mouseover', 'tr', function () {
+        //$(results_table_api.rows().nodes()).removeClass('highlight');
+        // get row data and convert to object
+        //row_data = _.object(results_col_names, results_table_api.row(this).data());
+        var this_row = results_table_api.row(this);
+        //row_data = this_row.data();
+        s.set({ 'hover': this_row.index() }, { 'set_by': $results_table });
+        //console.log('mouseover: row_data = ' + row_data);
+        //renderAlignmentGraph('query-canvas', row_data);
+        //renderAlignmentGraph('subject-canvas', row_data);
+    });
+    $('.dataTables_scrollBody').mouseleave(function () {
+        s.set({ 'hover': null }, { 'set_by': $results_table });
+    });
+    s.on('change:hover', function (model, hover_index, options) {
+        if (options.set_by == this)
+            return;
+        // scroll to
+        var scroll_index = s.focus_row_index();
         // get row
-        var row = results_table_api.row(i);
-        row_data = row.data();
-        renderAlignmentGraph('query-canvas', row_data);
-        renderAlignmentGraph('subject-canvas', row_data);
+        var row = results_table_api.row(scroll_index);
+        var row_data = row.data();
         // is filtered?
         // Get data as ordered and filtered in datatable
         var table_data = results_table_api.rows({ search: 'applied' }).data();
         var i = _.indexOf(table_data, row_data);
         results_table_api.scroller().scrollToRow(i, false);
+        // highlight row
         $(results_table_api.rows().nodes()).removeClass('highlight');
-        var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
-        $row.addClass('highlight');
-    })
-    // only the horizontal-splitter changes height, track event defined by polymer
-    $("#result-container").data("kendoSplitter").bind('resize', function () {
-        updateDataTableHeight();
-    });
-    // Active rows
-    var oTT = TableTools.fnGetInstance('results-table');
-    var active_rows = [];
-    $results_table.on('click', 'tr', function () {
-        active_rows = oTT.fnGetSelectedIndexes();
-        console.log(active_rows);
-    });
-    /*
-     * data row mouse over event
-     */
-    $results_table.addClass('table-hover');
-    $results_table.on('mouseover', 'tr', function () {
-        $(results_table_api.rows().nodes()).removeClass('highlight');
-        // get row data and convert to object
-        //row_data = _.object(results_col_names, results_table_api.row(this).data());
-        var this_row = results_table_api.row(this);
-        row_data = this_row.data();
-        //console.log('mouseover: row_data = ' + row_data);
-        renderAlignmentGraph('query-canvas', row_data);
-        renderAlignmentGraph('subject-canvas', row_data);
-        cm.operation(function () {
-            cm.scrollIntoView({ line: results_info['line_num_list'][this_row.index()], ch: 0 }, cm.getScrollInfo().clientHeight / 2)
-            cm.setCursor({ line: results_info['line_num_list'][this_row.index()], ch: 0 })
-            cm.curOp.cursorActivityHandlers = false; // don't fire event
+        if (hover_index != null) {
+            var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
+            $row.addClass('highlight');
+        }
+    }, $results_table);
+    s.on('change:selected', function (model, selected_indexes, options) {
+        if (options.set_by == this)
+            return;
+        if (selected_indexes.length > 0) {
+            // get row
+            var row = results_table_api.row(selected_indexes[0]);
+            var row_data = row.data();
+            // is filtered?
+            // Get data as ordered and filtered in datatable
+            var table_data = results_table_api.rows({ search: 'applied' }).data();
+            var i = _.indexOf(table_data, row_data);
+            results_table_api.scroller().scrollToRow(i, false);
+            //$(results_table_api.rows().nodes()).removeClass('highlight');
+            //var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
+            //$row.addClass('highlight');
+        }
+        oTT.fnSelectNone();
+        $.each(selected_indexes, function (key, value) {
+            oTT.fnSelect(results_table_api.row(value).node());
         });
-        cm.operation(function () {
-            //$('.CodeMirror')[0].CodeMirror.scrollTo(0, 2976+551/2-42)
-            var info = cm.getScrollInfo();
-            cm.scrollTo(0, info.top + info.clientHeight / 2 - 42);
-            cm.curOp.cursorActivityHandlers = false; // don't fire event
-        });
-    });
-    // Order event
+    }, $results_table);
+    //////////////////////////////
+    // Order, Search and Filter //
+    //////////////////////////////
     var order = results_table_api.order();
     $results_table.on('order.dt', function () {
         //console.log('order.dt');
@@ -646,8 +741,16 @@ $(function () { // document ready
     });
     $results_table.on('draw.dt', function () {
         //console.log('draw.dt');
-        renderAlignmentGraph('query-canvas', row_data);
-        renderAlignmentGraph('subject-canvas', row_data);
+        var focus_row_index = s.get('hover')
+        if (focus_row_index == null) {
+            selected = s.get('selected')
+            if (selected.length > 0)
+                focus_row_index = selected[0];
+            else
+                focus_row_index = 0;
+        }
+        renderAlignmentGraph('query-canvas', focus_row_index);
+        renderAlignmentGraph('subject-canvas', focus_row_index);
     });
     //$('td').mouseover(function () {
     //    $(this).siblings().css('background-color', '#EAD575');
@@ -659,48 +762,34 @@ $(function () { // document ready
     //    var ind = $(this).index();
     //    $('td:nth-child(' + (ind + 1) + ')').css('background-color', '');
     //});
-    $results_table.on('click', '.btn-fasta', function () {
-        $($(this).data("target") + ' .modal-body').html($(this).data("target"));
-    });
+    //$results_table.on('click', '.btn-fasta', function () {
+    //    $($(this).data("target") + ' .modal-body').html($(this).data("target"));
+    //});
         
     /////////////////////
     // Alignment Graph //
     /////////////////////
-    // Fit canvas to container width and height
-    // .width and .height needs to be in pixels
-    // .style.width and .style.height only streches the rendered image and doesn't change the render dimensions
-    // initial update, wait till core-splitter loads
-    var $query_canvas = $('#query-canvas');
-    //$query_canvas.width('100%');
-    //$query_canvas.height('100%');
-    var $query_canvas_container = $query_canvas.parent();
-    var $subject_canvas = $('#subject-canvas');
-    //$subject_canvas.width('100%');
-    //$subject_canvas.height('100%');
-    var $subject_canvas_container = $subject_canvas.parent();
-    function updateAlignmentGraph() {
-        //$query_canvas.attr({ width: $query_canvas_container.outerWidth(), height: $query_canvas_container.outerHeight() });
-        //$subject_canvas.attr({ width: $subject_canvas_container.outerWidth(), height: $subject_canvas_container.outerHeight() });
-        document.getElementById('query-canvas').height = $query_canvas_container.outerHeight() - 25;
-        document.getElementById('subject-canvas').height = $subject_canvas_container.outerHeight() - 25;
-        //console.log($query_canvas.outerHeight());
-        renderAlignmentGraph('query-canvas', row_data);
-        renderAlignmentGraph('subject-canvas', row_data);
-    };
-    $("#result-container").data("kendoSplitter").bind('resize', function () {
-        updateAlignmentGraph()
-    });
-    $("#top-side-by-side-container").data("kendoSplitter").bind('resize', function () {
-        updateAlignmentGraph()
-    });
-    function renderAlignmentGraph(canvas_name, row_data) {
+    // build color lookup tables
+    var score_to_color_light = {}
+    var score_to_color_dark = {}
+    var min_score = 50;
+    var max_score = 200;
+    // #fc9272, #bcbddc, #a1d99b, #9ecae1, #bdbdbd
+    var light_color_interpolator = chroma.scale(['#fc9272', '#bcbddc', '#a1d99b', '#9ecae1', '#bdbdbd'].reverse()).domain([min_score, max_score], 50);
+    // #7f0000, #4d004b, #004529, #081d58, #000000
+    var dark_color_interpolator = chroma.scale(['#7f0000', '#4d004b', '#004529', '#081d58', '#000000'].reverse()).domain([min_score, max_score], 50);
+    for (var i = min_score; i <= max_score; i++) {
+        score_to_color_light[i] = light_color_interpolator(i).hex();
+        score_to_color_dark[i] = dark_color_interpolator(i).hex();
+    }
+    function renderAlignmentGraph(canvas_name, focus_row_index) {
         // Get Canvas and Create Chart
         var canvas = document.getElementById(canvas_name);
         // Remove all previous events
         var canvasClone = canvas.cloneNode(true);
         canvas.parentNode.replaceChild(canvasClone, canvas);
         canvas = canvasClone;
-        // clear canvas
+        // Clear canvas
         var ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         var chart = new Scribl(canvas, canvas.width);
@@ -712,9 +801,10 @@ $(function () { // document ready
         chart.laneSizes = 20;
         chart.laneBuffer = 0;
         chart.trackBuffer = 0;
-        // change text color		
+        // Change text color		
         chart.glyph.text.color = 'white';
 
+        var focus_row_data = results_table_api.row(focus_row_index).data();
         // Get data indexes
         var other_canvas = canvas_name == 'query-canvas' ? 'subject-canvas' : 'query-canvas';
         var rseqid = canvas_name == 'query-canvas' ? col_idx['qseqid'] : col_idx['sseqid'];
@@ -723,75 +813,60 @@ $(function () { // document ready
         var sstart = col_idx['sstart'];
         var send = col_idx['send'];
         var bitscore = col_idx['bitscore'];
+        // Set name text
+        $('#' + canvas_name + '-name').text(focus_row_data[rseqid]);
         // Get data as ordered and filtered in datatable
         var table_data = results_table_api.rows({ search: 'applied' }).data();
-        // Filter data, only keep rows associated with the reference given by row_data
-        // Set name text
-        $('#' + canvas_name + '-name').text(row_data[rseqid]);
-        var aligned_data = _.filter(table_data, function (row) {
-            // only draw HSPs within the range of 32000nt(+-16000nt)
-            var position = row[rend] < row[rstart] ? row[rend] : row[rstart];
-            var center_position = row_data[rend] < row_data[rstart] ? row_data[rend] : row_data[rstart];
-            return row[rseqid] == row_data[rseqid] && Math.abs(center_position - position) < 16000;
+        // Filter data, only keep rows associated with the reference given by focus_row_data
+        var center_position = focus_row_data[rend] < focus_row_data[rstart] ? focus_row_data[rend] : focus_row_data[rstart];
+        var filtered_rows = results_table_api.rows({ search: 'applied' }).eq(0).filter(function (row_index) {
+            var row_data = results_table_api.row(row_index).data();
+            // Only draw HSPs within the range of 32000nt(+-16000nt)
+            var position = row_data[rend] < row_data[rstart] ? row_data[rend] : row_data[rstart];
+            return row_data[rseqid] == focus_row_data[rseqid] && Math.abs(center_position - position) < 16000;
         });
-        // draw at most 100 alignments, partition aligned_data if length > 100
-        var start = Math.floor(_.indexOf(aligned_data, row_data) / 100) * 100;
-        aligned_data = aligned_data.slice(start, start + 100);
+        // Draw at most 100 alignments, partition aligned_data if length > 100
+        var start = Math.floor(filtered_rows.indexOf(focus_row_index) / 100) * 100;
+        var paged_filtered_rows = filtered_rows.toArray().slice(start, start + 100);
         // Sort data ascending by coordinate for draw order
         //var sorted_data = _.sortBy(filtered_data, function (row) { return -row['bitscore']; });
 
-        // draw each hsp row
-        _.each(aligned_data, function (row, index, list) {
-            var position = row[rend] < row[rstart] ? row[rend] : row[rstart];
-            var length = row[rend] < row[rstart] ? row[rstart] - row[rend] : row[rend] - row[rstart];
-            var strand = row [send] < row[sstart] ? '-' : '+';
-            // Current row color
-            var feature = chart.addFeature(new BlockArrow('gene', position, length, strand));
-            if (_.isEqual(row, row_data)) {
-                feature.setColorGradient(
-                    'rgb(252, 213, 181)',
-                    'rgb(228, 108, 10)'
-                );
+        // Draw each hsp row
+        _.each(paged_filtered_rows, function (row_index, paged_filtered_index) {
+            var row_data = results_table_api.row(row_index).data();
+            // Add glyph
+            var position = row_data[rend] < row_data[rstart] ? row_data[rend] : row_data[rstart];
+            var length = row_data[rend] < row_data[rstart] ? row_data[rstart] - row_data[rend] : row_data[rend] - row_data[rstart];
+            var strand = row_data[send] < row_data[sstart] ? '-' : '+';
+            var feature;
+            // Set color
+            // Default color this.glyph.color = ['#99CCFF', 'rgb(63, 128, 205)'];
+            if (row_index == s.get('hover')) {
+                feature = chart.addFeature(new BlockArrow('hover', position, length, strand));
+            } else if (_.indexOf(s.get('selected'), row_index) != -1) {
+                feature = chart.addFeature(new BlockArrow('selected', position, length, strand));
             } else {
-                // color according to score
-                var min_score = 50;
-                var max_score = 200;
-                var color_bitscore = Math.max(min_score, Math.min(max_score, row[bitscore]));
-                var color_scale = (color_bitscore - min_score) / (max_score - min_score);
-                // max_color = rgb(30, 74, 117), min_color = rgb(170, 178, 187)
-                var r = Math.round(29 - (29 - 22) * color_scale);
-                var g = Math.round(114 - (114 - 52) * color_scale);
-                var b = Math.round(54 - (54 - 82) * color_scale);
+                feature = chart.addFeature(new BlockArrow('hsp', position, length, strand));
+                // Color according to score
+                var color_bitscore = Math.max(min_score, Math.min(max_score, Math.round(row_data[bitscore])));
                 feature.setColorGradient(
-                    ' #99CCFF',
-                    'rgb(' + r + ', ' + g + ', ' + b + ')'
+                    score_to_color_light[color_bitscore],
+                    score_to_color_dark[color_bitscore]
                 );
             }
+            // Handle events
             feature.onMouseover = function () {
-                renderAlignmentGraph('query-canvas', row);
-                renderAlignmentGraph('subject-canvas', row);
-                var i = _.indexOf(table_data, row);
-                //console.log(i);
-                // highlight row
-                //.ui-state-highlight
-                // scroll to row
-                results_table_api.scroller().scrollToRow(i, false);
-                $(results_table_api.rows().nodes()).removeClass('highlight');
-                var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
-                $row.addClass('highlight');
-                cm.operation(function () {
-                    cm.scrollIntoView({ line: results_info['line_num_list'][$row.index()], ch: 0 }, cm.getScrollInfo().clientHeight / 2)
-                    cm.setCursor({ line: results_info['line_num_list'][$row.index()], ch: 0 })
-                    cm.curOp.cursorActivityHandlers = false; // don't fire event
-                });
-                cm.operation(function () {
-                    //$('.CodeMirror')[0].CodeMirror.scrollTo(0, 2976+551/2-42)
-                    var info = cm.getScrollInfo();
-                    cm.scrollTo(0, info.top + info.clientHeight / 2 - 42);
-                    cm.curOp.cursorActivityHandlers = false; // don't fire event
-                });
+                s.set({ 'hover': row_index }, { 'set_by': 'graph' });
+            };
+            feature.onClick = function () {
+                s.set({ 'selected': [row_index] }, { 'set_by': 'graph' });
             };
         });
+        // Set glyph type colors
+        if ('hover' in chart)
+            chart.hover.color = ['#f1e5bf', '#ffcc00', '#d4af37']; // yellow
+        if ('selected' in chart)
+            chart.selected.color = ['#fee6ce', '#f16913']; // orange
         // Calculate optimal lane size according to current canvas height
         // canvas.height = canvas.getScaleHeight() + canvas.tracks[0].lanes.length * (chart.laneSizes + chart.laneBuffer) + chart.trackBuffer;
         optimal_lane_size = (canvas.height - chart.getScaleHeight() - chart.trackBuffer) / chart.tracks[0].lanes.length - chart.laneBuffer;
@@ -829,6 +904,40 @@ $(function () { // document ready
         // Draw Chart
         chart.draw();
     }
+    // Fit canvas to container width and height
+    // .width and .height needs to be in pixels
+    // .style.width and .style.height only streches the rendered image and doesn't change the render dimensions
+    // initial update, wait till core-splitter loads
+    var $query_canvas = $('#query-canvas');
+    var $query_canvas_container = $query_canvas.parent();
+    var $subject_canvas = $('#subject-canvas');
+    var $subject_canvas_container = $subject_canvas.parent();
+    function updateAlignmentGraph() {
+        //$query_canvas.attr({ width: $query_canvas_container.outerWidth(), height: $query_canvas_container.outerHeight() });
+        //$subject_canvas.attr({ width: $subject_canvas_container.outerWidth(), height: $subject_canvas_container.outerHeight() });
+        document.getElementById('query-canvas').height = $query_canvas_container.outerHeight() - 25;
+        document.getElementById('subject-canvas').height = $subject_canvas_container.outerHeight() - 25;
+        //console.log($query_canvas.outerHeight());
+        var focus_row_index = s.focus_row_index();
+        renderAlignmentGraph('query-canvas', focus_row_index);
+        renderAlignmentGraph('subject-canvas', focus_row_index);
+    };
+    // Events
+    s.on('change:hover', function (model, hover_index, options) {
+        updateAlignmentGraph();
+    }, 'graph');
+    s.on('change:selected', function (model, selected_indexes, options) {
+        updateAlignmentGraph();
+    }, 'graph');
+    $("#result-container").data("kendoSplitter").bind('resize', function () {
+        updateAlignmentGraph();
+    });
+    $("#top-side-by-side-container").data("kendoSplitter").bind('resize', function () {
+        updateAlignmentGraph();
+    });
+    $('.graph-canvas-container').mouseleave(function () {
+        s.set({ 'hover': null }, { 'set_by': 'graph' });
+    });
     ////////////
     // Resize //
     ////////////
