@@ -772,8 +772,10 @@ $(function () { // document ready
     // build color lookup tables
     var score_to_color_light = {}
     var score_to_color_dark = {}
-    var min_score = 50;
-    var max_score = 200;
+    function num_asc(a, b) { return (a - b); }
+    var sorted_score_data = results_table_api.column(col_idx['bitscore']).data().sort(num_asc);
+    var min_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.1)]);
+    var max_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.9)]);
     // #fc9272, #bcbddc, #a1d99b, #9ecae1, #bdbdbd
     var light_color_interpolator = chroma.scale(['#fc9272', '#bcbddc', '#a1d99b', '#9ecae1', '#bdbdbd'].reverse()).domain([min_score, max_score], 50);
     // #7f0000, #4d004b, #004529, #081d58, #000000
@@ -818,16 +820,18 @@ $(function () { // document ready
         // Get data as ordered and filtered in datatable
         var table_data = results_table_api.rows({ search: 'applied' }).data();
         // Filter data, only keep rows associated with the reference given by focus_row_data
+        var hsp_nt_range = 16000;
         var center_position = focus_row_data[rend] < focus_row_data[rstart] ? focus_row_data[rend] : focus_row_data[rstart];
         var filtered_rows = results_table_api.rows({ search: 'applied' }).eq(0).filter(function (row_index) {
             var row_data = results_table_api.row(row_index).data();
             // Only draw HSPs within the range of 32000nt(+-16000nt)
             var position = row_data[rend] < row_data[rstart] ? row_data[rend] : row_data[rstart];
-            return row_data[rseqid] == focus_row_data[rseqid] && Math.abs(center_position - position) < 16000;
+            return row_data[rseqid] == focus_row_data[rseqid] && Math.abs(center_position - position) < hsp_nt_range;
         });
         // Draw at most 100 alignments, partition aligned_data if length > 100
-        var start = Math.floor(filtered_rows.indexOf(focus_row_index) / 100) * 100;
-        var paged_filtered_rows = filtered_rows.toArray().slice(start, start + 100);
+        var graph_page_size = 50
+        var start = Math.floor(filtered_rows.indexOf(focus_row_index) / graph_page_size) * graph_page_size;
+        var paged_filtered_rows = filtered_rows.toArray().slice(start, start + graph_page_size);
         // Sort data ascending by coordinate for draw order
         //var sorted_data = _.sortBy(filtered_data, function (row) { return -row['bitscore']; });
 
@@ -866,7 +870,8 @@ $(function () { // document ready
         if ('hover' in chart)
             chart.hover.color = ['#f1e5bf', '#ffcc00', '#d4af37']; // yellow
         if ('selected' in chart)
-            chart.selected.color = ['#fee6ce', '#f16913']; // orange
+            //chart.selected.color = ['#fee6ce', '#f16913']; // orange
+            chart.selected.color = ['#fee6ce', '#f8bb5d', '#ee7d45']; // orange
         // Calculate optimal lane size according to current canvas height
         // canvas.height = canvas.getScaleHeight() + canvas.tracks[0].lanes.length * (chart.laneSizes + chart.laneBuffer) + chart.trackBuffer;
         optimal_lane_size = (canvas.height - chart.getScaleHeight() - chart.trackBuffer) / chart.tracks[0].lanes.length - chart.laneBuffer;
