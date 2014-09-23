@@ -355,6 +355,7 @@ PIPELINE_JS = {
     },
     'blast-results': {
         'source_filenames': (
+            'blast/scripts/chroma.min.js',
             'blast/scripts/codemirror-compressed.js',
             'blast/scripts/kendo-hotdogee.js',
             'blast/scripts/jquery-ui.min.js',
@@ -365,6 +366,7 @@ PIPELINE_JS = {
             'blast/dataTables/js/dataTables.tableTools.min.js',
             'blast/dataTables/js/dataTables.bootstrap.js',
             'blast/scripts/underscore-min.js',
+            'blast/scripts/backbone-min.js',
             'blast/scripts/scribl.1.1.4.js',
             'blast/scripts/bootstrap-select-hotdogee.js',
             'blast/scripts/blast-results.js',
