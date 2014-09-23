@@ -80,7 +80,7 @@ $(function () { // document ready
         //console.log('change:hover - ' + value);
     });
     s.on('change:selected', function (model, value, options) {
-        //console.log('change:selected - ' + value);
+        console.log('change:selected - ' + value);
     });
     ////////////////
     // CodeMirror //
@@ -684,6 +684,7 @@ $(function () { // document ready
         s.set({ 'hover': null }, { 'set_by': $results_table });
     });
     s.on('change:hover', function (model, hover_index, options) {
+        $(results_table_api.rows().nodes()).removeClass('highlight');
         if (options.set_by == this)
             return;
         // scroll to
@@ -697,7 +698,6 @@ $(function () { // document ready
         var i = _.indexOf(table_data, row_data);
         results_table_api.scroller().scrollToRow(i, false);
         // highlight row
-        $(results_table_api.rows().nodes()).removeClass('highlight');
         if (hover_index != null) {
             var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
             $row.addClass('highlight');
@@ -784,6 +784,21 @@ $(function () { // document ready
         score_to_color_light[i] = light_color_interpolator(i).hex();
         score_to_color_dark[i] = dark_color_interpolator(i).hex();
     }
+    var ctrl_down = false;
+    var shift_down = false;
+    $(document).keydown(function (event) {
+        if (event.which == "17")
+            ctrl_down = true;
+        else if (event.which == "16")
+            shift_down = true;
+    });
+    $(document).keyup(function (event) {
+        if (event.which == "17")
+            ctrl_down = false;
+        else if (event.which == "16")
+            shift_down = false;
+    });
+
     function renderAlignmentGraph(canvas_name, focus_row_index) {
         // Get Canvas and Create Chart
         var canvas = document.getElementById(canvas_name);
@@ -863,7 +878,18 @@ $(function () { // document ready
                 s.set({ 'hover': row_index }, { 'set_by': 'graph' });
             };
             feature.onClick = function () {
-                s.set({ 'selected': [row_index] }, { 'set_by': 'graph' });
+                if (ctrl_down) {
+                    var selected = s.get('selected').slice(0);
+                    if (_.indexOf(selected, row_index) != -1) {
+                        // remove row_index from selected
+                        s.set({ 'selected': _.without(selected, row_index) }, { 'set_by': 'graph' });
+                    } else {
+                        selected.push(row_index);
+                        s.set({ 'selected': selected}, { 'set_by': 'graph' });
+                    }
+                } else {
+                    s.set({ 'selected': [row_index] }, { 'set_by': 'graph' });
+                }
             };
         });
         // Set glyph type colors
