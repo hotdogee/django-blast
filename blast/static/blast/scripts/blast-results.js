@@ -80,12 +80,12 @@ $(function () { // document ready
         //console.log('change:hover - ' + value);
     });
     s.on('change:selected', function (model, value, options) {
-        console.log('change:selected - ' + value);
+        //console.log('change:selected - ' + value);
     });
-    ////////////////
-    // CodeMirror //
-    ////////////////
-    var code_mirror = CodeMirror($('#text-report')[0], {
+    //////////////////
+    // BLAST Report //
+    //////////////////
+    var cm_blast_report = CodeMirror($('#blast-report')[0], {
         value: results_detail,
         theme: 'xq-light',
         tabSize: 2,
@@ -96,44 +96,109 @@ $(function () { // document ready
         gutters: ["CodeMirror-linenumbers"]
     });
     // Selected line changed event
-    code_mirror.on('cursorActivity', function (instance) {
-        //console.log('code_mirror.getCursor() = ' + code_mirror.getCursor().line);
-        var filtered = results_info['line_num_list'].filter(function (i) { return i <= code_mirror.getCursor().line + 3 });
+    cm_blast_report.on('cursorActivity', function (instance) {
+        //console.log('cm_blast_report.getCursor() = ' + cm_blast_report.getCursor().line);
+        var filtered = results_info['line_num_list'].filter(function (i) { return i <= cm_blast_report.getCursor().line + 3 });
         var i = 0;
         if (filtered.length > 0)
             i = filtered.length - 1;
         s.set({ 'selected': [i] }, { 'set_by': instance });
     })
-    function code_mirror_select_hsp(row_idx) {
-        code_mirror.operation(function () {
-            code_mirror.scrollIntoView({ line: results_info['line_num_list'][row_idx], ch: 0 }, code_mirror.getScrollInfo().clientHeight / 2)
-            code_mirror.setCursor({ line: results_info['line_num_list'][row_idx], ch: 0 })
-            code_mirror.curOp.cursorActivityHandlers = false; // don't fire event
+    function cm_blast_report_select_hsp(row_idx) {
+        cm_blast_report.operation(function () {
+            cm_blast_report.scrollIntoView({ line: results_info['line_num_list'][row_idx], ch: 0 }, cm_blast_report.getScrollInfo().clientHeight / 2);
+            cm_blast_report.setCursor({ line: results_info['line_num_list'][row_idx], ch: 0 });
+            cm_blast_report.curOp.cursorActivityHandlers = false; // don't fire event
         });
-        code_mirror.operation(function () {
+        cm_blast_report.operation(function () {
             //$('.CodeMirror')[0].CodeMirror.scrollTo(0, 2976+551/2-42)
-            var info = code_mirror.getScrollInfo();
-            code_mirror.scrollTo(0, info.top + info.clientHeight / 2 - 42);
-            code_mirror.curOp.cursorActivityHandlers = false; // don't fire event
+            var info = cm_blast_report.getScrollInfo();
+            cm_blast_report.scrollTo(0, info.top + info.clientHeight / 2 - 42);
+            cm_blast_report.curOp.cursorActivityHandlers = false; // don't fire event
         });
     }
     s.on('change:hover', function (model, value, options) {
         if (options.set_by == this)
             return;
         if (value != null)
-            code_mirror_select_hsp(value)
+            cm_blast_report_select_hsp(value);
         else {
             selected = s.get('selected')
             if (selected.length > 0)
-                code_mirror_select_hsp(selected[0])
+                cm_blast_report_select_hsp(selected[0]);
         }
-    }, code_mirror);
+    }, cm_blast_report);
     s.on('change:selected', function (model, value, options) {
         if (options.set_by == this)
             return;
         if (value.length > 0)
-            code_mirror_select_hsp(value[0])
-    }, code_mirror);
+            cm_blast_report_select_hsp(value[0]);
+    }, cm_blast_report);
+
+    //////////////////
+    // FASTA Viewer //
+    //////////////////
+    var cm_fasta_viewer = CodeMirror($('#fasta-viewer')[0], {
+        value: 'Select some rows in the table to display its FASTA sequence.',
+        theme: 'xq-light',
+        tabSize: 2,
+        lineNumbers: true,
+        styleActiveLine: true,
+        readOnly: true,
+        viewportMargin: 15,
+        gutters: ["CodeMirror-linenumbers"]
+    });
+    // Check if an ajax call is already done or underway, prevent duplicate calls to server
+    // Cache FASTA sequences
+    var fasta_cache = {};
+    // Flag ongoing ajax calls
+    var fasta_loading = {};
+    var url_root = /(https?:\/\/.*(?:blast)*)\//g.exec(document.URL)[1];
+    function get_fasta(row_index) {
+        // Returns a jqXHR or true if already in cache, for use with $.when
+        //http://localhost:8000/api/seq/gnl%7CLoxosceles_reclusa_transcript_v0.5.3%7CLREC000002-RA/?format=fasta
+        var seq_id = results_data[row_index][col_idx['sseqid']];
+        if (row_index in fasta_cache)
+            return true;
+        else if (row_index in fasta_loading)
+            return fasta_loading[row_index];
+        else {
+            fasta_loading[row_index] = $.get(url_root + '/api/seq/' + seq_id + '/?format=fasta', function (data) {
+                fasta_cache[row_index] = data;
+            });
+            return fasta_loading[row_index];
+        }
+    }
+    s.on('change:hover', function (model, value, options) {
+        //if (options.set_by == this)
+        //    return;
+        //if (value != null)
+        //    cm_fasta_viewer_load_fasta(value);
+        //else {
+        //    selected = s.get('selected')
+        //    if (selected.length > 0)
+        //        cm_fasta_viewer_load_fasta(selected[0]);
+        //}
+    }, cm_fasta_viewer);
+    s.on('change:selected', function (model, value, options) {
+        if (options.set_by == this)
+            return;
+        if (value.length > 0) {
+            $.when.apply(null, value.map(get_fasta)).then(function () {
+                //check if value in fasta_cache, value might have already changed when this is called
+                if (value.length > 0 && _.all(value.map(function (row_index) { return row_index in fasta_cache; }))) {
+                    var fasta = '';
+                    for (var i = 0; i < value.length; i++) { // faster than array.join('')
+                        fasta += fasta_cache[value[i]];
+                    }
+                    cm_fasta_viewer.setValue(fasta);
+                }
+            });
+        } else {
+            cm_fasta_viewer.setValue('Select some rows in the table to display its FASTA sequence.');
+        }
+    }, cm_fasta_viewer);
+
     ///////////////////
     // Results Table //
     ///////////////////
@@ -639,30 +704,6 @@ $(function () { // document ready
     });
     // Draw initial graph with first row
     var row_data = results_table_api.row(0).data();
-    // initial update, wait till core-splitter loads
-    //var cm = code_mirror;
-    //// text result event setup
-    //cm.on('cursorActivity', function () {
-    //    //console.log('cm.getCursor() = ' + cm.getCursor().line);
-    //    var filtered = results_info['line_num_list'].filter(function (i) { return i <= cm.getCursor().line + 3 });
-    //    var i = 0;
-    //    if (filtered.length > 0)
-    //        i = filtered.length - 1;
-    //    //console.log(i);
-    //    // get row
-    //    var row = results_table_api.row(i);
-    //    row_data = row.data();
-    //    renderAlignmentGraph('query-canvas', row_data);
-    //    renderAlignmentGraph('subject-canvas', row_data);
-    //    // is filtered?
-    //    // Get data as ordered and filtered in datatable
-    //    var table_data = results_table_api.rows({ search: 'applied' }).data();
-    //    var i = _.indexOf(table_data, row_data);
-    //    results_table_api.scroller().scrollToRow(i, false);
-    //    $(results_table_api.rows().nodes()).removeClass('highlight');
-    //    var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
-    //    $row.addClass('highlight');
-    //})
     // Selected
     var oTT = TableTools.fnGetInstance('results-table');
     $results_table.on('click', 'tr', function () {
@@ -670,15 +711,8 @@ $(function () { // document ready
     });
     // Hover
     $results_table.on('mouseover', 'tr', function () {
-        //$(results_table_api.rows().nodes()).removeClass('highlight');
-        // get row data and convert to object
-        //row_data = _.object(results_col_names, results_table_api.row(this).data());
         var this_row = results_table_api.row(this);
-        //row_data = this_row.data();
         s.set({ 'hover': this_row.index() }, { 'set_by': $results_table });
-        //console.log('mouseover: row_data = ' + row_data);
-        //renderAlignmentGraph('query-canvas', row_data);
-        //renderAlignmentGraph('subject-canvas', row_data);
     });
     $('.dataTables_scrollBody').mouseleave(function () {
         s.set({ 'hover': null }, { 'set_by': $results_table });
@@ -715,9 +749,6 @@ $(function () { // document ready
             var table_data = results_table_api.rows({ search: 'applied' }).data();
             var i = _.indexOf(table_data, row_data);
             results_table_api.scroller().scrollToRow(i, false);
-            //$(results_table_api.rows().nodes()).removeClass('highlight');
-            //var $row = $(results_table_api.rows({ search: 'applied' }).nodes()[i]);
-            //$row.addClass('highlight');
         }
         oTT.fnSelectNone();
         $.each(selected_indexes, function (key, value) {
@@ -730,10 +761,6 @@ $(function () { // document ready
     var order = results_table_api.order();
     $results_table.on('order.dt', function () {
         //console.log('order.dt');
-        //if (_.isEqual(order, results_table_api.order()))
-        //    return;
-        //renderAlignmentGraph('query-canvas', row_data);
-        //renderAlignmentGraph('subject-canvas', row_data);
     });
     // Search event
     $results_table.on('search.dt', function () {
@@ -752,26 +779,13 @@ $(function () { // document ready
         renderAlignmentGraph('query-canvas', focus_row_index);
         renderAlignmentGraph('subject-canvas', focus_row_index);
     });
-    //$('td').mouseover(function () {
-    //    $(this).siblings().css('background-color', '#EAD575');
-    //    var ind = $(this).index();
-    //    $('td:nth-child(' + (ind + 1) + ')').css('background-color', '#EAD575');
-    //});
-    //$('td').mouseleave(function () {
-    //    $(this).siblings().css('background-color', '');
-    //    var ind = $(this).index();
-    //    $('td:nth-child(' + (ind + 1) + ')').css('background-color', '');
-    //});
-    //$results_table.on('click', '.btn-fasta', function () {
-    //    $($(this).data("target") + ' .modal-body').html($(this).data("target"));
-    //});
         
     /////////////////////
     // Alignment Graph //
     /////////////////////
     // build color lookup tables
-    var score_to_color_light = {}
-    var score_to_color_dark = {}
+    var score_to_color_light = {};
+    var score_to_color_dark = {};
     function num_asc(a, b) { return (a - b); }
     var sorted_score_data = results_table_api.column(col_idx['bitscore']).data().sort(num_asc);
     var min_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.1)]);
@@ -844,7 +858,7 @@ $(function () { // document ready
             return row_data[rseqid] == focus_row_data[rseqid] && Math.abs(center_position - position) < hsp_nt_range;
         });
         // Draw at most 100 alignments, partition aligned_data if length > 100
-        var graph_page_size = 50
+        var graph_page_size = 50;
         var start = Math.floor(filtered_rows.indexOf(focus_row_index) / graph_page_size) * graph_page_size;
         var paged_filtered_rows = filtered_rows.toArray().slice(start, start + graph_page_size);
         // Sort data ascending by coordinate for draw order
@@ -974,12 +988,12 @@ $(function () { // document ready
     ////////////
     var report_panel_width = 777;
     var lazyLayout = _.throttle(function () {
-        var w = $(window).width() - report_panel_width
-        w = w < report_panel_width ? $(window).width() / 2 : w
-        $("#bottom-side-by-side-container").data("kendoSplitter").size(".k-pane:first", w)
+        var w = $(window).width() - report_panel_width;
+        w = w < report_panel_width ? $(window).width() / 2 : w;
+        $("#bottom-side-by-side-container").data("kendoSplitter").size(".k-pane:first", w);
         //$table_container.width(w);
         updateDataTableHeight();
-        updateAlignmentGraph()
+        updateAlignmentGraph();
         results_table_api.columns.adjust().draw();
     }, 200, { leading: false });
     $(window).resize(lazyLayout);
@@ -993,7 +1007,7 @@ $(function () { // document ready
     });
     $table_container.width(w);
     updateDataTableHeight();
-    updateAlignmentGraph()
+    updateAlignmentGraph();
     results_table_api.columns.adjust().draw();
     var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
     $('.ui-corner-bl').append(footer);

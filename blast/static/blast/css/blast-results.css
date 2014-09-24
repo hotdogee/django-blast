@@ -136,7 +136,11 @@ body {
     height: 100%;
 }
 
-#text-report {
+#blast-report {
+    height: 100%;
+}
+
+#fasta-viewer {
     height: 100%;
 }
 
