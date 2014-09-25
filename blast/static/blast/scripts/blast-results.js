@@ -95,6 +95,9 @@ $(function () { // document ready
         viewportMargin: 15,
         gutters: ["CodeMirror-linenumbers"]
     });
+    $('#text-tabs a[href="#blast-report"]').on('shown.bs.tab', function (e) {
+        //cm_blast_report.refresh();
+    })
     // Selected line changed event
     cm_blast_report.on('cursorActivity', function (instance) {
         //console.log('cm_blast_report.getCursor() = ' + cm_blast_report.getCursor().line);
@@ -146,8 +149,12 @@ $(function () { // document ready
         styleActiveLine: true,
         readOnly: true,
         viewportMargin: 15,
-        gutters: ["CodeMirror-linenumbers"]
+        gutters: ["CodeMirror-linenumbers"],
+        lineWrapping: true,
     });
+    $('#text-tabs a[href="#fasta-viewer"]').on('shown.bs.tab', function (e) {
+        cm_fasta_viewer.refresh();
+    })
     // Check if an ajax call is already done or underway, prevent duplicate calls to server
     // Cache FASTA sequences
     var fasta_cache = {};
