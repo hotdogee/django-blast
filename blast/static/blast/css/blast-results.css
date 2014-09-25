@@ -101,7 +101,12 @@ body {
 }
 
 .graph-title-container {
-    height: 38px; margin: 0;padding: 12px 24px; position: absolute; white-space: nowrap;
+    height: 38px;
+    width: 100%;
+    margin: 0;
+    padding: 9px 17px;
+    position: absolute;
+    white-space: nowrap;
 }
 
 .graph-title {
@@ -111,6 +116,21 @@ body {
 
 .graph-canvas-container {
     width: 100%; position: absolute; top: 38px; bottom: 0;
+}
+
+.graph-info-btn {
+    float: right;
+}
+
+li.key {
+    font-size: .75em;
+    width: 10%;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    color: white;
+    height: 30px;
+    padding: 7px;
 }
 
 #table-container {
