@@ -792,10 +792,14 @@ $(function () { // document ready
     /////////////////////
     function num_asc(a, b) { return (a - b); }
     var sorted_score_data = results_table_api.column(col_idx['bitscore']).data().sort(num_asc);
-    var min_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.1)]);
-    var max_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.9)]);
+    var dynamic_min_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.1)]);
+    var dynamic_max_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.9)]);
     var light_color_list = ['#fc9272', '#bcbddc', '#a1d99b', '#9ecae1', '#bdbdbd'].reverse();
     var dark_color_list = ['#7f0000', '#4d004b', '#004529', '#081d58', '#000000'].reverse();
+    var selected_color_gradient = ['#fee6ce', '#f8bb5d', '#ee7d45']; // orange
+    var hover_color_gradient = ['#f1e5bf', '#ffcc00', '#d4af37']; // yellow
+    var min_score = dynamic_min_score;
+    var max_score = dynamic_max_score;
     // #fc9272, #bcbddc, #a1d99b, #9ecae1, #bdbdbd
     var light_color_interpolator = chroma.scale(light_color_list).domain([min_score, max_score], 50);
     // #7f0000, #4d004b, #004529, #081d58, #000000
@@ -809,16 +813,91 @@ $(function () { // document ready
     }
 
     // Graph legend
+    $("#score-to-color-checkbox").bootstrapSwitch({
+        onText: 'Dynamic', offText: 'Static', onSwitchChange: function (event, state) {
+            if (state) {
+                // dynamic
+                min_score = dynamic_min_score;
+                max_score = dynamic_max_score;
+                // #fc9272, #bcbddc, #a1d99b, #9ecae1, #bdbdbd
+                light_color_interpolator = chroma.scale(light_color_list).domain([min_score, max_score], 50);
+                // #7f0000, #4d004b, #004529, #081d58, #000000
+                dark_color_interpolator = chroma.scale(dark_color_list).domain([min_score, max_score], 50);
+                // build color lookup tables
+                score_to_color_light = {};
+                score_to_color_dark = {};
+                for (var i = min_score; i <= max_score; i++) {
+                    score_to_color_light[i] = light_color_interpolator(i).hex();
+                    score_to_color_dark[i] = dark_color_interpolator(i).hex();
+                }
+                colors = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
+                draw_legend('#score-color-legend', colors.range(), function (c) {
+                    var r = colors.invertExtent(c);
+                    return Math.round(r[0]);
+                });
+                $('.score-to-color-text').text('Dynamic');
+                updateAlignmentGraph();
+            } else {
+                // static
+                min_score = 40;
+                max_score = 240;
+                // #fc9272, #bcbddc, #a1d99b, #9ecae1, #bdbdbd
+                light_color_interpolator = chroma.scale(light_color_list).domain([min_score, max_score], 5);
+                // #7f0000, #4d004b, #004529, #081d58, #000000
+                dark_color_interpolator = chroma.scale(dark_color_list).domain([min_score, max_score], 5);
+                // build color lookup tables
+                score_to_color_light = {};
+                score_to_color_dark = {};
+                for (var i = min_score; i <= max_score; i++) {
+                    score_to_color_light[i] = light_color_interpolator(i).hex();
+                    score_to_color_dark[i] = dark_color_interpolator(i).hex();
+                }
+                colors = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
+                draw_legend('#score-color-legend', colors.range(), function (c) {
+                    var r = colors.invertExtent(c);
+                    return Math.round(r[0]);
+                });
+                $('.score-to-color-text').text('Static');
+                updateAlignmentGraph();
+            }
+        }
+    });
+    function draw_legend(legend_id, data, li_text) {
+        d3.select(legend_id).selectAll('div').remove();
+        var legend = d3.select(legend_id).selectAll('div').data(data).enter().append('div').attr('class', 'color-key')
+            .style('background', function (c) {
+                return c[0];
+            })
+            .style('background', function (c) {
+                return '-moz-linear-gradient(top, ' + c[0] + ' 0%, ' + c[1] + ' 100%)';
+            }) //-moz-linear-gradient(top, #1e5799 0%, #7db9e8 100%);
+            .style('background', function (c) {
+                return '-webkit-gradient(linear, left top, left bottom, color-stop(0%,' + c[0] + '), color-stop(100%,' + c[1] + '))';
+            }) //-webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(100%,#7db9e8))
+            .style('background', function (c) {
+                return '-webkit-linear-gradient(top, ' + c[0] + ' 0%,' + c[1] + ' 100%)';
+            }) //-webkit-linear-gradient(top, #1e5799 0%,#7db9e8 100%)
+            .style('background', function (c) {
+                return '-o-linear-gradient(top, ' + c[0] + ' 0%,' + c[1] + ' 100%)';
+            }) //-o-linear-gradient(top, #1e5799 0%,#7db9e8 100%)
+            .style('background', function (c) {
+                return '-ms-linear-gradient(top, ' + c[0] + ' 0%,' + c[1] + ' 100%)';
+            }) //-ms-linear-gradient(top, #1e5799 0%,#7db9e8 100%)
+            .style('background', function (c) {
+                return 'linear-gradient(to bottom, ' + c[0] + ' 0%,' + c[1] + ' 100%)';
+            }) //linear-gradient(to bottom, #1e5799 0%,#7db9e8 100%)
+            .style('background', function (c) {
+                return 'progid:DXImageTransform.Microsoft.gradient( startColorstr="' + c[0] + '", endColorstr="' + c[1] + '",GradientType=0 )';
+            }) //progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 )
+            .text(li_text || String);
+    }
     var colors = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
-    var legend = d3.select('#alignment-score-legend').append('ul').attr('class', 'list-inline')
-        .selectAll('li.key').data(colors.range()).enter().append('li').attr('class', 'key')
-        .style('background', function (c) {
-            return '-webkit-linear-gradient(top, ' + c[0] + ' 0%,' + c[1] + ' 100%)';
-        }) //-webkit-linear-gradient(top, #1e5799 0%,#7db9e8 100%);
-        .text(function (c) {
-            var r = colors.invertExtent(c);
-            return r[0];
-        });
+    draw_legend('#score-color-legend', colors.range(), function (c) {
+        var r = colors.invertExtent(c);
+        return Math.round(r[0]);
+    });
+    draw_legend('#selected-hsp-color', [selected_color_gradient.slice(1)], function (c) { return ''; });
+    draw_legend('#mouseover-hsp-color', [hover_color_gradient.slice(1)], function (c) { return ''; });
 
     // ctrl and shift detection
     var ctrl_down = false;
@@ -936,10 +1015,10 @@ $(function () { // document ready
         });
         // Set glyph type colors
         if ('hover' in chart)
-            chart.hover.color = ['#f1e5bf', '#ffcc00', '#d4af37']; // yellow
+            chart.hover.color = hover_color_gradient;
         if ('selected' in chart)
             //chart.selected.color = ['#fee6ce', '#f16913']; // orange
-            chart.selected.color = ['#fee6ce', '#f8bb5d', '#ee7d45']; // orange
+            chart.selected.color = selected_color_gradient; // orange
         // Calculate optimal lane size according to current canvas height
         // canvas.height = canvas.getScaleHeight() + canvas.tracks[0].lanes.length * (chart.laneSizes + chart.laneBuffer) + chart.trackBuffer;
         // only calculate if the user didn't touch the lane-size-slider

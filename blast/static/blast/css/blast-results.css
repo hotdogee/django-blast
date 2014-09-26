@@ -124,15 +124,37 @@ body {
     top: 9px;
 }
 
-li.key {
+.bootstrap-switch-id-score-to-color-checkbox {
+    width: 150px;
+}
+
+#score-color-legend {
+    display: inline-block;
+    top: 1px;
+    left: 16px;
+    position: relative;
+}
+
+div.color-key {
     font-size: .75em;
-    width: 10%;
+    width: 60px;
     padding-left: 0;
     padding-right: 0;
     text-align: center;
     color: white;
     height: 30px;
     padding: 7px;
+    display: inline-block;
+}
+
+div.color-key:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+div.color-key:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
 #table-container {
