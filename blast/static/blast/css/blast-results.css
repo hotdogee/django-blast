@@ -119,7 +119,9 @@ body {
 }
 
 .graph-info-btn {
-    float: right;
+    position: absolute;
+    right: 17px;
+    top: 9px;
 }
 
 li.key {

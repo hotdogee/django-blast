@@ -367,7 +367,7 @@ PIPELINE_JS = {
             'blast/dataTables/js/dataTables.bootstrap.js',
             'blast/scripts/underscore-min.js',
             'blast/scripts/backbone-min.js',
-            'blast/scripts/scribl.1.1.4.js',
+            'blast/scripts/scribl.1.1.5-hotdogee.js',
             'blast/scripts/bootstrap-select-hotdogee.js',
             'blast/scripts/blast-results.js',
         ),
