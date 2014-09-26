@@ -1373,9 +1373,7 @@
     <Content Include="blast\static\blast\scripts\kendo.custom.min.js" />
     <Content Include="blast\static\blast\scripts\kendo.custom.min.js.map" />
     <Content Include="blast\static\blast\scripts\organism-admin.js" />
-    <Content Include="blast\static\blast\scripts\scribl.1.0.min.js" />
-    <Content Include="blast\static\blast\scripts\scribl.1.1.4.js" />
-    <Content Include="blast\static\blast\scripts\scribl.1.1.4.min.js" />
+    <Content Include="blast\static\blast\scripts\scribl.1.1.5-hotdogee.js" />
     <Content Include="blast\static\blast\scripts\underscore-min.js" />
     <Content Include="blast\static\blast\scripts\underscore-min.map" />
     <Content Include="blast\static\blast\scripts\underscore.js" />

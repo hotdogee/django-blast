@@ -813,7 +813,7 @@ var Scribl = Class.extend({
         var scroll_max = full_range * 10 + this.offset * 2;
         if (scroll_max < scroll_wrapper_width)
             scroll_max = scroll_wrapper_width;
-        if (scroll_max > 32760) // nothing draws if > 32768
+        if (scroll_max > 32760) // nothing draws if canvas width > 32768
             scroll_max = 32760;
         jQuery(this.canvas.parentNode.previousElementSibling).slider({
             orientation: 'vertical',
@@ -1503,9 +1503,9 @@ var Lane = Class.extend({
         }
 
         // determine chart absolute_min and absolute_max
-        if (feature.length + feature.position > this.chart.scale.max || !this.chart.scale.max)
+        if (!this.chart.scale.max || feature.length + feature.position > this.chart.scale.max)
             this.chart.scale.max = feature.length + feature.position;
-        if (feature.position < this.chart.scale.min || !this.chart.scale.min)
+        if (!this.chart.scale.min || feature.position < this.chart.scale.min)
             this.chart.scale.min = feature.position;
 
         return feature;

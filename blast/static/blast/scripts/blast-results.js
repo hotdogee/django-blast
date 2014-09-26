@@ -839,16 +839,21 @@ $(function () { // document ready
     function renderAlignmentGraph(canvas_name, focus_row_index) {
         // Get Canvas and Create Chart
         var canvas = document.getElementById(canvas_name);
+        var canvas_parent = canvas.parentNode;
         // Remove all previous events
-        var canvasClone = canvas.cloneNode(true);
-        canvas.parentNode.replaceChild(canvasClone, canvas);
-        canvas = canvasClone;
+        var canvas_clone = canvas.cloneNode(true);
+        // Copy jquery data
+        var $canvas = $(canvas);
+        var $canvas_clone = $(canvas_clone);
+        $canvas_clone.data('lane_size', $canvas.data('lane_size'));
+        //canvas = canvas_clone;
+        //$canvas = $canvas_clone;
         // Clear canvas
-        var ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var chart = new Scribl(canvas, canvas.width);
+        var ctx = canvas_clone.getContext("2d");
+        ctx.clearRect(0, 0, canvas_clone.width, canvas_clone.height);
+        //var chart = new Scribl(canvas_clone, canvas_clone.width);
         var offset = 45; // so scale text won't get cutoff
-        var chart = new Scribl(canvas, canvas.width - offset * 2);
+        var chart = new Scribl(canvas_clone, canvas_clone.width - offset * 2);
         chart.offset = offset;
         chart.scrollable = true;
         // Change laneSizes and buffers
@@ -937,10 +942,15 @@ $(function () { // document ready
             chart.selected.color = ['#fee6ce', '#f8bb5d', '#ee7d45']; // orange
         // Calculate optimal lane size according to current canvas height
         // canvas.height = canvas.getScaleHeight() + canvas.tracks[0].lanes.length * (chart.laneSizes + chart.laneBuffer) + chart.trackBuffer;
-        optimal_lane_size = (canvas.height - chart.getScaleHeight() - chart.trackBuffer) / chart.tracks[0].lanes.length - chart.laneBuffer;
-        optimal_lane_size = optimal_lane_size < 5 ? 5 : optimal_lane_size > 20 ? 20 : optimal_lane_size;
-        chart.laneSizes = optimal_lane_size;
-        canvas.height = chart.getHeight();
+        // only calculate if the user didn't touch the lane-size-slider
+        if (!$canvas_clone.data('lane_size')) {
+            optimal_lane_size = (canvas_clone.height - chart.getScaleHeight() - chart.trackBuffer) / chart.tracks[0].lanes.length - chart.laneBuffer;
+            optimal_lane_size = optimal_lane_size < 5 ? 5 : optimal_lane_size > 20 ? 20 : optimal_lane_size;
+            chart.laneSizes = optimal_lane_size;
+        } else {
+            chart.laneSizes = $canvas_clone.data('lane_size');
+        }
+        canvas_clone.height = chart.getHeight();
 
         // create lane size slider on top right
         var lane_size_slider_id = canvas_name + '-lane-size-slider';
@@ -952,7 +962,7 @@ $(function () { // document ready
             sliderDiv.style.position = 'absolute';
             sliderDiv.style.top = '0';
             sliderDiv.style.right = '0';
-            canvas.parentNode.insertBefore(sliderDiv, canvas);
+            canvas_parent.insertBefore(sliderDiv, canvas);
         }
         jQuery('#' + lane_size_slider_id).slider({
             orientation: 'vertical',
@@ -961,15 +971,17 @@ $(function () { // document ready
             min: 5,
             value: chart.laneSizes,
             slide: function (event, ui) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.clearRect(0, 0, canvas_clone.width, canvas_clone.height);
                 chart.laneSizes = ui['value'];
-                canvas.height = chart.getHeight();
+                $canvas_clone.data('lane_size', chart.laneSizes);
+                canvas_clone.height = chart.getHeight();
                 chart.draw();
             }
         });
         // calculate needed height
         //canvas.height = chart.getHeight();
         // Draw Chart
+        canvas_parent.replaceChild(canvas_clone, canvas);
         chart.draw();
     }
     // Fit canvas to container width and height
