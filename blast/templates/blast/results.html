@@ -3,19 +3,18 @@
 {% load compressed %}
 
 {% block navbar%}
-    <li><a href="./{{task_id}}">Results</a></li>
+<li><a href="./{{task_id}}">Results</a></li>
 {% endblock%}
 
-{% block head-scripts %}
-    {% compressed_css 'blast-results' %}
-    <script>
+{% block head-scripts %}{% compressed_css 'blast-results' %}
+<script>
     var results_col_names = {{ results_col_names|safe }};
     var results_col_names_display = {{ results_col_names_display|safe }};
     var results_detail = {{ results_detail|safe }};
     var results_data = {{ results_data|safe }};
     var results_info = {{ results_info|safe }};
     var task_id = '{{ task_id }}';
-    </script>
+</script>
 {% endblock %}
 
 {% block content-fluid %}
@@ -26,7 +25,7 @@
                 <span class="graph-title">Query Coverage Graph - <span id="query-canvas-name"></span></span>
                 <!-- Button trigger modal -->
                 <button class="btn btn-default btn-xs graph-info-btn" data-toggle="modal" data-target="#graph-info">
-                  <span class="glyphicon glyphicon-info-sign"></span> Legend
+                    <span class="glyphicon glyphicon-info-sign"></span> <span class="score-to-color-text">Dynamic</span>
                 </button>
             </div>
             <div class="graph-canvas-container">
@@ -35,20 +34,21 @@
             <!-- Graph Info Modal -->
             <div class="modal fade" id="graph-info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Coverage Graph Legend</h4>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Coverage Graph Legend</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Color key for alignment scores</h4>
+                            <input type="checkbox" id="score-to-color-checkbox" checked>
+                            <div id="score-color-legend"></div>
+                            <h4>Selected HSP</h4>
+                            <div id="selected-hsp-color"></div>
+                            <h4>Mouseover HSP</h4>
+                            <div id="mouseover-hsp-color"></div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <h4>Color key for alignment scores</h4>
-                        <div id="alignment-score-legend"></div>
-                        <h4>Selected HSP</h4>
-                        <div id="selected-hsp-color"></div>
-                        <h4>Mouseover HSP</h4>
-                        <div id="mouseover-hsp-color"></div>
-                    </div>
-                </div>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@
                 <span class="graph-title">Subject Coverage Graph - <span id="subject-canvas-name"></span></span>
                 <!-- Button trigger modal -->
                 <button class="btn btn-default btn-xs graph-info-btn" data-toggle="modal" data-target="#graph-info">
-                  <span class="glyphicon glyphicon-info-sign"></span> Legend
+                    <span class="glyphicon glyphicon-info-sign"></span> <span class="score-to-color-text">Dynamic</span>
                 </button>
             </div>
             <div class="graph-canvas-container">
@@ -86,8 +86,7 @@
 </div>
 {% endblock %}
 
-{% block scripts %}
-    {% compressed_js 'blast-results' %}
-    <!-- CDN Scripts -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js" charset="utf-8"></script>
+{% block scripts %}{% compressed_js 'blast-results' %}
+<!-- CDN Scripts -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js" charset="utf-8"></script>
 {% endblock %}
