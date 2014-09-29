@@ -141,8 +141,9 @@ $(function () { // document ready
     //////////////////
     // FASTA Viewer //
     //////////////////
+    var empty_fasta_hint = 'Select one or more rows in the table on the left to display its FASTA sequence.';
     var cm_fasta_viewer = CodeMirror($('#fasta-viewer')[0], {
-        value: 'Select some rows in the table to display its FASTA sequence.',
+        value: empty_fasta_hint,
         theme: 'xq-light',
         tabSize: 2,
         lineNumbers: true,
@@ -202,7 +203,7 @@ $(function () { // document ready
                 }
             });
         } else {
-            cm_fasta_viewer.setValue('Select some rows in the table to display its FASTA sequence.');
+            cm_fasta_viewer.setValue(empty_fasta_hint);
         }
     }, cm_fasta_viewer);
 
