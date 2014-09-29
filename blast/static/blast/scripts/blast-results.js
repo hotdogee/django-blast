@@ -660,7 +660,7 @@ $(function () { // document ready
                 }
             });
         } else {
-            var input = $('<div id="' + id + '" class="input-group"><div class="input-group-addon input-sm"><span class="glyphicon glyphicon-search"></div><input type="text" class="form-control input-sm col-search-input ' + title + '" placeholder="' + title + ' filter" /></div></div>').appendTo($(this).empty());
+            var input = $('<div id="' + id + '" class="input-group input-group-sm"><div class="input-group-addon"><span class="glyphicon glyphicon-search"></div><input type="text" class="form-control col-search-input ' + title + '" placeholder="' + title + ' filter" /></div></div>').appendTo($(this).empty());
             $('input', input).on('keyup change', function () {
                 //console.log(colIdx);
                 if (this.value == '') {
