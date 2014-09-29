@@ -1,8 +1,12 @@
-﻿body.padtop { /* Set padding to keep content from hitting the edges */
+﻿html, body
+{
+    height: 100%;
+    min-height: 100%;
+}
+.padtop { /* Set padding to keep content from hitting the edges */
     padding-top: 50px;
     font-family: 'Open Sans', sans-serif;
     margin: 0;
-    height: 100vh;
 }
 .body-content {
     padding-left: 15px;
