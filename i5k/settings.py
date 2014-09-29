@@ -155,10 +155,10 @@ FILEBROWSER_VERSIONS_BASEDIR = '_versions/'
 FILEBROWSER_MAX_UPLOAD_SIZE = 10737418240 # 10GB
 FILEBROWSER_EXTENSIONS = {
     'Folder': [''],
-    'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff'],
+    #'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff'],
     'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv', '.docx'],
-    'Video': ['.mov', '.wmv', '.mpeg', '.mpg', '.avi', '.rm'],
-    'Audio': ['.mp3', '.mp4', '.wav', '.aiff', '.midi', '.m4p'],
+    #'Video': ['.mov', '.wmv', '.mpeg', '.mpg', '.avi', '.rm'],
+    #'Audio': ['.mp3', '.mp4', '.wav', '.aiff', '.midi', '.m4p'],
     'FASTA': ['.fa', '.faa', '.fna', '.fasta', '.cds', '.pep'],
     'FASTQ': ['.fq', '.fastq'],
     'SAM': ['.sam', '.bam'],
@@ -168,9 +168,9 @@ FILEBROWSER_EXTENSIONS = {
 }
 FILEBROWSER_SELECT_FORMATS = {
     'file': ['Folder', 'Image', 'Document', 'Video', 'Audio', 'FASTA', 'FASTQ', 'SAM', 'WIG', 'JSON', 'GFF'],
-    'image': ['Image'],
+    #'image': ['Image'],
     'document': ['Document'],
-    'media': ['Video','Audio'],
+    #'media': ['Video','Audio'],
     'FASTA': ['FASTA'],
     'FASTQ': ['FASTQ'],
     'SAM': ['SAM'],
