@@ -43,15 +43,6 @@ $(function () { // document ready
     // convert arrays to objects
     //var results_db = _.map(results_data, function (row) { return _.object(results_col_names, row); });
     var col_idx = _.object(results_col_names, _.range(results_col_names.length));
-    ////////////
-    // Layout //
-    ////////////
-    $("#top-side-by-side-container").kendoSplitter({
-        panes: [
-            { collapsible: false, size: '50%' },
-            { collapsible: true }
-        ]
-    });
     /////////////////////////
     // Hover and Selection //
     /////////////////////////
@@ -1077,6 +1068,8 @@ $(function () { // document ready
         //$subject_canvas.attr({ width: $subject_canvas_container.outerWidth(), height: $subject_canvas_container.outerHeight() });
         document.getElementById('query-canvas').height = $query_canvas_container.outerHeight() - 25;
         document.getElementById('subject-canvas').height = $subject_canvas_container.outerHeight() - 25;
+        document.getElementById('query-canvas').width = $query_canvas_container.outerWidth();
+        document.getElementById('subject-canvas').width = $subject_canvas_container.outerWidth();
         //console.log($query_canvas.outerHeight());
         var focus_row_index = s.focus_row_index();
         renderAlignmentGraph('query-canvas', focus_row_index);
@@ -1089,14 +1082,23 @@ $(function () { // document ready
     s.on('change:selected', function (model, selected_indexes, options) {
         updateAlignmentGraph();
     }, 'graph');
+    $('.graph-canvas-container').mouseleave(function () {
+        s.set({ 'hover': null }, { 'set_by': 'graph' });
+    });
+    ////////////
+    // Layout //
+    ////////////
+    $("#top-side-by-side-container").kendoSplitter({
+        panes: [
+            { collapsible: false },
+            { collapsible: true, size: '50%' }
+        ]
+    });
     $("#result-container").data("kendoSplitter").bind('resize', function () {
         updateAlignmentGraph();
     });
     $("#top-side-by-side-container").data("kendoSplitter").bind('resize', function () {
         updateAlignmentGraph();
-    });
-    $('.graph-canvas-container').mouseleave(function () {
-        s.set({ 'hover': null }, { 'set_by': 'graph' });
     });
     ////////////
     // Resize //

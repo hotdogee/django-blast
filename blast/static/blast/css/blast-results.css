@@ -97,7 +97,9 @@ body {
 }
 
 .graph-container {
-    width: 50%; height: 100%; position: relative;
+    width: 50%;
+    height: 100%;
+    position: relative;
 }
 
 .graph-title-container {
