@@ -961,7 +961,7 @@ $(function () { // document ready
         // Sort data ascending by coordinate for draw order
         //var sorted_data = _.sortBy(filtered_data, function (row) { return -row['bitscore']; });
         // Set name text
-        $('#' + canvas_name + '-name').text(focus_row_data[rseqid] + ', BLAST Hits ' + (start + 1) + '-' + (start + 1 + paged_filtered_rows.length));
+        $('#' + canvas_name + '-name').text(focus_row_data[rseqid] + ', BLAST Hits ' + (start + 1) + '-' + (start + paged_filtered_rows.length));
 
         // Draw each hsp row
         _.each(paged_filtered_rows, function (row_index, paged_filtered_index) {
