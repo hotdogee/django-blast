@@ -943,8 +943,6 @@ $(function () { // document ready
         var sstart = col_idx['sstart'];
         var send = col_idx['send'];
         var bitscore = col_idx['bitscore'];
-        // Set name text
-        $('#' + canvas_name + '-name').text(focus_row_data[rseqid]);
         // Get data as ordered and filtered in datatable
         var table_data = results_table_api.rows({ search: 'applied' }).data();
         // Filter data, only keep rows associated with the reference given by focus_row_data
@@ -962,6 +960,8 @@ $(function () { // document ready
         var paged_filtered_rows = filtered_rows.toArray().slice(start, start + graph_page_size);
         // Sort data ascending by coordinate for draw order
         //var sorted_data = _.sortBy(filtered_data, function (row) { return -row['bitscore']; });
+        // Set name text
+        $('#' + canvas_name + '-name').text(focus_row_data[rseqid] + ', BLAST Hits ' + (start + 1) + '-' + (start + 1 + paged_filtered_rows.length));
 
         // Draw each hsp row
         _.each(paged_filtered_rows, function (row_index, paged_filtered_index) {
