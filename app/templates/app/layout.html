@@ -19,7 +19,16 @@
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
     ga('create', 'UA-49907870-1', 'auto');
     ga('send', 'pageview');
+    ga('create', 'UA-28627214-1', 'auto', {'name': 'a', cookieDomain: 'nal.usda.gov', legacyCookieDomain: 'nal.usda.gov', 'allowLinker': true});
+    ga('a.send', 'pageview');
+    ga('create', 'UA-466807-3', 'auto', {'name': 'b', cookieDomain: 'usda.gov', legacyCookieDomain: 'usda.gov', 'allowLinker': true});
+    ga('b.send', 'pageview');
+    ga('create', 'UA-27627304-18', 'auto', {'name': 'c', cookieDomain: 'usda.gov', legacyCookieDomain: 'usda.gov', 'allowLinker': true});
+    ga('c.send', 'pageview');
+    ga('create', 'UA-27627304-1', 'auto', {'name': 'd', cookieDomain: 'usda.gov', legacyCookieDomain: 'usda.gov', 'allowLinker': true});
+    ga('d.send', 'pageview');
 </script>
+<script type="text/javascript" src="http://www.nal.usda.gov/sites/default/files/federated-analytics/analytics.js"></script>
 </head>
 
 <body class="padtop {% block bodyclass %}{% endblock %}">
