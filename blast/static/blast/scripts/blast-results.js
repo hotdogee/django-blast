@@ -806,9 +806,9 @@ $(function () { // document ready
 
     // Graph legend
     var legend_dim = { width: 300, height: 30, top: 0, right: 20, bottom: 0, left: 20 }
-    document.getElementById('score-color-legend-background').width = legend_dim.width;
-    document.getElementById('score-color-legend-background').height = legend_dim.height;
-    var legend_svg = d3.select('#score-color-legend-d3').append('svg')
+    document.getElementById('score-color-canvas').width = legend_dim.width;
+    document.getElementById('score-color-canvas').height = legend_dim.height;
+    var legend_svg = d3.select('#score-color-d3').append('svg')
         .attr('width', legend_dim.width)
         .attr('height', legend_dim.height);
 
@@ -821,36 +821,44 @@ $(function () { // document ready
         } : null;
     }
 
-    function draw_bilinear(canvas, legend_dim, top_color_list, bottom_color_list) {
+    function draw_bilinear(canvas, legend_dim, top_color_list, bottom_color_list, offsetX) {
         canvas.width = legend_dim.width;
         canvas.height = legend_dim.height;
         var ctx = canvas.getContext('2d');
-        var imageData = ctx.getImageData(0, 0, legend_dim.width, legend_dim.height);
-        var pixels = imageData.data;
-        var inner_width = legend_dim.width - legend_dim.left - legend_dim.right;
         // setup x color interpolators
         var top_color_interpolator = chroma.scale(top_color_list).domain([legend_dim.left, legend_dim.width - legend_dim.right]);
         var bottom_color_interpolator = chroma.scale(bottom_color_list).domain([legend_dim.left, legend_dim.width - legend_dim.right]);
-        var y_domain = [0, legend_dim.height];
-        var x_offset = legend_dim.width * 4;
-        for (var x = 0; x < legend_dim.width; x++) {
-            // setup y color interpolator
-            var y_color_list = [top_color_interpolator(x).hex(), bottom_color_interpolator(x).hex()]
-            var y_color_interpolator = chroma.scale(y_color_list).domain(y_domain);
-            for (var y = 0; y < legend_dim.height; y++) {
-                var color = y_color_interpolator(y).rgb();
-                pixels[y * x_offset + x * 4] = color[0];
-                pixels[y * x_offset + x * 4 + 1] = color[1];
-                pixels[y * x_offset + x * 4 + 2] = color[2];
-                pixels[y * x_offset + x * 4 + 3] = 255;
+        if (offsetX) {
+            var g = ctx.createLinearGradient(0, 0, 0, legend_dim.height);
+            g.addColorStop(0, top_color_interpolator(offsetX).hex());
+            g.addColorStop(1, bottom_color_interpolator(offsetX).hex());
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        } else {
+            var imageData = ctx.getImageData(0, 0, legend_dim.width, legend_dim.height);
+            var pixels = imageData.data;
+            var inner_width = legend_dim.width - legend_dim.left - legend_dim.right;
+            var y_domain = [0, legend_dim.height];
+            var x_offset = legend_dim.width * 4;
+            for (var x = 0; x < legend_dim.width; x++) {
+                // setup y color interpolator
+                var y_color_list = [top_color_interpolator(x).hex(), bottom_color_interpolator(x).hex()]
+                var y_color_interpolator = chroma.scale(y_color_list).domain(y_domain);
+                for (var y = 0; y < legend_dim.height; y++) {
+                    var color = y_color_interpolator(y).rgb();
+                    pixels[y * x_offset + x * 4] = color[0];
+                    pixels[y * x_offset + x * 4 + 1] = color[1];
+                    pixels[y * x_offset + x * 4 + 2] = color[2];
+                    pixels[y * x_offset + x * 4 + 3] = 255;
+                }
             }
+            ctx.putImageData(imageData, 0, 0);
         }
-        ctx.putImageData(imageData, 0, 0);
     }
 
-    function draw_legend_continuous(legend_id, color_list, li_text) {
+    function draw_legend_continuous(color_list, li_text) {
         // draw background
-        var canvas = $(legend_id + '-background')[0];
+        var canvas = $('#score-color-canvas')[0];
         draw_bilinear(canvas, legend_dim, light_color_list, dark_color_list);
         // draw axis
         var range_max = legend_svg.attr('width') - legend_dim.left - legend_dim.right;
@@ -861,6 +869,26 @@ $(function () { // document ready
             .attr("transform", "translate(" + legend_dim.left + "," + legend_dim.top + ")")
             .call(xAxis);
     }
+
+    // mouse over events
+    $('#score-color-canvas').mousemove(function (e) {
+        $('#score-color-rule').css('left', e.offsetX);
+        var x = d3.scale.linear().range([min_score, max_score]).domain([legend_dim.left, legend_dim.width - legend_dim.left]);
+        $('#score-color-rule-text').text(Math.round(x(e.offsetX)));
+        // draw background
+        var canvas = $('#score-color-canvas')[0];
+        draw_bilinear(canvas, legend_dim, light_color_list, dark_color_list, Math.round(e.offsetX));
+    });
+    $('#score-color-map').mouseleave(function (e) {
+        $('#score-color-rule').hide();
+        // draw background
+        var canvas = $('#score-color-canvas')[0];
+        draw_bilinear(canvas, legend_dim, light_color_list, dark_color_list);
+    });
+    $('#score-color-map').mouseenter(function (e) {
+        $('#score-color-rule').show();
+        //console.log(e.offsetX);
+    });
 
     $('#score-to-color-checkbox').bootstrapSwitch({
         onText: 'Dynamic', offText: 'Static', onInit: function (event, state) {
@@ -888,7 +916,7 @@ $(function () { // document ready
                     score_to_color_dark[i] = dark_color_interpolator(i).hex();
                 }
                 color_scale = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
-                draw_legend_continuous('#score-color-legend', color_scale.range(), function (c) {
+                draw_legend_continuous(color_scale.range(), function (c) {
                     var r = color_scale.invertExtent(c);
                     return Math.round(r[0]);
                 });
@@ -910,7 +938,7 @@ $(function () { // document ready
                     score_to_color_dark[i] = dark_color_interpolator(i).hex();
                 }
                 color_scale = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
-                draw_legend_continuous('#score-color-legend', color_scale.range(), function (c) {
+                draw_legend_continuous(color_scale.range(), function (c) {
                     var r = color_scale.invertExtent(c);
                     return Math.round(r[0]);
                 });
@@ -955,7 +983,7 @@ $(function () { // document ready
             .text(li_text || String);
     }
     var color_scale = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
-    draw_legend_continuous('#score-color-legend', color_scale.range(), function (c) {
+    draw_legend_continuous(color_scale.range(), function (c) {
         var r = color_scale.invertExtent(c);
         return Math.round(r[0]);
     });

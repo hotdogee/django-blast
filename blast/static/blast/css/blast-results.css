@@ -129,15 +129,34 @@ body {
 .bootstrap-switch-id-score-to-color-checkbox {
     width: 150px;
     float: right;
+    margin-top: 10px;
 }
 
-#score-color-legend {
+#score-color {
     display: inline-block;
     position: relative;
+    margin-top: 10px;
 }
 
-#score-color-legend-background {
+#score-color-canvas {
     border-radius: 5px;
+    cursor: none;
+}
+
+#score-color-rule {
+    position: absolute;
+    top: 0px;
+    left: 50px;
+    height: 30px;
+    width: 0px;
+    border-right: 1px solid #FFF;
+    text-align: right;
+    cursor: none;
+}
+
+#score-color-rule-text {
+    position: relative;
+    top: -20px;
 }
 
 div.color-key {

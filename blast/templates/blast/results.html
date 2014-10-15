@@ -41,9 +41,14 @@
                         </div>
                         <div class="modal-body">
                             <h4>Color key for alignment scores</h4>
-                            <div id="score-color-legend">
-                                <canvas id="score-color-legend-background"></canvas>
-                                <div id="score-color-legend-d3"></div>
+                            <div id="score-color">
+                                <div id="score-color-map">
+                                    <canvas id="score-color-canvas"></canvas>
+                                    <div id="score-color-rule">
+                                        <div id="score-color-rule-text">50</div>
+                                    </div>
+                                </div>
+                                <div id="score-color-d3"></div>
                             </div>
                             <input type="checkbox" id="score-to-color-checkbox" checked>
                             <h4>Selected BLAST hit color</h4>
