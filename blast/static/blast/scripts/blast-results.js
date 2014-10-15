@@ -879,6 +879,7 @@ $(function () { // document ready
         var canvas = $('#score-color-canvas')[0];
         draw_bilinear(canvas, legend_dim, light_color_list, dark_color_list, Math.round(e.offsetX));
     });
+    $('#score-color-rule').hide();
     $('#score-color-map').mouseleave(function (e) {
         $('#score-color-rule').hide();
         // draw background
