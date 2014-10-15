@@ -128,18 +128,21 @@ body {
 
 .bootstrap-switch-id-score-to-color-checkbox {
     width: 150px;
+    float: right;
 }
 
 #score-color-legend {
     display: inline-block;
-    top: 1px;
-    left: 16px;
     position: relative;
+}
+
+#score-color-legend-background {
+    border-radius: 5px;
 }
 
 div.color-key {
     font-size: .75em;
-    width: 60px;
+    width: 300px;
     padding-left: 0;
     padding-right: 0;
     text-align: center;
@@ -150,13 +153,21 @@ div.color-key {
 }
 
 div.color-key:first-child {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 div.color-key:last-child {
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
 }
 
 #table-container {

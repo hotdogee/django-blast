@@ -25,7 +25,7 @@
                 <span class="graph-title">Query Coverage Graph - <span id="query-canvas-name"></span></span>
                 <!-- Button trigger modal -->
                 <button class="btn btn-default btn-xs graph-info-btn" data-toggle="modal" data-target="#graph-info">
-                    <span class="glyphicon glyphicon-info-sign"></span> <span class="score-to-color-text">Dynamic</span>
+                    <span class="glyphicon glyphicon-info-sign"></span> <span class="score-to-color-text">Color</span>
                 </button>
             </div>
             <div class="graph-canvas-container">
@@ -41,12 +41,11 @@
                         </div>
                         <div class="modal-body">
                             <h4>Color key for alignment scores</h4>
-                            <p>
-                                Dynamic color keys help visualize relative scores between all BLAST hits.<br />
-                                Static color keys help visualize the absolute scores of each BLAST hit.
-                            </p>
+                            <div id="score-color-legend">
+                                <canvas id="score-color-legend-background"></canvas>
+                                <div id="score-color-legend-d3"></div>
+                            </div>
                             <input type="checkbox" id="score-to-color-checkbox" checked>
-                            <div id="score-color-legend"></div>
                             <h4>Selected BLAST hit color</h4>
                             <div id="selected-hsp-color"></div>
                             <h4>Mouseover BLAST hit color</h4>
@@ -61,7 +60,7 @@
                 <span class="graph-title">Subject Coverage Graph - <span id="subject-canvas-name"></span></span>
                 <!-- Button trigger modal -->
                 <button class="btn btn-default btn-xs graph-info-btn" data-toggle="modal" data-target="#graph-info">
-                    <span class="glyphicon glyphicon-info-sign"></span> <span class="score-to-color-text">Dynamic</span>
+                    <span class="glyphicon glyphicon-info-sign"></span> <span class="score-to-color-text">Color</span>
                 </button>
             </div>
             <div class="graph-canvas-container">

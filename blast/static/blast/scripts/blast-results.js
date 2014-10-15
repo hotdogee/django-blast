@@ -805,8 +805,73 @@ $(function () { // document ready
     }
 
     // Graph legend
-    $("#score-to-color-checkbox").bootstrapSwitch({
-        onText: 'Dynamic', offText: 'Static', onSwitchChange: function (event, state) {
+    var legend_dim = { width: 300, height: 30, top: 0, right: 20, bottom: 0, left: 20 }
+    document.getElementById('score-color-legend-background').width = legend_dim.width;
+    document.getElementById('score-color-legend-background').height = legend_dim.height;
+    var legend_svg = d3.select('#score-color-legend-d3').append('svg')
+        .attr('width', legend_dim.width)
+        .attr('height', legend_dim.height);
+
+    function hex_to_rgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+    function draw_bilinear(canvas, legend_dim, top_color_list, bottom_color_list) {
+        canvas.width = legend_dim.width;
+        canvas.height = legend_dim.height;
+        var ctx = canvas.getContext('2d');
+        var imageData = ctx.getImageData(0, 0, legend_dim.width, legend_dim.height);
+        var pixels = imageData.data;
+        var inner_width = legend_dim.width - legend_dim.left - legend_dim.right;
+        // setup x color interpolators
+        var top_color_interpolator = chroma.scale(top_color_list).domain([legend_dim.left, legend_dim.width - legend_dim.right]);
+        var bottom_color_interpolator = chroma.scale(bottom_color_list).domain([legend_dim.left, legend_dim.width - legend_dim.right]);
+        var y_domain = [0, legend_dim.height];
+        var x_offset = legend_dim.width * 4;
+        for (var x = 0; x < legend_dim.width; x++) {
+            // setup y color interpolator
+            var y_color_list = [top_color_interpolator(x).hex(), bottom_color_interpolator(x).hex()]
+            var y_color_interpolator = chroma.scale(y_color_list).domain(y_domain);
+            for (var y = 0; y < legend_dim.height; y++) {
+                var color = y_color_interpolator(y).rgb();
+                pixels[y * x_offset + x * 4] = color[0];
+                pixels[y * x_offset + x * 4 + 1] = color[1];
+                pixels[y * x_offset + x * 4 + 2] = color[2];
+                pixels[y * x_offset + x * 4 + 3] = 255;
+            }
+        }
+        ctx.putImageData(imageData, 0, 0);
+    }
+
+    function draw_legend_continuous(legend_id, color_list, li_text) {
+        // draw background
+        var canvas = $(legend_id + '-background')[0];
+        draw_bilinear(canvas, legend_dim, light_color_list, dark_color_list);
+        // draw axis
+        var range_max = legend_svg.attr('width') - legend_dim.left - legend_dim.right;
+        var x = d3.scale.linear().range([0, range_max]).domain([min_score, max_score]);
+        var xAxis = d3.svg.axis().scale(x).orient('bottom').tickValues(d3.range(min_score, max_score + 1, (max_score - min_score) / (color_list.length - 1)));
+        legend_svg.select("g").remove();
+        legend_svg.append("g").attr("class", "x axis")
+            .attr("transform", "translate(" + legend_dim.left + "," + legend_dim.top + ")")
+            .call(xAxis);
+    }
+
+    $('#score-to-color-checkbox').bootstrapSwitch({
+        onText: 'Dynamic', offText: 'Static', onInit: function (event, state) {
+            $('.bootstrap-switch-id-score-to-color-checkbox').popover({
+                title: 'Dynamic / Static Switch',
+                content: '<b>Dynamic</b> color keys help visualize <i>relative</i> scores between all BLAST hits.<br><b>Static</b> color keys help visualize the <i>absolute</i> scores of each BLAST hit.',
+                html: true,
+                trigger: 'hover',
+                placement: 'bottom',
+            });
+        }, onSwitchChange: function (event, state) {
             if (state) {
                 // dynamic
                 min_score = dynamic_min_score;
@@ -822,17 +887,17 @@ $(function () { // document ready
                     score_to_color_light[i] = light_color_interpolator(i).hex();
                     score_to_color_dark[i] = dark_color_interpolator(i).hex();
                 }
-                colors = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
-                draw_legend('#score-color-legend', colors.range(), function (c) {
-                    var r = colors.invertExtent(c);
+                color_scale = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
+                draw_legend_continuous('#score-color-legend', color_scale.range(), function (c) {
+                    var r = color_scale.invertExtent(c);
                     return Math.round(r[0]);
                 });
-                $('.score-to-color-text').text('Dynamic');
+                //$('.score-to-color-text').text('Dynamic');
                 updateAlignmentGraph();
             } else {
                 // static
                 min_score = 40;
-                max_score = 240;
+                max_score = 200;
                 // #fc9272, #bcbddc, #a1d99b, #9ecae1, #bdbdbd
                 light_color_interpolator = chroma.scale(light_color_list).domain([min_score, max_score], 5);
                 // #7f0000, #4d004b, #004529, #081d58, #000000
@@ -844,22 +909,28 @@ $(function () { // document ready
                     score_to_color_light[i] = light_color_interpolator(i).hex();
                     score_to_color_dark[i] = dark_color_interpolator(i).hex();
                 }
-                colors = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
-                draw_legend('#score-color-legend', colors.range(), function (c) {
-                    var r = colors.invertExtent(c);
+                color_scale = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
+                draw_legend_continuous('#score-color-legend', color_scale.range(), function (c) {
+                    var r = color_scale.invertExtent(c);
                     return Math.round(r[0]);
                 });
-                $('.score-to-color-text').text('Static');
+                //$('.score-to-color-text').text('Static');
                 updateAlignmentGraph();
             }
         }
     });
-    function draw_legend(legend_id, data, li_text) {
+    function draw_legend(legend_id, color_list, li_text) {
         d3.select(legend_id).selectAll('div').remove();
-        var legend = d3.select(legend_id).selectAll('div').data(data).enter().append('div').attr('class', 'color-key')
+        var legend = d3.select(legend_id).selectAll('div').data(color_list).enter().append('div').attr('class', 'color-key')
             .style('background', function (c) {
                 return c[0];
             })
+            /*
+    linear-gradient(60deg, rgba(30,87,153,1) 0%,rgba(0,0,0,0) 100%), 
+    linear-gradient(120deg, rgba(131,179,211,1) 0%,rgba(0,0,0,0) 100%), 
+    linear-gradient(60deg, rgba(0,0,0,0) 0%,rgba(136,216,144,1) 100%),
+    linear-gradient(120deg, rgba(0,0,0,0) 0%,rgba(0,109,7,1) 100%);
+             */
             .style('background', function (c) {
                 return '-moz-linear-gradient(top, ' + c[0] + ' 0%, ' + c[1] + ' 100%)';
             }) //-moz-linear-gradient(top, #1e5799 0%, #7db9e8 100%);
@@ -883,9 +954,9 @@ $(function () { // document ready
             }) //progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 )
             .text(li_text || String);
     }
-    var colors = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
-    draw_legend('#score-color-legend', colors.range(), function (c) {
-        var r = colors.invertExtent(c);
+    var color_scale = d3.scale.quantize().domain([min_score, max_score]).range(_.zip(light_color_list, dark_color_list));
+    draw_legend_continuous('#score-color-legend', color_scale.range(), function (c) {
+        var r = color_scale.invertExtent(c);
         return Math.round(r[0]);
     });
     draw_legend('#selected-hsp-color', [selected_color_gradient.slice(1)], function (c) { return ''; });
@@ -895,15 +966,15 @@ $(function () { // document ready
     var ctrl_down = false;
     var shift_down = false;
     $(document).keydown(function (event) {
-        if (event.which == "17")
+        if (event.which == '17')
             ctrl_down = true;
-        else if (event.which == "16")
+        else if (event.which == '16')
             shift_down = true;
     });
     $(document).keyup(function (event) {
-        if (event.which == "17")
+        if (event.which == '17')
             ctrl_down = false;
-        else if (event.which == "16")
+        else if (event.which == '16')
             shift_down = false;
     });
 
@@ -920,7 +991,7 @@ $(function () { // document ready
         //canvas = canvas_clone;
         //$canvas = $canvas_clone;
         // Clear canvas
-        var ctx = canvas_clone.getContext("2d");
+        var ctx = canvas_clone.getContext('2d');
         ctx.clearRect(0, 0, canvas_clone.width, canvas_clone.height);
         //var chart = new Scribl(canvas_clone, canvas_clone.width);
         var offset = 45; // so scale text won't get cutoff
@@ -1088,16 +1159,16 @@ $(function () { // document ready
     ////////////
     // Layout //
     ////////////
-    $("#top-side-by-side-container").kendoSplitter({
+    $('#top-side-by-side-container').kendoSplitter({
         panes: [
             { collapsible: false },
             { collapsible: true, size: '50%' }
         ]
     });
-    $("#result-container").data("kendoSplitter").bind('resize', function () {
+    $('#result-container').data('kendoSplitter').bind('resize', function () {
         updateAlignmentGraph();
     });
-    $("#top-side-by-side-container").data("kendoSplitter").bind('resize', function () {
+    $('#top-side-by-side-container').data('kendoSplitter').bind('resize', function () {
         updateAlignmentGraph();
     });
     ////////////
@@ -1107,7 +1178,7 @@ $(function () { // document ready
     var lazyLayout = _.throttle(function () {
         var w = $(window).width() - report_panel_width;
         w = w < report_panel_width ? $(window).width() / 2 : w;
-        $("#bottom-side-by-side-container").data("kendoSplitter").size(".k-pane:first", w);
+        $('#bottom-side-by-side-container').data('kendoSplitter').size('.k-pane:first', w);
         //$table_container.width(w);
         updateDataTableHeight();
         updateAlignmentGraph();
@@ -1116,7 +1187,7 @@ $(function () { // document ready
     $(window).resize(lazyLayout);
     var w = $(window).width() - report_panel_width
     w = w < report_panel_width ? $(window).width() / 2 : w
-    $("#bottom-side-by-side-container").kendoSplitter({
+    $('#bottom-side-by-side-container').kendoSplitter({
         panes: [
             { collapsible: false, size: w },
             { collapsible: true }
