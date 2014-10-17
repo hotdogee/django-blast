@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}{{ title }} | i5k - BLAST{% endblock %}</title>
+    <title>{% block title %}{{ title }} | 綠油油{% endblock %}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     {% compressed_css 'app-layout' %}
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:400,700'>
@@ -25,23 +25,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="http://i5k.nal.usda.gov/" class="navbar-brand"><img src="{% static 'blast/images/I5klogo-blast.png' %}"></a>
+                <a href="{% url 'blast:create' %}" class="navbar-brand"><img src="{% static 'app/images/goo-logo-s.png' %}"></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <!--<li><a href="{% url 'home' %}">Home</a></li>-->
                     <!--<li><a href="{% url 'blast:create' %}">BLAST</a></li>-->
-                    <li><a href="./">BLAST</a></li>
-                    <li><a href="{% url 'about' %}">About i5K BLAST</a></li>
-                    <li><a href="http://i5k.nal.usda.gov/contact-us">Contact</a></li>
-                    <!--<li><a href="{% url 'blast:create' %}">BLAST</a></li>
-                    <li><a href="{% url 'blast:retrieve' '5df09d8487174e1180e7bb169030aeb0' %}">BLAST RESULT</a></li>-->
+                    <li><a href="{% url 'blast:create' %}">BLAST</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
                     {% if request.user.is_superuser %}
                     <li><a href="{% url 'admin:index' %}">Admin</a></li>
                     {% endif %}
+                    <li><a href="{% url 'blast:api-root' %}">API</a></li>
 {% block navbar %}{% endblock %}
                 </ul>
-                <!--{% include 'app/loginpartial.html' %}-->
+                {% include 'app/loginpartial.html' %}
             </div>
         </div>
     </nav>
@@ -52,7 +50,7 @@
 {% block content %}{% endblock %}
             <hr/>
             <footer>
-                <p>2014 - National Agricultural Library</p>
+                <p>2014 - Han Lin</p>
             </footer>
         </div>
 {% endblock %}

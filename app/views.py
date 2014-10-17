@@ -29,7 +29,7 @@ def about(request):
     return render(
         request,
         'app/about.html', {
-            'title': 'About i5k - BLAST',
+            'title': 'About',
             'message': 'django-blast',
             #'year': datetime.now().year,
         })
