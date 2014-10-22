@@ -96,9 +96,15 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
                     # group hsps with the same key = qseqid + sseqid + qstrand + sstrand, sort groups asc on sstart or send according to sstrand
                     for key_db_hsp_dict_list in [sorted(hsps, key=lambda h: (h['sstart'], h['send']) if h['sstrand'] == '+' else (h['send'], h['sstart'])) for _, hsps in groupby(sorted_db_hsp_dict_list, key=lambda x: x['qseqid'] + x['sseqid'] + x['qstrand'] + x['sstrand'])]:
                         # seqid parsing currently customized for i5k
-                        seqid = key_db_hsp_dict_list[0]['sseqid'] if len(key_db_hsp_dict_list[0]['sseqid'].split('|')) < 2 else key_db_hsp_dict_list[0]['sseqid'].split('|')[1]
-                        gff_item = {'seqid': key_db_hsp_dict_list[0]['sseqid'].split('|')[-1].split('_', 1)[-1] if key_db_hsp_dict_list[0]['sseqid'][:3] == 'gnl' else seqid,
-                                    'source': blast_program}
+                        original_seqid = key_db_hsp_dict_list[0]['sseqid']
+                        original_seqid_tokens = original_seqid.split('|')
+                        if len(original_seqid_tokens) < 2 or original_seqid[:3] == 'gi|':
+                            seqid = original_seqid
+                        elif original_seqid[:3] == 'gnl':
+                            seqid = original_seqid_tokens[-1].split('_', 1)[-1]
+                        else:
+                            seqid = original_seqid_tokens[1]
+                        gff_item = {'seqid': seqid, 'source': blast_program}
                         # cut if overlap length > overlap_cutoff
                         spos, qpos, matches, matches_list = 0, 0, [], []
                         for hsp in key_db_hsp_dict_list:
