@@ -1226,7 +1226,7 @@ $(function () { // document ready
     updateDataTableHeight();
     updateAlignmentGraph();
     results_table_api.columns.adjust().draw();
-    var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
+    var footer = $('<p class="nal-footer">2014 - National Taiwan University</p>');
     $('.ui-corner-bl').append(footer);
     //console.log('checkpoint!');
 });
