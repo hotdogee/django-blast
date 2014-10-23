@@ -29,6 +29,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="app\templatetags\jsonify.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\templatetags\__init__.py" />
     <Compile Include="axes\admin.py" />
     <Compile Include="axes\decorators.py" />
     <Compile Include="axes\management\commands\axes_list_attempts.py" />
@@ -212,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
+    <Folder Include="app\templatetags\" />
     <Folder Include="axes\" />
     <Folder Include="axes\management\" />
     <Folder Include="axes\management\commands\" />

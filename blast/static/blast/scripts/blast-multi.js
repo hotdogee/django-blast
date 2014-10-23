@@ -113,7 +113,8 @@ $(function() { // document ready
 	////////////////////
 	// EVENT HANDLING //
 	////////////////////
-	var default_data_type = 'genome-assembly';
+	var default_data_type = $('.all-dataset-checkbox').attr('dataset-type') || 'genome-assembly';
+    $('')
 	$('.organism-div').hoverIntent(function() {
 		// show and hide right panel
 		$('.datasets-div').hide();
