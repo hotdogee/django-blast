@@ -784,8 +784,8 @@ $(function () { // document ready
     /////////////////////
     function num_asc(a, b) { return (a - b); }
     var sorted_score_data = results_table_api.column(col_idx['bitscore']).data().sort(num_asc);
-    var dynamic_min_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.1)]);
-    var dynamic_max_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.9)]);
+    var dynamic_min_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.1)] - 1); // if there is only one score value
+    var dynamic_max_score = Math.round(sorted_score_data[Math.round((sorted_score_data.length - 1) * 0.9)] + 1);
     var light_color_list = ['#fc9272', '#bcbddc', '#a1d99b', '#9ecae1', '#bdbdbd'].reverse();
     var dark_color_list = ['#7f0000', '#4d004b', '#004529', '#081d58', '#000000'].reverse();
     var selected_color_gradient = ['#fee6ce', '#f8bb5d', '#ee7d45']; // orange
