@@ -49,17 +49,6 @@ $(function() { // document ready
 	// HTML STRUCTURE GENERATION //
 	///////////////////////////////
 	
-	//Reset all element if reload of previous page when back button is pressed
-	if($('#click_submit_hidden').val() == 'true') {
-		$('#click_submit_hidden').val('false');
-        $('#query-textarea').val('');
-		$(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
-        $('.all-organism-checkbox').prop("checked", false).attr("checked", false);
-        $('.all-organism-checkbox').change();
-        $('.program').attr('disabled', false).removeClass('disabled-radio');
-		chooseProgram();
-	}
-	
 	var organism_list_count = organism_list.length;
 	var alphabet_list_count = alphabet_list.length;
 	for (var i = 0; i < organism_list_count; i++) {
@@ -237,7 +226,18 @@ $(function() { // document ready
 		$('.' + program_selected).mouseover();
         add_blast_options(program_selected.toUpperCase());
 	}, 30);
-	
+
+
+    //Reset all element if reload of previous page when back button is pressed
+	if ($('#click_submit_hidden').val() == 'true') {
+	    $('#click_submit_hidden').val('false');
+	    $('#query-textarea').val('');
+	    $(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
+	    $('.all-organism-checkbox').prop("checked", false).attr("checked", false);
+	    $('.all-organism-checkbox').change();
+	    $('.program').attr('disabled', false).removeClass('disabled-radio');
+	    chooseProgram();
+	}
 	
 	function sum(obj) {
 		var sum = 0;
