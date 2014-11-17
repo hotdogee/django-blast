@@ -5,9 +5,9 @@ from django.http import Http404
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.conf import settings
+from django.core.cache import cache
 from uuid import uuid4
 from os import path, makedirs, chmod, stat
-from django.conf import settings
 from sys import platform
 from .models import BlastQueryRecord, BlastDb, Sequence, JbrowseSetting
 from .tasks import run_blast_task
@@ -222,7 +222,16 @@ def status(request, task_id):
         if path.isfile(status_file_path):
             with open(status_file_path, 'rb') as f:
                 statusdata = json.load(f)
-                if statusdata['status'] == 'running':
+                if statusdata['status'] == 'pending' and settings.USE_CACHE:
+                    tlist = cache.get('task_list_cache', []) 
+                    num_preceding = -1; 
+                    if tlist:
+                        for index, tuple in enumerate(tlist):
+                            if task_id in tuple:
+                                num_preceding = index 
+                                break
+                    statusdata['num_preceding'] = num_preceding
+                elif statusdata['status'] == 'running':
                     asn_path = path.join(settings.MEDIA_ROOT, 'blast', 'task', task_id, (task_id+'.asn'))
                     if path.isfile(asn_path):
                         with open(asn_path, 'r') as asn_f:

@@ -277,8 +277,18 @@ CELERY_DISABLE_RATE_LIMITS = True
 #CELERY_ENABLE_UTC = True
 
 # Use virtual environment or not
-USE_VIRTUALENV = False
+USE_VIRTUALENV = True
 VIRTUALENV_ROOT = 'virtualenv/py2.7'
+
+USE_CACHE = False
+# memcached
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+        'TIMEOUT': None, # never expire
+    }
+}
 
 # Use settings for production
 USE_PROD_SETTINGS = False
