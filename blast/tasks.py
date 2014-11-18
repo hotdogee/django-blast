@@ -213,7 +213,7 @@ def task_success_handler(sender=None, result=None, **kwds):
             time.sleep(0.1)
         try:
             blast_task_id = result
-            tlist = cache.get('task_list_cache', [])
+            tlist = cache.get(CACHE_ID, [])
             if tlist and blast_task_id:
                 for tuple in tlist:
                     if blast_task_id in tuple:
@@ -221,7 +221,7 @@ def task_success_handler(sender=None, result=None, **kwds):
                         logger.info('[task_success] task removed from queue: %s' % (blast_task_id) )
                         break
                 logger.info('[task_success] task done: %s. queue length: %s' % (blast_task_id, len(tlist)) )
-                cache.set('task_list_cache', tlist)
+                cache.set(CACHE_ID, tlist)
             else:
                 logger.info('[task_success] no queue list or blast task id.')
         finally:
