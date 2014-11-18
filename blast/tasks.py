@@ -14,8 +14,16 @@ from django.core.cache import cache
 from django.conf import settings
 import csv
 import json
+import time
 
 logger = get_task_logger(__name__)
+
+if settings.USE_CACHE:
+    LOCK_EXPIRE = 30
+    LOCK_ID = 'task_list_cache_lock'
+    CACHE_ID = 'task_list_cache'
+    acquire_lock = lambda: cache.add(LOCK_ID, 'true', LOCK_EXPIRE)
+    release_lock = lambda: cache.delete(LOCK_ID)
 
 @shared_task() # ignore_result=True
 def run_blast_task(task_id, args_list, file_prefix, blast_info):
@@ -183,31 +191,41 @@ def remove_files():
 def task_sent_handler(sender=None, task_id=None, task=None, args=None,
                       kwargs=None, **kwds):
     if settings.USE_CACHE:
-        tlist = cache.get('task_list_cache', [])
-        if args:
-            bid = args[0] # blast_task_id
-            tlist.append( (task_id,bid) )
-            #logger.info('[task_sent] task sent: %s. queue length: %s' % (bid, len(tlist)) )
-            print('[task_sent] task sent: %s. queue length: %s' % (bid, len(tlist)) )
-            cache.set('task_list_cache', tlist)
-        else:
-            logger.info('[task_sent] no args. rabbit task_id: %s' % (task_id) )
+        while not acquire_lock():
+            time.sleep(0.1)
+        try:
+            tlist = cache.get(CACHE_ID, [])
+            if args:
+                bid = args[0] # blast_task_id
+                tlist.append( (task_id,bid) )
+                #logger.info('[task_sent] task sent: %s. queue length: %s' % (bid, len(tlist)) )
+                print('[task_sent] task sent: %s. queue length: %s' % (bid, len(tlist)) )
+                cache.set(CACHE_ID, tlist)
+            else:
+                logger.info('[task_sent] no args. rabbit task_id: %s' % (task_id) )
+        finally:
+            release_lock()
 
 @task_success.connect
 def task_success_handler(sender=None, result=None, **kwds):
     if settings.USE_CACHE:
-        blast_task_id = result
-        tlist = cache.get('task_list_cache', [])
-        if tlist and blast_task_id:
-            for tuple in tlist:
-                if blast_task_id in tuple:
-                    tlist.remove(tuple)
-                    logger.info('[task_success] task removed from queue: %s' % (blast_task_id) )
-                    break
-            logger.info('[task_success] task done: %s. queue length: %s' % (blast_task_id, len(tlist)) )
-            cache.set('task_list_cache', tlist)
-        else:
-            logger.info('[task_success] no queue list or blast task id.')
+        while not acquire_lock():
+            time.sleep(0.1)
+        try:
+            blast_task_id = result
+            tlist = cache.get('task_list_cache', [])
+            if tlist and blast_task_id:
+                for tuple in tlist:
+                    if blast_task_id in tuple:
+                        tlist.remove(tuple)
+                        logger.info('[task_success] task removed from queue: %s' % (blast_task_id) )
+                        break
+                logger.info('[task_success] task done: %s. queue length: %s' % (blast_task_id, len(tlist)) )
+                cache.set('task_list_cache', tlist)
+            else:
+                logger.info('[task_success] no queue list or blast task id.')
+        finally:
+            release_lock()
 
 @task_failure.connect
 def task_failure_handler(sender=None, task_id=None, exception=None,
