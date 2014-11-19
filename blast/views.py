@@ -126,8 +126,6 @@ def create(request, iframe=False):
             record.task_id = task_id
             record.save()
 
-            run_blast_task.delay(task_id, args_list, file_prefix, blast_info)
-
             # generate status.json for frontend statu checking
             with open(query_filename, 'r') as f: # count number of query sequence by counting '>'
                 qstr = f.read()
@@ -136,6 +134,8 @@ def create(request, iframe=False):
                     seq_count = 1
                 with open(path.join(path.dirname(file_prefix), 'status.json'), 'wb') as f:
                     json.dump({'status': 'pending', 'seq_count': seq_count}, f)
+
+            run_blast_task.delay(task_id, args_list, file_prefix, blast_info)
 
             # debug
             #run_blast_task.delay(task_id, args_list, file_prefix, blast_info).get()
