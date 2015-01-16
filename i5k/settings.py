@@ -136,6 +136,9 @@ INSTALLED_APPS = (
     'pipeline',
     'app',
     'blast',
+    'webapollo',
+    'proxy',
+    'userprofile',
     # Uncomment the next line to enable the admin:
     'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
     'filebrowser',
@@ -215,6 +218,12 @@ SUIT_CONFIG = {
             {'model': 'jbrowsesetting'},
             {'model': 'sequence'},
         )},
+        {'app': 'webapollo', 'label': 'Web Apollo', 'icon':'icon-leaf', 'models': (
+            {'model': 'species', 'label': 'Species'},
+            {'model': 'speciespassword', 'label': 'Passwords'},
+            {'model': 'auth.user'},
+            {'label': 'Test', 'url': 'browse'},
+        )},
         # auth and axes
         {'label': 'Auth', 'icon':'icon-lock', 'models': (
             {'model': 'auth.user'},
@@ -291,7 +300,7 @@ CACHES = {
 }
 
 # Use settings for production
-USE_PROD_SETTINGS = False
+USE_PROD_SETTINGS = True
 if USE_PROD_SETTINGS:
     from settings_prod import *
 
