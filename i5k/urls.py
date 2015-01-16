@@ -30,13 +30,16 @@ urlpatterns = patterns('',
     url(r'^logout$',
         'django.contrib.auth.views.logout',
         {
-            'next_page': './',
+            'next_page': './blast',
         },
         name='logout'),
     
     url(r'^admin/filebrowser/', include('filebrowser.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
+    url(r'^admin/webapollo/browse', include('webapollo.urls')),
+    url(r'^proxy/', include('proxy.urls', namespace='proxy')),
+    url(r'^user/', include('userprofile.urls', namespace='userprofile')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

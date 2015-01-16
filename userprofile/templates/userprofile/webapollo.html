@@ -1,0 +1,21 @@
+{% extends "userprofile/dashboard-base.html" %}
+
+{% block dashboard-breadcrumb %}
+<li><a href="{% url 'userprofile:dashboard' %}">Dashboard</a></li>
+<li>Apps</li>
+<li>Web Apollo</li>
+{% endblock %}
+
+
+{% block dashboard-content %}
+
+<div class="panel panel-info">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Web Apollo</div>
+    <!-- List group -->
+    <a href="#" class="list-group-item">Agrilus planipennis</a>
+    <a href="#" class="list-group-item">Ceratitis capitata</a>
+    <a href="#" class="list-group-item">Leptinotarsa decemlineata</a>
+</div>
+<a target="_blank" href="https://i5k.nal.usda.gov/web-apollo-registration">Register</a> for access to the annotation system for the organism(s) you are interested in.
+{% endblock%}

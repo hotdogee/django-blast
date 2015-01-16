@@ -1,10 +1,11 @@
 {% load i18n %}
 {% if user.is_authenticated %}
-<form id="logoutForm" action="./logout" method="post" class="navbar-right">
+<!--<form id="logoutForm" action="./logout" method="post" class="navbar-right">-->
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
-        <li><span class="navbar-brand">{% trans 'Welcome, ' %}{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}.</span></li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
+        <li><a href="{% url 'userprofile:dashboard' %}"><span class="navbar-brand">{% trans 'Welcome, ' %}{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}.</span></a></li>
+        <li><a href="{% url 'logout' %}">Log out</a></li>
+        <!-- <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li> -->
     </ul>
 
 </form>
