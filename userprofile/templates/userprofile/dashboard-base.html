@@ -9,7 +9,6 @@
 <ol class="breadcrumb" style="margin-top: 20px">
 {% block dashboard-breadcrumb %}{% endblock %}
 </ol>
-
 <div class="row">
   <div class="col-md-3">
     <ul class="list-group">
@@ -17,7 +16,7 @@
       <li class="list-group-item"><a href='#'>BLAST</a></li>
       <li class="list-group-item"><a href='{% url "userprofile:webapollo" %}'>Web Apollo</a></li>
       <li class="list-group-item">Settings</li>
-      <li class="list-group-item"><a href='#'>Change Password</a></li>
+      <li class="list-group-item"><a href='{% url "password_change" %}'>Change Password</a></li>
       <li class="list-group-item"><a href='#'>Change Personal Info</a></li>
     </ul>
   </div>
