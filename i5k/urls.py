@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.conf.urls import patterns, include, url
 from app.forms import BootstrapAuthenticationForm
+from userprofile.forms import BootStrapPasswordChangeForm
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -24,7 +25,7 @@ urlpatterns = patterns('',
             {
                 'title':'Log in',
                 'year':datetime.now().year,
-            }
+            },
         },
         name='login'),
     url(r'^logout$',
@@ -33,6 +34,29 @@ urlpatterns = patterns('',
             'next_page': './blast',
         },
         name='logout'),
+    url(r'^password_change$',
+        'django.contrib.auth.views.password_change',
+        {
+            'template_name': 'userprofile/password_change.html',
+            'password_change_form': BootStrapPasswordChangeForm,
+            'extra_context':
+            {
+                'title': 'Change Password',
+                'year': datetime.now().year,
+            },
+        },
+        name='password_change'),
+    url(r'^password_change_done$',
+        'django.contrib.auth.views.password_change_done',
+        {
+            'template_name': 'userprofile/password_change_done.html',
+            'extra_context':
+            {
+                'title': 'Password Changed',
+                'year': datetime.now().year,
+            },
+        },
+        name='password_change_done'),
     
     url(r'^admin/filebrowser/', include('filebrowser.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
