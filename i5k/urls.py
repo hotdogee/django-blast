@@ -64,6 +64,7 @@ urlpatterns = patterns('',
     url(r'^admin/webapollo/browse', include('webapollo.urls')),
     url(r'^proxy/', include('proxy.urls', namespace='proxy')),
     url(r'^user/', include('userprofile.urls', namespace='userprofile')),
+    url(r'^webapollo/', include('webapollo.urls', namespace='webapollo')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
