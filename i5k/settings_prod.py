@@ -1,14 +1,19 @@
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 USE_CACHE = True
 
-with open('/etc/secret_key.txt') as f:
+with open('/path/to/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 ALLOWED_HOSTS = (
-    '.example.com'
+    '.example.com',
 )
+
+MEDIA_URL = '/url/to/media/'
+STATIC_URL = '/url/to/static/'
+LOGIN_URL = '/url/to/login/'
+LOGIN_REDIRECT_URL = '/url/to/user/'
 
 DATABASES = {
     'default': {
