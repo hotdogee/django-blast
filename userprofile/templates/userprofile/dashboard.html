@@ -41,7 +41,7 @@
     <div class="panel-heading">Link to Web Apollo</div>
     <!-- List group -->
     {% for species in species_list%}
-      <a href="{% url 'webapollo:species' species.name %}" class="list-group-item">{{ species.full_name}}</a>
+      <a href="{% url 'webapollo:species' species.name %}" class="list-group-item" target="_blank">{{ species.full_name }}</a>
     {% endfor %}
 </div>
 {% endblock%}

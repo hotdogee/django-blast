@@ -41,25 +41,8 @@ class SpeciesPassword(models.Model):
 @receiver(post_delete, sender=Species, weak=False)
 def species_post_delete(sender, instance, **kwargs):
     Permission.objects.filter(codename__startswith=instance.name).delete()
-    #todo: undeploy_instance()
-
-
-@receiver(pre_save, sender=User, weak=False)
-def user_pre_save(sender, instance, update_fields, **kwargs):
-    #print 'user_pre_save'
-    content_type = ContentType.objects.get_for_model(Species)
-    species_ids = []
-    for perm in Permission.objects.filter(user=instance):
-        if perm.content_type == content_type:
-            # remove old permissions in WebApollo DB
-            #print perm.name, perm.codename, perm.content_type
-            species_name = perm.name.split('_', 1)[0]
-            species_id = Species.objects.get(name=species_name).id
-            if species_id not in species_ids:
-                species_ids.append(species_id)
-    #print species_ids
-    for sid in species_ids:
-        delete_species_permission(instance.username, sid)
+    # todo: clear all SSO user permission in postgres DB
+    # todo: undeploy_instance()
 
 def delete_species_permission(username, species_id):
     species = Species.objects.get(id=species_id)
@@ -68,10 +51,11 @@ def delete_species_permission(username, species_id):
     
     cur.execute('SELECT user_id FROM users WHERE username=%s', (username,))
     rows = cur.fetchall()
-    user_id = int(rows[0][0])
-    cur.execute('DELETE FROM permissions WHERE user_id=%s', (user_id,))
-    
-    conn.commit()
+    if rows:
+        user_id = int(rows[0][0])
+        cur.execute('DELETE FROM permissions WHERE user_id=%s', (user_id,))
+        conn.commit()
+
     cur.close()
     conn.close()
 
@@ -79,14 +63,20 @@ def delete_species_permission(username, species_id):
 def user_m2m_changed(instance, action, pk_set, **kwargs):
     #print 'm2m_change', action
     #print pk_set
-    if action == 'post_add':
+    if action == 'post_add':    
+        # first, delete all permissions in WebApollo postgres DB,
+        # then add new permissions back
+        species = Species.objects.all()
+        for s in species:
+            delete_species_permission(instance.username, s.id)
+            
         content_type = ContentType.objects.get_for_model(Species)
         perm_values = {'read': 1, 'write': 2, 'publish': 4, 'admin': 8, 'owner': 0}
         species_perms = {}
         for _pk in pk_set:
             perm = Permission.objects.get(id=_pk)
             if perm.content_type == content_type:
-                # insert new permissions in WebApollo DB
+                # insert new permissions into WebApollo DB
                 #print perm.name, perm.codename, perm.content_type
                 species_name = perm.name.split('_', 2)[0]
                 perm_name = perm.name.split('_', 2)[1]

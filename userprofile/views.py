@@ -38,15 +38,6 @@ def webapollo(request):
     })
 
 @login_required
-def settings(request):
-    return render(
-        request,
-        'userprofile/settings.html', {
-        'year': datetime.now().year,
-        'title': 'Settings'
-    })
-
-@login_required
 def info_change(request):
     u = User.objects.get(pk=request.user.id)
     msg = ''
