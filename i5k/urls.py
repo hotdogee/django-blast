@@ -28,12 +28,7 @@ urlpatterns = patterns('',
             },
         },
         name='login'),
-    url(r'^logout$',
-        'django.contrib.auth.views.logout',
-        {
-            'next_page': './blast',
-        },
-        name='logout'),
+    url(r'^logout$', 'userprofile.views.logout_all', name='logout'),
     url(r'^password_change$',
         'django.contrib.auth.views.password_change',
         {
