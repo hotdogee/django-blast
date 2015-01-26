@@ -24,6 +24,11 @@ def browse(request):
 
 @login_required
 def species(request, species_name):
+    # todo: check permission again
+
+    if not request.user.user_permissions.filter(codename__startswith=species_name):
+        return HttpResponse('You do not have permissions to access the instance.')
+
     species = Species.objects.get(name=species_name)
     response = HttpResponseRedirect(species.url)
     login_url = species.url + '/Login?operation=login'
