@@ -24,8 +24,6 @@ def browse(request):
 
 @login_required
 def species(request, species_name):
-    # todo: check permission again
-
     if not request.user.user_permissions.filter(codename__startswith=species_name):
         return HttpResponse('You do not have permissions to access the instance.')
 
@@ -45,9 +43,7 @@ def species(request, species_name):
             for cookie in s.cookies:
                 if cookie.name == 'JSESSIONID':
                     response.set_cookie(cookie.name, value=cookie.value, domain='.nal.usda.gov', path='/' + species_name + '/')
-                    cache.add( cache_id, {cookie.name: cookie.value} )
-                    #cc = {cookie.name: cookie.value}
-                    #requests.post( species.url + '/Login?operation=logout', cookies=cc)            
+                    cache.set( cache_id, {cookie.name: cookie.value}, 1800 ) # timeout = 30 mins
     else:
         k, v = cache.get(cache_id).items()[0] # always only one dict in the cache
         response.set_cookie(k, value=v, domain='.nal.usda.gov', path='/' + species_name + '/')

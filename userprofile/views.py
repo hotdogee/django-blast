@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from .forms import InfoChangeForm
+from .models import Profile
 from webapollo.models import Species
 
 @login_required
@@ -43,21 +44,22 @@ def webapollo(request):
 
 @login_required
 def info_change(request):
-    u = User.objects.get(pk=request.user.id)
+    p = Profile.objects.get(user=request.user)
+    #u = User.objects.get(pk=request.user.id)
     msg = ''
     if request.method == 'POST':
-        form = InfoChangeForm(request.POST, instance=u)
+        form = InfoChangeForm(request.POST, instance=p)
         if form.is_valid():
             form.save()
             msg = 'Your personal info was changed.'
     else: # request.method == 'GET'
-        form = InfoChangeForm(instance=u)
+        form = InfoChangeForm(instance=p)
 
     return render(
         request,
         'userprofile/info_change.html', {
         'year': datetime.now().year,
-        'title': 'Change Personal Info',
+        'title': 'Update Account Info',
         'form': form,
         'msg': msg,
     })
