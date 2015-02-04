@@ -1,21 +1,138 @@
 {% extends "userprofile/dashboard-base.html" %}
+{% load staticfiles %}
+
+{% block head-scripts %}
+<style>
+    .species-table {
+        width: 100%;
+        margin-bottom:0.5em;
+    }
+    .species-table td {
+        vertical-align: middle; 
+        width:50%;
+    }
+</style>
+{% endblock %}
 
 {% block dashboard-breadcrumb %}
 <li><a href="{% url 'userprofile:dashboard' %}">Dashboard</a></li>
 <li>Apps</li>
-<li>Web Apollo</li>
+<li>{{ title }}</li>
 {% endblock %}
 
-
 {% block dashboard-content %}
+<p style="font-size:large">Organisms</p>
+{% if species_list %}
+    {% for species in species_list%}
+    <table class="species-table">
+    <tr>
+        <td>{{ species.full_name }}</td>
+        <td>
+            <a href="{% url 'webapollo:species' species.name %}" role="button" class="btn btn-primary" target="_blank">Access</a>
+            {% if species.is_owner%}
+                <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Manage</button>
+            {% else %}
+                <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Users</button>                
+            {% endif %}
+        </td>
+    </tr>
+    </table>
+    <div class="collapse" id="collapse-{{species.name}}">
+        <div class="well">
+        {% if species.is_owner%}
+            <table class="table">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Institution</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Jun-Wei Lin</td>
+                <td>castman</td>
+                <td>National Agricultural Library</td>
+                <td>Feb 04 2015, 15:06 EST</td>
+                <td>Pending</td>
+                <td><a href="#">Edit</a></td>
+              </tr>
+            {% for applicant in species.applicants %}
+              <tr>
+                <td>{{applicant.first_name}} {{applicant.Last_name}}</td>
+                <td>{{applicant.username}}</td>
+                <td>{{applicant.get_profile.institution}}</td>
+                <td>{{applicant.first_name}}</td>
+                <td><a href="#">Edit</a></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        {% else %}
+            <ul>
+            {% for owner in species.owners %}
+                <li>{{ owner.first_name }} {{ owner.last_name }} ({{ owner.username}}) <span class="label label-info">Community contact</span></li>
+            {% endfor %}
+            {% for user in species.users %}
+                <li>{{ user.first_name }} {{ user.last_name }} ({{ user.username}})</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No organisms.</p>
+{% endif %}
 
-<div class="panel panel-info">
-    <!-- Default panel contents -->
-    <div class="panel-heading">Web Apollo</div>
-    <!-- List group -->
-    <a href="#" class="list-group-item">Agrilus planipennis</a>
-    <a href="#" class="list-group-item">Ceratitis capitata</a>
-    <a href="#" class="list-group-item">Leptinotarsa decemlineata</a>
+<hr>
+<p id="more-organism">Interested in other organisms? <a href="#" id="more-organism-show">Apply for annotation.</a></p>
+
+<div id="other-organism" style="display: none;">
+<p style="font-size:large">More Organisms (<a href="#" id="more-organism-hide">Hide</a>)</p>
+{% csrf_token %}
+{% if unauth_species_list %}
+    {% for species in unauth_species_list%}
+    <div>
+    <table class="species-table">
+    <tr>
+        <td>{{ species.full_name }}</td>
+        <td>
+            {% if species.status == 'New' %}
+            <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Apply</button>
+            {% elif species.status == 'Pending' %}
+            <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Applied</button>
+            {% elif species.status == 'Rejected' %}
+            <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Rejected</button>            
+            {% endif %}
+        </td>
+    </tr>
+    </table>
+    <div class="collapse" id="collapse-{{species.name}}">
+        <div class="well">
+            {% if species.status == 'New' %}
+                <p>Complete the comment to the community contact and click 'Submit'.</p>
+                <p><textarea class="form-control" rows="3" maxlength="300" id="comment_{{species.name}}"></textarea></p>
+                <p><input class="btn btn-primary btn-new" type="button" value="Submit" id="btn_{{species.name}}"></p>
+            {% elif species.status == 'Pending' %}
+                <p>You have applied for annotating this organism on {{ species.submission_time }}. Please wait for the approval from the community contact.</p>
+            {% elif species.status == 'Rejected' %}
+                Rejected
+            {% endif %}
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No organisms.</p>
+{% endif %}
 </div>
-<a target="_blank" href="https://i5k.nal.usda.gov/web-apollo-registration">Register</a> for access to the annotation system for the organism(s) you are interested in.
+
 {% endblock%}
+
+{% block scripts %}
+    <script src="{% static 'userprofile/scripts/webapollo.js' %}"></script>
+{% endblock %}
