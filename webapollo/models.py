@@ -38,6 +38,21 @@ class SpeciesPassword(models.Model):
     def __unicode__(self):
         return self.user.username + ' - ' + self.species.name
 
+class Registration(models.Model):
+    user = models.ForeignKey(User)
+    species = models.ForeignKey(Species)
+    submission_time = models.DateTimeField(auto_now_add=True)
+    decision_time = models.DateTimeField(null=True)
+    submission_comment = models.TextField(blank=True, max_length=300)
+    decision_comment = models.TextField(blank=True, max_length=300)
+    status = models.CharField(max_length=32, default='Pending')
+
+    class Meta:
+        unique_together = ('user', 'species', 'submission_time',)
+
+    def __unicode__(self):
+        return self.user.username + ' for ' + self.species.name + ': ' + self.status
+
 @receiver(post_delete, sender=Species, weak=False)
 def species_post_delete(sender, instance, **kwargs):
     Permission.objects.filter(codename__startswith=instance.name).delete()

@@ -8,6 +8,7 @@ from .models import Profile
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
+    verbose_name_plural = 'Other Info'
     
 # Define a new User admin
 class UserAdmin(UserAdmin):

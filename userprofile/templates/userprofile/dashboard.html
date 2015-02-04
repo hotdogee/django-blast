@@ -33,6 +33,11 @@
         <td>Expired</td>
         <td><a href="#">link</a></td>
     </tr>
+    <tr>
+        <td><a href="#">More</a></td>
+        <td></td>
+        <td></td>
+    </tr>
     </tbody>
     </table>
 </div>    
@@ -40,8 +45,12 @@
     <!-- Default panel contents -->
     <div class="panel-heading">Access Organisms using Web Apollo </div>
     <!-- List group -->
-    {% for species in species_list%}
-      <a href="{% url 'webapollo:species' species.name %}" class="list-group-item" target="_blank">{{ species.full_name }}</a>
-    {% endfor %}
+    {% if not species_list%}
+        <p class="list-group-item">No Organism</p>
+    {% else%}
+        {% for species in species_list%}
+          <a href="{% url 'webapollo:species' species.name %}" class="list-group-item" target="_blank">{{ species.full_name }}</a>
+        {% endfor %}
+    {% endif%}
 </div>
 {% endblock%}
