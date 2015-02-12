@@ -42,10 +42,15 @@ class Registration(models.Model):
     user = models.ForeignKey(User)
     species = models.ForeignKey(Species)
     submission_time = models.DateTimeField(auto_now_add=True)
-    decision_time = models.DateTimeField(null=True)
-    submission_comment = models.TextField(blank=True, max_length=300)
-    decision_comment = models.TextField(blank=True, max_length=300)
-    status = models.CharField(max_length=32, default='Pending')
+    decision_time = models.DateTimeField(null=True, blank=True)
+    submission_comment = models.TextField(blank=True, max_length=200)
+    decision_comment = models.TextField(blank=True, max_length=200)
+    REG_STATUS = (
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Rejected', 'Rejected'),
+    )
+    status = models.CharField(max_length=10, choices=REG_STATUS, default='Pending')
 
     class Meta:
         unique_together = ('user', 'species', 'submission_time',)
@@ -73,6 +78,17 @@ def delete_species_permission(username, species_id):
 
     cur.close()
     conn.close()
+
+@receiver(post_save, sender=User)
+def user_post_save(instance, **kwargs):
+    # clear all permissions won't trigger m2m_changed event. so trying to clear postgres db manually.
+    # but failed because the perms I get are old...
+    _user = User.objects.get(pk=instance.id)  
+    perms = Permission.objects.filter(content_type=ContentType.objects.get_for_model(Species), user=_user)
+    if perms:
+        print 'Todo: nothing'
+    else:
+        print 'Todo: remove records from postgres db'
 
 @receiver(m2m_changed, sender=User.user_permissions.through)
 def user_m2m_changed(instance, action, pk_set, **kwargs):

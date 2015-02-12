@@ -2,6 +2,7 @@ import requests, json
 from datetime import datetime
 from functools import wraps
 from pytz import timezone
+from django.db import connection
 from django.db.models import Q
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -12,9 +13,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.utils import html
+from django.core.exceptions import ObjectDoesNotExist
 from .forms import InfoChangeForm
 from .models import Profile
-from webapollo.models import Species, Registration
+from webapollo.models import Species, Registration, insert_species_permission, delete_species_permission
 
 @login_required
 def get_species(request):
@@ -36,7 +38,13 @@ def get_species(request):
     species_list = []
     for sname in owner_set:
         species = Species.objects.get(name=sname)
-        species_list.append({'name': sname, 'full_name': species.full_name, 'is_owner': True,})
+        applicants = User.objects.filter(registration__species=species, registration__status='Pending').distinct()
+        apply_records = []
+        for applicant in applicants:
+            apply_records.append(Registration.objects.select_related('user').filter(species=species, user=applicant).latest('submission_time'))
+        species_owners = User.objects.filter(user_permissions__codename=sname+'_owner').distinct().order_by('last_name')
+        species_users = User.objects.filter(~Q(user_permissions__codename=sname+'_owner'),Q(user_permissions__codename__startswith=sname)).distinct().order_by('last_name')
+        species_list.append({'name': sname, 'full_name': species.full_name, 'is_owner': True, 'owners': species_owners, 'users': species_users, 'apply_records': apply_records,})
     species_list.sort(key=lambda k:k['name'])
     access_list = []
     for sname in access_set:
@@ -62,11 +70,13 @@ def get_species(request):
         if not apply_records:
             unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'New',})
         elif apply_records[0].status == 'Pending':
-            unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Pending', 'submission_time': apply_records[0].submission_time.astimezone(timezone('US/Eastern')).strftime('%b %d %Y, %H:%M %Z'),})
+            #unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Pending', 'submission_time': apply_records[0].submission_time.astimezone(timezone('US/Eastern')).strftime('%b %d %Y, %H:%M %Z'),})
+            unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Pending', 'apply_records': apply_records,})
         elif apply_records[0].status == 'Rejected':
-            unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Rejected', 'submission_time:': apply_records[0].submission_time.astimezone(timezone('US/Eastern')).strftime('%b %d %Y, %H:%M %Z'), 'decision_comment': apply_records[0].decision_comment,})
+            unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Rejected', 'apply_records': apply_records,})
+            #unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Rejected', 'submission_time:': apply_records[0].submission_time.astimezone(timezone('US/Eastern')).strftime('%b %d %Y, %H:%M %Z'), 'decision_comment': apply_records[0].decision_comment,})
         else:
-            raise Exception('Shit happens')           
+            unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'New', 'apply_records': apply_records,})
     unauth_list.sort(key=lambda k:k['name'])
 
     return species_list, unauth_list
@@ -117,12 +127,101 @@ def webapollo_apply(request):
     if request.is_ajax():
         if request.method == 'POST':
             comment = html.escape(request.POST['comment'])
-            comment = comment[:300] if len(comment) > 300 else comment
-            species = Species.objects.get(name=request.POST['species_name'])
-            registration = Registration(user=request.user, species=species, submission_comment=comment)
-            registration.save()
-            return HttpResponse(json.dumps({'submission_time': registration.submission_time.astimezone(timezone('US/Eastern')).strftime('%b %d %Y, %H:%M %Z')}), content_type='application/json')
-    return HttpResponse(json.dumps({ 'invalid_request': True }), content_type='application/json')
+            comment = comment[:200] if len(comment) > 200 else comment
+            try:
+                _species = Species.objects.get(name=request.POST['species_name'])
+                _registration = Registration(user=request.user, species=_species, submission_comment=comment)
+                _registration.save()
+                return HttpResponse(json.dumps({'succeeded': True, 'submission_time': _registration.submission_time.astimezone(timezone('US/Eastern')).strftime('%b. %d, %Y, %I:%M %p'), 'comment': comment,}), content_type='application/json')
+            except ObjectDoesNotExist:
+                return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
+    return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
+
+@ajax_login_required
+def webapollo_reject(request):
+    if request.is_ajax():
+        if request.method == 'POST':         
+            comment = html.escape(request.POST['comment'])
+            if comment:
+                comment = comment[:200] if len(comment) > 200 else comment
+            try:
+                _species = Species.objects.get(name=request.POST['species_name'])
+                _user = User.objects.get(username=request.POST['username'])
+                _registration = Registration.objects.get(user=_user, species=_species, status='Pending')
+                if comment:
+                    _registration.decision_comment = comment;
+                _registration.status = 'Rejected'
+                _registration.save()
+                return HttpResponse(json.dumps({'succeeded': True}), content_type='application/json')
+            except ObjectDoesNotExist:
+                return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
+                
+    return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
+
+@ajax_login_required
+def webapollo_history(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            try:
+                _registrations = Registration.objects.filter(user__username=request.POST['username'], species__name=request.POST['species_name']).order_by('-submission_time')
+                apply_records = []
+                for reg in _registrations:
+                    apply_records.append({
+                        'submission_time': reg.submission_time.astimezone(timezone('US/Eastern')).strftime('%b. %d, %Y, %I:%M %p'),
+                        'comment': reg.submission_comment,
+                        'status': reg.status,
+                        'msg': reg.decision_comment,
+                    })
+                return HttpResponse(json.dumps({'succeeded': True, 'apply_records': apply_records,}), content_type='application/json')
+            except ObjectDoesNotExist:
+                return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
+    return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
+
+@ajax_login_required
+def webapollo_approve(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            if request.user.has_perm('webapollo.' + request.POST['species_name'] + '_owner'):
+                try:
+                    _username = request.POST['username']
+                    _species_name = request.POST['species_name']
+                    _species = Species.objects.get(name=_species_name)
+                    _perm_value = 3
+                    _user = User.objects.get(username=_username)
+                    
+                    # using user_permissions.add() will trigger m2m_changed handler, which is undesirable, so write SQL directly to insert permissions
+                    with connection.cursor() as c:
+                        c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [_user.id, Permission.objects.get(codename=_species_name + '_read').id]) 
+                        c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [_user.id, Permission.objects.get(codename=_species_name + '_write').id])                    
+                    insert_species_permission(_username, _species.id, _perm_value)
+                    _registration = Registration.objects.get(user__username=_username, species__name=_species_name, status='Pending')
+                    _registration.status = 'Approved'
+                    _registration.save()
+                    return HttpResponse(json.dumps({'succeeded': True, }), content_type='application/json')
+                except ObjectDoesNotExist:
+                    return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
+    return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
+
+@ajax_login_required
+def webapollo_remove(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            if request.user.has_perm('webapollo.' + request.POST['species_name'] + '_owner'):
+                try:
+                    _username = request.POST['username']
+                    _species_name = request.POST['species_name']
+                    _species = Species.objects.get(name=_species_name)
+                    _user = User.objects.get(username=_username)                
+                    # using user_permissions.remove() will trigger m2m_changed handler, which is undesirable, so write SQL directly to remove permissions
+                    with connection.cursor() as c:
+                        perms = Permission.objects.filter(codename__startswith=_species_name)
+                        for perm in perms:
+                            c.execute('DELETE FROM auth_user_user_permissions WHERE user_id=%s AND permission_id=%s', [_user.id, perm.id]) 
+                    delete_species_permission( _username, _species.id)
+                    return HttpResponse(json.dumps({'succeeded': True, }), content_type='application/json')
+                except ObjectDoesNotExist:
+                    return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
+    return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
 @login_required
 def info_change(request):
