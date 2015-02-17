@@ -1,6 +1,46 @@
 [
 {
     "fields": {
+        "codename": "athros_read",
+        "name": "athros_read",
+        "content_type": 31
+    },
+    "model": "auth.permission"
+},
+{
+    "fields": {
+        "codename": "athros_write",
+        "name": "athros_write",
+        "content_type": 31
+    },
+    "model": "auth.permission"
+},
+{
+    "fields": {
+        "codename": "athros_publish",
+        "name": "athros_publish",
+        "content_type": 31
+    },
+    "model": "auth.permission"
+},
+{
+    "fields": {
+        "codename": "athros_admin",
+        "name": "athros_admin",
+        "content_type": 31
+    },
+    "model": "auth.permission"
+},
+{
+    "fields": {
+        "codename": "athros_owner",
+        "name": "athros_owner",
+        "content_type": 31
+    },
+    "model": "auth.permission"
+},
+{
+    "fields": {
         "codename": "cimlec_read",
         "name": "cimlec_read",
         "content_type": 31

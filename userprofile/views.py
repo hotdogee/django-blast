@@ -87,7 +87,7 @@ def get_species(request):
 
 @login_required
 def dashboard(request):
-    species_list, unauth_species_list = get_species(request)
+    species_list, interested_species_list, unauth_species_list = get_species(request)
     return render(
         request,
         'userprofile/dashboard.html', {
@@ -184,6 +184,7 @@ def webapollo_history(request):
 
 @ajax_login_required
 def webapollo_approve(request):
+    # todo: solve concurrence issue
     if request.is_ajax():
         if request.method == 'POST':
             if request.user.has_perm('webapollo.' + request.POST['species_name'] + '_owner'):
@@ -209,6 +210,7 @@ def webapollo_approve(request):
 
 @ajax_login_required
 def webapollo_remove(request):
+    # todo: solve concurrence issue
     if request.is_ajax():
         if request.method == 'POST':
             if request.user.has_perm('webapollo.' + request.POST['species_name'] + '_owner'):
@@ -223,6 +225,8 @@ def webapollo_remove(request):
                         for perm in perms:
                             c.execute('DELETE FROM auth_user_user_permissions WHERE user_id=%s AND permission_id=%s', [_user.id, perm.id]) 
                     delete_species_permission( _username, _species.id)
+                    _registration = Registration(user=_user, species=_species, decision_comment='Removed by ' + request.user.username, status='Removed')
+                    _registration.save()
                     return HttpResponse(json.dumps({'succeeded': True, }), content_type='application/json')
                 except ObjectDoesNotExist:
                     return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
