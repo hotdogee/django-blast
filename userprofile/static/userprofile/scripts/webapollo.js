@@ -1,6 +1,6 @@
 $(function() { // document ready
 
-    var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"').val();
+    var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val();
 
     $(".table-apply-records").DataTable({
         "paging":   false,
@@ -26,13 +26,13 @@ $(function() { // document ready
         "searching": true,
     });
 
-    $("#more-organism-show").click(function( event ) {
+    $("#more-organism-show").click(function(event) {
         event.preventDefault();
         $("#more-organism").hide();
         $("#other-organism").fadeIn();
     });
 
-    $("#more-organism-hide").click(function( event ) {
+    $("#more-organism-hide").click(function(event) {
         event.preventDefault();
         $("#other-organism").hide();
         $("#more-organism").fadeIn();
@@ -72,14 +72,14 @@ $(function() { // document ready
         }, "json");
     });
 
-    $(".well").on('click','.link-reapply', function(){
+    $(".well").on('click','.link-reapply', function(event){
         event.preventDefault();
         var species_name = $(this).siblings("input").val();
         $(this).parent('p').remove();
         $("#collapse-"+ species_name + " div.well div").fadeIn();
     });
 
-    $(".well").on('click','.link-approve', function(){
+    $(".well").on('click','.link-approve', function(event){
         event.preventDefault();
         var v = $(this).parent('td').parent('tr').attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
         var username = v[1];
@@ -102,7 +102,7 @@ $(function() { // document ready
         }, "json");
     });
     
-    $(".well").on('click','.link-remove', function(){
+    $(".well").on('click','.link-remove', function(event){
         event.preventDefault();
         var v = $(this).parent('td').parent('tr').attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
         var username = v[1];
@@ -118,15 +118,15 @@ $(function() { // document ready
         }, "json");
     });
 
-    $('#rejectModal').on('show.bs.modal', function (event) {
+    $('#rejectModal').on('show.bs.modal', function(event) {
         $('#hidden-rejectModal').val($(event.relatedTarget).data('whatever'));
     })
 
-    $('#rejectModal').on('shown.bs.modal', function (event) {
+    $('#rejectModal').on('shown.bs.modal', function(event) {
         $('#decision_comment').focus();
     })
 
-    $('#historyModal').on('show.bs.modal', function (event) {
+    $('#historyModal').on('show.bs.modal', function(event) {
         var v = $(event.relatedTarget).data('whatever').split('-'); // ex. ["castman", "agrpla"]
         //var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"').val();
         $.post(window.location.pathname + "/history", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], }, function(data) { 

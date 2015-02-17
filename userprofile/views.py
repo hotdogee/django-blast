@@ -63,6 +63,7 @@ def get_species(request):
     unauth_set = unauth_set.difference(owner_set)
     unauth_set = unauth_set.difference(access_set)
     unauth_list = []
+    interested_list = []
     for sname in unauth_set:     
         # check applying record first
         species = Species.objects.get(name=sname)
@@ -71,15 +72,18 @@ def get_species(request):
             unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'New',})
         elif apply_records[0].status == 'Pending':
             #unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Pending', 'submission_time': apply_records[0].submission_time.astimezone(timezone('US/Eastern')).strftime('%b %d %Y, %H:%M %Z'),})
-            unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Pending', 'apply_records': apply_records,})
+            interested_list.append({'name': sname, 'full_name': species.full_name, 'status':'Pending', 'apply_records': apply_records,})
         elif apply_records[0].status == 'Rejected':
-            unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Rejected', 'apply_records': apply_records,})
+            interested_list.append({'name': sname, 'full_name': species.full_name, 'status':'Rejected', 'apply_records': apply_records,})
             #unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'Rejected', 'submission_time:': apply_records[0].submission_time.astimezone(timezone('US/Eastern')).strftime('%b %d %Y, %H:%M %Z'), 'decision_comment': apply_records[0].decision_comment,})
-        else:
-            unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'New', 'apply_records': apply_records,})
+        elif apply_records[0].status == 'Removed':
+            interested_list.append({'name': sname, 'full_name': species.full_name, 'status':'Removed', 'apply_records': apply_records,})
+        else: # status is 'Approved' or 'Added'
+            raise Exception('Shit happens')
+            #unauth_list.append({'name': sname, 'full_name': species.full_name, 'status':'New', 'apply_records': apply_records,})
     unauth_list.sort(key=lambda k:k['name'])
 
-    return species_list, unauth_list
+    return species_list, interested_list, unauth_list
 
 @login_required
 def dashboard(request):
@@ -94,13 +98,14 @@ def dashboard(request):
 
 @login_required
 def webapollo(request):
-    species_list, unauth_species_list = get_species(request)
+    species_list, interested_species_list, unauth_species_list = get_species(request)
     return render(
         request,
         'userprofile/webapollo.html', {
         'year': datetime.now().year,
         'title': 'Web Apollo',
         'species_list': species_list,
+        'interested_species_list': interested_species_list,
         'unauth_species_list': unauth_species_list,
     })
 
