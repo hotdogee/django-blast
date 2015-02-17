@@ -181,7 +181,7 @@
 <hr>
 <!------------------------------------------------------ interested organisms ------------------------------------------------------>
 <div id="interested-organism" {% if not interested_species_list %} style="display: none" {% endif %}>
-<p style="font-size:large">Requests</p>
+<p style="font-size:large">Requesting Organisms</p>
 {% if interested_species_list %}
     {% for species in interested_species_list%}
     <div>
@@ -216,7 +216,16 @@
                     <p><input class="btn btn-primary btn-new" type="button" value="Submit" id="btn_{{species.name}}"></p>
                 </div>
             {% else %}
-                <p>Removed</p>
+                <p>
+                    You were removed from the annotators by the community contacts. 
+                    <a href="#" class="link-reapply">Apply again?</a>
+                    <input type="hidden" value="{{ species.name }}">                        
+                </p>
+                <div style="display: none">
+                    <p>Complete the comment to the community contact and click 'Submit'.</p>
+                    <p><textarea class="form-control" rows="3" maxlength="200" id="comment_{{species.name}}"></textarea></p>
+                    <p><input class="btn btn-primary btn-new" type="button" value="Submit" id="btn_{{species.name}}"></p>
+                </div>
             {% endif %}
             <table class="table table-apply-records display compact" {% if not species.apply_records %} style="display: none" {% endif %}>
               <thead>

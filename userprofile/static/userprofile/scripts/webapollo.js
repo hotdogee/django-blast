@@ -58,6 +58,9 @@ $(function() { // document ready
                         "info":     false,
                         "searching": false,
                     });
+                    // move to request div section, hold off
+                    //$('#interested-organism').children('p').after($('#collapse-' + species_name).parent('div'));
+                    //$('#collapse-' + species_name).parent('div').fadeOut(100).fadeIn();
                 }
                 else {
                     div_well.children("div:first-child").remove();

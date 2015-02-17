@@ -49,6 +49,8 @@ class Registration(models.Model):
         ('Pending', 'Pending'),
         ('Approved', 'Approved'),
         ('Rejected', 'Rejected'),
+        ('Removed', 'Removed'),
+        ('Added', 'Added'),
     )
     status = models.CharField(max_length=10, choices=REG_STATUS, default='Pending')
 
