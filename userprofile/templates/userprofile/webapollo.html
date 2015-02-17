@@ -178,41 +178,33 @@
 {% else %}
     <p>No organisms.</p>
 {% endif %}
-
 <hr>
-<p id="more-organism">Interested in other organisms? <a href="#" id="more-organism-show">Apply for annotation.</a></p>
-
-<div id="other-organism" style="display: none;">
-<p style="font-size:large">More Organisms (<a href="#" id="more-organism-hide">Hide</a>)</p>
-{% if unauth_species_list %}
-    {% for species in unauth_species_list%}
+<!------------------------------------------------------ interested organisms ------------------------------------------------------>
+<div id="interested-organism" {% if not interested_species_list %} style="display: none" {% endif %}>
+<p style="font-size:large">Requests</p>
+{% if interested_species_list %}
+    {% for species in interested_species_list%}
     <div>
     <table class="species-table">
     <tr>
         <td>{{ species.full_name }}</td>
         <td>
-            {% if species.status == 'New' %}
-            <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Apply</button>
-            {% elif species.status == 'Pending' %}
+            {% if species.status == 'Pending' %}
             <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Applied</button>
             {% elif species.status == 'Rejected' %}
             <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Rejected</button>
+            {% elif species.status == 'Removed' %}
+            <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Removed</button>
             {% endif %}
         </td>
     </tr>
     </table>
     <div class="collapse" id="collapse-{{species.name}}">
         <div class="well">
-            {% if species.status == 'New' %}
-                <div>
-                    <p>Complete the comment to the community contact and click 'Submit'.</p>
-                    <p><textarea class="form-control" rows="3" maxlength="200" id="comment_{{species.name}}"></textarea></p>
-                    <p><input class="btn btn-primary btn-new" type="button" value="Submit" id="btn_{{species.name}}"></p>
-                </div>
-            {% elif species.status == 'Pending' %}
+            {% if species.status == 'Pending' %}
                 <p>You have applied for annotation. Please wait for the approval from the community contacts.
                 <a href="#">Remind the contacts?</a></p>                    
-            {% else %}
+            {% elif species.status == 'Rejected' %}
                 <p>
                     You were rejected by the community contacts. 
                     <a href="#" class="link-reapply">Apply again?</a>
@@ -223,6 +215,8 @@
                     <p><textarea class="form-control" rows="3" maxlength="200" id="comment_{{species.name}}"></textarea></p>
                     <p><input class="btn btn-primary btn-new" type="button" value="Submit" id="btn_{{species.name}}"></p>
                 </div>
+            {% else %}
+                <p>Removed</p>
             {% endif %}
             <table class="table table-apply-records display compact" {% if not species.apply_records %} style="display: none" {% endif %}>
               <thead>
@@ -244,6 +238,39 @@
                 {% endfor %}
               </tbody>
             </table>
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+{% endif %}
+<hr>
+</div>
+<!------------------------------------------------------ other organisms ------------------------------------------------------>
+<p id="more-organism">Interested in other organisms? <a href="#" id="more-organism-show">Apply for annotation.</a></p>
+<div id="other-organism" style="display: none;">
+<p style="font-size:large">More Organisms (<a href="#" id="more-organism-hide">Hide</a>)</p>
+{% if unauth_species_list %}
+    {% for species in unauth_species_list%}
+    <div>
+    <table class="species-table">
+    <tr>
+        <td>{{ species.full_name }}</td>
+        <td>
+            {% if species.status == 'New' %}
+            <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Apply</button>
+            {% endif %}
+        </td>
+    </tr>
+    </table>
+    <div class="collapse" id="collapse-{{species.name}}">
+        <div class="well">
+            {% if species.status == 'New' %}
+                <div>
+                    <p>Complete the comment to the community contact and click 'Submit'.</p>
+                    <p><textarea class="form-control" rows="3" maxlength="200" id="comment_{{species.name}}"></textarea></p>
+                    <p><input class="btn btn-primary btn-new" type="button" value="Submit" id="btn_{{species.name}}"></p>
+                </div>
+            {% endif %}
         </div>
     </div>
     </div>
