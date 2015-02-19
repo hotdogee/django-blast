@@ -26,6 +26,14 @@ $(function() { // document ready
         "searching": true,
     });
 
+    $('.table-adduser').DataTable( {
+        dom: 'Tft',
+        tableTools: {
+            "sRowSelect": "os",
+            "aButtons": [],
+        }
+    });
+
     $("#more-organism-show").click(function(event) {
         event.preventDefault();
         $("#more-organism").hide();
@@ -39,6 +47,7 @@ $(function() { // document ready
     });
 
     $(".well").on('click','.btn-new', function(){
+        $(this).addClass('disabled');   // prevent double submissions
         var species_name = this.id.replace("btn_","");
         var comment = $(this).parent('p').prev('p').find('textarea').val();
         //var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"').val();
@@ -84,7 +93,8 @@ $(function() { // document ready
 
     $(".well").on('click','.link-approve', function(event){
         event.preventDefault();
-        var v = $(this).parent('td').parent('tr').attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
+        var tr = $(this).parent('td').parent('tr');
+        var v = tr.attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
         var username = v[1];
         var species_name = v[2];
         $.post(window.location.pathname + "/approve", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
@@ -96,57 +106,84 @@ $(function() { // document ready
                     $("#tr" + "-" + username + "-" + species_name).children("td:nth-child(2)").text(),
                     "<a href='#' class='link-remove'>Remove</a>"
                 ] ).draw().node();                                                                                     
-                $('#tr' + '-' + username + '-' + species_name).fadeOut(500, function() { $(this).remove(); });
+                tr.fadeOut(500, function() { $(this).remove(); });
                 $(rowNode).attr("id", "tr-" + username + "-"  + species_name);
             }
             else {
-                console.log('approve failed!');
+                alert('The user was probably approved by other coordinators. Please try again later.');
             }
         }, "json");
     });
     
     $(".well").on('click','.link-remove', function(event){
         event.preventDefault();
-        var v = $(this).parent('td').parent('tr').attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
+        var tr = $(this).parent('td').parent('tr');
+        var v = tr.attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
         var username = v[1];
         var species_name = v[2];
         $.post(window.location.pathname + "/remove", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
             if (data.succeeded) {
                 var t = $("#annotators-" + species_name).DataTable();
-                $('#tr' + '-' + username + '-' + species_name).fadeOut(500, function() { $(this).remove(); });
+                //$('#tr' + '-' + username + '-' + species_name).fadeOut(500, function() { $(this).remove(); });
+                tr.fadeOut(500, function() { $(this).remove(); });
             }
             else {
-                console.log('remove failed!');
+                alert('The user was probably removed by other coordinators. Please try again later.');
             }
         }, "json");
     });
 
     $('#rejectModal').on('show.bs.modal', function(event) {
         $('#hidden-rejectModal').val($(event.relatedTarget).data('whatever'));
-    })
+    });
 
     $('#rejectModal').on('shown.bs.modal', function(event) {
         $('#decision_comment').focus();
-    })
+    });
 
     $('#historyModal').on('show.bs.modal', function(event) {
         var v = $(event.relatedTarget).data('whatever').split('-'); // ex. ["castman", "agrpla"]
         //var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"').val();
         $.post(window.location.pathname + "/history", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], }, function(data) { 
             if (data.succeeded) {
-                $('#history-table').children('tbody').children('tr').remove();
+                $('#history-table').children('tbody').children('tr').remove(); // flush the table
                 $.each(data['apply_records'], function(idx, val) {
                     $('#history-table').children('tbody').append("<tr><td>" + val['submission_time'] + "</td><td>" + val['comment'] + "</td><td>" + val['status'] + "</td><td>" + val['msg']+ "</td></tr>");
                 });
             }
             else {
-                $('#history-table').parent('div').html('Error occurs. Please contact admin.'); 
+                $('#historyModal').children('.modal-dialog').children('.modal-content').children('.modal-body').text('Can not get application records. Please try again later.'); 
+                //$('#history-table').parent('div').html('Can not get application records. Please try again later.'); 
             }
         }, "json");
+    });
+    
+    $('#addUserModal').on('show.bs.modal', function(event) {
+        $('#adduser-count').text('0');
+        species_name = $(event.relatedTarget).data('whatever'); // ex. "agrpla"
+        var t = $('#adduser-table').DataTable();
+        t.clear();
+        $.post(window.location.pathname + "/eligible", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name': species_name }, function(data) { 
+            if (data.succeeded) {                
+                $.each(data['users'], function(idx, val) {
+                    var rowNode = t.row.add([
+                        val['full_name'],
+                        val['username'],
+                        val['institution']
+                    ]).draw().node();
+                    //$(rowNode).attr("id", "tr-" + val['username'] + "-"  + species_name);
+                });
+                $('#hidden-addUserModal').val(species_name);
+            }
+            else {
+                $('#addUserModal').children('.modal-dialog').children('.modal-content').children('.modal-body').text('Can not get eligible users. Please try again later.'); 
+            }
+        }, "json");
+    });
 
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    })
+    $('#adduser-table tbody').on('click', 'tr', function () {
+        $('#adduser-count').text(TableTools.fnGetInstance('adduser-table').fnGetSelected().length);
+    });
 
     $('#btn-rejectModal').click(function() {
         var v = $(this).siblings("input").val().split('-'); // ex. ["castman", "agrpla"]
@@ -155,13 +192,48 @@ $(function() { // document ready
         $.post(window.location.pathname + "/reject", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], 'comment': comment}, function(data) { 
             if (data.succeeded) {
                 $('#rejectModal').modal('hide');
-                $('#tr-' + v[0] + '-' + v[1]).fadeOut();
-                $('#tr-' + v[0] + '-' + v[1]).remove();
             }
             else {
-               $('#btn-rejectModal').parent().prev('p').remove(); 
-               $('#btn-rejectModal').parent().prev('p').html('Error occurs. Please contact admin.'); 
-               $('#btn-rejectModal').prop('disabled', true);; 
+               //$('#btn-rejectModal').parent().prev('p').remove(); 
+               $('#rejectModal').children('.modal-dialog').children('.modal-content').children('.modal-body').text('The user was probably rejected by other coordinators. Please try again later.'); 
+               //$('#btn-rejectModal').parent().prev('p').html('The user was probably rejected by other coordinators. Please try again later.'); 
+               //$('#btn-rejectModal').remove(); 
+            }
+            $('#tr-' + v[0] + '-' + v[1]).fadeOut(500, function() { $(this).remove(); });
+            //$('#tr-' + v[0] + '-' + v[1]).fadeOut();
+            //$('#tr-' + v[0] + '-' + v[1]).remove();
+        }, "json");
+    });
+
+    $('#btn-addUserModal').click(function() {
+        var species_name = $('#btn-addUserModal').next("input").val();
+        var usernames = [];
+        $.each(TableTools.fnGetInstance('adduser-table').fnGetSelectedData(), function(idx, val) {
+            usernames.push(val[1]);
+        });
+        $('#btn-addUserModal').button('loading');
+        $.post(window.location.pathname + "/adduser", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name': species_name, 'usernames': usernames,}, function(data) { 
+            if (data.succeeded) {
+                var t = $("#annotators-" + species_name).DataTable();
+                $.each(TableTools.fnGetInstance('adduser-table').fnGetSelectedData(), function(idx, val) {
+                    var rowNode = t.row.add([
+                        val[0],
+                        val[1],
+                        val[2],
+                        "<a href='#' class='link-remove'>Remove</a>"
+                    ] ).draw().node(); 
+                    //$('#tr' + '-' + val[1] + '-' + species_name).fadeOut(500, function() { $(this).remove(); });
+                    $(rowNode).attr("id", "tr-" + val[1] + "-"  + species_name);
+                });
+                // remove and ckear selected rows, reset counter, recover adding button
+                $('#adduser-table tr.selected').fadeOut(500, function() { $(this).remove(); });
+                //$('#adduser-table').DataTable().row('.selected').remove().draw( false );
+                TableTools.fnGetInstance('adduser-table').fnSelectNone();
+                $('#adduser-count').text('0');
+                $('#btn-addUserModal').button('reset');
+            }
+            else {
+               $('#addUserModal').children('.modal-dialog').children('.modal-content').children('.modal-body').text('Error occured when adding users. Please try again later.');
             }
         }, "json");
     });

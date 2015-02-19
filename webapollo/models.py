@@ -67,30 +67,36 @@ def species_post_delete(sender, instance, **kwargs):
     # todo: undeploy_instance()
 
 def delete_species_permission(username, species_id):
-    species = Species.objects.get(id=species_id)
-    conn = psycopg2.connect('dbname=' + species.db_name + ' user=' + species.db_acct + ' host=' + species.host)
-    cur = conn.cursor()
+    try:
+        species = Species.objects.get(id=species_id)
+        conn = psycopg2.connect('dbname=' + species.db_name + ' user=' + species.db_acct + ' host=' + species.host)
+        cur = conn.cursor()
     
-    cur.execute('SELECT user_id FROM users WHERE username=%s', (username,))
-    rows = cur.fetchall()
-    if rows:
-        user_id = int(rows[0][0])
-        cur.execute('DELETE FROM permissions WHERE user_id=%s', (user_id,))
-        conn.commit()
+        cur.execute('SELECT user_id FROM users WHERE username=%s', (username,))
+        rows = cur.fetchall()
+        if rows:
+            user_id = int(rows[0][0])
+            cur.execute('DELETE FROM permissions WHERE user_id=%s', (user_id,))
+            conn.commit()
 
-    cur.close()
-    conn.close()
+        cur.close()
+        conn.close()
+    except:
+        print 'Exception in delete_species_permission'
+        raise Exception('Exception in delete_species_permission')
 
 @receiver(post_save, sender=User)
 def user_post_save(instance, **kwargs):
     # clear all permissions won't trigger m2m_changed event. so trying to clear postgres db manually.
     # but failed because the perms I get are old...
     _user = User.objects.get(pk=instance.id)  
-    perms = Permission.objects.filter(content_type=ContentType.objects.get_for_model(Species), user=_user)
+    #perms = Permission.objects.filter(content_type=ContentType.objects.get_for_model(Species), user=_user)
+    '''
     if perms:
         print 'Todo: nothing'
     else:
         print 'Todo: remove records from postgres db'
+    '''
 
 @receiver(m2m_changed, sender=User.user_permissions.through)
 def user_m2m_changed(instance, action, pk_set, **kwargs):
@@ -122,34 +128,38 @@ def user_m2m_changed(instance, action, pk_set, **kwargs):
             insert_species_permission(instance.username, k, v)
 
 def insert_species_permission(username, species_id, perm_value): 
-    species = Species.objects.get(id=species_id)
-    conn = psycopg2.connect('dbname=' + species.db_name + ' user=' + species.db_acct + ' host=' + species.host)
-    cur = conn.cursor()
-    
-    cur.execute('SELECT user_id FROM users WHERE username = %s', (username,))
-    rows = cur.fetchall()
-    if not rows: 
-        pwd = ''.join(random.SystemRandom().choice(string.uppercase + string.digits) for _ in xrange(16))
-        cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, pwd,))
-        spe_pwd = SpeciesPassword()
-        spe_pwd.user = User.objects.get(username=username)
-        spe_pwd.species = species
-        spe_pwd.pwd = pwd
-        spe_pwd.save()
-    cur.execute('SELECT user_id FROM users WHERE username=%s', (username,))
-    rows = cur.fetchall()
-    user_id = int(rows[0][0])
+    try:
+        species = Species.objects.get(id=species_id)
+        conn = psycopg2.connect('dbname=' + species.db_name + ' user=' + species.db_acct + ' host=' + species.host)
+        cur = conn.cursor()
+        
+        cur.execute('SELECT user_id FROM users WHERE username = %s', (username,))
+        rows = cur.fetchall()
+        if not rows: 
+            pwd = ''.join(random.SystemRandom().choice(string.uppercase + string.digits) for _ in xrange(16))
+            cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, pwd,))
+            spe_pwd = SpeciesPassword()
+            spe_pwd.user = User.objects.get(username=username)
+            spe_pwd.species = species
+            spe_pwd.pwd = pwd
+            spe_pwd.save()
+        cur.execute('SELECT user_id FROM users WHERE username=%s', (username,))
+        rows = cur.fetchall()
+        user_id = int(rows[0][0])
 
-    cur.execute('SELECT track_id FROM tracks')
-    rows = cur.fetchall()
-    if rows:
-        for row in rows:
-            track_id = int(row[0])
-            cur.execute('INSERT INTO permissions (track_id, user_id, permission) VALUES (%s, %s, %s)', (track_id, user_id, perm_value,))
+        cur.execute('SELECT track_id FROM tracks')
+        rows = cur.fetchall()
+        if rows:
+            for row in rows:
+                track_id = int(row[0])
+                cur.execute('INSERT INTO permissions (track_id, user_id, permission) VALUES (%s, %s, %s)', (track_id, user_id, perm_value,))
 
-    conn.commit()
-    cur.close()
-    conn.close()
+        conn.commit()
+        cur.close()
+        conn.close()
+    except:
+        print 'Exception in insert_species_permission'
+        raise Exception('Exception in insert_species_permission')
 
 @receiver(post_delete, sender=User, weak=False)
 def user_post_delete(sender, instance, **kwargs):
