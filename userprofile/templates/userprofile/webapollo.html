@@ -15,7 +15,8 @@
         display: none;
     }
 </style>
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
 {% endblock %}
 
 {% block dashboard-breadcrumb %}
@@ -83,7 +84,7 @@
                 <th>Full Name</th>
                 <th>Username</th>
                 <th>Institution</th>
-                <th><a href="#">Add user</a></th>
+                <th><a href="#" data-toggle="modal" data-target="#addUserModal" data-whatever="{{species.name}}" >Add user</a></th>
               </tr>
             </thead>
             <tbody>
@@ -173,7 +174,30 @@
         <p style="text-align:right; padding-top:1em;">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>&nbsp;
         </p>
-        </div>
+    </div>
+    </div></div></div>
+    <!-- addUserModal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-body">
+        <p>Select users to be annotators (multilple selection with Ctrl or Shift)</p>
+        <table class="table display compact table-adduser" id="adduser-table">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Institution</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p style="text-align:right; padding-top:1em;">
+            <span style="float:left;"><span id='adduser-count' style='font-size: large;'>0</span> users selected</span>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>&nbsp;
+            <button type="button" class="btn btn-primary" id="btn-addUserModal" data-loading-text="Adding...">Add selected users</button>
+            <input type="hidden" id="hidden-addUserModal" value="">
+        </p>
+    </div>
     </div></div></div>
 {% else %}
     <p>No organisms.</p>
@@ -293,5 +317,6 @@
 
 {% block scripts %}
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 <script src="{% static 'userprofile/scripts/webapollo.js' %}"></script>
 {% endblock %}
