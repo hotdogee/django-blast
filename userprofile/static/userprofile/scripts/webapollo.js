@@ -106,12 +106,12 @@ $(function() { // document ready
                     $("#tr" + "-" + username + "-" + species_name).children("td:nth-child(2)").text(),
                     "<a href='#' class='link-remove'>Remove</a>"
                 ] ).draw().node();                                                                                     
-                tr.fadeOut(500, function() { $(this).remove(); });
                 $(rowNode).attr("id", "tr-" + username + "-"  + species_name);
             }
             else {
                 alert('The user was probably approved by other coordinators. Please try again later.');
             }
+            tr.fadeOut(500, function() { $(this).remove(); });
         }, "json");
     });
     
@@ -125,7 +125,9 @@ $(function() { // document ready
             if (data.succeeded) {
                 var t = $("#annotators-" + species_name).DataTable();
                 //$('#tr' + '-' + username + '-' + species_name).fadeOut(500, function() { $(this).remove(); });
-                tr.fadeOut(500, function() { $(this).remove(); });
+                //tr.fadeOut(500, function() { $(this).remove(); });
+                tr.fadeOut(500);
+                t.row('#tr' + '-' + username + '-' + species_name).remove().draw( false );
             }
             else {
                 alert('The user was probably removed by other coordinators. Please try again later.');
@@ -187,21 +189,15 @@ $(function() { // document ready
 
     $('#btn-rejectModal').click(function() {
         var v = $(this).siblings("input").val().split('-'); // ex. ["castman", "agrpla"]
-        //var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"').val();
         var comment = $('#decision_comment').val();
         $.post(window.location.pathname + "/reject", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], 'comment': comment}, function(data) { 
             if (data.succeeded) {
                 $('#rejectModal').modal('hide');
             }
             else {
-               //$('#btn-rejectModal').parent().prev('p').remove(); 
                $('#rejectModal').children('.modal-dialog').children('.modal-content').children('.modal-body').text('The user was probably rejected by other coordinators. Please try again later.'); 
-               //$('#btn-rejectModal').parent().prev('p').html('The user was probably rejected by other coordinators. Please try again later.'); 
-               //$('#btn-rejectModal').remove(); 
             }
             $('#tr-' + v[0] + '-' + v[1]).fadeOut(500, function() { $(this).remove(); });
-            //$('#tr-' + v[0] + '-' + v[1]).fadeOut();
-            //$('#tr-' + v[0] + '-' + v[1]).remove();
         }, "json");
     });
 
@@ -222,12 +218,11 @@ $(function() { // document ready
                         val[2],
                         "<a href='#' class='link-remove'>Remove</a>"
                     ] ).draw().node(); 
-                    //$('#tr' + '-' + val[1] + '-' + species_name).fadeOut(500, function() { $(this).remove(); });
                     $(rowNode).attr("id", "tr-" + val[1] + "-"  + species_name);
                 });
                 // remove and ckear selected rows, reset counter, recover adding button
-                $('#adduser-table tr.selected').fadeOut(500, function() { $(this).remove(); });
-                //$('#adduser-table').DataTable().row('.selected').remove().draw( false );
+                $('#adduser-table tr.selected').fadeOut(500);
+                $('#adduser-table').DataTable().row('.selected').remove().draw( false );
                 TableTools.fnGetInstance('adduser-table').fnSelectNone();
                 $('#adduser-count').text('0');
                 $('#btn-addUserModal').button('reset');
