@@ -1,0 +1,78 @@
+{% extends "admin/base_site.html" %}
+{% load admin_static %}{% load suit_tags %}{% load i18n %}
+
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
+{% endblock %}
+
+
+{% block breadcrumbs %}
+  <ul class="breadcrumb">
+    <li><a href="{% url 'admin:index' %}">Home</a><span class="divider">&raquo;</span></li>
+    <li>Webapollo<span class="divider">&raquo;</span></li>
+    <li class="active">Management</li>
+  </ul>
+{% endblock %}
+
+
+{% block content %}
+{{ block.super }}
+<div id="pendings">
+  {% if pendings %}
+  <div class="alert alert-success alert-dismissible" role="alert" style='display:none;' id='alert-remind-success'>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Done!</strong> Emails were sent to the coordinators.
+  </div>
+  <div class="alert alert-danger alert-dismissible" role="alert" style='display:none;' id='alert-remind-fail'>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Oh no!</strong> Email sending failed. Please contact sysadmin.
+  </div>
+  <p style="padding-bottom:1em;">
+    <span id='remind-count' style='font-size: large;'>0</span> users selected &nbsp;&nbsp;
+    <button type="button" class="btn btn-primary" id="btn-admin-remind">Remind Coordinators</button>
+    <input type="hidden" id="hidden-admin-remind" value="">
+  </p>
+  <table id="table-pendings" class="table display compact">
+  <caption>Pending Requests</caption>
+  <thead>
+    <tr>
+      <th>Full name</th>
+      <th>Species</th>
+      <th>Submission time</th>
+      <th>Comments</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pending in pendings %}
+      <tr id="tr-{{pending.user.username}}-{{pending.species.name}}">
+        <td>{{pending.user.first_name}} {{pending.user.last_name}}</td>
+        <td>{{pending.species.name}}</td>
+        <td>{{pending.submission_time | date:"M d Y" }}</td>
+        <td>{{pending.submission_comment}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+  {% endif %}
+</div>
+<div id="users">
+  <h1>Users</h1>
+  {{users}}
+</div>
+<div id="species">
+  <h1>Species</h1>
+</div>
+{% endblock %}
+
+
+{% block extrajs %}
+  {{ block.super }}
+  <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/f2c75b7247b/sorting/datetime-moment.js"></script>
+  <script src="{% static 'webapollo/scripts/admin-manage.js' %}"></script>
+{% endblock %}
