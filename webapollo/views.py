@@ -7,17 +7,19 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from .models import Species, SpeciesPassword
+from .models import Species, SpeciesPassword, Registration, insert_species_permission, delete_species_permission
 
 @csrf_exempt
 @staff_member_required
-def browse(request):
+def manage(request):
     if request.method == 'GET':
+        pendings = Registration.objects.filter(status='Pending').order_by('submission_time')
         users = User.objects.all()
 
     return render(
         request,
-        'webapollo/list.html', {
+        'webapollo/manage.html', {
+            'pendings': pendings,
             'users': users,
         }
     )
