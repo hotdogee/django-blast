@@ -5,17 +5,28 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.core.cache import cache
 from .models import Species, SpeciesPassword, Registration, insert_species_permission, delete_species_permission
+from userprofile.models import Profile
+
 
 @csrf_exempt
 @staff_member_required
 def manage(request):
     if request.method == 'GET':
         pendings = Registration.objects.filter(status='Pending').order_by('submission_time')
-        users = User.objects.all()
-
+        #users = User.objects.all()
+        profiles = Profile.objects.select_related('user').all()
+        users = []
+        for p in profiles:
+            users.append({
+                'id': p.id,
+                'full_name': p.user.first_name + ' ' + p.user.last_name,
+                'username': p.user.username,
+                'institution': p.institution,
+            })
+           
     return render(
         request,
         'webapollo/manage.html', {
@@ -23,6 +34,42 @@ def manage(request):
             'users': users,
         }
     )
+
+
+@csrf_exempt
+@staff_member_required
+def user_permission(request, user_id):
+    if request.method == 'GET':
+        profile = Profile.objects.select_related('user').get(pk=user_id)
+        user = {
+            'full_name': profile.user.first_name + ' ' + profile.user.last_name,
+            'username': profile.user.username,
+            'institution': profile.institution,
+        }
+        
+        species = Species.objects.all()
+        species_list = []
+        for s in species:
+            perms = profile.user.user_permissions.filter(codename__startswith=s.name)
+            perm_values = {'read': False, 'write': False, 'publish': False, 'admin': False, 'owner': False}
+            for perm in perms:
+                perm_name = perm.name.split('_',2)[1]
+                perm_values[perm_name] = True
+                        
+            species_list.append({
+                'name': s.name,
+                'full_name': s.full_name,
+                'perm_values': perm_values
+            })
+
+    return render(
+        request,
+        'webapollo/user_permission.html', {
+            'user': user,
+            'species_list': species_list,
+        }
+    )
+
 
 @login_required
 def species(request, species_name):

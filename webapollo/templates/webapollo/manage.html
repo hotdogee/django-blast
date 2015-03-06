@@ -22,21 +22,14 @@
 {{ block.super }}
 <div id="pendings">
   {% if pendings %}
-  <div class="alert alert-success alert-dismissible" role="alert" style='display:none;' id='alert-remind-success'>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <strong>Done!</strong> Emails were sent to the coordinators.
-  </div>
-  <div class="alert alert-danger alert-dismissible" role="alert" style='display:none;' id='alert-remind-fail'>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <strong>Oh no!</strong> Email sending failed. Please contact sysadmin.
-  </div>
+  <div id="alert"></div>
   <p style="padding-bottom:1em;">
     <span id='remind-count' style='font-size: large;'>0</span> users selected &nbsp;&nbsp;
     <button type="button" class="btn btn-primary" id="btn-admin-remind">Remind Coordinators</button>
     <input type="hidden" id="hidden-admin-remind" value="">
   </p>
   <table id="table-pendings" class="table display compact">
-  <caption>Pending Requests</caption>
+  <caption><h2>Pending Requests</h2></caption>
   <thead>
     <tr>
       <th>Full name</th>
@@ -56,11 +49,29 @@
     {% endfor %}
   </tbody>
   </table>
+  <hr>
   {% endif %}
 </div>
 <div id="users">
-  <h1>Users</h1>
-  {{users}}
+  <table id="table-users" class="table display compact">
+  <caption><h2>Users</h2></caption>
+  <thead>
+    <tr>
+      <th>Full name</th>
+      <th>Username</th>
+      <th>Institution</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+      <tr>
+        <td><a href="./user/{{user.id}}">{{user.full_name}}</a></td>
+        <td>{{user.username}}</td>
+        <td>{{user.institution}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
 </div>
 <div id="species">
   <h1>Species</h1>
