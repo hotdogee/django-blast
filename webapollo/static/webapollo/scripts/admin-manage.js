@@ -5,7 +5,7 @@ $(function() { // document ready
         'dom': 'Tlftip',
         "order": [[ 2, "asc" ]],
         'tableTools': {
-            "sRowSelect": "os",
+            "sRowSelect": "multi",
             "aButtons": [],
         },
     });
@@ -21,6 +21,15 @@ $(function() { // document ready
 
     $('#btn-admin-remind').click(function(event) {
         event.preventDefault();
+        var species_set = new Set();
+        $.each(TableTools.fnGetInstance('table-pendings').fnGetSelectedData(), function(idx, val) {
+            species_set.add(val[1]);
+        });
+        var species = [];
+        species_set.forEach(function(value) {
+            species.push(value);
+        });
+        console.log(species);
         $('#alert').html(
             '<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Done!</strong> Emails were sent to the coordinators.</div>'
         );

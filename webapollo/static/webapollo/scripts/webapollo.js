@@ -54,7 +54,7 @@ $(function() { // document ready
         var apply_btn = $("#collapse-" + species_name).prev('table.species-table').find('tr td:nth-child(2) .btn');
         var div_well = $("#collapse-" + species_name).children('div.well');
         var apply_records = $(this).parent('p').parent('div').next('div').children('table');
-        $.post(window.location.pathname + "/apply", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name': species_name, 'comment': comment}, function(data) { 
+        $.post(window.location.pathname + "apply", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name': species_name, 'comment': comment}, function(data) { 
             if (data.succeeded) {
                 apply_btn.fadeOut(100).fadeIn().text('Applied');
                 var content = "<p>You have applied for annotation. Please wait for the approval from the community contacts.</p>"
@@ -97,7 +97,7 @@ $(function() { // document ready
         var v = tr.attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
         var username = v[1];
         var species_name = v[2];
-        $.post(window.location.pathname + "/approve", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
+        $.post(window.location.pathname + "approve", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
             if (data.succeeded) {
                 var t = $("#annotators-" + species_name).DataTable();
                 var rowNode = t.row.add([
@@ -121,7 +121,7 @@ $(function() { // document ready
         var v = tr.attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
         var username = v[1];
         var species_name = v[2];
-        $.post(window.location.pathname + "/remove", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
+        $.post(window.location.pathname + "remove", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
             if (data.succeeded) {
                 var t = $("#annotators-" + species_name).DataTable();
                 //$('#tr' + '-' + username + '-' + species_name).fadeOut(500, function() { $(this).remove(); });
@@ -146,7 +146,7 @@ $(function() { // document ready
     $('#historyModal').on('show.bs.modal', function(event) {
         var v = $(event.relatedTarget).data('whatever').split('-'); // ex. ["castman", "agrpla"]
         //var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"').val();
-        $.post(window.location.pathname + "/history", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], }, function(data) { 
+        $.post(window.location.pathname + "history", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], }, function(data) { 
             if (data.succeeded) {
                 $('#history-table').children('tbody').children('tr').remove(); // flush the table
                 $.each(data['apply_records'], function(idx, val) {
@@ -165,7 +165,7 @@ $(function() { // document ready
         species_name = $(event.relatedTarget).data('whatever'); // ex. "agrpla"
         var t = $('#adduser-table').DataTable();
         t.clear();
-        $.post(window.location.pathname + "/eligible", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name': species_name }, function(data) { 
+        $.post(window.location.pathname + "eligible", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name': species_name }, function(data) { 
             if (data.succeeded) {                
                 $.each(data['users'], function(idx, val) {
                     var rowNode = t.row.add([
@@ -190,7 +190,7 @@ $(function() { // document ready
     $('#btn-rejectModal').click(function() {
         var v = $(this).siblings("input").val().split('-'); // ex. ["castman", "agrpla"]
         var comment = $('#decision_comment').val();
-        $.post(window.location.pathname + "/reject", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], 'comment': comment}, function(data) { 
+        $.post(window.location.pathname + "reject", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], 'comment': comment}, function(data) { 
             if (data.succeeded) {
                 $('#rejectModal').modal('hide');
             }
@@ -208,7 +208,7 @@ $(function() { // document ready
             usernames.push(val[1]);
         });
         $('#btn-addUserModal').button('loading');
-        $.post(window.location.pathname + "/adduser", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name': species_name, 'usernames': usernames,}, function(data) { 
+        $.post(window.location.pathname + "adduser", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name': species_name, 'usernames': usernames,}, function(data) { 
             if (data.succeeded) {
                 var t = $("#annotators-" + species_name).DataTable();
                 $.each(TableTools.fnGetInstance('adduser-table').fnGetSelectedData(), function(idx, val) {

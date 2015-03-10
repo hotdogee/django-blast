@@ -6,6 +6,17 @@
   {{ block.super }}
   <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+  <style>
+    tr td:first-child, tr th:first-child { text-align: center; }
+    tr td:first-child:before, tr th:first-child:before { 
+        content: "\f096"; /* fa-square-o */
+        font-family: FontAwesome;
+    }
+    tr.selected td:first-child:before, tr.selected th:first-child:before {
+        content: "\f046"; /* fa-check-square-o */
+    }
+  </style>
 {% endblock %}
 
 
@@ -25,10 +36,14 @@
 <div>
   <h1>Permissions of {{user.full_name}} ({{user.username}}), {{user.institution}}</h1>
   <div id="alert"></div>
+  <p style="padding-bottom:1em;">
+    <button type="button" class="btn btn-primary" id="btn-update">Update Permissions</button>
+  </p>
   <table id="table-user-permission" class="table display compact">
   <caption></caption>
   <thead>
     <tr>
+      <th id="select-all"></th>
       <th>Species</th>
       <th>Read</th>
       <th>Write</th>
@@ -39,7 +54,8 @@
   </thead>
   <tbody>
     {% for species in species_list %}
-      <tr>
+      <tr id="{{species.name}}">
+        <td></td>
         <td>{{species.name}} ({{species.full_name}})</td>
         <td><input type="checkbox" name="read" value="1" {% if species.perm_values.read %} checked {% endif %}></td>
         <td><input type="checkbox" name="write" value="2" {% if species.perm_values.write %} checked {% endif %}></td>
