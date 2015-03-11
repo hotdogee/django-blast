@@ -35,9 +35,8 @@
 {{ block.super }}
 <div>
   <h1>Permissions of {{user.full_name}} ({{user.username}}), {{user.institution}}</h1>
-  <div id="alert"></div>
   <p style="padding-bottom:1em;">
-    <button type="button" class="btn btn-primary" id="btn-update">Update Permissions</button>
+    <button type="button" class="btn btn-primary" id="btn-update" data-loading-text="Updating..." autocomplete="off">Update Permissions</button>&nbsp;&nbsp;<span id="alert" style="font-size: large; display:none;"></span>
   </p>
   <table id="table-user-permission" class="table display compact">
   <caption></caption>
@@ -57,10 +56,10 @@
       <tr id="{{species.name}}">
         <td></td>
         <td>{{species.name}} ({{species.full_name}})</td>
-        <td><input type="checkbox" name="read" value="1" {% if species.perm_values.read %} checked {% endif %}></td>
-        <td><input type="checkbox" name="write" value="2" {% if species.perm_values.write %} checked {% endif %}></td>
-        <td><input type="checkbox" name="publist" value="4" {% if species.perm_values.publish %} checked {% endif %}></td>
-        <td><input type="checkbox" name="admin" value="8" {% if species.perm_values.admin %} checked {% endif %}></td>
+        <td><input type="checkbox" name="read" value="1" {% if species.perm_values.read %} checked {% endif %} {% if species.perm_values.owner %} disabled {% endif %}></td>
+        <td><input type="checkbox" name="write" value="2" {% if species.perm_values.write %} checked {% endif %} {% if species.perm_values.owner %} disabled {% endif %}></td>
+        <td><input type="checkbox" name="publist" value="4" {% if species.perm_values.publish %} checked {% endif %} {% if species.perm_values.owner %} disabled {% endif %}></td>
+        <td><input type="checkbox" name="admin" value="8" {% if species.perm_values.admin %} checked {% endif %} {% if species.perm_values.owner %} disabled {% endif %}></td>
         <td><input type="checkbox" name="owner" value="0" {% if species.perm_values.owner %} checked {% endif %}></td>
       </tr>
     {% endfor %}

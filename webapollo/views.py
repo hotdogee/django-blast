@@ -285,7 +285,7 @@ def manage(request):
         users = []
         for p in profiles:
             users.append({
-                'id': p.id,
+                'id': p.user.id,
                 'full_name': p.user.first_name + ' ' + p.user.last_name,
                 'username': p.user.username,
                 'institution': p.institution,
@@ -304,7 +304,7 @@ def manage(request):
 @staff_member_required
 def user_permission(request, user_id):
     if request.method == 'GET':
-        profile = Profile.objects.select_related('user').get(pk=user_id)
+        profile = Profile.objects.select_related('user').get(user__id=user_id)
         user = {
             'full_name': profile.user.first_name + ' ' + profile.user.last_name,
             'username': profile.user.username,
@@ -326,14 +326,74 @@ def user_permission(request, user_id):
                 'perm_values': perm_values
             })
 
-    return render(
-        request,
-        'webapollo/user_permission.html', {
-            'user': user,
-            'species_list': species_list,
-        }
-    )
-
+        return render(
+            request,
+            'webapollo/user_permission.html', {
+                'user': user,
+                'species_list': species_list,
+            }
+        )
+    elif request.is_ajax() and request.method == 'POST':
+        s_perms = request.POST.get('species_permissions')
+        s_perms = json.loads(s_perms)
+        for s_perm in s_perms:
+            try:
+                u = User.objects.get(pk=user_id)
+                s = Species.objects.get(name=s_perm['species_name'])
+                # using user_permissions.remove() will trigger m2m_changed handler, which is undesirable, so write SQL directly to remove permissions
+                with connection.cursor() as c:
+                    perms = Permission.objects.filter(codename__startswith=s_perm['species_name'])
+                    for perm in perms:
+                        c.execute('DELETE FROM auth_user_user_permissions WHERE user_id=%s AND permission_id=%s', [user_id, perm.id])
+                delete_species_permission(u.username, s.id)
+                if s_perm['permission'] == 0:
+                    # if the user has a pending request, update it instead of adding a new record
+                    try:
+                        r = Registration.objects.get(user=u, species=s, status='Pending')
+                    except:
+                        r = Registration(user=u, species=s)
+                    r.status = 'Removed'
+                    r.decision_comment = 'Removed by ' + request.user.username + ' (admin)'
+                    r.decision_time = datetime.now()
+                    r.save()
+                else:
+                    # using user_permissions.add() will trigger m2m_changed handler, which is undesirable, so write SQL directly to insert permissions
+                    perm_table = {
+                        1 : ['read'],
+                        2 : ['write'],
+                        4 : ['publish'],
+                        8 : ['admin'],
+                        3 : ['read', 'write'],
+                        6 : ['write', 'publish'],
+                        12: ['publish', 'admin'],
+                        7 : ['read', 'write', 'publish'],
+                        14: ['write', 'publish', 'admin'],
+                        15: ['read', 'write', 'publish', 'admin']
+                    }                    
+                    with connection.cursor() as c:
+                        for perm_str in perm_table[s_perm['permission']]:
+                            c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)',
+                                [user_id, Permission.objects.get(codename=s_perm['species_name'] + '_' + perm_str).id])
+                        if s_perm['is_owner']:
+                            c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)',
+                                [user_id, Permission.objects.get(codename=s_perm['species_name'] + '_owner').id])
+                    insert_species_permission(u.username, s.id, s_perm['permission'])
+                    # if the user has a pending request, update it instead of adding a new record
+                    try:
+                        r = Registration.objects.get(user=u, species=s, status='Pending')
+                    except:
+                        r = Registration(user=u, species=s)
+                    r.status = 'Added'
+                    r.decision_comment = 'Added by ' + request.user.username + ' (admin)'
+                    r.decision_time = datetime.now()
+                    r.save()
+            except:
+                print 'Exception in webapollo_user_permission ', sys.exc_info()[0]
+                return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
+        return HttpResponse(json.dumps({'succeeded': True}), content_type='application/json')
+    else:
+        return HttpResponse('Error')
+        
 
 @login_required
 def species(request, species_name):
