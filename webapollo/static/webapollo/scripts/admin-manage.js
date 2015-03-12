@@ -10,9 +10,16 @@ $(function() { // document ready
         },
     });
     
+    
     $('#table-users').DataTable( {
         'dom': 'lftip',
     });
+    
+    
+    $('#table-species').DataTable( {
+        'dom': 'lftip',
+    });
+
     
     $('#table-pendings tbody').on('click', 'tr', function () {
         $('#remind-count').text(TableTools.fnGetInstance('table-pendings').fnGetSelected().length);

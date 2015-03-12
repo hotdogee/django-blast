@@ -28,13 +28,20 @@ $(function() { // document ready
     });
 
 
+    $("#table-user-permission tbody").on("click", "tr td:first-child", function () {
+        $("#count").text(TableTools.fnGetInstance("table-user-permission").fnGetSelected().length);        
+    });
+
+
     $("#select-all").click(function() {
         $(this).parent("tr").toggleClass("selected");
         if ( $(this).parent("tr").hasClass("selected") ) {
             TableTools.fnGetInstance("table-user-permission").fnSelectAll();
+            $("#count").text(TableTools.fnGetInstance("table-user-permission").fnGetSelected().length);        
         }
         else {
             TableTools.fnGetInstance("table-user-permission").fnSelectNone();
+            $("#count").text("0");
         }
     });
 
@@ -74,6 +81,7 @@ $(function() { // document ready
                 }
                 $('#btn-update').button('reset')
                 TableTools.fnGetInstance("table-user-permission").fnSelectNone();
+                $('#count').text("0");
                 $("#select-all").parent("tr").removeClass("selected");
 
             }, "json");

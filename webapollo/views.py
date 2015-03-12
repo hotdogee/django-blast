@@ -290,12 +290,128 @@ def manage(request):
                 'username': p.user.username,
                 'institution': p.institution,
             })
-           
+        organisms = []
+        species = Species.objects.all()
+        for s in species:
+            owner = User.objects.filter(user_permissions__codename=s.name+'_owner').distinct().count()
+            annotator = User.objects.filter(user_permissions__codename__startswith=s.name).distinct().count()
+            organisms.append({
+                'name': s.name,
+                'full_name': s.full_name,
+                'owner': owner,
+                'annotator': annotator,
+            })
     return render(
         request,
         'webapollo/manage.html', {
             'pendings': pendings,
             'users': users,
+            'species': organisms,
+        }
+    )
+
+
+@csrf_exempt
+@staff_member_required
+def species_user(request, species_name):
+    alert_success = False
+    alert_fail = False
+    alert_text = ''
+    if request.method == 'POST':
+        usernames = request.POST.get('usernames')
+        if usernames:
+            usernames = usernames.split(',')
+        op = request.POST.get('operation')  # 'update', 'remove', 'adduser', 'addowner'
+        try:
+            for _username in usernames:
+                u = User.objects.get(username=_username)
+                if op == 'update' and u.has_perm('webapollo.' + species_name + '_owner'):
+                    alert_text = 'Successfully Updated'
+                    continue
+                s = Species.objects.get(name=species_name)
+                perms = Permission.objects.filter(codename__startswith=species_name)
+                # if the user has a pending request, update it instead of adding a new record
+                try:
+                    r = Registration.objects.get(user=u, species=s, status='Pending')
+                except:
+                    r = Registration(user=u, species=s)
+
+                if op.startswith('add'):  # 'adduser' or 'addowner'
+                    perm_value = 15
+                    # using user_permissions.add() will trigger m2m_changed handler, which is undesirable, so write SQL directly to insert permissions
+                    if op == 'addowner':
+                        with connection.cursor() as c:
+                            for perm in perms:
+                                c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [u.id, perm.id])
+                    else:  # 'adduser'
+                        with connection.cursor() as c:
+                            c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', 
+                                [u.id, Permission.objects.get(codename=species_name + '_read').id])
+                            c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', 
+                                [u.id, Permission.objects.get(codename=species_name + '_write').id])
+                        perm_value = 3
+                    insert_species_permission(u.username, s.id, perm_value)
+                    r.status = 'Added'
+                    r.decision_comment = 'Added by ' + request.user.username + ' (admin)'
+                    alert_text = 'Successfully Added'
+                else:  # 'remove' or 'update'
+                    # using user_permissions.remove() will trigger m2m_changed handler, which is undesirable, so write SQL directly to remove permissions
+                    with connection.cursor() as c:
+                        for perm in perms:
+                            c.execute('DELETE FROM auth_user_user_permissions WHERE user_id=%s AND permission_id=%s', [u.id, perm.id])
+                    delete_species_permission(_username, s.id)                  
+                    alert_text = 'Successfully Removed'
+
+                    r.status = 'Removed'
+                    r.decision_comment = 'Removed by ' + request.user.username + ' (admin)'
+                    
+                    # for update users to owner
+                    if op == 'update':
+                        with connection.cursor() as c:
+                            for perm in perms:
+                                c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [u.id, perm.id])
+                        insert_species_permission(u.username, s.id, 15)
+                        r.status = 'Added'
+                        r.decision_comment = 'Added by ' + request.user.username + ' (admin)'
+                        alert_text = 'Successfully Updated'
+
+                r.decision_time = datetime.now()
+                r.save()
+            alert_success = True
+        except:
+            alert_text = 'Exception in webapollo_species_users ' + str(sys.exc_info()[0])
+            alert_fail = True
+
+    # for GET request
+    profiles = Profile.objects.select_related('user').filter(user__user_permissions__codename__startswith=species_name).distinct()
+    users = []
+    for profile in profiles:
+        users.append({
+            'full_name': profile.user.first_name + ' ' + profile.user.last_name,
+            'username': profile.user.username,
+            'institution': profile.institution,
+            'is_owner': profile.user.has_perm('webapollo.' + species_name + '_owner'),  # "<app label>.<permission codename>"
+        })
+    candidates = []
+    profiles = Profile.objects.select_related('user').filter(
+        ~Q(user__user_permissions__codename__startswith=species_name),
+    ).distinct()
+    for profile in profiles:
+        candidates.append({
+            'full_name': profile.user.first_name + ' ' + profile.user.last_name,
+            'username': profile.user.username,
+            'institution': profile.institution,
+        })
+    
+    return render(
+        request,
+        'webapollo/species_user.html', {
+        'users': users,
+        'candidates': candidates,
+        'species_name': species_name,
+        'alert_success': alert_success,
+        'alert_fail': alert_fail,
+        'alert_text': alert_text,
         }
     )
 
