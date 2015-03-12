@@ -52,6 +52,7 @@
   <hr>
   {% endif %}
 </div>
+<!-- Users -->
 <div id="users">
   <table id="table-users" class="table display compact">
   <caption><h2>Users</h2></caption>
@@ -73,8 +74,28 @@
   </tbody>
   </table>
 </div>
+<hr>
+<!-- Species -->
 <div id="species">
-  <h1>Species</h1>
+  <table id="table-species" class="table display compact">
+  <caption><h2>Species</h2></caption>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Coordinators</th>
+      <th>Annotators</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in species %}
+      <tr>
+        <td><a href="./species/{{s.name}}">{{s.name}} ({{s.full_name}})</a></td>
+        <td>{{s.owner}}</td>
+        <td>{{s.annotator}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
 </div>
 {% endblock %}
 

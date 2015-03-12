@@ -222,7 +222,6 @@ SUIT_CONFIG = {
             {'model': 'species', 'label': 'Species'},
             {'model': 'speciespassword', 'label': 'Passwords'},
             {'model': 'registration', 'label': 'Registrations'},
-            {'model': 'auth.user'},
             {'label': 'Management', 'url': '/webapp/webapollo/admin/manage'},
         )},
         # auth and axes
