@@ -4,7 +4,7 @@
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
         <li><a href="{% url 'userprofile:dashboard' %}"><span class="navbar-brand">{% trans 'Welcome, ' %}{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}.</span></a></li>
-        <li><a href="{% url 'logout' %}">Log out</a></li>
+        <li><a href="{% url 'userprofile:logout' %}">Log out</a></li>
         <!-- <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li> -->
     </ul>
 
@@ -13,7 +13,7 @@
 {% else %}
 
 <ul class="nav navbar-nav navbar-right">
-    <li><a href="{% url 'login' %}">Log in</a></li>
+    <li><a href="{% url 'userprofile:login' %}">Log in</a></li>
 </ul>
 
 {% endif %}

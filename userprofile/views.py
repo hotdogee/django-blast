@@ -12,46 +12,102 @@ from django.contrib.auth.views import logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils import html
-from .forms import InfoChangeForm
+from .forms import InfoChangeForm, GetInstitutionForm
 from .models import Profile
-from webapollo.views import get_species
-from webapollo.models import Species, Registration, insert_species_permission, delete_species_permission
+#from webapollo.views import get_species
+from webapollo.models import Species#, Registration, insert_species_permission, delete_species_permission
+from social.apps.django_app.default.models import UserSocialAuth
+
+
+def checkOAuth(_user):
+    return UserSocialAuth.objects.filter(user=_user).exists()
 
 
 @login_required
 def dashboard(request):
-    species_list, interested_species_list, unauth_species_list = get_species(request)
+    #species_list, interested_species_list, unauth_species_list = get_species(request)
+    content_type = ContentType.objects.get_for_model(Species)
+    perms = request.user.user_permissions.filter(content_type=content_type)
+    species_set = set()
+    for perm in perms:
+        species_set.add(perm.name.split('_', 2)[0])
+    species_list = []
+    for sname in species_set:
+        s = Species.objects.get(name=sname)
+        species_list.append({
+            'name': s.name,
+            'full_name': s.full_name,
+        })
     return render(
         request,
         'userprofile/dashboard.html', {
         'year': datetime.now().year,
         'title': 'Dashboard',
         'species_list': species_list,
+        'isOAuth': checkOAuth(request.user),
     })
 
 
 @login_required
-def info_change(request):
-    p = Profile.objects.select_related('user').get(user=request.user)
-    #u = User.objects.get(pk=request.user.id)
-    msg = ''
+def get_institution(request):
     if request.method == 'POST':
-        form = InfoChangeForm(request.POST, instance=p)
+        form = GetInstitutionForm(request.POST)
         if form.is_valid():
-            form.save()
-            msg = 'Your account info was changed.'
-    else: # request.method == 'GET'
-        form = InfoChangeForm(instance=p)
+            p = Profile()
+            p.user = request.user
+            p.institution = form.cleaned_data['institution']
+            p.save()
+    else:
+        form = GetInstitutionForm()
 
-    return render(
-        request,
-        'userprofile/info_change.html', {
-        'year': datetime.now().year,
-        'title': 'Update Account Info',
-        'form': form,
-        'msg': msg,
-    })
+    try:
+        p = Profile.objects.get(user=request.user)
+        return HttpResponseRedirect(reverse('userprofile:dashboard'))
+    except ObjectDoesNotExist:
+        return render(
+            request,
+            'userprofile/get_institution.html', {
+            'year': datetime.now().year,
+            'title': 'Specify your institution',
+            'form': form,
+        })
+
+
+@login_required
+def info_change(request):
+    isOAuth = checkOAuth(request.user)
+    try: 
+        p = Profile.objects.select_related('user').get(user=request.user)
+        msg = ''
+        errors = []
+        if request.method == 'POST':
+            if isOAuth:
+                form = GetInstitutionForm(request.POST, instance=p)
+            else:
+                form = InfoChangeForm(request.POST, instance=p)
+            if form.is_valid():
+                form.save()
+                if isOAuth:
+                    msg = 'Your institution was updated.'
+                else:
+                    msg = 'Your account info was updated.'
+            else:
+                errors = str(form.errors)
+        form = InfoChangeForm(instance=p)
+        return render(
+            request,
+            'userprofile/info_change.html', {
+            'year': datetime.now().year,
+            'title': 'Update Account Info',
+            'form': form,
+            'msg': msg,
+            'isOAuth': isOAuth,
+            'errors': errors,
+        })
+    except:
+        return HttpResponseRedirect(reverse('userprofile:get_institution'))
 
 @login_required
 def logout_all(request):

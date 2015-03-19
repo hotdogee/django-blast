@@ -18,7 +18,9 @@
     </ul>
     <ul class="list-group">
       <li class="list-group-item">Settings</li>
-      <li class="list-group-item"><a href='{% url "password_change" %}'>Change Password</a></li>
+      {% if not isOAuth%} 
+      <li class="list-group-item"><a href='{% url "userprofile:password_change" %}'>Change Password</a></li>
+      {% endif %}
       <li class="list-group-item"><a href='{% url "userprofile:info_change" %}'>Update Account Info</a></li>
     </ul>
   </div>
