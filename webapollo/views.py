@@ -17,6 +17,7 @@ from django.core.urlresolvers import reverse
 from django.utils import html
 from .models import Species, SpeciesPassword, Registration, insert_species_permission, delete_species_permission
 from userprofile.models import Profile
+from userprofile.views import checkOAuth
 
 
 @login_required
@@ -95,6 +96,7 @@ def index(request):
         'species_list': species_list,
         'interested_species_list': interested_species_list,
         'unauth_species_list': unauth_species_list,
+        'isOAuth': checkOAuth(request.user),
     })
 
 
@@ -480,7 +482,10 @@ def user_permission(request, user_id):
                         4 : ['publish'],
                         8 : ['admin'],
                         3 : ['read', 'write'],
+                        5 : ['read', 'publish'],
+                        9 : ['read', 'admin'],
                         6 : ['write', 'publish'],
+                        10: ['write', 'admin'],
                         12: ['publish', 'admin'],
                         7 : ['read', 'write', 'publish'],
                         14: ['write', 'publish', 'admin'],

@@ -14,6 +14,15 @@
 {% if msg %}
   <div class="alert alert-success" role="alert">{{ msg }}</div>
 {% endif %}
+
+{% if errors %}
+    <div class="alert alert-danger" role="alert">{{ errors }}</div>
+{% endif %}
+
+{% if isOAuth %}
+  <div class="alert alert-info" role="alert">You logged in with your social account, so only the institution can be updated.</div>
+{% endif %}
+
 <form class="form-horizontal" action="" method="post">
     {% csrf_token %}
     <div class="form-group">
@@ -58,10 +67,16 @@
 </form>
 <script type="text/javascript">
     window.setTimeout(function() {
-    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+    $(".alert-success").fadeTo(500, 0).slideUp(500, function(){
         $(this).remove(); 
         });
     }, 2000);
+    {% if isOAuth %}
+        document.getElementById('{{ form.first_name.id_for_label }}').disabled = true;
+        document.getElementById('{{ form.last_name.id_for_label }}').disabled = true;
+        document.getElementById('{{ form.email.id_for_label }}').disabled = true;
+        document.getElementById('{{ form.institution.id_for_label }}').focus();
+    {% endif %}
 </script>
 {% endblock%}
 

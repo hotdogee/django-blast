@@ -51,3 +51,19 @@ class InfoChangeForm(forms.ModelForm):
         self.instance.user.save()
         self.instance.institution = self.cleaned_data.get('institution')
         self.instance.save()
+
+
+class GetInstitutionForm(forms.ModelForm):
+    institution = forms.CharField(label=_(u'Institution'),required=True)
+
+    class Meta:
+        model = Profile
+        fields = ['institution']
+    
+    def __init__(self, *args, **kw):
+        super(GetInstitutionForm, self).__init__(*args, **kw)
+        self.fields['institution'].widget.attrs.update({'class': 'form-control', 'placeholder': 'e.g. National Agricultural Library'})
+
+    def save(self, *args, **kw):
+        super(GetInstitutionForm, self).save(*args, **kw)
+        self.instance.institution = self.cleaned_data.get('institution')

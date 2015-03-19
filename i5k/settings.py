@@ -145,6 +145,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'social.apps.django_app.default',
+
 )
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
@@ -223,6 +225,11 @@ SUIT_CONFIG = {
             {'model': 'speciespassword', 'label': 'Passwords'},
             {'model': 'registration', 'label': 'Registrations'},
             {'label': 'Management', 'url': '/webapp/webapollo/admin/manage'},
+        )},
+        {'app': 'default', 'label': 'Social Auth', 'icon':'icon-leaf', 'models': (
+            {'model': 'usersocialauth'},
+            {'model': 'nonce'},
+            {'model': 'association'},
         )},
         # auth and axes
         {'label': 'Auth', 'icon':'icon-lock', 'models': (
