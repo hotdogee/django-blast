@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.pagination import PaginationSerializer
-from .models import Organism, SequenceType, BlastDb, Sequence
+from .models import Organism, SequenceType, BlastDb, Sequence, BlastQueryRecord
 
 class OrganismSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='organism-detail', lookup_field='short_name')
@@ -39,3 +39,9 @@ class SequenceSerializer(serializers.HyperlinkedModelSerializer):
 class PaginatedSequenceSerializer(PaginationSerializer):
     class Meta:
         object_serializer_class = SequenceSerializer
+
+class BlastQueryRecordSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='blastqueryrecord-detail', lookup_field='task_id')
+
+    class Meta:
+        model = BlastQueryRecord
