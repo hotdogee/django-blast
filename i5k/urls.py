@@ -16,43 +16,7 @@ urlpatterns = patterns('',
     url(r'^home$', 'app.views.home', name='home'),
     #url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
-    url(r'^login/$',
-        'django.contrib.auth.views.login',
-        {
-            'template_name': 'app/login.html',
-            'authentication_form': BootstrapAuthenticationForm,
-            'extra_context':
-            {
-                'title':'Log in',
-                'year':datetime.now().year,
-            },
-        },
-        name='login'),
-    url(r'^logout$', 'userprofile.views.logout_all', name='logout'),
-    url(r'^password_change$',
-        'django.contrib.auth.views.password_change',
-        {
-            'template_name': 'userprofile/password_change.html',
-            'password_change_form': BootStrapPasswordChangeForm,
-            'extra_context':
-            {
-                'title': 'Change Password',
-                'year': datetime.now().year,
-            },
-        },
-        name='password_change'),
-    url(r'^password_change_done$',
-        'django.contrib.auth.views.password_change_done',
-        {
-            'template_name': 'userprofile/password_change_done.html',
-            'extra_context':
-            {
-                'title': 'Password Changed',
-                'year': datetime.now().year,
-            },
-        },
-        name='password_change_done'),
-    
+    url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/filebrowser/', include('filebrowser.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
