@@ -14,7 +14,7 @@ from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import html
-from .forms import InfoChangeForm, GetInstitutionForm
+from .forms import InfoChangeForm, GetInstitutionForm, RegistrationForm
 from .models import Profile
 #from webapollo.views import get_species
 from webapollo.models import Species#, Registration, insert_species_permission, delete_species_permission
@@ -24,6 +24,20 @@ from social.apps.django_app.default.models import UserSocialAuth
 def checkOAuth(_user):
     return UserSocialAuth.objects.filter(user=_user).exists()
 
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            #new_user = form.save()
+            return HttpResponse("valid")
+            return HttpResponseRedirect(".")
+    else:
+        form = RegistrationForm()
+    return render(request, "userprofile/register.html", {
+        'form': form,
+        'title': 'Registration',
+    })
 
 @login_required
 def dashboard(request):

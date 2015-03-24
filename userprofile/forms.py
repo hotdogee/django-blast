@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.utils.translation import ugettext, ugettext_lazy as _
 from .models import Profile
 
@@ -64,6 +64,37 @@ class GetInstitutionForm(forms.ModelForm):
         super(GetInstitutionForm, self).__init__(*args, **kw)
         self.fields['institution'].widget.attrs.update({'class': 'form-control', 'placeholder': 'e.g. National Agricultural Library'})
 
-    def save(self, *args, **kw):
-        super(GetInstitutionForm, self).save(*args, **kw)
-        self.instance.institution = self.cleaned_data.get('institution')
+
+class RegistrationForm(UserCreationForm):
+    first_name = forms.RegexField(label=_("First name"), max_length=30, required=True,
+        regex=r'^[\w.-]+$',
+        help_text=_("Required. 30 characters or fewer. Letters, digits and /./-/_ only."),
+        error_messages={'invalid': _("This value may contain only letters, numbers and /./-/_ characters.")}
+    )
+    last_name = forms.RegexField(label=_("Last name"), max_length=30, required=True,
+        regex=r'^[\w.-]+$',
+        help_text=_("Required. 30 characters or fewer. Letters, digits and /./-/_ only."),
+        error_messages={'invalid': _("This value may contain only letters, numbers and /./-/_ characters.")}
+    )
+    email = forms.EmailField(label=_(u'Email'),required=True)
+    institution = forms.RegexField(label=_("Institution"), max_length=100, required=True,
+        regex=r'^[\w.-]+$',
+        help_text=_("Required. 30 characters or fewer. Letters, digits and /./-/_ only."),
+        error_messages={'invalid': _("This value may contain only letters, numbers and /./-/_ characters.")}
+    )
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get("password1")
+        if len(password1) < 8:
+            raise forms.ValidationError('Password must be at least 8 characters long.')
+        return password1
+
+    def __init__(self, *args, **kw):
+        super(RegistrationForm, self).__init__(*args, **kw)
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
+        self.fields['institution'].widget.attrs.update({'class': 'form-control', 'placeholder': 'e.g. National Agricultural Library'})
