@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^$', views.dashboard, name='dashboard'),
     url(r'^get_institution$', views.get_institution, name='get_institution'),
     url(r'^info_change$', views.info_change, name='info_change'),
+    url(r'^register$', views.register, name='register'),
     url(r'^login/$',
         'django.contrib.auth.views.login',
         {
@@ -22,6 +23,18 @@ urlpatterns = patterns('',
         },
         name='login'),
     url(r'^logout$', 'userprofile.views.logout_all', name='logout'),
+    url(r'^password_reset_done$',
+        'django.contrib.auth.views.password_reset_done',
+        {
+            'template_name': 'userprofile/password_change_done.html',
+            'extra_context':
+            {
+                'title': 'Password Changed',
+                'year': datetime.now().year,
+            },
+        },
+        name='password_reset_done'),
+    url(r'^password_reset$', 'django.contrib.auth.views.password_reset', name='password_reset'),
     url(r'^password_change_done$',
         'django.contrib.auth.views.password_change_done',
         {

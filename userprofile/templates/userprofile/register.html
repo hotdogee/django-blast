@@ -1,0 +1,57 @@
+{% extends "app/layout.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+<hr />
+<div>
+    <form method="post" class="form-horizontal">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label}}" class="col-md-2 control-label">Username</label>
+            <div class="col-md-10">{{ form.username }}{{ form.username.errors }}</div>
+            
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password1.id_for_label}}" class="col-md-2 control-label">Password</label>
+            <div class="col-md-10">{{ form.password1 }}{{ form.password1.errors }}</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password2.id_for_label}}" class="col-md-2 control-label">Confirm password</label>
+            <div class="col-md-10">{{ form.password2 }}{{ form.password2.errors }}</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.first_name.id_for_label}}" class="col-md-2 control-label">First name</label>
+            <div class="col-md-10">{{ form.first_name }}{{ form.first_name.errors }}</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.last_name.id_for_label}}" class="col-md-2 control-label">Last name</label>
+            <div class="col-md-10">{{ form.last_name }}{{ form.last_name.errors }}</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label}}" class="col-md-2 control-label">Email</label>
+            <div class="col-md-10">{{ form.email }}{{ form.email.errors }}</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.institution.id_for_label}}" class="col-md-2 control-label">Institution</label>
+            <div class="col-md-10">{{ form.institution }}{{ form.institution.errors }}</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">{% trans 'Submit' %}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>document.getElementById('{{form.username.id_for_label}}').focus();</script>
+
+{% endblock %}
+
