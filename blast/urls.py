@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url, include
 from blast import views
-from .api import OrganismViewSet, SequenceTypeViewSet, BlastDbViewSet, SequenceViewSet
+from .api import OrganismViewSet, SequenceTypeViewSet, BlastDbViewSet, SequenceViewSet, BlastQueryRecordViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -8,6 +8,7 @@ router.register(r'organism', OrganismViewSet)
 router.register(r'seqtype', SequenceTypeViewSet)
 router.register(r'blastdb', BlastDbViewSet)
 router.register(r'seq', SequenceViewSet)
+router.register(r'task', BlastQueryRecordViewSet)
 
 urlpatterns = patterns('',
     # ex: /blast/

@@ -293,7 +293,7 @@ CELERY_DISABLE_RATE_LIMITS = True
 #CELERY_ENABLE_UTC = True
 
 # Use virtual environment or not
-USE_VIRTUALENV = True
+USE_VIRTUALENV = False
 VIRTUALENV_ROOT = 'virtualenv/py2.7'
 
 USE_CACHE = False

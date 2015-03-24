@@ -16,8 +16,8 @@ from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.decorators import action, link
 from rest_framework.response import Response
 from rest_framework import viewsets
-from .models import Organism, SequenceType, BlastDb, Sequence
-from .serializers import OrganismSerializer, SequenceTypeSerializer, BlastDbSerializer, SequenceSerializer, PaginatedSequenceSerializer
+from .models import Organism, SequenceType, BlastDb, Sequence, BlastQueryRecord
+from .serializers import OrganismSerializer, SequenceTypeSerializer, BlastDbSerializer, SequenceSerializer, PaginatedSequenceSerializer, BlastQueryRecordSerializer
 
 class OrganismViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -81,3 +81,11 @@ class SequenceViewSet(viewsets.ReadOnlyModelViewSet):
     renderer_classes = (JSONRenderer, BrowsableAPIRenderer, FASTARenderer)
     lookup_field = 'id'
     lookup_value_regex = '[^/]+'
+
+class BlastQueryRecordViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Retrieve organisms.
+    """
+    queryset = BlastQueryRecord.objects.all()
+    serializer_class = BlastQueryRecordSerializer
+    lookup_field = 'task_id'
