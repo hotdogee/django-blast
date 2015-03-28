@@ -16,8 +16,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 from django.utils import html
 from .models import Species, SpeciesPassword, Registration, insert_species_permission, delete_species_permission
-from userprofile.models import Profile
-from userprofile.views import checkOAuth
+from app.models import Profile
+from app.views import checkOAuth
 
 
 @login_required
