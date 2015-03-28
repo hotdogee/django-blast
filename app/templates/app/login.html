@@ -26,8 +26,8 @@
                     <div class="col-md-offset-2 col-md-10">
                         <input type="hidden" name="next" value="{{ next }}" />
                         <input type="submit" value="Log in" class="btn btn-default" />&nbsp;&nbsp;
-                        <a href=#>Forgot password?</a>&nbsp;&nbsp;
-                        <a href=#>Create new account</a>
+                        <a href="#">Forgot password?</a>&nbsp;&nbsp;
+                        <a href="{% url "register" %}">Create new account</a>
                     </div>
                 </div>
                 {% if form.errors %}
@@ -40,8 +40,8 @@
         <section id="socipalLoginForm">
             <h4>Or sign in with</h4>
             <hr />
-            <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url "userprofile:get_institution" %}" sytle="text-align:center;"><img src="{% static 'app/images/google-plus-48.png' %}" class="img-rounded"></a>&nbsp;
-            <a href="{% url 'social:begin' 'facebook' %}?next={% url "userprofile:get_institution" %}" sytle="text-align:center;"><img src="{% static 'app/images/facebook-icon-48.png' %}" class="img-rounded"></a>
+            <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url "get_institution" %}" sytle="text-align:center;"><img src="{% static 'app/images/google-plus-48.png' %}" class="img-rounded"></a>&nbsp;
+            <a href="{% url 'social:begin' 'facebook' %}?next={% url "get_institution" %}" sytle="text-align:center;"><img src="{% static 'app/images/facebook-icon-48.png' %}" class="img-rounded"></a>
         </section>
     </div>
 </div>

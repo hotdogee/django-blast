@@ -138,7 +138,7 @@ INSTALLED_APPS = (
     'blast',
     'webapollo',
     'proxy',
-    'userprofile',
+    # 'userprofile',
     # Uncomment the next line to enable the admin:
     'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
     'filebrowser',
@@ -293,7 +293,7 @@ CELERY_DISABLE_RATE_LIMITS = True
 #CELERY_ENABLE_UTC = True
 
 # Use virtual environment or not
-USE_VIRTUALENV = False
+USE_VIRTUALENV = True
 VIRTUALENV_ROOT = 'virtualenv/py2.7'
 
 USE_CACHE = False
