@@ -7,7 +7,7 @@
 <h2>{{ title }}</h2>
 
 <div>
-<h4>Looks this is your first login! Please tell us your institution</h4>
+<h4>Welcome {% firstof user.first_name user.username %}! Please tell us your institution to complete the registration process</h4>
 <hr>
 <form class="form-horizontal" action="" method="post">
     {% csrf_token %}
