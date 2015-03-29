@@ -1,4 +1,4 @@
-{% extends "userprofile/dashboard-base.html" %}
+{% extends "app/dashboard-base.html" %}
 {% load staticfiles %}
 
 {% block head-scripts %}
@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block dashboard-breadcrumb %}
-<li><a href="{% url 'userprofile:dashboard' %}">Dashboard</a></li>
+<li><a href="{% url 'dashboard' %}">Dashboard</a></li>
 <li>Apps</li>
 <li>{{ title }}</li>
 {% endblock %}
