@@ -208,13 +208,13 @@ def approve(request):
                     _species = Species.objects.get(name=_species_name)
                     _perm_value = 3
                     _user = User.objects.get(username=_username)
+                    _registration = Registration.objects.get(user__username=_username, species__name=_species_name, status='Pending')
                     
                     # using user_permissions.add() will trigger m2m_changed handler, which is undesirable, so write SQL directly to insert permissions
                     with connection.cursor() as c:
                         c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [_user.id, Permission.objects.get(codename=_species_name + '_read').id]) 
                         c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [_user.id, Permission.objects.get(codename=_species_name + '_write').id])                    
                     insert_species_permission(_username, _species.id, _perm_value)
-                    _registration = Registration.objects.get(user__username=_username, species__name=_species_name, status='Pending')
                     _registration.status = 'Approved'
                     _registration.decision_time = datetime.now()
                     _registration.decision_comment = 'Approved by ' + request.user.username
