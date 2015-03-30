@@ -124,8 +124,6 @@ $(function() { // document ready
         $.post(window.location.pathname + "remove", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
             if (data.succeeded) {
                 var t = $("#annotators-" + species_name).DataTable();
-                //$('#tr' + '-' + username + '-' + species_name).fadeOut(500, function() { $(this).remove(); });
-                //tr.fadeOut(500, function() { $(this).remove(); });
                 tr.fadeOut(500);
                 t.row('#tr' + '-' + username + '-' + species_name).remove().draw( false );
             }
@@ -197,7 +195,7 @@ $(function() { // document ready
             else {
                $('#rejectModal').children('.modal-dialog').children('.modal-content').children('.modal-body').text('The user was probably rejected by other coordinators. Please try again later.'); 
             }
-            $('#tr-' + v[0] + '-' + v[1]).fadeOut(500, function() { $(this).remove(); });
+            $('[id="tr-' + v[0] + '-' + v[1] + '"]').fadeOut(500, function() { $(this).remove(); });
         }, "json");
     });
 
