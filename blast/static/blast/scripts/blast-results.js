@@ -948,6 +948,7 @@ $(function () { // document ready
             }
         }
     });
+
     function draw_legend(legend_id, color_list, li_text) {
         d3.select(legend_id).selectAll('div').remove();
         var legend = d3.select(legend_id).selectAll('div').data(color_list).enter().append('div').attr('class', 'color-key')
@@ -1224,7 +1225,9 @@ $(function () { // document ready
     });
     $table_container.width(w);
     updateDataTableHeight();
-    updateAlignmentGraph();
+    // trigger onSwitchChange to updateAlignmentGraph
+    $('#score-to-color-checkbox').trigger('switchChange.bootstrapSwitch');
+    //updateAlignmentGraph();
     results_table_api.columns.adjust().draw();
     var footer = $('<p class="nal-footer">2014 - National Agricultural Library</p>');
     $('.ui-corner-bl').append(footer);
