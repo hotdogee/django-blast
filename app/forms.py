@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext, ugettext_lazy as _
+from captcha.fields import CaptchaField
 from .models import Profile
 
 class BootstrapAuthenticationForm(AuthenticationForm):
@@ -64,7 +66,7 @@ class InfoChangeForm(forms.ModelForm):
         self.instance.save()
 
 
-class GetInstitutionForm(forms.ModelForm):
+class SetInstitutionForm(forms.ModelForm):
     institution = forms.CharField(label=_(u'Institution'),required=True)
 
     class Meta:
@@ -72,7 +74,7 @@ class GetInstitutionForm(forms.ModelForm):
         fields = ['institution']
     
     def __init__(self, *args, **kw):
-        super(GetInstitutionForm, self).__init__(*args, **kw)
+        super(SetInstitutionForm, self).__init__(*args, **kw)
         self.fields['institution'].widget.attrs.update({'class': 'form-control', 'placeholder': 'e.g. National Agricultural Library'})
 
 
@@ -93,6 +95,7 @@ class RegistrationForm(UserCreationForm):
         help_text=_("Required. 30 characters or fewer. Letters, digits and /./-/_ only."),
         error_messages={'invalid': _("This value may contain only letters, numbers and /./-/_ characters.")}
     )
+    captcha = CaptchaField()
 
     def clean_password1(self):
         password1 = self.cleaned_data.get("password1")
@@ -109,3 +112,17 @@ class RegistrationForm(UserCreationForm):
         self.fields['last_name'].widget.attrs.update({'class': 'form-control'})
         self.fields['email'].widget.attrs.update({'class': 'form-control'})
         self.fields['institution'].widget.attrs.update({'class': 'form-control', 'placeholder': 'e.g. National Agricultural Library'})
+
+    def save(self, commit=True):
+        user = super(UserCreationForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
+        user.email = self.cleaned_data["email"]
+        if commit:
+            user.save()
+            p = Profile()
+            p.user = user
+            p.institution = self.cleaned_data['institution']
+            p.save()
+        return user

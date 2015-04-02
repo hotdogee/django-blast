@@ -40,8 +40,8 @@
         <section id="socipalLoginForm">
             <h4>Or sign in with</h4>
             <hr />
-            <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url "get_institution" %}" sytle="text-align:center;"><img src="{% static 'app/images/google-plus-48.png' %}" class="img-rounded"></a>&nbsp;
-            <a href="{% url 'social:begin' 'facebook' %}?next={% url "get_institution" %}" sytle="text-align:center;"><img src="{% static 'app/images/facebook-icon-48.png' %}" class="img-rounded"></a>
+            <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url "set_institution" %}" sytle="text-align:center;"><img src="{% static 'app/images/google-plus-48.png' %}" class="img-rounded"></a>&nbsp;
+            <a href="{% url 'social:begin' 'facebook' %}?next={% url "set_institution" %}" sytle="text-align:center;"><img src="{% static 'app/images/facebook-icon-48.png' %}" class="img-rounded"></a>
         </section>
     </div>
 </div>

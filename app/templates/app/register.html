@@ -39,6 +39,10 @@
             <div class="col-md-10">{{ form.institution }}{{ form.institution.errors }}</div>
         </div>
         <div class="form-group">
+            <label for="{{ form.captcha.id_for_label}}" class="col-md-2 control-label">CAPTCHA</label>
+            <div class="col-md-10">{{ form.captcha}}{{ form.captcha.errors }}</div>
+        </div>
+        <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-default">{% trans 'Submit' %}</button>
             </div>

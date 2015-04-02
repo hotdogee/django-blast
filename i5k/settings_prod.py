@@ -11,9 +11,9 @@ ALLOWED_HOSTS = (
 )
 
 MEDIA_URL = '/url/to/media/'
-STATIC_URL = '/url/tostatic/'
-LOGIN_URL = '/url/to/login/'
-LOGIN_REDIRECT_URL = '/url/to/user/'
+STATIC_URL = '/url/to/static/'
+LOGIN_URL = '/url/to/login'
+LOGIN_REDIRECT_URL = '/url/to/home'
 
 DATABASES = {
     'default': {
@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'axes.middleware.FailedLoginMiddleware',
-    'userprofile.middleware.SocialAuthExceptionMiddleware',
+    'app.middleware.SocialAuthExceptionMiddleware',
 )
 
 SOCIAL_AUTH_PIPELINE = (
@@ -67,3 +67,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details'
 )
+
+CAPTCHA_LETTER_ROTATION = None
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)

@@ -146,7 +146,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'social.apps.django_app.default',
-
+    'captcha',
 )
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
