@@ -22,9 +22,10 @@ urlpatterns = patterns('',
     url(r'^proxy/', include('proxy.urls', namespace='proxy')),
     #url(r'^user/', include('userprofile.urls', namespace='userprofile')),
     url(r'^webapollo/', include('webapollo.urls', namespace='webapollo')),
+    url(r'^captcha/', include('captcha.urls')),
 
     # user authentication and profilei
-    url(r'^get_institution$', 'app.views.get_institution', name='get_institution'),
+    url(r'^set_institution$', 'app.views.set_institution', name='set_institution'),
     url(r'^info_change$', 'app.views.info_change', name='info_change'),
     url(r'^register$', 'app.views.register', name='register'),
     url(r'^login/$',

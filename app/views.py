@@ -8,9 +8,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.views import logout
-from .forms import InfoChangeForm, GetInstitutionForm, RegistrationForm
+from .forms import InfoChangeForm, SetInstitutionForm, RegistrationForm
 from .models import Profile
 from social.apps.django_app.default.models import UserSocialAuth
 from webapollo.models import Species
@@ -51,9 +52,11 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            #new_user = form.save()
-            return HttpResponse("valid")
-            return HttpResponseRedirect(".")
+            new_user = form.save();
+            new_user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            if new_user is not None:
+                login(request, new_user)
+            return HttpResponseRedirect(reverse('dashboard'))
     else:
         form = RegistrationForm()
     return render(request, "app/register.html", {
@@ -62,16 +65,16 @@ def register(request):
     })
 
 @login_required
-def get_institution(request):
+def set_institution(request):
     if request.method == 'POST':
-        form = GetInstitutionForm(request.POST)
+        form = SetInstitutionForm(request.POST)
         if form.is_valid():
             p = Profile()
             p.user = request.user
             p.institution = form.cleaned_data['institution']
             p.save()
     else:
-        form = GetInstitutionForm()
+        form = SetInstitutionForm()
 
     try:
         p = Profile.objects.get(user=request.user)
@@ -79,7 +82,7 @@ def get_institution(request):
     except ObjectDoesNotExist:
         return render(
             request,
-            'app/get_institution.html', {
+            'app/set_institution.html', {
             'year': datetime.now().year,
             'title': 'Specify your institution',
             'form': form,
@@ -117,11 +120,11 @@ def info_change(request):
             'errors': errors,
         })
     except:
-        return HttpResponseRedirect(reverse('get_institution'))
+        return HttpResponseRedirect(reverse('set_institution'))
 
 @login_required
 def logout_all(request):
-    # todo: is webapollo is not installed directly logout
+    # todo: if webapollo is not installed directly logout
     # logout all WebApollo instances
     content_type = ContentType.objects.get_for_model(Species)
     perms = request.user.user_permissions.all()
