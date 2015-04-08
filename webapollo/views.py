@@ -543,3 +543,25 @@ def species(request, species_name):
         response.set_cookie(k, value=v, domain='.nal.usda.gov', path='/' + species_name + '/')
                 
     return response
+
+@login_required
+def logout_all_instances(request):
+    # logout all WebApollo instances
+    content_type = ContentType.objects.get_for_model(Species)
+    perms = request.user.user_permissions.all()
+    cookie_ids = set()
+    for perm in perms:
+        if perm.content_type == content_type:
+            cookie_ids.add(request.user.username + '_' + perm.name.split('_', 1)[0] + '_cookie')
+    if cookie_ids:
+        cached_cookies = cache.get_many(list(cookie_ids)) 
+        # ex. cached_cookies would be
+        #   {u'blast_admin_cercap_cookie': {'JSESSIONID': 'A56B4675E09E96CB4E30EA7931080CFB'}, 
+        #    u'blast_admin_anogla_cookie': {'JSESSIONID': '48725B5463EC536C053973E56CFCB3F6'}}             
+        if cached_cookies:
+            for cache_id, cache_value in cached_cookies.iteritems():
+                sname = cache_id.split('_')[-2]
+                species = Species.objects.get(name=sname)
+                logout_url = species.url + '/Login?operation=logout'
+                requests.post(logout_url, cookies=cache_value)
+            cache.delete_many(cached_cookies.keys())
