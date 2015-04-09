@@ -97,7 +97,7 @@ def info_change(request):
         errors = []
         if request.method == 'POST':
             if isOAuth:
-                form = GetInstitutionForm(request.POST, instance=p)
+                form = SetInstitutionForm(request.POST, instance=p)
             else:
                 form = InfoChangeForm(request.POST, instance=p)
             if form.is_valid():
