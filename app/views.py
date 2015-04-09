@@ -64,6 +64,11 @@ def register(request):
         'title': 'Registration',
     })
 
+def password_reset(request):
+    from django.core.mail import send_mail
+    send_mail('Subject here', 'Here is the message.', 'from@example.com',
+        ['to@example.com'], fail_silently=False)
+
 @login_required
 def set_institution(request):
     if request.method == 'POST':

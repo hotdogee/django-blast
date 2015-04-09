@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext, ugettext_lazy as _
 from captcha.fields import CaptchaField
@@ -35,6 +35,29 @@ class BootStrapPasswordChangeForm(PasswordChangeForm):
                                         'placeholder': 'New password',
                                     })
                                   ) 
+    def clean_new_password1(self):
+        new_password1 = self.cleaned_data.get("new_password1")
+        if len(new_password1) < 8:
+            raise forms.ValidationError('Password must be at least 8 characters long.')
+        return new_password1
+
+class BootStrapPasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kw):
+        super(BootStrapPasswordResetForm, self).__init__(*args, **kw)
+        self.fields['email'].widget.attrs.update({'class' : 'form-control'})
+
+class BootStrapSetPasswordForm(SetPasswordForm):
+    def clean_new_password1(self):
+        new_password1 = self.cleaned_data.get("new_password1")
+        if len(new_password1) < 8:
+            raise forms.ValidationError('Password must be at least 8 characters long.')
+        return new_password1
+
+    def __init__(self, *args, **kw):
+        super(BootStrapSetPasswordForm, self).__init__(*args, **kw)
+        self.fields['new_password1'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['new_password2'].widget.attrs.update({'class' : 'form-control'})
+
 class InfoChangeForm(forms.ModelForm):
     first_name = forms.CharField(label=_(u'First name'), max_length=30, required=True)
     last_name = forms.CharField(label=_(u'Last name'), max_length=30, required=True)
