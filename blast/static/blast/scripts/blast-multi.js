@@ -520,17 +520,24 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
 
     $('#queries-tab').click(function() {
         user_id = $('table[id^="queries-"]')[0].id.split('-')[1];
-        $('#queries-' + user_id).dataTable( {
-            "ajax": {
-                "url": "http://gmod-dev.nal.usda.gov/webapp/blast/user-tasks/" + user_id,
-                "dataSrc": ""
-            },
-            "columns": [
-                { "data": "enqueue_date" },
-                { "data": "result_status" },
-                { "data": "task_id" },
-            ]
-        });
+        if ( $.fn.dataTable.isDataTable('#queries-' + user_id) ) {
+            var table = $('#queries-' + user_id).DataTable();
+            table.ajax.reload();
+        }
+        else {
+            $('#queries-' + user_id).dataTable( {
+                "ajax": {
+                    "url": "http://gmod-dev.nal.usda.gov/webapp/blast/user-tasks/" + user_id,
+                    "dataSrc": ""
+                },
+                "columns": [
+                    { "data": "enqueue_date" },
+                    { "data": "result_status" },
+                    { "data": "task_id" },
+                    
+                ]
+            });
+        }
     });
         
 });
