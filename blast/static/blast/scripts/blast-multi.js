@@ -517,6 +517,21 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
 	});
 	
     add_blast_options('BLASTN'); //show initially
+
+    $('#queries-tab').click(function() {
+        user_id = $('table[id^="queries-"]')[0].id.split('-')[1];
+        $('#queries-' + user_id).dataTable( {
+            "ajax": {
+                "url": "http://gmod-dev.nal.usda.gov/webapp/blast/user-tasks/" + user_id,
+                "dataSrc": ""
+            },
+            "columns": [
+                { "data": "enqueue_date" },
+                { "data": "result_status" },
+                { "data": "task_id" },
+            ]
+        });
+    });
         
 });
 

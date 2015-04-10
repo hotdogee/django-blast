@@ -1,7 +1,6 @@
 # coding: utf-8
 import requests, json, sys
 from datetime import datetime
-from functools import wraps
 from pytz import timezone
 from django.db import connection
 from django.db.models import Q
@@ -17,7 +16,7 @@ from django.core.urlresolvers import reverse
 from django.utils import html
 from .models import Species, SpeciesPassword, Registration, insert_species_permission, delete_species_permission
 from app.models import Profile
-from app.views import checkOAuth
+from app.views import checkOAuth, ajax_login_required
 
 
 @login_required
@@ -98,16 +97,6 @@ def index(request):
         'unauth_species_list': unauth_species_list,
         'isOAuth': checkOAuth(request.user),
     })
-
-
-def ajax_login_required(view_func):
-    @wraps(view_func)
-    def wrapper(request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return view_func(request, *args, **kwargs)
-        return HttpResponse(json.dumps({ 'invalid_request': True }), content_type='application/json')
-    return wrapper
-
 
 @ajax_login_required
 def apply(request):

@@ -12,6 +12,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import logout
 from django.contrib.contenttypes.models import ContentType
 from django.apps import apps
+from functools import wraps
 from .forms import InfoChangeForm, SetInstitutionForm, RegistrationForm
 from .models import Profile
 from social.apps.django_app.default.models import UserSocialAuth
@@ -48,6 +49,14 @@ def about(request):
 def checkOAuth(_user):
     return UserSocialAuth.objects.filter(user=_user).exists()
 
+def ajax_login_required(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return view_func(request, *args, **kwargs)
+        return HttpResponse(json.dumps({ 'invalid_request': True }), content_type='application/json')
+    return wrapper
+    
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -83,7 +92,7 @@ def set_institution(request):
 
     try:
         p = Profile.objects.get(user=request.user)
-        return HttpResponseRedirect(reverse('dashboard'))
+        return HttpResponseRedirect(reverse('blast:create'))
     except ObjectDoesNotExist:
         return render(
             request,

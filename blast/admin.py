@@ -5,8 +5,8 @@ from suit.widgets import AutosizedTextarea
 from django.contrib import messages
 
 class BlastQueryRecordAdmin(admin.ModelAdmin):
-    list_display = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status',)
-    fields = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status',)
+    list_display = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status', 'user', 'is_shown')
+    fields = ('task_id', 'enqueue_date', 'dequeue_date', 'result_date', 'result_status', 'user', 'is_shown')
     readonly_fields = ('enqueue_date',)
     date_hierarchy = 'enqueue_date'
     list_filter = ('enqueue_date', 'dequeue_date', 'result_date', 'result_status',)

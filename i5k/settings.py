@@ -437,6 +437,7 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = '1025'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'
 
 # Use settings for production
 USE_PROD_SETTINGS = True
