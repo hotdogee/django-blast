@@ -535,7 +535,21 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
                     { "data": "result_status" },
                     { "data": "task_id" },
                     
-                ]
+                ],
+                "aoColumnDefs": [{
+                    "aTargets": [2], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        // 'full' is the row's data object, and 'data' is this column's data
+                        // e.g. 'full[0]' is the comic id, and 'data' is the comic title
+                        return '<a href="' + data  + '" target="_blank">' + data + '</a>';
+                    }},
+                    {
+                    "aTargets": [0], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        return new Date(data).toUTCString();
+                    }}
+                ],
+                "order": [[ 0, "desc" ]],
             });
         }
     });
