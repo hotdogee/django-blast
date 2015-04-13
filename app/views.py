@@ -1,14 +1,17 @@
 import requests
 from datetime import datetime
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url
 from django.http import HttpRequest, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
+from django.template.response import TemplateResponse
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.contrib.auth.views import logout
 from django.contrib.contenttypes.models import ContentType
 from django.apps import apps
@@ -65,7 +68,7 @@ def register(request):
             new_user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
             if new_user is not None:
                 login(request, new_user)
-            return HttpResponseRedirect(reverse('dashboard'))
+            return HttpResponseRedirect(reverse('blast:create'))
     else:
         form = RegistrationForm()
     return render(request, "app/register.html", {
@@ -73,10 +76,38 @@ def register(request):
         'title': 'Registration',
     })
 
-def password_reset(request):
-    from django.core.mail import send_mail
-    send_mail('Subject here', 'Here is the message.', 'from@example.com',
-        ['to@example.com'], fail_silently=False)
+@sensitive_post_parameters()
+@csrf_protect
+@login_required
+def password_change(request,
+        template_name,
+        post_change_redirect,
+        password_change_form,
+        current_app=None, extra_context=None):
+    post_change_redirect = resolve_url(post_change_redirect)
+    if request.method == "POST":
+        form = password_change_form(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            # Updating the password logs out all other sessions for the user
+            # except the current one if
+            # django.contrib.auth.middleware.SessionAuthenticationMiddleware
+            # is enabled.
+            update_session_auth_hash(request, form.user)
+            return HttpResponseRedirect(post_change_redirect)
+    else:
+        form = password_change_form(user=request.user)
+    context = {
+        'form': form,
+        'title': 'Password change',
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    context.update({'isOAuth': checkOAuth(request.user)})
+    if current_app is not None:
+        request.current_app = current_app
+    return TemplateResponse(request, template_name, context)
+
 
 @login_required
 def set_institution(request):
@@ -144,27 +175,3 @@ def logout_all(request):
     logout(request)
     return HttpResponseRedirect(reverse('blast:create'))
 
-@login_required
-def dashboard(request):
-    species_list = []
-    if apps.is_installed('webapollo'):
-        from webapollo.models import Species
-        content_type = ContentType.objects.get_for_model(Species)
-        perms = request.user.user_permissions.filter(content_type=content_type)
-        species_set = set()    
-        for perm in perms:
-            species_set.add(perm.name.split('_', 2)[0])
-        for sname in species_set:
-            s = Species.objects.get(name=sname)
-            species_list.append({
-                'name': s.name,
-                'full_name': s.full_name,
-            })
-    return render(
-        request,
-        'app/dashboard.html', {
-        'year': datetime.now().year,
-        'title': 'Dashboard',
-        'species_list': species_list,
-        'isOAuth': checkOAuth(request.user),
-    })

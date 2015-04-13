@@ -12,7 +12,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^home$', 'app.views.dashboard', name='dashboard'),
+    #url(r'^home$', 'dashboard.views.dashboard', name='dashboard'),
     #url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
     url('', include('social.apps.django_app.urls', namespace='social')),
@@ -98,7 +98,8 @@ urlpatterns = patterns('',
         },
         name='password_change_done'),
     url(r'^password_change$',
-        'django.contrib.auth.views.password_change',
+        #'django.contrib.auth.views.password_change',
+        'app.views.password_change',
         {
             'template_name': 'app/password_change.html',
             'password_change_form': BootStrapPasswordChangeForm,

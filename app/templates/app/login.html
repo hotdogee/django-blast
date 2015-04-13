@@ -1,7 +1,7 @@
 {% extends "app/layout.html" %}
 {% load staticfiles %}
 {% block content %}
-
+{% if isLoginEnabled %}
 <h2>{{ title }}</h2>
 <div class="row">
     <div class="col-md-8">
@@ -26,7 +26,7 @@
                     <div class="col-md-offset-2 col-md-10">
                         <input type="hidden" name="next" value="{{ next }}" />
                         <input type="submit" value="Log in" class="btn btn-default" />&nbsp;&nbsp;
-                        <a href="#">Forgot password?</a>&nbsp;&nbsp;
+                        <a href="{% url "password_reset" %}">Forgot password?</a>&nbsp;&nbsp;
                         <a href="{% url "register" %}">Create new account</a>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
         </section>
     </div>
 </div>
-
+{% endif %}
 {% endblock %}
 
 

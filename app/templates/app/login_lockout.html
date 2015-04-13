@@ -1,10 +1,12 @@
 {% extends "app/layout.html" %}
 
 {% block content %}
+{% if isLoginEnabled %}
 
 <h2>{{ title }}</h2>
 <h4>{{ info }}</h4>
 
+{% endif %}
 {% endblock %}
 
 

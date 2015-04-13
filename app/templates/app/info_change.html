@@ -1,15 +1,13 @@
-{% extends "app/dashboard-base.html" %}
+{% extends "app/layout.html" %}
+
 {% load i18n %}
+{% load staticfiles %}
 
-{% block dashboard-breadcrumb %}
+{% block content %}
+{% if isLoginEnabled %}
 
-<li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-<li>Settings</li>
-<li>Update Account Info</li>
-
-{% endblock %}
-
-{% block dashboard-content %}
+<h2>{{ title }}</h2>
+<hr />
 
 {% if msg %}
   <div class="alert alert-success" role="alert">{{ msg }}</div>
@@ -78,6 +76,7 @@
         document.getElementById('{{ form.institution.id_for_label }}').focus();
     {% endif %}
 </script>
+{% endif %}
 {% endblock%}
 
 

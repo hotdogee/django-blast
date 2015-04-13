@@ -3,7 +3,16 @@
 <!--<form id="logoutForm" action="./logout" method="post" class="navbar-right">-->
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="{% url 'dashboard' %}"><span class="navbar-brand">{% trans 'Welcome, ' %}{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}.</span></a></li>
+        <!--<li><a href="#"><span class="navbar-brand">{% trans 'Welcome, ' %}{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}.</span></a></li>-->
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% trans 'Welcome, ' %}{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}.<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'info_change' %}">Update account info</a></li>
+                <li><a href="{% url 'password_change' %}">Change password</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+            </ul>
+        </li>
         <li><a href="{% url 'logout' %}">Log out</a></li>
         <!-- <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li> -->
     </ul>

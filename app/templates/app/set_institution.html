@@ -3,6 +3,7 @@
 {% load staticfiles %}
 
 {% block content %}
+{% if isLoginEnabled %}
 
 <h2>{{ title }}</h2>
 
@@ -27,6 +28,7 @@
 
 </div>
 
+{% endif %}
 {% endblock %}
 
 

@@ -1,0 +1,33 @@
+{% extends "app/layout.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<!--<h2>{{ title }}</h2>-->
+
+<ol class="breadcrumb" style="margin-top: 20px">
+{% block dashboard-breadcrumb %}{% endblock %}
+</ol>
+<div class="row">
+  <div class="col-md-3">
+    <ul class="list-group">
+      <li class="list-group-item">Apps</li>
+      <li class="list-group-item"><a href='{% url "blast:create" %}'>BLAST</a></li>
+      <li class="list-group-item"><a href='{% url "webapollo:index" %}'>Web Apollo</a></li>
+    </ul>
+    <ul class="list-group">
+      <li class="list-group-item">Settings</li>
+      {% if not isOAuth%} 
+      <li class="list-group-item"><a href='{% url "app:password_change" %}'>Change Password</a></li>
+      {% endif %}
+      <li class="list-group-item"><a href='{% url "app:info_change" %}'>Update Account Info</a></li>
+    </ul>
+  </div>
+  <div class="col-md-9">
+    {% block dashboard-content %}{% endblock %}
+  </div>
+</div>
+
+{% endblock %}
+
