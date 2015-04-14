@@ -6,8 +6,8 @@ def proxy_view(request, url, requests_args=None):
         if not 'http://' in url:
             url = url.replace('http:/', 'http://')
         if not 'https://' in url:
-            url = url.replace('https:/', 'http:s//')
-        for safe_url in ['//golr.berkeleybop.org', '//a2-proxy1.stanford.edu:8080/solr/']:
+            url = url.replace('https:/', 'https://')
+        for safe_url in ['//golr.berkeleybop.org', '//a2-proxy1.stanford.edu:8080/solr/', '//golr.geneontology.org/solr']:
             if safe_url in url:
                 param = request.GET.urlencode()
                 response = requests.get(url + '?' + param)
