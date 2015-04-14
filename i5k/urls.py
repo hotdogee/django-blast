@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.conf.urls import patterns, include, url
-from app.forms import BootstrapAuthenticationForm
+from app.forms import BootstrapAuthenticationForm, BootStrapPasswordChangeForm, BootStrapPasswordResetForm, BootStrapSetPasswordForm
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -12,9 +12,20 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^home$', 'app.views.home', name='home'),
+    #url(r'^home$', 'dashboard.views.dashboard', name='dashboard'),
     #url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^admin/filebrowser/', include('filebrowser.urls')),
+    # Uncomment the admin/doc line below to enable admin documentation:
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
+    #url(r'^user/', include('userprofile.urls', namespace='userprofile')),
+    url(r'^captcha/', include('captcha.urls')),
+
+    # user authentication
+    url(r'^set_institution$', 'app.views.set_institution', name='set_institution'),
+    url(r'^info_change$', 'app.views.info_change', name='info_change'),
+    url(r'^register$', 'app.views.register', name='register'),
     url(r'^login/$',
         'django.contrib.auth.views.login',
         {
@@ -24,19 +35,80 @@ urlpatterns = patterns('',
             {
                 'title':'Log in',
                 'year':datetime.now().year,
-            }
+            },
         },
         name='login'),
-    url(r'^logout$',
-        'django.contrib.auth.views.logout',
+    url(r'^logout$', 'app.views.logout_all', name='logout'),
+    url(r'^password_reset$', 
+        'django.contrib.auth.views.password_reset',
         {
-            'next_page': './',
+            'template_name': 'app/password_reset.html',
+            'password_reset_form': BootStrapPasswordResetForm,
+            'extra_context':
+            {
+                'title': 'Password reset',
+                'year': datetime.now().year,
+            },
         },
-        name='logout'),
-    
-    url(r'^admin/filebrowser/', include('filebrowser.urls')),
-    # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
+        name='password_reset'),
+    url(r'^password_reset_done$',
+        'django.contrib.auth.views.password_reset_done',
+        {
+            'template_name': 'app/password_reset_done.html',
+            'extra_context':
+            {
+                'title': 'Password reset sent',
+                'year': datetime.now().year,
+            },
+        },
+        name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        'django.contrib.auth.views.password_reset_confirm',
+        {
+            'template_name': 'app/password_reset_confirm.html',
+            'set_password_form': BootStrapSetPasswordForm,
+            'extra_context':
+            {
+                'year': datetime.now().year,
+            },
+        },
+        name='password_reset_confirm'),
+    url(r'^reset_complete$',
+        'django.contrib.auth.views.password_reset_complete',
+        {
+            'template_name': 'app/password_reset_complete.html',
+            'extra_context':
+            {
+                'title': 'Password reset complete',
+                'year': datetime.now().year,
+            },
+        },
+        name='password_reset_complete'),
+    url(r'^password_change_done$',
+        'django.contrib.auth.views.password_change_done',
+        {
+            'template_name': 'app/password_change_done.html',
+            'extra_context':
+            {
+                'title': 'Password changed',
+                'year': datetime.now().year,
+            },
+        },
+        name='password_change_done'),
+    url(r'^password_change$',
+        #'django.contrib.auth.views.password_change',
+        'app.views.password_change',
+        {
+            'template_name': 'app/password_change.html',
+            'password_change_form': BootStrapPasswordChangeForm,
+            'post_change_redirect': 'password_change_done',
+            'extra_context':
+            {
+                'title': 'Change password',
+                'year': datetime.now().year,
+            },
+        },
+        name='password_change'),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

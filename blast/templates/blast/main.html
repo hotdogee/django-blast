@@ -15,6 +15,15 @@
     {% endif %}
     <link type="text/css" rel="stylesheet" media="all" href="{% static 'blast/css/main.css' %}" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
+    <style>
+        .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+            box-shadow: inset 0 -2px 0 #317eac;
+            color: #317eac;
+            border: 0px;
+        }
+    </style>
     <script>
     var dataset_list = {{ blastdb_list|safe }};
     var blastdb_type_counts = {{ blastdb_type_counts|jsonify }};
@@ -26,10 +35,25 @@
     <script src="{% static 'blast/scripts/jquery.hoverIntent.minified.js' %}"></script>
     <script src="{% static 'blast/scripts/jquery.validate.min.js' %}"></script>
     <script src="{% static 'blast/scripts/blast-multi.js' %}"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 {% endblock %}
 
 {% block content %}
-<div class="tripal_details">
+
+{% if user.is_authenticated %}
+    <ul id="myTab" class="nav nav-tabs nav-justified" role="tablist">
+        <li role="presentation" class="active"><a href="#run" id="run-tab" role="tab" data-toggle="tab" aria-controls="run" aria-expanded="true">Run</a></li>
+        <li role="presentation"><a href="#queries" role="tab" id="queries-tab" data-toggle="tab" aria-controls="queries" aria-expanded="false">Queries</a></li>
+    </ul>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <div id="myTabContent" class="tab-content">    
+    <div class="tripal_details tab-pane fade active in" role="tabpanel" id="run" aria-labelledby="run-tab">
+{% else %}
+    <div class="tripal_details">
+{% endif %}
 <FORM METHOD="POST" id="MainBlastForm" NAME="MainBlastForm" ENCTYPE="multipart/form-data">
 {% csrf_token %}
 <div class="tripal_organism-info-box tripal-info-box">
@@ -477,4 +501,21 @@ Enter here your input data as
 </div>
 </FORM>
 </div>
+
+{% if user.is_authenticated %}
+    <div role="tabpanel" class="tab-pane fade" id="queries" aria-labelledby="queries-tab">
+    <!-- Table -->
+    <table id="queries-{{user.id}}" class="display" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>Submission time</th>
+        <th>Status</th>
+        <th>Link</th>
+    </tr>
+    </thead>
+    </table>
+    </div>
+  </div> <!-- myTabContent -->
+{% endif %}
+
 {% endblock %}

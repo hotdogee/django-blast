@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.pagination import PaginationSerializer
+from django.contrib.auth.models import User
 from .models import Organism, SequenceType, BlastDb, Sequence, BlastQueryRecord
 
 class OrganismSerializer(serializers.HyperlinkedModelSerializer):
@@ -45,3 +46,14 @@ class BlastQueryRecordSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = BlastQueryRecord
+
+class UserSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='pk')
+    class Meta:
+        model = User
+        fields = ('id',)
+
+class UserBlastQueryRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlastQueryRecord
+        fields = ('task_id', 'enqueue_date', 'result_status')

@@ -1,0 +1,82 @@
+{% extends "app/layout.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+{% if isLoginEnabled %}
+
+<h2>{{ title }}</h2>
+<hr />
+
+{% if msg %}
+  <div class="alert alert-success" role="alert">{{ msg }}</div>
+{% endif %}
+
+{% if errors %}
+    <div class="alert alert-danger" role="alert">{{ errors }}</div>
+{% endif %}
+
+{% if isOAuth %}
+  <div class="alert alert-info" role="alert">You logged in with your social account, so only the institution can be updated.</div>
+{% endif %}
+
+<form class="form-horizontal" action="" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Username</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="username" value="{{ request.user.username }}" disabled>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">First name</label>
+      <div class="col-sm-10">
+        {{ form.first_name }}
+        {{ form.first_name.errors}}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Last name</label>
+      <div class="col-sm-10">
+        {{ form.last_name }}
+        {{ form.last_name.errors}}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Email</label>
+      <div class="col-sm-10">
+        {{ form.email }}
+        {{ form.email.errors}}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Institution</label>
+      <div class="col-sm-10">
+        {{ form.institution }}
+        {{ form.institution.errors}}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-default">{% trans 'Update' %}</button>
+      </div>
+    </div>
+</form>
+<script type="text/javascript">
+    window.setTimeout(function() {
+    $(".alert-success").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove(); 
+        });
+    }, 2000);
+    {% if isOAuth %}
+        document.getElementById('{{ form.first_name.id_for_label }}').disabled = true;
+        document.getElementById('{{ form.last_name.id_for_label }}').disabled = true;
+        document.getElementById('{{ form.email.id_for_label }}').disabled = true;
+        document.getElementById('{{ form.institution.id_for_label }}').focus();
+    {% endif %}
+</script>
+{% endif %}
+{% endblock%}
+
+

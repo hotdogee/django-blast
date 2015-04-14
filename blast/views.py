@@ -124,6 +124,8 @@ def create(request, iframe=False):
 
             record = BlastQueryRecord()
             record.task_id = task_id
+            if request.user.is_authenticated():
+                record.user = request.user
             record.save()
 
             # generate status.json for frontend statu checking
@@ -244,3 +246,26 @@ def status(request, task_id):
         return HttpResponse(json.dumps(status))
     else:
         return HttpResponse('Invalid Post')
+
+
+# to-do: integrate with existing router of restframework
+from rest_framework.renderers import JSONRenderer
+from .serializers import UserBlastQueryRecordSerializer
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+def user_tasks(request, user_id):
+    """
+    Return tasks performed by the user.
+    """
+    if request.method == 'GET':
+        records = BlastQueryRecord.objects.filter(user__id=user_id, is_shown=True)
+        serializer = UserBlastQueryRecordSerializer(records, many=True)
+        return JSONResponse(serializer.data)
+

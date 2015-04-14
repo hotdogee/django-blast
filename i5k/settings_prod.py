@@ -1,5 +1,5 @@
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+#TEMPLATE_DEBUG = DEBUG
 
 USE_CACHE = True
 
@@ -12,8 +12,8 @@ ALLOWED_HOSTS = (
 
 MEDIA_URL = '/url/to/media/'
 STATIC_URL = '/url/to/static/'
-LOGIN_URL = '/url/to/login/'
-LOGIN_REDIRECT_URL = '/url/to/user/'
+LOGIN_URL = '/url/to/login'
+LOGIN_REDIRECT_URL = '/url/to/home'
 
 DATABASES = {
     'default': {
@@ -25,3 +25,18 @@ DATABASES = {
     'PORT': '5432',
     }
 }
+
+# social login settings
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'YOURS_KEY'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YOURS_SECRET'
+SOCIAL_AUTH_FACEBOOK_KEY = 'YOURS_KEY'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'YOURS_SECRET'
+
+# Email backend
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '1025'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+DEFAULT_FROM_EMAIL = 'name@yourhost.com'
+
+LOGIN_ENABLED = True

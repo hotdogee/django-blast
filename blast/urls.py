@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url, include
 from blast import views
-from .api import OrganismViewSet, SequenceTypeViewSet, BlastDbViewSet, SequenceViewSet, BlastQueryRecordViewSet
+from .api import OrganismViewSet, SequenceTypeViewSet, BlastDbViewSet, SequenceViewSet, BlastQueryRecordViewSet, UserViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -9,6 +9,7 @@ router.register(r'seqtype', SequenceTypeViewSet)
 router.register(r'blastdb', BlastDbViewSet)
 router.register(r'seq', SequenceViewSet)
 router.register(r'task', BlastQueryRecordViewSet)
+router.register(r'user', UserViewSet)
 
 urlpatterns = patterns('',
     # ex: /blast/
@@ -21,4 +22,5 @@ urlpatterns = patterns('',
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api-docs/', include('rest_framework_swagger.urls')),
+    url('^user-tasks/(?P<user_id>[0-9]+)$', views.user_tasks),
 )

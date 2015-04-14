@@ -1,0 +1,56 @@
+{% extends "app/dashboard-base.html" %}
+
+{% block dashboard-breadcrumb %}
+<li>Dashboard</li>
+{% endblock %}
+
+{% block dashboard-content %}
+<div class="panel panel-info">
+    <!-- Default panel contents -->
+    <div class="panel-heading">BLAST Queries</div>
+    <!-- Table -->
+    <table class="table">
+    <thead>
+    <tr>
+        <th>Submission time</th>
+        <th>Status</th>
+        <th>Link</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Jan. 12, 2015, 3:59 p.m.</td>
+        <td>Pending</td>
+        <td><a href="#">link</a></td>
+    </tr>
+    <tr>
+        <td>Jan. 12, 2015, 3:09 p.m.</td>
+        <td>Success</td>
+        <td><a href="#">link</a></td>
+    </tr>
+    <tr>
+        <td>Jan. 4, 2015, 3:29 p.m.</td>
+        <td>Expired</td>
+        <td><a href="#">link</a></td>
+    </tr>
+    <tr>
+        <td><a href="#">More</a></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+    </table>
+</div>    
+<div class="panel panel-info">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Access Organisms using Web Apollo </div>
+    <!-- List group -->
+    {% if not species_list%}
+        <p class="list-group-item">No Organism</p>
+    {% else%}
+        {% for species in species_list%}
+          <a href="{% url 'webapollo:species' species.name %}" class="list-group-item" target="_blank">{{ species.full_name }}</a>
+        {% endfor %}
+    {% endif%}
+</div>
+{% endblock%}
