@@ -179,6 +179,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'social.apps.django_app.default',
     'captcha',
+    'dashboard',
     'webapollo',
     'proxy',
 )
