@@ -464,7 +464,7 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
 
-LOGIN_ENABLED = False
+LOGIN_ENABLED = True
 
 # Use settings for production
 USE_PROD_SETTINGS = False

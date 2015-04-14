@@ -68,6 +68,7 @@
     <Compile Include="blast\serializers.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="i5k\settings_prod.py" />
     <Compile Include="pipeline\compilers\coffee.py" />
     <Compile Include="pipeline\compilers\less.py" />
     <Compile Include="pipeline\compilers\livescript.py" />
