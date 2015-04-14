@@ -125,6 +125,12 @@ class RegistrationForm(UserCreationForm):
         if len(password1) < 8:
             raise forms.ValidationError('Password must be at least 8 characters long.')
         return password1
+    
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if User.objects.filter(email=email):
+            raise forms.ValidationError('A user with that email already exists..')
+        return email
 
     def __init__(self, *args, **kw):
         super(RegistrationForm, self).__init__(*args, **kw)

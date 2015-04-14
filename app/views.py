@@ -123,7 +123,7 @@ def set_institution(request):
 
     try:
         p = Profile.objects.get(user=request.user)
-        return HttpResponseRedirect(reverse('blast:create'))
+        return HttpResponseRedirect(reverse('dashboard'))
     except ObjectDoesNotExist:
         return render(
             request,

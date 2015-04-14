@@ -12,15 +12,16 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    #url(r'^home$', 'dashboard.views.dashboard', name='dashboard'),
+    url(r'^home$', 'dashboard.views.dashboard', name='dashboard'),
     #url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/filebrowser/', include('filebrowser.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
-    #url(r'^user/', include('userprofile.urls', namespace='userprofile')),
     url(r'^captcha/', include('captcha.urls')),
+    url(r'^proxy/', include('proxy.urls', namespace='proxy')),
+    url(r'^webapollo/', include('webapollo.urls', namespace='webapollo')),
 
     # user authentication
     url(r'^set_institution$', 'app.views.set_institution', name='set_institution'),

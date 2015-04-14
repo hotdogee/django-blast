@@ -58,6 +58,7 @@ DATABASES = {
 }
 
 LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/home'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -178,6 +179,9 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'social.apps.django_app.default',
     'captcha',
+    'dashboard',
+    'webapollo',
+    'proxy',
 )
 
 # deprecated in Django 1.8
@@ -258,6 +262,12 @@ SUIT_CONFIG = {
             {'model': 'usersocialauth'},
             {'model': 'nonce'},
             {'model': 'association'},
+        )},
+        {'app': 'webapollo', 'label': 'Web Apollo', 'icon':'icon-leaf', 'models': (
+            {'model': 'species', 'label': 'Species'},
+            {'model': 'speciespassword', 'label': 'Passwords'},
+            {'model': 'registration', 'label': 'Registrations'},
+            {'label': 'Management', 'url': '/webapp/webapollo/admin/manage'},
         )},
         # auth and axes
         {'label': 'Auth', 'icon':'icon-lock', 'models': (
