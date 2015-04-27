@@ -1,0 +1,8 @@
+Dear {{full_name}},
+
+Your request for annotating the {{species}} genome is approved by the community contact. Login to {{website}} to start.
+
+Thanks!
+
+The NAL i5k team
+

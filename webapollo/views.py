@@ -4,6 +4,7 @@ from datetime import datetime
 from pytz import timezone
 from django.db import connection
 from django.db.models import Q
+from django.conf import settings
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
@@ -14,6 +15,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 from django.utils import html
+from django.template import Context
+from django.template.loader import render_to_string, get_template
+from django.core.mail import EmailMessage
 from .models import Species, SpeciesPassword, Registration, insert_species_permission, delete_species_permission
 from app.models import Profile
 from app.views import checkOAuth, ajax_login_required
@@ -108,6 +112,29 @@ def apply(request):
                 _species = Species.objects.get(name=request.POST['species_name'])
                 _registration = Registration(user=request.user, species=_species, submission_comment=comment)
                 _registration.save()
+
+                # email to the applicant and contacts
+                subject = 'Web Apollo registration for ' + _species.full_name
+                to = [request.user.email]
+                ctx = {
+                    'full_name': request.user.get_full_name(),
+                    'species': _species.full_name,
+                }
+                message = render_to_string('webapollo/email/register.txt', ctx)
+                EmailMessage(subject, message, to=to).send()
+                subject = 'New annotator for ' + _species.full_name
+                owners = User.objects.filter(user_permissions__codename=_species.name+'_owner')
+                for owner in owners:
+                    to =[owner.email]
+                    ctx = {
+                        'first_name': owner.first_name,
+                        'user_full_name': request.user.get_full_name(),
+                        'species': _species.full_name,
+                        'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+                    }
+                    message = render_to_string('webapollo/email/new_annotator_request.txt', ctx)
+                    EmailMessage(subject, message, to=to).send()
+                
                 return HttpResponse(json.dumps({'succeeded': True, 'submission_time': _registration.submission_time.astimezone(timezone('US/Eastern')).strftime('%b. %d, %Y, %I:%M %p'), 'comment': comment,}), content_type='application/json')
             except: #ObjectDoesNotExist:
                 print 'Exception in webapollo_apply: ', sys.exc_info()[0]
@@ -131,6 +158,18 @@ def reject(request):
                 _registration.decision_time = datetime.now()
                 _registration.status = 'Rejected'
                 _registration.save()
+                
+                # email to the applicant and contacts
+                subject = 'Your application for annotating ' + _species.full_name + ' in Web Apollo'
+                to = [_user.email]
+                ctx = {
+                    'full_name': _user.get_full_name(),
+                    'species': _species.full_name,
+                    'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+                }
+                message = render_to_string('webapollo/email/rejection.txt', ctx)
+                EmailMessage(subject, message, to=to).send()
+                
                 return HttpResponse(json.dumps({'succeeded': True}), content_type='application/json')
             except: #ObjectDoesNotExist:
                 print 'Exception in webapollo_reject ', sys.exc_info()[0]
@@ -208,6 +247,18 @@ def approve(request):
                     _registration.decision_time = datetime.now()
                     _registration.decision_comment = 'Approved by ' + request.user.username
                     _registration.save()
+                    
+                    # email to the applicant and contacts
+                    subject = 'Approval for annotating ' + _species.full_name + ' in Web Apollo'
+                    to = [_user.email]
+                    ctx = {
+                        'full_name': _user.get_full_name(),
+                        'species': _species.full_name,
+                        'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+                    }
+                    message = render_to_string('webapollo/email/approval.txt', ctx)
+                    EmailMessage(subject, message, to=to).send()
+                    
                     return HttpResponse(json.dumps({'succeeded': True, }), content_type='application/json')
                 except: #ObjectDoesNotExist:
                     print 'Exception in webapollo_approve ', sys.exc_info()[0]
