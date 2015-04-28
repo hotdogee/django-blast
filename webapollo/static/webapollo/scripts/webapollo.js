@@ -95,8 +95,9 @@ $(function() { // document ready
         event.preventDefault();
         var tr = $(this).parent('td').parent('tr');
         var v = tr.attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
-        var username = v[1];
-        var species_name = v[2];
+        var species_name = v[v.length-1];
+        var username = tr.attr('id').replace('-' + species_name, '');
+        username = username.replace('tr-', '');
         $.post(window.location.pathname + "approve", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
             if (data.succeeded) {
                 var t = $("#annotators-" + species_name).DataTable();
@@ -119,8 +120,9 @@ $(function() { // document ready
         event.preventDefault();
         var tr = $(this).parent('td').parent('tr');
         var v = tr.attr('id').split('-'); // ex. {"tr", "castman", "agrpla"}
-        var username = v[1];
-        var species_name = v[2];
+        var species_name = v[v.length-1];
+        var username = tr.attr('id').replace('-' + species_name, '');
+        username = username.replace('tr-', '');
         $.post(window.location.pathname + "remove", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
             if (data.succeeded) {
                 var t = $("#annotators-" + species_name).DataTable();
@@ -143,8 +145,10 @@ $(function() { // document ready
 
     $('#historyModal').on('show.bs.modal', function(event) {
         var v = $(event.relatedTarget).data('whatever').split('-'); // ex. ["castman", "agrpla"]
+        var sname = v[v.length-1];
+        var uname = $(event.relatedTarget).data('whatever').replace('-' + sname, '');
         //var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"').val();
-        $.post(window.location.pathname + "history", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], }, function(data) { 
+        $.post(window.location.pathname + "history", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':sname , 'username': uname, }, function(data) { 
             if (data.succeeded) {
                 $('#history-table').children('tbody').children('tr').remove(); // flush the table
                 $.each(data['apply_records'], function(idx, val) {
@@ -187,15 +191,17 @@ $(function() { // document ready
 
     $('#btn-rejectModal').click(function() {
         var v = $(this).siblings("input").val().split('-'); // ex. ["castman", "agrpla"]
+        var sname = v[v.length-1];
+        var uname = $(this).siblings("input").val().replace('-' + sname, '');
         var comment = $('#decision_comment').val();
-        $.post(window.location.pathname + "reject", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':v[1] , 'username': v[0], 'comment': comment}, function(data) { 
+        $.post(window.location.pathname + "reject", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':sname , 'username': uname, 'comment': comment}, function(data) { 
             if (data.succeeded) {
                 $('#rejectModal').modal('hide');
             }
             else {
                $('#rejectModal').children('.modal-dialog').children('.modal-content').children('.modal-body').text('The user was probably rejected by other coordinators. Please try again later.'); 
             }
-            $('[id="tr-' + v[0] + '-' + v[1] + '"]').fadeOut(500, function() { $(this).remove(); });
+            $('[id="tr-' + uname + '-' + sname + '"]').fadeOut(500, function() { $(this).remove(); });
         }, "json");
     });
 

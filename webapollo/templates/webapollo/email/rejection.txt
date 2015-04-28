@@ -1,6 +1,6 @@
 Dear {{full_name}},
 
-We regret to inform you that your request for annotating the {{species}} genome is declined by the community contact. You can login to {{website}} for more information.
+We regret to inform you that your request for annotating the {{species}} genome is declined by the community contact. You can login to https://{{website}} for more information.
 
 Regards,
 

@@ -103,19 +103,19 @@ class SetInstitutionForm(forms.ModelForm):
 
 class RegistrationForm(UserCreationForm):
     first_name = forms.RegexField(label=_("First name"), max_length=30, required=True,
-        regex=r'^[\w.-]+$',
+        regex=r'^[\s\w.-]+$',
         help_text=_("Required. 30 characters or fewer. Letters, digits and /./-/_ only."),
         error_messages={'invalid': _("This value may contain only letters, numbers and /./-/_ characters.")}
     )
     last_name = forms.RegexField(label=_("Last name"), max_length=30, required=True,
-        regex=r'^[\w.-]+$',
+        regex=r'^[\s\w.-]+$',
         help_text=_("Required. 30 characters or fewer. Letters, digits and /./-/_ only."),
         error_messages={'invalid': _("This value may contain only letters, numbers and /./-/_ characters.")}
     )
     email = forms.EmailField(label=_(u'Email'),required=True)
     institution = forms.RegexField(label=_("Institution"), max_length=100, required=True,
-        regex=r'^[\w.-]+$',
-        help_text=_("Required. 30 characters or fewer. Letters, digits and /./-/_ only."),
+        regex=r'^[\s\w.-]+$',
+        help_text=_("Required. 100 characters or fewer. Letters, digits and /./-/_ only."),
         error_messages={'invalid': _("This value may contain only letters, numbers and /./-/_ characters.")}
     )
     captcha = CaptchaField()
