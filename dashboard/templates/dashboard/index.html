@@ -27,7 +27,7 @@
     <div class="panel-heading">Access organisms using Web Apollo </div>
     <!-- List group -->
     {% if not species_list%}
-        <p class="list-group-item">No Organism</p>
+        <p class="list-group-item">No Organism. <a href='{% url "webapollo:index" %}'>Apply for annotation</a></p>
     {% else%}
         {% for species in species_list%}
           <a href="{% url 'webapollo:species' species.name %}" class="list-group-item" target="_blank">{{ species.full_name }}</a>

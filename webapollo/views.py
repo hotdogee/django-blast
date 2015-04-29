@@ -82,7 +82,7 @@ def get_species(request):
         elif apply_records[0].status == 'Removed':
             interested_list.append({'name': sname, 'full_name': species.full_name, 'status':'Removed', 'apply_records': apply_records,})
         else: # status is 'Approved' or 'Added'
-            raise Exception('Shit happens')
+            raise Exception('Severe permission errors!')
     unauth_list.sort(key=lambda k:k['name'])
 
     return species_list, interested_list, unauth_list

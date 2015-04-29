@@ -265,9 +265,9 @@ SUIT_CONFIG = {
         )},
         {'app': 'webapollo', 'label': 'Web Apollo', 'icon':'icon-leaf', 'models': (
             {'model': 'species', 'label': 'Species'},
-            {'model': 'speciespassword', 'label': 'Passwords'},
-            {'model': 'registration', 'label': 'Registrations'},
             {'label': 'Management', 'url': '/webapp/webapollo/admin/manage'},
+            {'model': 'speciespassword', 'label': '[Read Only] Passwords'},
+            {'model': 'registration', 'label': '[Read Only] Registrations'},
         )},
         # auth and axes
         {'label': 'Auth', 'icon':'icon-lock', 'models': (
