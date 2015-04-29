@@ -3,7 +3,7 @@ from webapollo.models import *
 from django.contrib.auth.admin import UserAdmin
 
 class SpeciesAdmin(admin.ModelAdmin):
-    list_display = ('name', 'full_name', 'host', 'db_name', 'db_acct', 'db_pwd', 'url',)
+    list_display = ('name', 'full_name', 'host', 'db_name', 'db_acct', 'db_pwd', 'db_exists', 'url',)
     search_fields = ['name', 'full_name']
     ordering = ['name']
     actions_on_top = True

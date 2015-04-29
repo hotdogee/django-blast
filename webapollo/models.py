@@ -15,6 +15,19 @@ class Species(models.Model):
     db_pwd = models.CharField(max_length=50, blank=True)
     url =  models.URLField(unique=True)
 
+    # properties
+    def db_exists(self):
+        try:
+            conn = psycopg2.connect('dbname=' + self.db_name + ' user=' + self.db_acct + ' host=' + self.host)
+            cur = conn.cursor()
+            cur.close()
+            conn.close()
+            return True
+        except:
+            return False    
+    db_exists.boolean = True
+    db_exists.short_description = 'Postgres DB exists'
+
     def __unicode__(self):
         return self.name
     
