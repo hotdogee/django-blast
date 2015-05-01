@@ -11,8 +11,8 @@
 {% endblock %}
 
 {% block dashboard-content %}
-<h4 style="text-align: center;">BLAST queries</h4>
-    <table id="queries-{{user.id}}" class="display" cellspacing="0" width="100%">
+<p style="text-align: center;">BLAST queries&nbsp;&nbsp;(<a href='{% url "blast:create" %}'>Go BLAST</a>)</p>
+<table id="queries-{{user.id}}" class="display compact" cellspacing="0" width="100%">
     <thead>
     <tr>
         <th>Submission time</th>
@@ -20,20 +20,61 @@
         <th>Link</th>
     </tr>
     </thead>
-    </table>
+</table>
 <hr>
-<div class="panel panel-info">
-    <!-- Default panel contents -->
-    <div class="panel-heading">Access organisms using Web Apollo </div>
-    <!-- List group -->
-    {% if not species_list%}
-        <p class="list-group-item">No Organism. <a href='{% url "webapollo:index" %}'>Apply for annotation</a></p>
-    {% else%}
-        {% for species in species_list%}
-          <a href="{% url 'webapollo:species' species.name %}" class="list-group-item" target="_blank">{{ species.full_name }}</a>
-        {% endfor %}
-    {% endif%}
-</div>
+<p style="text-align: center;">Web Apollo&nbsp;&nbsp;(<a href='{% url "webapollo:index" %}'>Management panel</a>)</p>
+
+{% if pendings %}
+    <input type="hidden" id="hidden-addUserModal" value="">
+<p>
+    <span id="pendings-action">
+    <a href="#" id="link-approve">Approve</a>
+    or
+    <a href="#" id="link-reject">Reject</a>
+    the <span id='pendings-count' style='font-size: large;'>0</span> selected pending requests.
+    </span>
+    <span id="pendings-msg"></span>
+</p>
+<table id="pendings" class="display compact" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>Organism</th>
+        <th>Full name</th>
+        <th>Institution</th>
+        <th>Submitted</th>
+        <th>Comment</th>
+        <th>Username</th>
+        <th>SpeciesShort</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for pending in pendings %}
+        <tr id="tr-{{pending.user.username}}-{{pending.species.name}}">
+          <td>{{pending.species.full_name}}</td>
+          <td>{{pending.user.first_name}} {{pending.user.last_name}}</td>
+          <td>{{pending.user.profile.institution}}</td>
+          <td>{{pending.submission_time|date:"d M Y"}}</td>
+          <td>{{pending.submission_comment}}</td>
+          <td>{{pending.user.username}}</td>
+          <td>{{pending.species.name}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<hr>
+{% endif %}
+
+<p>Access organisms using Web Apollo</p>
+{% if species_list%}
+    <ul>
+    {% for species in species_list%}
+    <li><a href="{% url 'webapollo:species' species.name %}" target="_blank">{{ species.full_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <ul><li>None. <a href='{% url "webapollo:index" %}'>Apply for annotation.</a></li></ul>
+{% endif %}
+
 {% endblock%}
 
 {% block scripts %}

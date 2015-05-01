@@ -225,45 +225,67 @@ def eligible(request):
                 return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
+
+def do_approve(_username, _species_name, owner):
+    try:
+        _species = Species.objects.get(name=_species_name)
+        _perm_value = 3
+        _user = User.objects.get(username=_username)
+        _registration = Registration.objects.get(user__username=_username, species__name=_species_name, status='Pending')
+    
+        # using user_permissions.add() will trigger m2m_changed handler, which is undesirable, so write SQL directly to insert permissions
+        with connection.cursor() as c:
+            c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [_user.id, Permission.objects.get(codename=_species_name + '_read').id]) 
+            c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [_user.id, Permission.objects.get(codename=_species_name + '_write').id])                    
+        insert_species_permission(_username, _species.id, _perm_value)
+        _registration.status = 'Approved'
+        _registration.decision_time = datetime.now()
+        _registration.decision_comment = 'Approved by ' + owner
+        _registration.save()
+    
+        # email to the applicant and contacts
+        subject = 'Approval for annotating ' + _species.full_name + ' in Web Apollo'
+        to = [_user.email]
+        ctx = {
+            'full_name': _user.get_full_name(),
+            'species': _species.full_name,
+            'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+        }
+        message = render_to_string('webapollo/email/approval.txt', ctx)
+        EmailMessage(subject, message, to=to).send()
+        return True
+    except:
+        return False
+
+
 @ajax_login_required
 def approve(request):
     if request.is_ajax():
         if request.method == 'POST':
             if request.user.has_perm('webapollo.' + request.POST['species_name'] + '_owner'):
-                try:
-                    _username = request.POST['username']
-                    _species_name = request.POST['species_name']
-                    _species = Species.objects.get(name=_species_name)
-                    _perm_value = 3
-                    _user = User.objects.get(username=_username)
-                    _registration = Registration.objects.get(user__username=_username, species__name=_species_name, status='Pending')
-                    
-                    # using user_permissions.add() will trigger m2m_changed handler, which is undesirable, so write SQL directly to insert permissions
-                    with connection.cursor() as c:
-                        c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [_user.id, Permission.objects.get(codename=_species_name + '_read').id]) 
-                        c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [_user.id, Permission.objects.get(codename=_species_name + '_write').id])                    
-                    insert_species_permission(_username, _species.id, _perm_value)
-                    _registration.status = 'Approved'
-                    _registration.decision_time = datetime.now()
-                    _registration.decision_comment = 'Approved by ' + request.user.username
-                    _registration.save()
-                    
-                    # email to the applicant and contacts
-                    subject = 'Approval for annotating ' + _species.full_name + ' in Web Apollo'
-                    to = [_user.email]
-                    ctx = {
-                        'full_name': _user.get_full_name(),
-                        'species': _species.full_name,
-                        'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
-                    }
-                    message = render_to_string('webapollo/email/approval.txt', ctx)
-                    EmailMessage(subject, message, to=to).send()
-                    
+                is_done = do_approve(request.POST['username'], request.POST['species_name'], request.user.username)
+                if is_done:                    
                     return HttpResponse(json.dumps({'succeeded': True, }), content_type='application/json')
-                except: #ObjectDoesNotExist:
+                else:
                     print 'Exception in webapollo_approve ', sys.exc_info()[0]
                     return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
+
+
+@ajax_login_required
+def bulk_approve(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            num = request.POST.get('num')
+            for i in xrange(int(num)):
+                uname = request.POST.get('user_species[' + str(i) + '][username]')
+                sname = request.POST.get('user_species[' + str(i) + '][species_name]')
+                is_done = do_approve(uname, sname, request.user.username)                
+                if not is_done:
+                    return HttpResponse(json.dumps({'succeeded': False, }), content_type='application/json')
+                    break
+            return HttpResponse(json.dumps({'succeeded': True, }), content_type='application/json')
+
 
 @ajax_login_required
 def adduser(request):

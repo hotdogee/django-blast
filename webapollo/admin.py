@@ -16,6 +16,7 @@ class SpeciesPasswordAdmin(admin.ModelAdmin):
     list_display = ('user', 'species', 'pwd',)
     actions_on_top = True
     actions_on_bottom = True
+    change_list_template = 'webapollo/readonly_change_list.html'
 admin.site.register(SpeciesPassword, SpeciesPasswordAdmin)
 
 class RegistrationAdmin(admin.ModelAdmin):
@@ -24,4 +25,5 @@ class RegistrationAdmin(admin.ModelAdmin):
     list_display = ('user', 'species', 'submission_time', 'submission_comment', 'decision_time', 'decision_comment', 'status')
     actions_on_top = True
     actions_on_bottom = True
+    change_list_template = 'webapollo/readonly_change_list.html'
 admin.site.register(Registration, RegistrationAdmin)
