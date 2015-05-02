@@ -141,6 +141,33 @@ def apply(request):
                 return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
+
+def do_reject(sname, uname, comment, owner):
+    try:
+        _species = Species.objects.get(name=sname)
+        _user = User.objects.get(username=uname)
+        _registration = Registration.objects.get(user=_user, species=_species, status='Pending')
+        _registration.decision_comment = 'Reject by ' + owner
+        if comment:
+            _registration.decision_comment = 'from ' + request.user.username + ': '+ comment
+        _registration.decision_time = datetime.now()
+        _registration.status = 'Rejected'
+        _registration.save()
+
+        # email to the applicant and contacts
+        subject = 'Your application for annotating ' + _species.full_name + ' in Web Apollo'
+        to = [_user.email]
+        ctx = {
+            'full_name': _user.get_full_name(),
+            'species': _species.full_name,
+            'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+        }
+        message = render_to_string('webapollo/email/rejection.txt', ctx)
+        EmailMessage(subject, message, to=to).send()
+        return True
+    except:
+        return False    
+
 @ajax_login_required
 def reject(request):
     if request.is_ajax():
@@ -148,34 +175,29 @@ def reject(request):
             comment = html.escape(request.POST['comment'])
             if comment:
                 comment = comment[:200] if len(comment) > 200 else comment
-            try:
-                _species = Species.objects.get(name=request.POST['species_name'])
-                _user = User.objects.get(username=request.POST['username'])
-                _registration = Registration.objects.get(user=_user, species=_species, status='Pending')
-                _registration.decision_comment = 'Reject by ' + request.user.username
-                if comment:
-                    _registration.decision_comment = 'from ' + request.user.username + ': '+ comment
-                _registration.decision_time = datetime.now()
-                _registration.status = 'Rejected'
-                _registration.save()
-                
-                # email to the applicant and contacts
-                subject = 'Your application for annotating ' + _species.full_name + ' in Web Apollo'
-                to = [_user.email]
-                ctx = {
-                    'full_name': _user.get_full_name(),
-                    'species': _species.full_name,
-                    'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
-                }
-                message = render_to_string('webapollo/email/rejection.txt', ctx)
-                EmailMessage(subject, message, to=to).send()
-                
+            is_done = do_reject(request.POST['species_name'], request.POST['username'], comment, request.user.username)
+            if is_done:
                 return HttpResponse(json.dumps({'succeeded': True}), content_type='application/json')
-            except: #ObjectDoesNotExist:
+            else: #ObjectDoesNotExist:
                 print 'Exception in webapollo_reject ', sys.exc_info()[0]
                 return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
                 
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
+
+@ajax_login_required
+def bulk_reject(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            num = request.POST.get('num')
+            for i in xrange(int(num)):
+                uname = request.POST.get('user_species[' + str(i) + '][username]')
+                sname = request.POST.get('user_species[' + str(i) + '][species_name]')
+                is_done = do_reject(sname, uname, None, request.user.username)                
+                if not is_done:
+                    return HttpResponse(json.dumps({'succeeded': False, }), content_type='application/json')
+                    break
+            return HttpResponse(json.dumps({'succeeded': True, }), content_type='application/json')
+
 
 @ajax_login_required
 def history(request):
