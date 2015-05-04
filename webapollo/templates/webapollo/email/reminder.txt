@@ -1,0 +1,8 @@
+Dear {{first_name}},
+
+Just a reminder that some users are volunteering to help annotate the {{species}} genome and waiting for the response. You can grant their access to Web Apollo through the management page in https://{{website}}
+
+Thanks!
+
+The NAL i5k team
+

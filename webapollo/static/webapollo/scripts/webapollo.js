@@ -29,7 +29,7 @@ $(function() { // document ready
     $('.table-adduser').DataTable( {
         dom: 'Tft',
         tableTools: {
-            "sRowSelect": "os",
+            "sRowSelect": "multi",
             "aButtons": [],
         }
     });
@@ -84,6 +84,21 @@ $(function() { // document ready
         }, "json");
     });
 
+    $(".well").on('click','.link-remind', function(event){
+        event.preventDefault();
+        var msg_span = $(this).parent('span');
+        var sname = msg_span.parent('p').parent('div').parent('div').attr('id').replace('collapse-','');
+        $.post(window.location.pathname + "remind", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'sname':sname, }, function(data) { 
+            if (data.succeeded) {
+                msg_span.html('<span style="color:green;" >A reminder was sent!!</span>');
+            }
+            else {
+                msg_span.html('<span style="color:red;" >Errors occured. Please try again later.</span>');
+            }
+        }, "json");
+        
+    });
+
     $(".well").on('click','.link-reapply', function(event){
         event.preventDefault();
         var species_name = $(this).siblings("input").val();
@@ -98,8 +113,12 @@ $(function() { // document ready
         var species_name = v[v.length-1];
         var username = tr.attr('id').replace('-' + species_name, '');
         username = username.replace('tr-', '');
+        $('#msg-approve').html('<span style="color:blue;">Processing...it may take a couple minutes. Patience is a virtue.</span>');
+        $('#btn-approve-close').prop('disabled', true);;
+        $('#approveModal').modal('show');
         $.post(window.location.pathname + "approve", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'species_name':species_name , 'username': username, }, function(data) { 
             if (data.succeeded) {
+                $('#msg-approve').html('<span style="color:green;">Done! Please click Close to exit.</span>');
                 var t = $("#annotators-" + species_name).DataTable();
                 var rowNode = t.row.add([
                     $("#tr" + "-" + username + "-" + species_name).children("td:nth-child(1)").text(),
@@ -110,8 +129,9 @@ $(function() { // document ready
                 $(rowNode).attr("id", "tr-" + username + "-"  + species_name);
             }
             else {
-                alert('The user was probably approved by other coordinators. Please try again later.');
+                $('#msg-approve').html('<span style="color:red;">The user was probably approved by other coordinators. Please try again later. Click Close to exit.</span>');
             }
+            $('#btn-approve-close').prop('disabled', false);
             tr.fadeOut(500, function() { $(this).remove(); });
         }, "json");
     });

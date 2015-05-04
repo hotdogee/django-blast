@@ -361,6 +361,52 @@ def remove(request):
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
 
+
+def do_remind(sname):
+    try:
+        spe = Species.objects.get(name=sname)
+        owners = User.objects.filter(user_permissions__codename=sname+'_owner')
+        for owner in owners:
+            subject = 'Reminder: new annotators for ' + spe.full_name
+            # if the email has been sent today, dont repeat it.
+            to =[owner.email]
+            ctx = {
+                'first_name': owner.first_name,
+                'species': spe.full_name,
+                'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+            }
+            message = render_to_string('webapollo/email/reminder.txt', ctx)
+            EmailMessage(subject, message, to=to).send()
+            return True
+    except:
+        return False
+        
+
+@ajax_login_required
+def remind(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            sname = request.POST.get('sname')
+            is_done = do_remind(sname)
+            if not is_done:
+                return HttpResponse(json.dumps({'succeeded': False,}), content_type='application/json')
+            return HttpResponse(json.dumps({'succeeded': True,}), content_type='application/json')
+
+@csrf_exempt
+@staff_member_required
+@ajax_login_required
+def bulk_remind(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            snames = request.POST.getlist('snames[]')
+            is_done = True
+            for sname in snames:
+                is_done = do_remind(sname)
+                if not is_done:
+                    return HttpResponse(json.dumps({'succeeded': False,}), content_type='application/json')
+            return HttpResponse(json.dumps({'succeeded': True,}), content_type='application/json')
+
+
 @csrf_exempt
 @staff_member_required
 def manage(request):

@@ -1,5 +1,7 @@
 $(function() { // document ready
 
+    var path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf( "/" ) + 1);
+    
     $.fn.dataTable.moment('MMM D YYYY');
     $('#table-pendings').DataTable( {
         'dom': 'Tlftip',
@@ -32,17 +34,22 @@ $(function() { // document ready
         $.each(TableTools.fnGetInstance('table-pendings').fnGetSelectedData(), function(idx, val) {
             species_set.add(val[1]);
         });
-        var species = [];
+        var snames = [];
         species_set.forEach(function(value) {
-            species.push(value);
+            snames.push(value);
         });
-        console.log(species);
-        $('#alert').html(
-            '<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Done!</strong> Emails were sent to the coordinators.</div>'
-        );
-        //$('#alert').html(
-        //'<div class="alert alert-danger alert-dismissible" role="alert" style='display:none;' id='alert-remind-fail'><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Oh no!</strong> Email sending failed. Please contact sysadmin.</div>'}
-        //);
+        $.post(path + "bulk-remind", {'snames': snames}, function(data) {
+            if (data.succeeded) {
+                $('#alert').html(
+                    '<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Done!</strong> Emails were sent to the coordinators.</div>'
+                );
+            }
+            else {
+                $('#alert').html(
+                    '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Exception happens.</strong> Email sending failed.</div>'
+                );
+            }
+        }, "json");
         TableTools.fnGetInstance('table-pendings').fnSelectNone();
         $('#remind-count').text('0');
     });

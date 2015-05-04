@@ -59,20 +59,26 @@ $(function() { // document ready
 
     $("#link-approve").click(function(event) {
         event.preventDefault();
-        $('#pendings-action').fadeOut();
-        $('#pendings-msg').html('<span style="color:blue;" >Processing...it may take a couple minutes.</span>');
+        //$('#pendings-action').fadeOut();
+        $('#msg-approve').html('<span style="color:blue;">Processing...it may take a couple minutes. Patience is a virtue.</span>');
+        $('#btn-approve-close').prop('disabled', true);;
+        $('#approveModal').modal('show');
+        //$('#pendings-msg').html('<span style="color:blue;" >Processing...it may take a couple minutes.</span>');
         var user_species = [];
         $.each(TableTools.fnGetInstance('pendings').fnGetSelectedData(), function(idx, val) {
             user_species.push({'username': val[5], 'species_name': val[6]});
         });
         $.post(path + "webapollo/bulk-approve", {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'user_species': user_species, 'num': user_species.length}, function(data) {
             if (data.succeeded) {
-                $('#pendings-msg').html('<span style="color:green;" >Done!</span>');
-                $('#pendings-action').fadeIn();
+                $('#msg-approve').html('<span style="color:green;">Done! Please click Close to exit.</span>');
+                //$('#pendings-msg').html('<span style="color:green;" >Done!</span>');
+                //$('#pendings-action').fadeIn();
             }
             else {
-                $('#pendings-msg').html('<span style="color:red;" >Some users were probably approved by other coordinators. Please try again later.</span>');
+                $('#msg-approve').html('<span style="color:red;">The user was probably approved by other coordinators. Please try again later. Click Close to exit.</span>');
+                //$('#pendings-msg').html('<span style="color:red;" >Some users were probably approved by other coordinators. Please try again later.</span>');
             }
+            $('#btn-approve-close').prop('disabled', false);
             $('#pendings').DataTable().row('.selected').remove().draw( false );
             TableTools.fnGetInstance('pendings').fnSelectNone();
             $('#pendings-count').text('0');

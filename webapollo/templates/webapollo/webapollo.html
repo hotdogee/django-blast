@@ -180,7 +180,7 @@
     <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog"><div class="modal-content">
     <div class="modal-body">
-        <p>Select users to be annotators (multilple selection with Ctrl or Shift)</p>
+        <p>Click to select users to be annotators</p>
         <table class="table display compact table-adduser" id="adduser-table">
             <thead>
               <tr>
@@ -196,6 +196,16 @@
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>&nbsp;
             <button type="button" class="btn btn-primary" id="btn-addUserModal" data-loading-text="Adding...">Add selected users</button>
             <input type="hidden" id="hidden-addUserModal" value="">
+        </p>
+    </div>
+    </div></div></div>
+    <!-- approveModal -->
+    <div class="modal fade" data-keyboard="false" data-backdrop="static" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-body">
+        <p id="msg-approve"></p>
+        <p style="text-align:right; padding-top:1em;">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-approve-close">Close</button>
         </p>
     </div>
     </div></div></div>
@@ -227,7 +237,7 @@
         <div class="well">
             {% if species.status == 'Pending' %}
                 <p>You have applied for annotation. Please wait for the approval from the community contacts.
-                <a href="#">Remind the contacts?</a></p>                    
+                <span><a href="#" class="link-remind">Remind the contacts?</a></span></p> 
             {% elif species.status == 'Rejected' %}
                 <p>
                     You were rejected by the community contacts. 

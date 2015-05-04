@@ -28,10 +28,11 @@
     <input type="hidden" id="hidden-addUserModal" value="">
 <p>
     <span id="pendings-action">
+    Click to select pending requests to
     <a href="#" id="link-approve">Approve</a>
     or
     <a href="#" id="link-reject">Reject</a>
-    the <span id='pendings-count' style='font-size: large;'>0</span> selected pending requests.
+    them. <span id='pendings-count' style='font-size: large;'>0</span> selected.
     </span>
     <span id="pendings-msg"></span>
 </p>
@@ -75,6 +76,16 @@
     <ul><li>None. <a href='{% url "webapollo:index" %}'>Apply for annotation.</a></li></ul>
 {% endif %}
 
+<!-- approveModal -->
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+<div class="modal-dialog"><div class="modal-content">
+<div class="modal-body">
+    <p id="msg-approve"></p>
+    <p style="text-align:right; padding-top:1em;">
+    <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-approve-close">Close</button>
+</p>
+</div>
+</div></div></div>
 {% endblock%}
 
 {% block scripts %}
