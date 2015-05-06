@@ -84,6 +84,7 @@ def get_species(request):
         else: # status is 'Approved' or 'Added'
             raise Exception('Severe permission errors!')
     unauth_list.sort(key=lambda k:k['name'])
+    interested_list.sort(key=lambda k:k['name'])
 
     return species_list, interested_list, unauth_list
 
@@ -100,6 +101,19 @@ def index(request):
         'interested_species_list': interested_species_list,
         'unauth_species_list': unauth_species_list,
         'isOAuth': checkOAuth(request.user),
+    })
+
+@login_required
+def panel(request):
+    species_list, interested_species_list, unauth_species_list = get_species(request)
+    return render(
+        request,
+        'webapollo/panel.html', {
+        'year': datetime.now().year,
+        'title': 'Web Apollo Application',
+        'species_list': species_list,
+        'interested_species_list': interested_species_list,
+        'unauth_species_list': unauth_species_list,
     })
 
 @ajax_login_required
@@ -160,7 +174,7 @@ def do_reject(sname, uname, comment, owner):
         ctx = {
             'full_name': _user.get_full_name(),
             'species': _species.full_name,
-            'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+            'website': settings.HOSTNAME + reverse('webapollo:panel'),
         }
         message = render_to_string('webapollo/email/rejection.txt', ctx)
         EmailMessage(subject, message, to=to).send()
@@ -373,7 +387,7 @@ def do_remind(sname):
             ctx = {
                 'first_name': owner.first_name,
                 'species': spe.full_name,
-                'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+                'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL + '#pending_requests',
             }
             message = render_to_string('webapollo/email/reminder.txt', ctx)
             EmailMessage(subject, message, to=to).send()

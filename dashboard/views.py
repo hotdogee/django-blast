@@ -9,6 +9,7 @@ from app.views import checkOAuth
 def dashboard(request):
     species_list = []
     if apps.is_installed('webapollo'):
+        from webapollo.views import get_species
         from webapollo.models import Species, Registration
         from django.contrib.contenttypes.models import ContentType
 
@@ -32,13 +33,15 @@ def dashboard(request):
 
         # pending requests for the owner
         pendings = Registration.objects.filter(species__name__in=owner_set, status='Pending').order_by('species', 'submission_time')
+        species_list, interested_species_list, unauth_species_list = get_species(request)
 
     return render(
         request,
         'dashboard/index.html', {
         'year': datetime.now().year,
         'title': 'Dashboard',
-        'species_list': species_list,
         'pendings': pendings,
-        'isOAuth': checkOAuth(request.user),
+        'species_list': species_list,
+        'interested_species_list': interested_species_list,
+        'unauth_species_list': unauth_species_list,
     })
