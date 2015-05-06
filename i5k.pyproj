@@ -68,6 +68,18 @@
     <Compile Include="blast\serializers.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="dashboard\admin.py" />
+    <Compile Include="dashboard\migrations\__init__.py" />
+    <Compile Include="dashboard\models.py" />
+    <Compile Include="dashboard\tests.py" />
+    <Compile Include="dashboard\views.py" />
+    <Compile Include="dashboard\__init__.py" />
+    <Compile Include="data\admin.py" />
+    <Compile Include="data\migrations\__init__.py" />
+    <Compile Include="data\models.py" />
+    <Compile Include="data\tests.py" />
+    <Compile Include="data\views.py" />
+    <Compile Include="data\__init__.py" />
     <Compile Include="i5k\settings_prod.py" />
     <Compile Include="pipeline\compilers\coffee.py" />
     <Compile Include="pipeline\compilers\less.py" />
@@ -100,6 +112,11 @@
     <Compile Include="pipeline\templatetags\__init__.py" />
     <Compile Include="pipeline\utils.py" />
     <Compile Include="pipeline\__init__.py" />
+    <Compile Include="proxy\models.py" />
+    <Compile Include="proxy\tests.py" />
+    <Compile Include="proxy\urls.py" />
+    <Compile Include="proxy\views.py" />
+    <Compile Include="proxy\__init__.py" />
     <Compile Include="rest_framework\authentication.py" />
     <Compile Include="rest_framework\authtoken\admin.py" />
     <Compile Include="rest_framework\authtoken\migrations\0001_initial.py" />
@@ -214,6 +231,22 @@
     <Compile Include="util\run_makeblastdb_test.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="webapollo\admin.py" />
+    <Compile Include="webapollo\migrations\0001_initial.py" />
+    <Compile Include="webapollo\migrations\0002_species_full_name.py" />
+    <Compile Include="webapollo\migrations\0003_auto_20150202_1630.py" />
+    <Compile Include="webapollo\migrations\0004_auto_20150202_1635.py" />
+    <Compile Include="webapollo\migrations\0005_auto_20150203_1102.py" />
+    <Compile Include="webapollo\migrations\0006_auto_20150203_1120.py" />
+    <Compile Include="webapollo\migrations\0007_auto_20150205_1148.py" />
+    <Compile Include="webapollo\migrations\0008_auto_20150205_1152.py" />
+    <Compile Include="webapollo\migrations\0009_auto_20150217_1514.py" />
+    <Compile Include="webapollo\migrations\__init__.py" />
+    <Compile Include="webapollo\models.py" />
+    <Compile Include="webapollo\tests.py" />
+    <Compile Include="webapollo\urls.py" />
+    <Compile Include="webapollo\views.py" />
+    <Compile Include="webapollo\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
@@ -398,6 +431,15 @@
     <Folder Include="app\templates\app\" />
     <Folder Include="blast\templates\blast\" />
     <Folder Include="blast\fixtures\" />
+    <Folder Include="dashboard\" />
+    <Folder Include="dashboard\migrations\" />
+    <Folder Include="dashboard\static\" />
+    <Folder Include="dashboard\static\dashboard\" />
+    <Folder Include="dashboard\static\dashboard\scripts\" />
+    <Folder Include="dashboard\templates\" />
+    <Folder Include="dashboard\templates\dashboard\" />
+    <Folder Include="data\" />
+    <Folder Include="data\migrations\" />
     <Folder Include="filebrowser\" />
     <Folder Include="filebrowser\locale\" />
     <Folder Include="filebrowser\locale\ca\" />
@@ -472,6 +514,7 @@
     <Folder Include="pipeline\templates\" />
     <Folder Include="pipeline\templates\pipeline\" />
     <Folder Include="pipeline\templatetags\" />
+    <Folder Include="proxy\" />
     <Folder Include="rest_framework\" />
     <Folder Include="rest_framework\authtoken\" />
     <Folder Include="rest_framework\authtoken\migrations\" />
@@ -539,6 +582,14 @@
     <Folder Include="templates\rest_framework_swagger\" />
     <Folder Include="templates\rest_framework\" />
     <Folder Include="util\" />
+    <Folder Include="webapollo\" />
+    <Folder Include="webapollo\migrations\" />
+    <Folder Include="webapollo\static\" />
+    <Folder Include="webapollo\static\webapollo\" />
+    <Folder Include="webapollo\static\webapollo\scripts\" />
+    <Folder Include="webapollo\templates\" />
+    <Folder Include="webapollo\templates\webapollo\" />
+    <Folder Include="webapollo\templates\webapollo\email\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\static\app\scripts\jquery-1.11.1.min.js" />
@@ -1402,6 +1453,14 @@
     <Content Include="blast\bin_win\tblastx.exe" />
     <Content Include="blast\bin_win\windowmasker.exe" />
     <Content Include="blast\templates\blast\results_not_existed.html" />
+    <Content Include="dashboard\admin.pyc" />
+    <Content Include="dashboard\migrations\__init__.pyc" />
+    <Content Include="dashboard\models.pyc" />
+    <Content Include="dashboard\static\dashboard\scripts\dashboard.js" />
+    <Content Include="dashboard\templates\dashboard\base.html" />
+    <Content Include="dashboard\templates\dashboard\index.html" />
+    <Content Include="dashboard\views.pyc" />
+    <Content Include="dashboard\__init__.pyc" />
     <Content Include="filebrowser\locale\ca\LC_MESSAGES\django.mo" />
     <Content Include="filebrowser\locale\ca\LC_MESSAGES\django.po" />
     <Content Include="filebrowser\locale\de\LC_MESSAGES\django.mo" />
@@ -1576,6 +1635,10 @@
     <Content Include="pipeline\templates\pipeline\inline_js.jinja" />
     <Content Include="pipeline\templates\pipeline\js.html" />
     <Content Include="pipeline\templates\pipeline\js.jinja" />
+    <Content Include="proxy\models.pyc" />
+    <Content Include="proxy\urls.pyc" />
+    <Content Include="proxy\views.pyc" />
+    <Content Include="proxy\__init__.pyc" />
     <Content Include="README.md" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
@@ -1777,6 +1840,35 @@
     <Content Include="templates\rest_framework_swagger\index.html" />
     <Content Include="util\blastdb.json" />
     <Content Include="util\dataset_list.tsv" />
+    <Content Include="webapollo\admin.pyc" />
+    <Content Include="webapollo\migrations\0001_initial.pyc" />
+    <Content Include="webapollo\migrations\0002_species_full_name.pyc" />
+    <Content Include="webapollo\migrations\0003_auto_20150202_1630.pyc" />
+    <Content Include="webapollo\migrations\0004_auto_20150202_1635.pyc" />
+    <Content Include="webapollo\migrations\0005_auto_20150203_1102.pyc" />
+    <Content Include="webapollo\migrations\0006_auto_20150203_1120.pyc" />
+    <Content Include="webapollo\migrations\0007_auto_20150205_1148.pyc" />
+    <Content Include="webapollo\migrations\0008_auto_20150205_1152.pyc" />
+    <Content Include="webapollo\migrations\0009_auto_20150217_1514.pyc" />
+    <Content Include="webapollo\migrations\__init__.pyc" />
+    <Content Include="webapollo\models.pyc" />
+    <Content Include="webapollo\static\webapollo\scripts\admin-manage.js" />
+    <Content Include="webapollo\static\webapollo\scripts\admin-species-user.js" />
+    <Content Include="webapollo\static\webapollo\scripts\admin-user-permission.js" />
+    <Content Include="webapollo\static\webapollo\scripts\webapollo.js" />
+    <Content Include="webapollo\templates\webapollo\email\approval.txt" />
+    <Content Include="webapollo\templates\webapollo\email\new_annotator_request.txt" />
+    <Content Include="webapollo\templates\webapollo\email\register.txt" />
+    <Content Include="webapollo\templates\webapollo\email\rejection.txt" />
+    <Content Include="webapollo\templates\webapollo\email\reminder.txt" />
+    <Content Include="webapollo\templates\webapollo\manage.html" />
+    <Content Include="webapollo\templates\webapollo\readonly_change_list.html" />
+    <Content Include="webapollo\templates\webapollo\species_user.html" />
+    <Content Include="webapollo\templates\webapollo\user_permission.html" />
+    <Content Include="webapollo\templates\webapollo\webapollo.html" />
+    <Content Include="webapollo\urls.pyc" />
+    <Content Include="webapollo\views.pyc" />
+    <Content Include="webapollo\__init__.pyc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.mht">
