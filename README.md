@@ -1,6 +1,6 @@
 <!--Under active development, not safe for consumption!
 ===================================================-->
-Live Demo
+Check it out
 =========
 https://i5k.nal.usda.gov/webapp/blast/
 
