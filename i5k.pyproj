@@ -592,6 +592,8 @@
     <Folder Include="webapollo\templates\webapollo\email\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".gitattributes" />
+    <Content Include=".gitignore" />
     <Content Include="app\static\app\scripts\jquery-1.11.1.min.js" />
     <Content Include="app\static\app\scripts\jquery.gh-readme.js" />
     <Content Include="app\static\app\scripts\marked.min.js" />

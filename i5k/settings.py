@@ -48,12 +48,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(PROJECT_ROOT, 'db.sqlite3'),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'django_i5k',
+    'USER': 'django',
+    'PASSWORD': '',
+    'HOST': '127.0.0.1',
+    'PORT': '5432',
     }
 }
 
