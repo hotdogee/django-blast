@@ -3,7 +3,8 @@ from . import views
 
 
 urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
+    #url(r'^$', views.index, name='index'),
+    url(r'^panel$', views.panel, name='panel'),
     url(r'^admin/manage$', views.manage, name="manage"),
     url(r'^admin/bulk-remind$', views.bulk_remind, name="bulk-remind"),
     url(r'^admin/user/(?P<user_id>[0-9]+)$', views.user_permission, name="user_permission"),

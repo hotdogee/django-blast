@@ -1,18 +1,29 @@
-{% extends "dashboard/base.html" %}
+{% extends "app/layout.html" %}
+
 {% load staticfiles %}
 
 {% block head-scripts %}
+<style>
+    .species-table {
+        width: 100%;
+        margin-bottom:0.5em;
+    }
+    .species-table td {
+        vertical-align: middle; 
+        width:50%;
+    }
+    .dataTables_empty {
+        display: none;
+    }
+</style>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
 {% endblock %}
 
-{% block dashboard-breadcrumb %}
-<li>Dashboard</li>
-{% endblock %}
-
-{% block dashboard-content %}
-<p style="text-align: center;">BLAST queries&nbsp;&nbsp;(<a href='{% url "blast:create" %}'>Go BLAST</a>)</p>
+{% block content %}
+<h2 style="padding-bottom:0.5em;">Blast&nbsp;&nbsp;<a href="{% url "blast:create" %}" role="button" class="btn btn-primary">Launch application</a></h2>
 <table id="queries-{{user.id}}" class="display compact" cellspacing="0" width="100%">
+    <caption>Blast queries</caption>
     <thead>
     <tr>
         <th>Submission time</th>
@@ -22,13 +33,14 @@
     </thead>
 </table>
 <hr>
-<p style="text-align: center;">Web Apollo&nbsp;&nbsp;(<a href='{% url "webapollo:index" %}'>Management panel</a>)</p>
 
+<div class="anchor" id="pending_requests"></div>
+<h2>Web Apollo</h2>
 {% if pendings %}
-    <input type="hidden" id="hidden-addUserModal" value="">
+<h3>Pending requests</h3>
 <p>
     <span id="pendings-action">
-    Click to select pending requests to
+    Click to select to
     <a href="#" id="link-approve">Approve</a>
     or
     <a href="#" id="link-reject">Reject</a>
@@ -37,6 +49,7 @@
     <span id="pendings-msg"></span>
 </p>
 <table id="pendings" class="display compact" cellspacing="0" width="100%">
+    <caption>Pending requests</caption>
     <thead>
     <tr>
         <th>Organism</th>
@@ -65,16 +78,120 @@
 <hr>
 {% endif %}
 
-<p>Access organisms using Web Apollo</p>
-{% if species_list%}
-    <ul>
+<h3>Launch applications</h3>
+{% if species_list %}
     {% for species in species_list%}
-    <li><a href="{% url 'webapollo:species' species.name %}" target="_blank">{{ species.full_name }}</a></li>
+    <table class="species-table">
+    <tr>
+        <td>{{ species.full_name }}</td>
+        <td>
+            <a href="{% url 'webapollo:species' species.name %}" role="button" class="btn btn-primary" target="_blank">Launch</a>
+            {% if species.is_owner%}
+                <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Manage</button>
+            {% else %}
+                <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{species.name}}" aria-expanded="false" aria-controls="collapse-{{species.name}}">Info</button>
+            {% endif %}
+            </ul>
+        </td>
+    </tr>
+    </table>    
+    <div class="collapse" id="collapse-{{species.name}}">
+        <div class="well">
+        {% if species.is_owner%}
+            <table class="table table-owner-annotators display compact" id="annotators-{{species.name}}">
+            <caption>Annotators</caption>
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Institution</th>
+                <th><a href="#" data-toggle="modal" data-target="#addUserModal" data-whatever="{{species.name}}" >Add user</a></th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for owner in species.owners %}
+              <tr id="tr-{{owner.username}}-{{species.name}}">
+                <td>
+                  {{ owner.first_name }} {{ owner.last_name }} <span class="label label-default">Contact</span>
+                </td>
+                <td>{{ owner.username}}</td>
+                <td>{{ owner.profile.institution}}</td>
+                <td></td>
+              </tr>
+            {% endfor %}
+            {% for user in species.users %}
+              <tr id="tr-{{user.username}}-{{species.name}}">
+                <td>{{user.first_name}} {{user.last_name}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.profile.institution}}</td>
+                <td><a href="#" class="link-remove">Remove</a></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        {% else %}
+          {% if species.owners or species.users %}
+            <table class="table table-annotators display compact">
+            <caption>Annotators</caption>
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Institution</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for owner in species.owners %}
+              <tr>
+                <td>
+                    {{ owner.first_name }} {{ owner.last_name }} <span class="label label-default">Contact</span>
+                </td>
+                <td>{{ owner.username}}</td>
+                <td>{{ owner.profile.institution}}</td>
+              </tr>
+            {% endfor %}
+            {% for user in species.users %}
+              <tr>
+                <td>{{user.first_name}} {{user.last_name}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.profile.institution}}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+          {% endif %}
+        {% endif %}
+        </div>
+    </div>
     {% endfor %}
-    </ul>
+    <!-- addUserModal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-body">
+        <p id="addUserMsg">Click to select users to be annotators</p>
+        <table class="table display compact table-adduser" id="adduser-table">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Institution</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p style="text-align:right; padding-top:1em;">
+            <span style="float:left;"><span id='adduser-count' style='font-size: large;'>0</span> users selected</span>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>&nbsp;
+            <button type="button" class="btn btn-primary" id="btn-addUserModal" data-loading-text="Adding...">Add selected users</button>
+            <input type="hidden" id="hidden-addUserModal" value="">
+        </p>
+    </div>
+    </div></div></div>
 {% else %}
-    <ul><li>None. <a href='{% url "webapollo:index" %}'>Apply for annotation.</a></li></ul>
+    <p>No organisms.</p>
 {% endif %}
+<hr>
+<h3><a href='{% url "webapollo:panel" %}'>Apply for annotation</a></h3>
 
 <!-- approveModal -->
 <div class="modal fade" data-keyboard="false" data-backdrop="static" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">

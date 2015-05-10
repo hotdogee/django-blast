@@ -173,5 +173,5 @@ def logout_all(request):
         from webapollo.views import logout_all_instances
         logout_all_instances(request)
     logout(request)
-    return HttpResponseRedirect(reverse('blast:create'))
+    return HttpResponseRedirect(reverse('login'))
 
