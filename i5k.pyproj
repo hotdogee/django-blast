@@ -75,6 +75,9 @@
     <Compile Include="dashboard\views.py" />
     <Compile Include="dashboard\__init__.py" />
     <Compile Include="data\admin.py" />
+    <Compile Include="data\file_types\gff3.py" />
+    <Compile Include="data\file_types\__init__.py" />
+    <Compile Include="data\migrations\0001_initial.py" />
     <Compile Include="data\migrations\__init__.py" />
     <Compile Include="data\models.py" />
     <Compile Include="data\tests.py" />
@@ -440,6 +443,10 @@
     <Folder Include="dashboard\templates\dashboard\" />
     <Folder Include="data\" />
     <Folder Include="data\migrations\" />
+    <Folder Include="data\file_types\" />
+    <Folder Include="data\static\" />
+    <Folder Include="data\static\data\" />
+    <Folder Include="data\static\data\scripts\" />
     <Folder Include="filebrowser\" />
     <Folder Include="filebrowser\locale\" />
     <Folder Include="filebrowser\locale\ca\" />
@@ -1463,6 +1470,7 @@
     <Content Include="dashboard\templates\dashboard\index.html" />
     <Content Include="dashboard\views.pyc" />
     <Content Include="dashboard\__init__.pyc" />
+    <Content Include="data\static\data\scripts\file-admin.js" />
     <Content Include="filebrowser\locale\ca\LC_MESSAGES\django.mo" />
     <Content Include="filebrowser\locale\ca\LC_MESSAGES\django.po" />
     <Content Include="filebrowser\locale\de\LC_MESSAGES\django.mo" />

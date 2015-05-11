@@ -1,5 +1,5 @@
 ﻿$(function () { // document ready
-    window.id_fasta_file_change = function (value) {
+    window.id_file_change = function (value) {
         $('#id_fasta_file').val(value).change();
     }
     $('#id_fasta_file').change(function () {

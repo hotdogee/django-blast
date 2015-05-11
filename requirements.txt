@@ -15,7 +15,7 @@ jsmin==2.0.11
 kombu==3.0.21
 oauthlib==0.7.2
 pika==0.9.14
-# psycopg2==2.5.3  # if use postgreSQL as DB backend
+psycopg2==2.6.0  # if use postgreSQL as DB backend
 python-memcached==1.53
 python-openid==2.2.5
 python-social-auth==0.2.3

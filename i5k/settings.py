@@ -164,6 +164,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'axes',
     'rest_framework',
     'rest_framework_swagger',
@@ -182,6 +183,7 @@ INSTALLED_APPS = (
     'dashboard',
     'webapollo',
     'proxy',
+    'data',
 )
 
 # deprecated in Django 1.8
