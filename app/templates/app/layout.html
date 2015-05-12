@@ -12,6 +12,10 @@
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Inconsolata:400,700'>
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Tangerine">
     {% block head-scripts %}{% endblock %}
+    {% if isAnalyticsEnabled %}
+    <script type="text/javascript" src="{% static 'app/scripts/analytics.js' %}" async></script>
+    <script type="text/javascript" src="//www.nal.usda.gov/sites/default/files/federated-analytics/analytics.js"></script>
+    {% endif%}
 </head>
 
 <body class="padtop {% block bodyclass %}{% endblock %}">

@@ -31,6 +31,7 @@ TEMPLATES = [
                 'social.apps.django_app.context_processors.backends',
                 'social.apps.django_app.context_processors.login_redirect',
                 'app.context_processors.is_login_enabled',
+                'app.context_processors.is_analytics_enabled',
             ],           
         },
     },
@@ -483,6 +484,7 @@ except:
     HOSTNAME = 'localhost'
 
 LOGIN_ENABLED = True
+ANALYTICS_ENABLED = False
 
 # Use settings for production
 USE_PROD_SETTINGS = False
