@@ -271,6 +271,10 @@ SUIT_CONFIG = {
             {'model': 'speciespassword', 'label': '[Read Only] Passwords'},
             {'model': 'registration', 'label': '[Read Only] Registrations'},
         )},
+        {'app': 'data', 'label': 'Data', 'icon':'icon-leaf', 'models': (
+            {'model': 'file'},
+            {'model': 'item'},
+        )},
         # auth and axes
         {'label': 'Auth', 'icon':'icon-lock', 'models': (
             {'model': 'auth.user'},

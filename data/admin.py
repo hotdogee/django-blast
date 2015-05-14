@@ -28,7 +28,7 @@ class FileAdmin(admin.ModelAdmin):
 admin.site.register(File, FileAdmin)
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('key', 'id', 'file')
+    list_display = ('key', 'id', 'file', 'attributes')
     search_fields = ('attributes',)
     actions_on_top = True
     actions_on_bottom = True

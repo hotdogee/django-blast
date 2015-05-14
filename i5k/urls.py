@@ -116,6 +116,8 @@ urlpatterns = patterns('',
 
     # BLAST
     url(r'^blast/', include('blast.urls', namespace='blast')),
+    # BLAST
+    url(r'^data/', include('data.urls', namespace='data')),
 )
 from django.conf import settings
 if settings.DEBUG:

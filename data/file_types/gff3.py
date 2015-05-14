@@ -1046,7 +1046,7 @@ class Gff3(object):
         return sorted(list(root_set), key=lambda x: x.value)
 
 try:
-    from ordereddict import OrderedDict
+    from collections import OrderedDict
 except ImportError:
     # Backport of OrderedDict() class that runs on Python 2.4, 2.5, 2.6, 2.7 and pypy.
     # Passes Python2.7's test suite and incorporates all the latest updates.
