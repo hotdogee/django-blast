@@ -275,6 +275,7 @@ SUIT_CONFIG = {
         {'app': 'data', 'label': 'Data', 'icon':'icon-leaf', 'models': (
             {'model': 'file'},
             {'model': 'item'},
+            {'model': 'accession'},
         )},
         # auth and axes
         {'label': 'Auth', 'icon':'icon-lock', 'models': (

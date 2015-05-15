@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib import messages
 from django.forms import ModelForm
-from data.models import *
+from .models import *
 
 class FileAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'hash', 'processed_hash', 'processed_date')
@@ -28,8 +28,15 @@ class FileAdmin(admin.ModelAdmin):
 admin.site.register(File, FileAdmin)
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('key', 'id', 'file', 'attributes')
+    list_display = ('id', 'file', 'attributes')
     search_fields = ('attributes',)
     actions_on_top = True
     actions_on_bottom = True
 admin.site.register(Item, ItemAdmin)
+
+class AccessionAdmin(admin.ModelAdmin):
+    list_display = ('accession', 'item')
+    search_fields = ('accession',)
+    actions_on_top = True
+    actions_on_bottom = True
+admin.site.register(Accession, AccessionAdmin)

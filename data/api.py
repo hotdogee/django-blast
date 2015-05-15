@@ -6,8 +6,8 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from django.contrib.auth.models import User
 from django.http import Http404
-from .models import File, FileRelationship, Item, ItemRelationship
-from .serializers import FileSerializer, ItemSerializer
+from .models import *
+from .serializers import *
 
 class FileViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -15,7 +15,7 @@ class FileViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = File.objects.all()
     serializer_class = FileSerializer
-    lookup_field = 'id'
+    #lookup_field = 'id'
 
 class ItemViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -23,29 +23,37 @@ class ItemViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    lookup_field = 'key'
+    #lookup_field = 'id'
 
-class AccessionList(APIView):
+class AccessionViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    List all snippets, or create a new snippet.
+    Retrieve sequence types.
     """
-    def get(self, request, format=None):
-        files = File.objects.all()
-        serializer = FileSerializer(files, many=True)
-        return Response(serializer.data)
+    queryset = Accession.objects.all()
+    serializer_class = AccessionSerializer
+    lookup_field = 'accession'
 
-class AccessionDetail(APIView):
-    """
-    Retrieve, update or delete a snippet instance.
-    """
-    def get_file(self, id):
-        try:
-            return File.objects.get(id=id)
-        except File.DoesNotExist:
-            raise Http404
+#class AccessionList(APIView):
+#    """
+#    List all snippets, or create a new snippet.
+#    """
+#    def get(self, request, format=None):
+#        files = File.objects.all()
+#        serializer = FileSerializer(files, many=True)
+#        return Response(serializer.data)
 
-    def get(self, request, accession, format=None):
-        ids = accession.split('/')
-        file = self.get_file(ids[0])
-        serializer = FileSerializer(file)
-        return Response(serializer.data)
+#class AccessionDetail(APIView):
+#    """
+#    Retrieve, update or delete a snippet instance.
+#    """
+#    def get_file(self, id):
+#        try:
+#            return File.objects.get(id=id)
+#        except File.DoesNotExist:
+#            raise Http404
+
+#    def get(self, request, accession, format=None):
+#        ids = accession.split('/')
+#        file = self.get_file(ids[0])
+#        serializer = FileSerializer(file)
+#        return Response(serializer.data)
