@@ -1,13 +1,12 @@
 from rest_framework import renderers
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
-from rest_framework.decorators import action, link
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from django.contrib.auth.models import User
 from django.http import Http404
-from .models import *
-from .serializers import *
+from .models import File, Item, Accession
+from .serializers import FileSerializer, ItemSerializer, AccessionSerializer
 
 class FileViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -15,7 +14,7 @@ class FileViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = File.objects.all()
     serializer_class = FileSerializer
-    #lookup_field = 'id'
+    #lookup_field = 'pk'
 
 class ItemViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -31,7 +30,8 @@ class AccessionViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Accession.objects.all()
     serializer_class = AccessionSerializer
-    lookup_field = 'accession'
+    #lookup_field = 'accession'
+    lookup_value_regex = '.+'
 
 #class AccessionList(APIView):
 #    """

@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url, include
 from blast import views
-from .api import OrganismViewSet, SequenceTypeViewSet, BlastDbViewSet, SequenceViewSet, BlastQueryRecordViewSet, UserViewSet
+from .api import *
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()

@@ -13,12 +13,12 @@ class FASTARenderer(renderers.BaseRenderer):
             return ''
 
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
-from rest_framework.decorators import action, link
+#from rest_framework.decorators import action, link
 from rest_framework.response import Response
 from rest_framework import viewsets
 from django.contrib.auth.models import User
-from .models import Organism, SequenceType, BlastDb, Sequence, BlastQueryRecord
-from .serializers import OrganismSerializer, SequenceTypeSerializer, BlastDbSerializer, SequenceSerializer, PaginatedSequenceSerializer, BlastQueryRecordSerializer, UserSerializer
+from .models import *
+from .serializers import *
 
 class OrganismViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -45,33 +45,33 @@ class BlastDbViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'title'
     lookup_value_regex = '[^/]+'
 
-    @link()
-    def sequence_set(self, request, title=None):
-        empty_error = "Empty list and '%(class_name)s.allow_empty' is False."
-        blastdb = self.get_object()
-        object_list = self.filter_queryset(blastdb.sequence_set.all())
+    #@link()
+    #def sequence_set(self, request, title=None):
+    #    empty_error = "Empty list and '%(class_name)s.allow_empty' is False."
+    #    blastdb = self.get_object()
+    #    object_list = self.filter_queryset(blastdb.sequence_set.all())
 
-        # Default is to allow empty querysets.  This can be altered by setting
-        # `.allow_empty = False`, to raise 404 errors on empty querysets.
-        if not self.allow_empty and not object_list:
-            warnings.warn(
-                'The `allow_empty` parameter is deprecated. '
-                'To use `allow_empty=False` style behavior, You should override '
-                '`get_queryset()` and explicitly raise a 404 on empty querysets.',
-                DeprecationWarning
-            )
-            class_name = self.__class__.__name__
-            error_msg = self.empty_error % {'class_name': class_name}
-            raise Http404(error_msg)
+    #    # Default is to allow empty querysets.  This can be altered by setting
+    #    # `.allow_empty = False`, to raise 404 errors on empty querysets.
+    #    if not self.allow_empty and not object_list:
+    #        warnings.warn(
+    #            'The `allow_empty` parameter is deprecated. '
+    #            'To use `allow_empty=False` style behavior, You should override '
+    #            '`get_queryset()` and explicitly raise a 404 on empty querysets.',
+    #            DeprecationWarning
+    #        )
+    #        class_name = self.__class__.__name__
+    #        error_msg = self.empty_error % {'class_name': class_name}
+    #        raise Http404(error_msg)
 
-        # Switch between paginated or standard style responses
-        page = self.paginate_queryset(object_list)
-        if page is not None:
-            serializer = PaginatedSequenceSerializer(instance=page, context={'request': request})
-        else:
-            serializer = SequenceSerializer(object_list, many=True, context={'request': request})
+    #    # Switch between paginated or standard style responses
+    #    page = self.paginate_queryset(object_list)
+    #    if page is not None:
+    #        serializer = PaginatedSequenceSerializer(instance=page, context={'request': request})
+    #    else:
+    #        serializer = SequenceSerializer(object_list, many=True, context={'request': request})
 
-        return Response(serializer.data)
+    #    return Response(serializer.data)
 
 class SequenceViewSet(viewsets.ReadOnlyModelViewSet):
     """
