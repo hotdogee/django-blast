@@ -15,22 +15,24 @@ class FileSerializer(serializers.HyperlinkedModelSerializer):
         #exclude = ('url', )
 
 class ItemRelationshipSerializer(serializers.ModelSerializer):
+    item = serializers.HyperlinkedRelatedField(source='target', view_name='data:api:item-detail', read_only=True)
+
     class Meta:
-        model = Item
-        #fields = ('type', )
+        model = ItemRelationship
+        fields = ('type', 'item')
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='data:api:item-detail')
+    #url = serializers.HyperlinkedIdentityField(view_name='data:api:item-detail')
     file = serializers.HyperlinkedRelatedField(view_name='data:api:file-detail', read_only=True)
-    related = ItemRelationshipSerializer(many=True, read_only=True)
+    related = ItemRelationshipSerializer(source='relationships_to', many=True, read_only=True)
 
     class Meta:
         model = Item
-        #exclude = ('url', )
+        exclude = ('url', )
 
 class AccessionSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='data:api:accession-detail')
-    item = serializers.HyperlinkedRelatedField(view_name='data:api:item-detail', read_only=True)
+    item = ItemSerializer(read_only=True)
     #item = ItemSerializer()
 
     class Meta:

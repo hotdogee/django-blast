@@ -197,7 +197,7 @@ class Item(models.Model):
     index = models.PositiveIntegerField(null=True, blank=True) # unique index within a file
     text = models.TextField(blank=True)
     attributes = HStoreField(blank=True)
-    related = models.ManyToManyField('self', through='ItemRelationship', through_fields=('source', 'target'), symmetrical=False)
+    related = models.ManyToManyField('self', through='ItemRelationship', through_fields=('source', 'target'), symmetrical=False, related_name='itemrelationship_set')
     
     def __unicode__(self):
         return str(self.text)
@@ -205,9 +205,9 @@ class Item(models.Model):
 class ItemRelationship(models.Model):
     '''source.type = target
     '''
-    source = models.ForeignKey(Item, related_name='+')
+    source = models.ForeignKey(Item, related_name='relationships_to')
     type = models.CharField(max_length=50, help_text='Relationship Type')
-    target = models.ForeignKey(Item, related_name='+')
+    target = models.ForeignKey(Item, related_name='relationships_from')
 
 class Accession(models.Model):
     '''Accessions are assigned to Items.
