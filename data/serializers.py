@@ -8,14 +8,14 @@ class FileRelationshipSerializer(serializers.ModelSerializer):
 
 class FileSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='data:api:file-detail')
-    #related = FileRelationshipSerializer(many=True, read_only=True)
+    item_set = serializers.HyperlinkedRelatedField(view_name='data:api:item-detail', many=True, read_only=True)
 
     class Meta:
         model = File
         #exclude = ('url', )
 
 class ItemRelationshipSerializer(serializers.ModelSerializer):
-    item = serializers.HyperlinkedRelatedField(source='target', view_name='data:api:item-detail', read_only=True)
+    item = serializers.HyperlinkedRelatedField(source='target.accession_set', view_name='data:api:accession-detail', read_only=True, many=True)
 
     class Meta:
         model = ItemRelationship
