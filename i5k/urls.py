@@ -118,6 +118,8 @@ urlpatterns = patterns('',
     url(r'^blast/', include('blast.urls', namespace='blast')),
     # BLAST
     url(r'^data/', include('data.urls', namespace='data')),
+	url(r'^hmmer/', include('hmmer.urls', namespace='hmmer')),
+	url(r'^clustalw/', include('clustalw.urls', namespace='clustalw')),
 )
 from django.conf import settings
 if settings.DEBUG:
