@@ -1,0 +1,89 @@
+{% extends "app/layout.html" %}
+
+{% load staticfiles %}
+
+{% block head-scripts %}
+{% endblock %}
+{% block content %}
+
+<script>
+
+</script>
+<h2>CLUSTALW2 Success</h2>
+<h3>Download Reports</h3>
+<p>Your query is completed. Result is availabe for <a href="{{output}}">download txt</a> .</p>
+<h3>Details Reports</h3>
+<fieldset style="padding:4px;border:1px solid #24748c;">
+<div style="clear:none;">
+<div style="font-family: monospace; font-weight:normal;font-size:12px;padding: 6px;margin-top:10px;">
+<div id="msa">
+{% for o in report %}
+    {% autoescape off %}
+    {{ o }}
+    {% endautoescape %}
+{% endfor %}
+</div>
+</div>
+</div>
+<form action="/hmmer/">
+<input type="button" id="colorful" value="colorful">
+<input type="submit" id="tohmmserach" value="To hmmsearch">
+<input type="hidden" name="clustalw_task_id" value="{{ task_id }}">
+</form >
+</fieldset>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    raw_seq = "";
+    $(document).ready(function () {
+        raw_seq = $('#msa').html();
+        $('#aln').val(raw_seq);
+    });
+
+	function color(seq){
+		if(!seq){
+			return false;
+		}
+
+        seq = seq.replace(/(A)/g, function(v) { return '<span style="color:red;">'+v+'</span>'; });
+        seq = seq.replace(/(V)/g, function(v) { return '<span style="color:red;">'+v+'</span>'; });
+        seq = seq.replace(/(F)/g, function(v) { return '<span style="color:red;">'+v+'</span>'; });
+        seq = seq.replace(/(P)/g, function(v) { return '<span style="color:red;">'+v+'</span>'; });
+        seq = seq.replace(/(M)/g, function(v) { return '<span style="color:red;">'+v+'</span>'; });
+        seq = seq.replace(/(I)/g, function(v) { return '<span style="color:red;">'+v+'</span>'; });
+        seq = seq.replace(/(L)/g, function(v) { return '<span style="color:red;">'+v+'</span>'; });
+        seq = seq.replace(/(W)/g, function(v) { return '<span style="color:red;">'+v+'</span>'; });
+		seq = seq.replace(/(D)/g, function(v) { return '<span style="color:blue;">'+v+'</span>'; });
+        seq = seq.replace(/(E)/g, function(v) { return '<span style="color:blue;">'+v+'</span>'; });
+        seq = seq.replace(/(R)/g, function(v) { return '<span style="color:magenta;">'+v+'</span>'; });
+        seq = seq.replace(/(K)/g, function(v) { return '<span style="color:magenta;">'+v+'</span>'; });
+        seq = seq.replace(/(S)/g, function(v) { return '<span style="color:green;">'+v+'</span>'; });
+        seq = seq.replace(/(T)/g, function(v) { return '<span style="color:green;">'+v+'</span>'; });
+        seq = seq.replace(/(Y)/g, function(v) { return '<span style="color:green;">'+v+'</span>'; });
+        seq = seq.replace(/(H)/g, function(v) { return '<span style="color:green;">'+v+'</span>'; });
+        seq = seq.replace(/(C)/g, function(v) { return '<span style="color:green;">'+v+'</span>'; });
+        seq = seq.replace(/(N)/g, function(v) { return '<span style="color:green;">'+v+'</span>'; });
+        seq = seq.replace(/(G)/g, function(v) { return '<span style="color:green;">'+v+'</span>'; });
+        seq = seq.replace(/(Q)/g, function(v) { return '<span style="color:green;">'+v+'</span>'; });
+
+        return seq;
+	};
+
+    $('#colorful').click(function(){
+        if($('#colorful').val() == "colorful"){
+            seq = color($('#msa').html());
+            $('#msa').html(seq);
+            $('#colorful').val("uncolorful");
+        }else{
+            $('#msa').html(raw_seq);
+            $('#colorful').val("colorful");
+        }
+    });
+
+    $('#tohmmserach').click(function(){
+
+    });
+    </script>
+{% endblock %}
+
