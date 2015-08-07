@@ -185,6 +185,8 @@ INSTALLED_APPS = (
     'webapollo',
     'proxy',
     'data',
+    'hmmer',
+    'clustalw',
 )
 
 # deprecated in Django 1.8
