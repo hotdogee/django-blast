@@ -35,6 +35,8 @@ def create(request, iframe=False):
         # change directory to task directory
         os.chdir(task_dir)
 
+        print request.POST['program']
+
         query_filename = ''
         if 'query-file' in request.FILES:
             query_filename = request.FILES['query-file'].name
@@ -51,77 +53,102 @@ def create(request, iframe=False):
         chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can access the file
 
         # check if program is in list for security
-        if request.POST['sequenceType'] in ['dna', 'protein']:
+        if request.POST['program'] in ['clustalw','clustalo']:
 
             option_params = []
+            args_list = []
 
-            option_params.append("-type="+request.POST['sequenceType'])
+            if request.POST['program'] == 'clustalw':
+                option_params.append("-type="+request.POST['sequenceType'])
 
-            #parameters setting for full option or fast option
-            if request.POST['pairwise'] == "full":
-                option_params.append('-ALIGN')
+                #parameters setting for full option or fast option
+                if request.POST['pairwise'] == "full":
+                    option_params.append('-ALIGN')
+                    if request.POST['sequenceType'] == "dna":
+                        if request.POST['PWDNAMATRIX'] != "":
+                            option_params.append('-PWDNAMATRIX='+request.POST['PWDNAMATRIX'])
+                        if request.POST['dna-PWGAPOPEN'] != "":
+                            option_params.append('-PWGAPOPEN='+request.POST['dna-PWGAPOPEN'])
+                        if request.POST['dna-PWGAPEXT'] != "":
+                            option_params.append('-PWGAPEXT='+request.POST['dna-PWGAPEXT'])
+                    elif request.POST['sequenceType'] == "protein":
+                        if request.POST['PWMATRIX'] != "":
+                            option_params.append('-PWMATRIX='+request.POST['PWMATRIX'])
+                        if request.POST['protein-PWGAPOPEN'] != "":
+                            option_params.append('-PWGAPOPEN='+request.POST['protein-PWGAPOPEN'])
+                        if request.POST['protein-PWGAPOPEN'] != "":
+                            option_params.append('-PWGAPEXT='+request.POST['protein-PWGAPEXT'])
+                elif request.POST['pairwise'] == "fast":
+                    option_params.append('-QUICKTREE')
+                    if request.POST['KTUPLE'] != "":
+                        option_params.append('-KTUPLE='+request.POST['KTUPLE'])
+                    if request.POST['WINDOW'] != "":
+                        option_params.append('-WINDOW='+request.POST['WINDOW'])
+                    if request.POST['PAIRGAP'] != "":
+                        option_params.append('-PAIRGAP='+request.POST['PAIRGAP'])
+                    if request.POST['TOPDIAGS'] != "":
+                        option_params.append('-TOPDIAGS='+request.POST['TOPDIAGS'])
+                    if request.POST['SCORE'] != "":
+                        option_params.append('-SCORE='+request.POST['SCORE'])
+
+                #prarmeters setting for mutliple alignment
                 if request.POST['sequenceType'] == "dna":
-                    if request.POST['PWDNAMATRIX'] != "":
-                        option_params.append('-PWDNAMATRIX='+request.POST['PWDNAMATRIX'])
-                    if request.POST['dna-PWGAPOPEN'] != "":
-                        option_params.append('-PWGAPOPEN='+request.POST['dna-PWGAPOPEN'])
-                    if request.POST['dna-PWGAPEXT'] != "":
-                        option_params.append('-PWGAPEXT='+request.POST['dna-PWGAPEXT'])
+                    if request.POST['DNAMATRIX'] != "":
+                        option_params.append('-DNAMATRIX='+request.POST['DNAMATRIX'])
+                    if request.POST['dna-GAPOPEN'] != "":
+                        option_params.append('-GAPOPEN='+request.POST['dna-GAPOPEN'])
+                    if request.POST['dna-GAPEXT'] != "":
+                        option_params.append('-GAPEXT='+request.POST['dna-GAPEXT'])
+                    if request.POST['dna-GAPDIST'] != "":
+                        option_params.append('-GAPDIST='+request.POST['dna-GAPDIST'])
+                    if request.POST['dna-ITERATION'] != "":
+                        option_params.append('-ITERATION='+request.POST['dna-ITERATION'])
+                    if request.POST['dna-NUMITER'] != "":
+                        option_params.append('-NUMITER='+request.POST['dna-NUMITER'])
+                    if request.POST['dna-CLUSTERING'] != "":
+                        option_params.append('-CLUSTERING='+request.POST['dna-CLUSTERING'])
                 elif request.POST['sequenceType'] == "protein":
-                    if request.POST['PWMATRIX'] != "":
-                        option_params.append('-PWMATRIX='+request.POST['PWMATRIX'])
-                    if request.POST['protein-PWGAPOPEN'] != "":
-                        option_params.append('-PWGAPOPEN='+request.POST['protein-PWGAPOPEN'])
-                    if request.POST['protein-PWGAPOPEN'] != "":
-                        option_params.append('-PWGAPEXT='+request.POST['protein-PWGAPEXT'])
-            elif request.POST['pairwise'] == "fast":
-                option_params.append('-QUICKTREE')
-                if request.POST['KTUPLE'] != "":
-                    option_params.append('-KTUPLE='+request.POST['KTUPLE'])
-                if request.POST['WINDOW'] != "":
-                    option_params.append('-WINDOW='+request.POST['WINDOW'])
-                if request.POST['PAIRGAP'] != "":
-                    option_params.append('-PAIRGAP='+request.POST['PAIRGAP'])
-                if request.POST['TOPDIAGS'] != "":
-                    option_params.append('-TOPDIAGS='+request.POST['TOPDIAGS'])
-                if request.POST['SCORE'] != "":
-                    option_params.append('-SCORE='+request.POST['SCORE'])
+                    if request.POST['MATRIX'] != "":
+                        option_params.append('-MATRIX='+request.POST['MATRIX'])
+                    if request.POST['protein-GAPOPEN'] != "":
+                        option_params.append('-GAPOPEN='+request.POST['protein-GAPOPEN'])
+                    if request.POST['protein-GAPEXT'] != "":
+                        option_params.append('-GAPEXT='+request.POST['protein-GAPEXT'])
+                    if request.POST['protein-GAPDIST'] != "":
+                        option_params.append('-GAPDIST='+request.POST['protein-GAPDIST'])
+                    if request.POST['protein-ITERATION'] != "":
+                        option_params.append('-ITERATION='+request.POST['protein-ITERATION'])
+                    if request.POST['protein-NUMITER'] != "":
+                        option_params.append('-NUMITER='+request.POST['protein-NUMITER'])
+                    if request.POST['protein-CLUSTERING'] != "":
+                        option_params.append('-CLUSTERING='+request.POST['protein-CLUSTERING'])
 
-            #prarmeters setting for mutliple alignment
-            if request.POST['sequenceType'] == "dna":
-                if request.POST['DNAMATRIX'] != "":
-                    option_params.append('-DNAMATRIX='+request.POST['DNAMATRIX'])
-                if request.POST['dna-GAPOPEN'] != "":
-                    option_params.append('-GAPOPEN='+request.POST['dna-GAPOPEN'])
-                if request.POST['dna-GAPEXT'] != "":
-                    option_params.append('-GAPEXT='+request.POST['dna-GAPEXT'])
-                if request.POST['dna-GAPDIST'] != "":
-                    option_params.append('-GAPDIST='+request.POST['dna-GAPDIST'])
-                if request.POST['dna-ITERATION'] != "":
-                    option_params.append('-ITERATION='+request.POST['dna-ITERATION'])
-                if request.POST['dna-NUMITER'] != "":
-                    option_params.append('-NUMITER='+request.POST['dna-NUMITER'])
-                if request.POST['dna-CLUSTERING'] != "":
-                    option_params.append('-CLUSTERING='+request.POST['dna-CLUSTERING'])
-            elif request.POST['sequenceType'] == "protein":
-                if request.POST['MATRIX'] != "":
-                    option_params.append('-MATRIX='+request.POST['MATRIX'])
-                if request.POST['protein-GAPOPEN'] != "":
-                    option_params.append('-GAPOPEN='+request.POST['protein-GAPOPEN'])
-                if request.POST['protein-GAPEXT'] != "":
-                    option_params.append('-GAPEXT='+request.POST['protein-GAPEXT'])
-                if request.POST['protein-GAPDIST'] != "":
-                    option_params.append('-GAPDIST='+request.POST['protein-GAPDIST'])
-                if request.POST['protein-ITERATION'] != "":
-                    option_params.append('-ITERATION='+request.POST['protein-ITERATION'])
-                if request.POST['protein-NUMITER'] != "":
-                    option_params.append('-NUMITER='+request.POST['protein-NUMITER'])
-                if request.POST['protein-CLUSTERING'] != "":
-                    option_params.append('-CLUSTERING='+request.POST['protein-CLUSTERING'])
+                #parameters setting of  Output
+                option_params.append('-OUTPUT='+request.POST['OUTPUT'])
+                option_params.append('-OUTORDER='+request.POST['OUTORDER'])
 
-            #parameters setting of  Output
-            option_params.append('-OUTPUT='+request.POST['OUTPUT'])
-            option_params.append('-OUTORDER='+request.POST['OUTORDER'])
+                args_list.append(['clustalw2', '-infile='+query_filename,'-OUTFILE='+task_id+'.aln'] + option_params)
+            else:
+                #clustalo
+                if request.POST['dealing_input'] == "yes":
+                    option_params.append("--dealign")
+                if request.POST['clustering_guide_tree'] != "no":
+                    option_params.append("--full")
+                if request.POST['clustering_guide_iter'] != "no":
+                    option_params.append("--full-iter")
+
+                if request.POST['combined_iter'] != "":
+                    option_params.append("--iterations="+request.POST['combined_iter'])
+                if request.POST['max_gt_iter'] != "":
+                    option_params.append("--max-guidetree-iterations="+request.POST['max_gt_iter'])
+                if request.POST['max_hmm_iter'] != "":
+                    option_params.append("--max-hmm-iterations="+request.POST['max_hmm_iter'])
+                if request.POST['omega_output'] != "":
+                    option_params.append("--outfmt="+request.POST['omega_output'])
+                if request.POST['omega_order'] != "":
+                    option_params.append("--output-order="+request.POST['omega_order'])
+
+                args_list.append(['clustalo', '--infile='+query_filename,'--outfile='+task_id+'.aln'] + option_params)
 
             record = ClustalwQueryRecord()
             record.task_id = task_id
@@ -138,8 +165,10 @@ def create(request, iframe=False):
                 with open('status.json', 'wb') as f:
                     json.dump({'status': 'pending', 'seq_count': seq_count}, f)
 
-            args_list = []
-            args_list.append(['clustalw2', '-infile='+query_filename,'-OUTFILE='+task_id+'.aln'] + option_params)
+            print args_list
+
+
+            #args_list.append(['clustalw2', '-infile='+query_filename,'-OUTFILE='+task_id+'.aln'] + option_params)
 
             run_blast_task.delay(task_id, args_list, file_prefix)
 

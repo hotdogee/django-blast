@@ -15,6 +15,48 @@ if (!Array.prototype.indexOf) {
 }
 
 $(function() { // document ready
+
+	program_now = 0;
+	$('#switch').click(function (){
+		if(program_now == 0){
+			$('#fieldset-omega').css('display','inline');
+			$('#fieldset-omega-clustering').css('display','inline');
+			$('#fieldset-omega-iteration').css('display','inline');
+			$('#fieldset-omega-output').css('display','inline');
+
+			$('#fieldset-protein-full').css('display','none');
+			$('#fieldset-protein-multi').css('display','none');
+			$('#fieldset-dna-full').css('display','none');
+			$('#fieldset-dna-multi').css('display','none');
+			$('#fieldset-fast').css('display','none');
+			$('#fieldset-output').css('display','none');
+			$('#fieldset-basic').css('display','none');
+			$('#title').html("Clustal Omega");
+			$('#switch').html("(To Clustalw2)");
+			$('#program').val('clustalo');
+			program_now = 1;
+		}else{
+			$('#fieldset-omega').css('display','none');
+			$('#fieldset-omega-clustering').css('display','none');
+			$('#fieldset-omega-iteration').css('display','none');
+			$('#fieldset-omega-output').css('display','none');
+
+			$('#fieldset-protein-full').css('display','inline');
+			$('#fieldset-protein-multi').css('display','inline');
+			//$('#fieldset-dna-full').css('display','none');
+			//$('#fieldset-dna-multi').css('display','none');
+			//$('#fieldset-fast').css('display','none');
+			$('#fieldset-output').css('display','inline');
+			$('#fieldset-basic').css('display','inline');
+			$('#title').html("Clustalw2");
+			$('#switch').html("(To Clustal Omega)");
+			$('#program').val('clustalw');
+			program_now = 0;
+		}
+		var validator = $( "#MainBlastForm" ).validate();
+		validator.resetForm();
+	});
+
 	// load file into textarea
 	$('.query-file').change(function (evt) {
 		if (window.File && window.FileReader) {
@@ -110,14 +152,18 @@ $(function() { // document ready
 			$('.enter-query-text').html('Enter sequence below in <a href="docs/fasta.html">FASTA</a> format:');
 		} else if (qtype == 'nucleotide') {
 			$('.enter-query-text').html('Your sequence is detected as nucleotide:');
-            $('.sequenceType.protein').attr('disabled', 'disabled').addClass('disabled-radio');
-            $('.sequenceType.dna').prop('checked', true);
-            $('.sequenceType.dna').change();
+			if (program_now == 0) {
+				$('.sequenceType.protein').attr('disabled', 'disabled').addClass('disabled-radio');
+				$('.sequenceType.dna').prop('checked', true);
+				$('.sequenceType.dna').change();
+			}
 		} else if (qtype == 'peptide') {
 			$('.enter-query-text').html('Your sequence is detected as peptide:');
-            $('.sequenceType.dna').attr('disabled', 'disabled').addClass('disabled-radio');
-            $('.sequenceType.protein').prop('checked', true);
-            $('.sequenceType.protein').change();
+			if (program_now == 0) {
+				$('.sequenceType.dna').attr('disabled', 'disabled').addClass('disabled-radio');
+				$('.sequenceType.protein').prop('checked', true);
+				$('.sequenceType.protein').change();
+			}
 		}
 	}
 
@@ -334,7 +380,7 @@ $(function() { // document ready
         }
     });
 
-	$('#submitbutton').click(function() {
+	$('.submitbutton').click(function() {
 		{
 			if (checktxt() && $("#MainBlastForm").valid()) {
 				//$('#click_submit_hidden').val('true');	//Use for a back button is pressed. See line 52.//

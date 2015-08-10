@@ -27,9 +27,13 @@
         #fieldset-dna-full {float:left;padding-left: 20px; display:none}
         #fieldset-protein-full {float:left;padding-left: 20px;}
         #fieldset-dna-multi {float:left;padding-left: 20px; display:none;}
-        #fieldset-protein-multi {float:left;padding-left: 20px}
-        #fieldset-output {float:left;padding-left: 20px}
+        #fieldset-protein-multi {float:left;padding-left: 20px;}
+        #fieldset-output {float:left;padding-left: 20px;}
         #fieldset-fast {float:left;padding-left: 20px; display:none;}
+        #fieldset-omega {float:left; display:none;}
+        #fieldset-omega-clustering {float:left;padding-left: 20px; display:none;}
+        #fieldset-omega-iteration {float:left;padding-left: 20px; display:none;}
+        #fieldset-omega-output {float:left;padding-left: 20px; display:none;}
         html {overflow-y: scroll;}
     </style>
 {% endblock %}
@@ -59,6 +63,7 @@
     <div class="tripal_details">
 {% endif %}
 <FORM METHOD="POST" id="MainBlastForm" NAME="MainBlastForm" ENCTYPE="multipart/form-data">
+<input type="hidden" name="program" id="program" value="clustalw">
 {% csrf_token %}
 
 
@@ -66,7 +71,7 @@
 <div class="tripal_organism-info-box tripal-info-box">
 <!--<a href="docs/blast_databases.html">-->
 <fieldset id="main">
-    <legend>CLUSTALW2</legend>
+    <legend><span id="title">CLUSTALW2</span> <span id="switch" style="cursor: pointer;">(To Clustal Omega)</span></legend>
     <fieldset id="fieldset-query">
         <legend id="legend-sequence">Query Sequence</legend>
         <div class="enter-query-text">Enter sequence below in <a target="_blank" href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format: </div>
@@ -103,7 +108,7 @@
 		<INPUT TYPE="reset" VALUE="Reset" id="btn_reset">
 	</div>
     <div  style="padding-bottom: 10px">
-        <INPUT TYPE="button" VALUE="Search" id="submitbutton">
+        <INPUT TYPE="button" VALUE="Search" class="submitbutton">
     </div>
 </fieldset>
 
@@ -337,6 +342,109 @@
     <select name="OUTORDER">
         <option value="Aligned">Aligned</option>
         <option value="input">Input</option>
+    </select>
+</fieldset>
+
+<fieldset id="fieldset-omega">
+    <legend>Sequence Input</legend>
+    <div style="font-size:16px;">Dealign input sequences</div>
+	<div style="padding-bottom: 10px">
+    <label>
+		<input type="radio" name="dealing_input" value="yes" class="">
+		yes
+	</label><label>
+		<input type="radio" name="dealing_input" value="no" checked class="">
+		no
+	</label>
+    </div>
+    <div  style="padding-bottom: 10px">
+		<INPUT TYPE="reset" VALUE="Reset" id="btn_reset">
+	</div>
+    <div  style="padding-bottom: 10px">
+        <INPUT TYPE="button" VALUE="Search" class="submitbutton">
+    </div>
+</fieldset>
+<fieldset id="fieldset-omega-clustering">
+    <legend>Clustering and Iteration</legend>
+    <div style="font-size:16px;">MBED-Like Clustering Guide-Tree</div>
+	<div style="padding-bottom: 10px">
+    <label>
+		<input type="radio" name="clustering_guide_tree" value="yes" checked class="">
+		yes
+	</label><label>
+		<input type="radio" name="clustering_guide_tree" value="no" class="">
+		no
+	</label>
+    </div>
+    <div style="font-size:16px;">MBED-Like Clustering Iteration</div>
+	<div style="padding-bottom: 10px">
+    <label>
+		<input type="radio" name="clustering_guide_iter" value="yes" checked class="">
+		yes
+	</label><label>
+		<input type="radio" name="clustering_guide_iter" value="no" class="">
+		no
+	</label>
+    </div>
+</fieldset>
+<fieldset id="fieldset-omega-iteration">
+    <legend>Iteration</legend>
+    <div style="font-size:16px;padding-bottom: 10px">
+        <div style="font-size:16px;padding-bottom: 5px">NUMBER of COMBINED ITERATIONS</div>
+        <div>
+            <select name="combined_iter">
+                <option value="0">Default</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+    </div>
+    <div style="font-size:16px;padding-bottom: 10px">
+        <div style="font-size:16px;padding-bottom: 5px">MAX GUIDE TREE ITERATIONS</div>
+        <div>
+            <select name="max_gt_iter">
+                <option value="">Default</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+    </div>
+    <div style="font-size:16px;padding-bottom: 10px">
+        <div style="font-size:16px;padding-bottom: 5px">MAX HMM ITERATIONS</div>
+        <div>
+            <select name="max_hmm_iter">
+                <option value="">Default</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+    </div>
+</fieldset>
+<fieldset id="fieldset-omega-output">
+	<legend>Output</legend>
+    <div style="font-size:16px;">Format</div>
+    <select name="omega_output">
+        <option value="clu">Clustal</option>
+        <option value="phy">PHYLIP</option>
+        <option value="fa">FASTA</option>
+        <option value="st">STOCKHOLM</option>
+    </select>
+    <div style="font-size:16px;">Out Order</div>
+    <select name="omega_order">
+        <option value="tree-order">Aligned</option>
+        <option value="input-order">Input</option>
     </select>
 </fieldset>
 </fieldset>
