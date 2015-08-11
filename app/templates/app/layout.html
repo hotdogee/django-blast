@@ -34,6 +34,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="{% url 'blast:create' %}">BLAST</a></li>
+					<li><a href="{% url 'hmmer:create' %}">HMMER</a></li>
+					<li><a href="{% url 'clustalw:create' %}">CLUSTALW/O</a></li>
                     <li><a href="{% url 'about' %}">About i5K BLAST</a></li>
                     <li><a href="http://i5k.nal.usda.gov/contact">Contact</a></li>
                     {% if request.user.is_superuser %}

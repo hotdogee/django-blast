@@ -350,14 +350,6 @@ label {
 	display: block;
 }
 
-label.error {
-display: inline;
-//background: url('images/unchecked.gif') no-repeat;
-padding-left: 16px;
-margin-left: .3em;
-color: red;
-}
-
 #max_target_seqs, #matrix, #strand, .input-fields {
   margin-bottom: 3px;
 }
