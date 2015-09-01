@@ -53,7 +53,7 @@ $(function() { // document ready
 			$('#program').val('clustalw');
 			program_now = 0;
 		}
-		var validator = $( "#MainBlastForm" ).validate();
+		var validator = $( "#MainClustalForm" ).validate();
 		validator.resetForm();
 	});
 
@@ -224,8 +224,8 @@ $(function() { // document ready
 
 
 
-	// Validate MainBlastForm form on keyup and submit
-	$("#MainBlastForm").validate({
+	// Validate MainClustalForm form on keyup and submit
+	$("#MainClustalForm").validate({
 		rules: {
 			'query-sequence': {
 				//'textarea_valid':'',
@@ -382,10 +382,10 @@ $(function() { // document ready
 
 	$('.submitbutton').click(function() {
 		{
-			if (checktxt() && $("#MainBlastForm").valid()) {
+			if (checktxt() && $("#MainClustalForm").valid()) {
 				//$('#click_submit_hidden').val('true');	//Use for a back button is pressed. See line 52.//
-				//$('#MainBlastForm')[0].reset();
-				$('#MainBlastForm').submit();
+				//$('#MainClustalForm')[0].reset();
+				$('#MainClustalForm').submit();
 			}
 		}
 	});
@@ -394,7 +394,7 @@ $(function() { // document ready
 		{
 			$('.sequenceType').attr('disabled', false).removeClass('disabled-radio');
 			$('.enter-query-text').html('Enter sequence below in <a href="docs/fasta.html">FASTA</a> format:');
-			var validator = $( "#MainBlastForm" ).validate();
+			var validator = $( "#MainClustalForm" ).validate();
 			validator.resetForm();
             $('.sequenceType.protein').prop('checked', true);
             $('.sequenceType.protein').change();

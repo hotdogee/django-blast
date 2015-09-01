@@ -1,4 +1,4 @@
-/// <reference path="../../../templates/blast/main.html" />
+/// <reference path="../../../templates/hmmer/main.html" />
 /////////////////////
 // DATA PROCESSING //
 /////////////////////
@@ -366,7 +366,7 @@ $(function() { // document ready
 			return normal_nucleic_codes.indexOf(key) != -1;
 		}));
 		var total_count = sum(alphabets);
-		// Too many degenerate codes within an input nucleotide query will cause blast.cgi to
+		// Too many degenerate codes within an input nucleotide query will cause hmmer.cgi to
 		// reject the input. For protein queries, too many nucleotide-like code (A,C,G,T,N) may also
 		// cause similar rejection.
 		if (total_count == 0) {
@@ -382,7 +382,7 @@ $(function() { // document ready
 	var parseTextarea = _.debounce(checktxt, 30);
 	$('#query-textarea').keyup(parseTextarea);
 
-	 // blast program descriptions for labels and their radio buttons
+	 // hmmer program descriptions for labels and their radio buttons
 	$('.program.phmmer').mouseover(function() {
 		$('#hmmerProgramDescription').text('phmmer - Protein sequence vs. Protein sequence database');
 	});

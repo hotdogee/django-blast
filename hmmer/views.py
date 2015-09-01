@@ -21,8 +21,8 @@ from subprocess import Popen, PIPE
 def create(request, iframe=False):
 
     if request.method == 'GET':
-        blastdb_list = sorted([['Protein', "Protein", db.title, db.organism.display_name, db.description] for db in HmmerDB.objects.select_related('organism').filter(is_shown=True)], key=lambda x: (x[3], x[1], x[0], x[2]))
-        blastdb_type_counts = dict([(k.lower().replace(' ', '_'), len(list(g))) for k, g in groupby(sorted(blastdb_list, key=lambda x: x[0]), key=lambda x: x[0])])
+        hmmerdb_list = sorted([['Protein', "Protein", db.title, db.organism.display_name, db.description] for db in HmmerDB.objects.select_related('organism').filter(is_shown=True)], key=lambda x: (x[3], x[1], x[0], x[2]))
+        hmmerdb_type_counts = dict([(k.lower().replace(' ', '_'), len(list(g))) for k, g in groupby(sorted(hmmerdb_list, key=lambda x: x[0]), key=lambda x: x[0])])
 
         clustalw_content = []
         if("clustalw_task_id" in request.GET):
@@ -33,8 +33,8 @@ def create(request, iframe=False):
 
         return render(request, 'hmmer/main.html', {
             'title': 'HMMER Query',
-            'blastdb_list': json.dumps(blastdb_list), 
-            'blastdb_type_counts':blastdb_type_counts,
+            'hmmerdb_list': json.dumps(hmmerdb_list),
+            'hmmerdb_type_counts':hmmerdb_type_counts,
             'clustalw_content':"".join(clustalw_content),
             'iframe': iframe
         })
@@ -92,7 +92,7 @@ def create(request, iframe=False):
 
         chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can access the file
 
-        # build blast command
+        # build hmmer command
         db_list = ' '.join([db.fasta_file.path_full for db in HmmerDB.objects.filter(title__in=set(request.POST.getlist('db-name')))])
         for db in db_list.split(' '):
             os.symlink(db, db[db.rindex('/')+1:])
@@ -134,8 +134,6 @@ def create(request, iframe=False):
             else:
                 for idx, db  in enumerate(db_list.split()):
                     args_list.append(['phmmer', '-o', str(idx) + '.out'] + option_params + [query_filename, os.path.basename(db)])
-
-
 
             run_blast_task.delay(task_id, args_list, file_prefix)
 

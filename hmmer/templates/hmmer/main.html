@@ -25,8 +25,8 @@
         }
     </style>
     <script>
-    var dataset_list = {{ blastdb_list|safe }};
-    var blastdb_type_counts = {{ blastdb_type_counts|jsonify }};
+    var dataset_list = {{ hmmerdb_list|safe }};
+    var hmmerdb_type_counts = {{ hmmerdb_type_counts|jsonify }};
     </script>
 {% endblock %}
 
@@ -54,12 +54,11 @@
 {% else %}
     <div class="tripal_details">
 {% endif %}
-<FORM METHOD="POST" id="MainBlastForm" NAME="MainBlastForm" ENCTYPE="multipart/form-data">
+<FORM METHOD="POST" id="MainHmmerForm" NAME="MainHmmerForm" ENCTYPE="multipart/form-data">
 {% csrf_token %}
 <div class="tripal_organism-info-box tripal-info-box">
-<!--<a href="docs/blast_databases.html">-->
 <fieldset id="fieldset-datasets">
-	<legend>HMMER Protein Databases</legend>
+	<legend>HMMER Protein</legend>
 	<fieldset class="organism" id="fieldset-organism">
 		<legend id="legend-Organisms">Organisms</legend>
 		<div id="box-organism">
@@ -69,17 +68,17 @@
 	<div id="box-datasets">
 		<div class="datasets-div all">
 			<div class="dataset-title">All organisms</div>
-            {% if blastdb_type_counts.genome_assembly or blastdb_type_counts.transcript %}
+            {% if hmmerdb_type_counts.genome_assembly or hmmerdb_type_counts.transcript %}
 			<fieldset class="nucleotide">
 				<legend>Nucleotide</legend>
-				{% if blastdb_type_counts.genome_assembly %}<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly">Genome Assembly - {{ blastdb_type_counts.genome_assembly|default:0 }} databases</label></div>{% endif %}
-				{% if blastdb_type_counts.transcript %}<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript">Transcript - {{ blastdb_type_counts.transcript|default:0 }} databases</label></div>{% endif %}
+				{% if hmmerdb_type_counts.genome_assembly %}<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly">Genome Assembly - {{ hmmerdb_type_counts.genome_assembly|default:0 }} databases</label></div>{% endif %}
+				{% if hmmerdb_type_counts.transcript %}<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript">Transcript - {{ hmmerdb_type_counts.transcript|default:0 }} databases</label></div>{% endif %}
 			</fieldset>
             {% endif %}
-            {% if blastdb_type_counts.protein %}
+            {% if hmmerdb_type_counts.protein %}
 			<fieldset class="peptide">
 				<legend>Peptide</legend>
-				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein">Protein - {{ blastdb_type_counts.protein|default:0 }} databases</label></div>
+				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein">Protein - {{ hmmerdb_type_counts.protein|default:0 }} databases</label></div>
 			</fieldset>
             {% endif %}
 		</div>
@@ -124,8 +123,7 @@
 <div id="hmmer_options">
     <fieldset id="fieldset-options-hmmer">
         <legend>Cut-off values</legend>
-	<!-- BLASTN -->
-		<div class="parms blastn-parms">
+		<div class="parms">
         <fieldset id="fieldset-options-hmmer-general-param">
         <legend>Significance</legend>
         <table id="general-param-table">
@@ -159,19 +157,15 @@
 
         </fieldset>
 		</div>
-	<!-- End BLASTN -->
 </div>
 
 <input type="hidden" ID="click_submit_hidden" NAME="click_submit_hidden" VALUE="false">
 <input type="hidden" id='csrfmiddlewaretoken' name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 <input type="hidden" id="format_check" name="format_check" value="true">
-<!-- BLAST options end -->
-   
 	<div>
 		<INPUT TYPE="button" VALUE="Reset" CLASS="btn_reset">
 		<INPUT TYPE="button" VALUE="Search" onclick="On_Submit();">
 	</div>
-
 </div>
 </FORM>
 </div>
