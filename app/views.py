@@ -68,7 +68,7 @@ def register(request):
             new_user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
             if new_user is not None:
                 login(request, new_user)
-            return HttpResponseRedirect(reverse('blast:create'))
+            return HttpResponseRedirect(reverse('dashboard'))
     else:
         form = RegistrationForm()
     return render(request, "app/register.html", {
