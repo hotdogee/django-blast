@@ -21,15 +21,17 @@ from subprocess import Popen, PIPE
 def create(request, iframe=False):
 
     if request.method == 'GET':
+
         hmmerdb_list = sorted([['Protein', "Protein", db.title, db.organism.display_name, db.description] for db in HmmerDB.objects.select_related('organism').filter(is_shown=True)], key=lambda x: (x[3], x[1], x[0], x[2]))
         hmmerdb_type_counts = dict([(k.lower().replace(' ', '_'), len(list(g))) for k, g in groupby(sorted(hmmerdb_list, key=lambda x: x[0]), key=lambda x: x[0])])
 
         clustalw_content = []
         if("clustalw_task_id" in request.GET):
             clustalw_aln = path.join(settings.MEDIA_ROOT, 'clustal', 'task', request.GET['clustal_task_id'] ,request.GET['clustal_task_id']+".aln")
-            with open(clustalw_aln, 'r') as content_file:
-                for line in content_file:
-                    clustalw_content.append(line)
+            if(os.path.isfile(clustalw_aln) == True):
+                with open(clustalw_aln, 'r') as content_file:
+                    for line in content_file:
+                        clustalw_content.append(line)
 
         return render(request, 'hmmer/main.html', {
             'title': 'HMMER Query',
