@@ -13,6 +13,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^home$', 'dashboard.views.dashboard', name='dashboard'),
+    #url(r'^home/', include('dashboard.urls', namespace='dashboard')),
     #url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
     url('', include('social.apps.django_app.urls', namespace='social')),
@@ -118,8 +119,10 @@ urlpatterns = patterns('',
     url(r'^blast/', include('blast.urls', namespace='blast')),
     # BLAST
     url(r'^data/', include('data.urls', namespace='data')),
-	url(r'^hmmer/', include('hmmer.urls', namespace='hmmer')),
-	url(r'^clustalw/', include('clustalw.urls', namespace='clustalw')),
+
+    url(r'^hmmer/', include('hmmer.urls', namespace='hmmer')),
+    url(r'^clustal/', include('clustal.urls', namespace='clustal')),
+    url(r'^sso/', include('webapollo_sso.urls', namespace='sso')),
 )
 from django.conf import settings
 if settings.DEBUG:

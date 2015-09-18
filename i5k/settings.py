@@ -52,11 +52,13 @@ DATABASES = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'django_i5k',
     'USER': 'django',
-    'PASSWORD': '',
-    'HOST': '127.0.0.1',
+    'PASSWORD': 'django1234',
+    'HOST': 'localhost',
     'PORT': '5432',
     }
 }
+
+
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/home'
@@ -186,7 +188,9 @@ INSTALLED_APPS = (
     'proxy',
     'data',
     'hmmer',
-    'clustalw',
+    'clustal',
+    'webapollo_sso',
+    #'restaurants',
 )
 
 # deprecated in Django 1.8
@@ -263,6 +267,9 @@ SUIT_CONFIG = {
             {'model': 'jbrowsesetting'},
             {'model': 'sequence'},
         )},
+        {'app': 'hmmer', 'label': 'Hmmer', 'icon':'icon-leaf', 'models': (
+            {'model': 'hmmerdb'},
+        )},
         {'app': 'default', 'label': 'Social Auth', 'icon':'icon-leaf', 'models': (
             {'model': 'usersocialauth'},
             {'model': 'nonce'},
@@ -287,6 +294,7 @@ SUIT_CONFIG = {
             {'model': 'axes.accesslog'},
         )},
         {'label': 'File Browser', 'icon':'icon-hdd', 'url': 'fb_browse'},
+
     ),
 
     # misc
@@ -378,7 +386,7 @@ REST_FRAMEWORK = {
     ],
     #'PAGINATE_BY': 100,
     #'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
-    'PAGE_SIZE': 100,
+    'PAGE_SIZE': 10,
 }
 
 # django-pipeline

@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.cache import cache
 from uuid import uuid4
 from os import path, makedirs, chmod
-from .tasks import run_blast_task
+from .tasks import run_hmmer_task
 from datetime import datetime, timedelta
 from pytz import timezone
 import json
@@ -26,7 +26,7 @@ def create(request, iframe=False):
 
         clustalw_content = []
         if("clustalw_task_id" in request.GET):
-            clustalw_aln = path.join(settings.MEDIA_ROOT, 'clustalw', 'task', request.GET['clustalw_task_id'] ,request.GET['clustalw_task_id']+".aln")
+            clustalw_aln = path.join(settings.MEDIA_ROOT, 'clustal', 'task', request.GET['clustal_task_id'] ,request.GET['clustal_task_id']+".aln")
             with open(clustalw_aln, 'r') as content_file:
                 for line in content_file:
                     clustalw_content.append(line)
@@ -135,7 +135,7 @@ def create(request, iframe=False):
                 for idx, db  in enumerate(db_list.split()):
                     args_list.append(['phmmer', '-o', str(idx) + '.out'] + option_params + [query_filename, os.path.basename(db)])
 
-            run_blast_task.delay(task_id, args_list, file_prefix)
+            run_hmmer_task.delay(task_id, args_list, file_prefix)
 
             return redirect('hmmer:retrieve', task_id)
         else:
@@ -257,6 +257,7 @@ def user_tasks(request, user_id):
     if request.method == 'GET':
         records = HmmerQueryRecord.objects.filter(user__id=user_id)
         serializer = UserHmmerQueryRecordSerializer(records, many=True)
+        print serializer.data
         return JSONResponse(serializer.data)
 
 

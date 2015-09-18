@@ -335,7 +335,6 @@ $(function() { // document ready
 		var line_count = lines.length;
 		var seq_count = 0;
 		var alphabets = {};
-		// http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml
 		var normal_nucleic_codes = 'ATCGN';
 		var valid_amino_codes = 'ABCDEFGHIKLMNPQRSTUVWXYZ*';
 		var amino_only_codes = 'EFILPQZX*';
@@ -410,8 +409,8 @@ $(function() { // document ready
 		}
     });
 
-	// Validate MainBlastForm form on keyup and submit
-	$("#MainBlastForm").validate({
+	// Validate MainHmmerForm form on keyup and submit
+	$("#MainHmmerForm").validate({
 		rules: {
 			'query-sequence': {
 				//'textarea_valid':'',
@@ -549,30 +548,30 @@ $(function() { // document ready
 
 function On_Submit(){
 
-	if($("#MainBlastForm").valid()) {
+	if($("#MainHmmerForm").valid()) {
 		$('#click_submit_hidden').val('true');
 
-		if($('input[name=program]:checked', '#MainBlastForm').val() == 'hmmsearch'){
+		if($('input[name=program]:checked', '#MainHmmerForm').val() == 'hmmsearch'){
 			$('#format_check').val("True");
 			$.ajaxSetup({
 			   enctype: "multipart/form-data;",
 			});
 			$.post("/hmmer/",
-				$("#MainBlastForm").serialize(),
+				$("#MainHmmerForm").serialize(),
 				function(data, result){
 					if(data == ''){
 						$('#format_check').val("false");
 						$('#click_submit_hidden').val('true');
-						$('#MainBlastForm').submit();
+						$('#MainHmmerForm').submit();
 					}else{
 						$('.enter-query-text').before("<label  class=\"error\">"+data+"</label>");
 						//$('.enter-query-text').append("<label  class=\"error\">"+data+"</label>");
 					}
 			});
-		}else if($('input[name=program]:checked', '#MainBlastForm').val() == 'phmmer'){
+		}else if($('input[name=program]:checked', '#MainHmmerForm').val() == 'phmmer'){
 			$('#format_check').val("false");
 			$('#click_submit_hidden').val('true');
-			$('#MainBlastForm').submit();
+			$('#MainHmmerForm').submit();
 		};
 
 		/*

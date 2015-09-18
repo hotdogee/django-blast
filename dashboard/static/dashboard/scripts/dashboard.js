@@ -86,7 +86,7 @@ $(function() { // document ready
 
      $('#queries-clustal-' + user_id).dataTable( {
         "ajax": {
-            "url": path + "clustalw/user-tasks/" + user_id,
+            "url": path + "clustal/user-tasks/" + user_id,
             "dataSrc": ""
         },
         "columns": [
@@ -100,7 +100,7 @@ $(function() { // document ready
                 "mRender": function ( data, type, full ) {
                 // 'full' is the row's data object, and 'data' is this column's data
                 // e.g. 'full[0]' is the comic id, and 'data' is the comic title
-                    return '<a href="' + path + 'clustalw/' + data  + '" target="_blank">' + data+ '</a>';
+                    return '<a href="' + path + 'clustal/' + data  + '" target="_blank">' + data+ '</a>';
             }},
             {
                 "aTargets": [0], // Column to target
