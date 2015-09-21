@@ -1,8 +1,0 @@
-Dear {{full_name}},
-
-We regret to inform you that your request for annotating the {{species}} genome is declined by the community contact. For more information, log in and visit your Web Apollo application page https://{{website}} for more information.
-
-Regards,
-
-The NAL i5k team
-

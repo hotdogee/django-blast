@@ -1,8 +1,0 @@
-Dear {{full_name}},
-
-Thank you for registering to annotate {{species}}. Once approved by the {{species}} community contact, you will be notified by email. Contact us if you do not receive an email regarding your approval within five business days.
-
-Regards,
-
-The NAL i5k team
-
