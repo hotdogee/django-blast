@@ -35,8 +35,6 @@ def create(request, iframe=False):
         # change directory to task directory
         os.chdir(task_dir)
 
-        print request.POST['program']
-
         query_filename = ''
         if 'query-file' in request.FILES:
             query_filename = request.FILES['query-file'].name
@@ -164,8 +162,6 @@ def create(request, iframe=False):
                     seq_count = 1
                 with open('status.json', 'wb') as f:
                     json.dump({'status': 'pending', 'seq_count': seq_count}, f)
-
-            print args_list
 
 
             #args_list.append(['clustalw2', '-infile='+query_filename,'-OUTFILE='+task_id+'.aln'] + option_params)

@@ -25,19 +25,20 @@ def create(request, iframe=False):
         hmmerdb_list = sorted([['Protein', "Protein", db.title, db.organism.display_name, db.description] for db in HmmerDB.objects.select_related('organism').filter(is_shown=True)], key=lambda x: (x[3], x[1], x[0], x[2]))
         hmmerdb_type_counts = dict([(k.lower().replace(' ', '_'), len(list(g))) for k, g in groupby(sorted(hmmerdb_list, key=lambda x: x[0]), key=lambda x: x[0])])
 
-        clustalw_content = []
-        if("clustalw_task_id" in request.GET):
-            clustalw_aln = path.join(settings.MEDIA_ROOT, 'clustal', 'task', request.GET['clustal_task_id'] ,request.GET['clustal_task_id']+".aln")
-            if(os.path.isfile(clustalw_aln) == True):
-                with open(clustalw_aln, 'r') as content_file:
+        clustal_content = []
+        if("clustal_task_id" in request.GET):
+            clustal_aln = path.join(settings.MEDIA_ROOT, 'clustal', 'task', request.GET['clustal_task_id'] ,request.GET['clustal_task_id']+".aln")
+            
+            if(os.path.isfile(clustal_aln) == True):
+                with open(clustal_aln, 'r') as content_file:
                     for line in content_file:
-                        clustalw_content.append(line)
+                        clustal_content.append(line)
 
         return render(request, 'hmmer/main.html', {
             'title': 'HMMER Query',
             'hmmerdb_list': json.dumps(hmmerdb_list),
             'hmmerdb_type_counts':hmmerdb_type_counts,
-            'clustalw_content':"".join(clustalw_content),
+            'clustal_content':"".join(clustal_content),
             'iframe': iframe
         })
     elif request.method == 'POST' and request.POST['format_check'] == "True":
@@ -259,7 +260,6 @@ def user_tasks(request, user_id):
     if request.method == 'GET':
         records = HmmerQueryRecord.objects.filter(user__id=user_id)
         serializer = UserHmmerQueryRecordSerializer(records, many=True)
-        print serializer.data
         return JSONResponse(serializer.data)
 
 
