@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^proxy/', include('proxy.urls', namespace='proxy')),
-    url(r'^webapollo/', include('webapollo.urls', namespace='webapollo')),
+    #url(r'^webapollo/', include('webapollo.urls', namespace='webapollo')),
 
     # user authentication
     url(r'^set_institution$', 'app.views.set_institution', name='set_institution'),
@@ -122,7 +122,7 @@ urlpatterns = patterns('',
 
     url(r'^hmmer/', include('hmmer.urls', namespace='hmmer')),
     url(r'^clustal/', include('clustal.urls', namespace='clustal')),
-    url(r'^sso/', include('webapollo_sso.urls', namespace='sso')),
+    #url(r'^sso/', include('webapollo_sso.urls', namespace='sso')),
 )
 from django.conf import settings
 if settings.DEBUG:

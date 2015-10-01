@@ -184,12 +184,12 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'captcha',
     'dashboard',
-    'webapollo',
+    #'webapollo',
     'proxy',
     'data',
     'hmmer',
     'clustal',
-    'webapollo_sso',
+    #'webapollo_sso',
     #'restaurants',
 )
 
