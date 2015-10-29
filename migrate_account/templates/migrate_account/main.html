@@ -84,8 +84,6 @@
 {% else %}
     <div class="tripal_details">
 {% endif %}
-<FORM METHOD="POST" id="MainMigrateForm" NAME="MainMigrateForm" ENCTYPE="multipart/form-data" action="add">
-{% csrf_token %}
 <div class="tripal_organism-info-box tripal-info-box">
 <!--<a href="docs/blast_databases.html">-->
 <fieldset id="fieldset-datasets">
@@ -93,6 +91,7 @@
 	<div id="box-datasets">
 		<div class="datasets-div all">
 			<div class="dataset-title"></div>
+			  {% csrf_token %}
 			<div class"Table"><div class="Title">
 			  </div>
 			  <div class="Heading">
@@ -112,7 +111,7 @@
 			  {% if organism_list %}
     			  {% for o in organism_list  %}
 			  <div class="Row">
-			    <div class="Cell">
+			      <div class="Cell">
 			      <input type="hidden" name="organism_name" value="{{ o.1 }}">
 			      <input type="hidden" name="organism_id" value="{{ o.0 }}">
 			      <p>{{o.2}}</p>
@@ -147,8 +146,22 @@
                               {% endfor %}
                               {% endif %}
                               {% endfor %}
-			      <input type="submit" value="Add Account"  class="btn btn-warning" />
-			      {% endif %}
+			      <FORM METHOD="POST" id="MainMigrateForm" NAME="MainMigrateForm" ENCTYPE="multipart/form-data" action="add">
+				{% csrf_token %}
+                              {% for r in blastdb_list %}
+                              {% if o.0 == r.1%}
+                              {% for j in jbrowse_list %}
+                              {% if r.0 == j.2 %}
+			      <input type="hidden" name="organism_name" value="{{ o.1 }}">
+			      <input type="hidden" name="organism_id" value="{{ o.0 }}">
+			      <input type="hidden" name="jbrowse_url" value="{{ j.1 }}">
+                              {% endif %}
+                              {% endfor %}
+                              {% endif %}
+                              {% endfor %}
+				<input type="submit" value="Add Account"  class="btn btn-warning" />
+				</FORM>
+				{% endif %}
 			      {% endif %}
 			      {% endfor %}				 
 			      {% else %}
@@ -159,11 +172,9 @@
 			{% endfor %}
 			</div>
 			{% endif %}
-
 		</div>
 	</div>
 </div>
-</FORM>
 </div>
 
 

@@ -81,64 +81,53 @@
 {% if user.is_authenticated %}
     <div id="myTabContent" class="tab-content">    
     <div class="tripal_details tab-pane fade active in" role="tabpanel" id="run" aria-labelledby="run-tab">
+      <FORM METHOD="POST" id="AddMigrateForm" NAME="AddMigrateForm" ENCTYPE="multipart/form-data">
+	{% csrf_token %}
+	<div class="tripal_organism-info-box tripal-info-box">
+	  <!--<a href="docs/blast_databases.html">-->
+	  <fieldset id="fieldset-datasets">
+	    <legend>Add Account</legend>
+	    <div id="box-datasets">
+	      <div class="datasets-div all">
+		<div class="dataset-title"></div>
+		<div class"Table">
+		  <div class="Title"></div>
+		  </div>
+		  <div class="Row">
+		    <div class="Cell">Organism</div>
+		    <div class="Cell">
+		      {{form.organism_name.value}}
+		    </div>
+		  </div>
+		  <div class="Row">
+		    <div class="Cell">Jbrowse URL</div>
+		    <div class="Cell">
+		      {{form.jbrowse_url.value}}
+		    </div>
+		  </div>
+		  <div class="Row">
+		    <div class="Cell">Username</div>
+		    <div class="Cell">
+		      <input type="text" name="username">
+		    </div>
+		  </div>
+		  <div class="Row">
+		    <div class="Cell">Password</div>
+		    <div class="Cell">
+		      <input type="text" name="password">
+		    </div>
 
-<FORM METHOD="POST" id="AddMigrateForm" NAME="AddMigrateForm" ENCTYPE="multipart/form-data">
-{% csrf_token %}
-<div class="tripal_organism-info-box tripal-info-box">
-<!--<a href="docs/blast_databases.html">-->
-<fieldset id="fieldset-datasets">
-  <legend>Add Account</legend>
-	<div id="box-datasets">
-	  <div class="datasets-div all">
-	    <div class="dataset-title"></div>
-            <div class"Table">
-	      <div class="Title">
-              </div>
-  	    </div>
-	    <div class="Row">
-              <div class="Cell">
-		Username
+		</div>
 	      </div>
-	      <div class="Cell">
-		<input type="text" name="username">
-	      </div>
-  	    </div>
-	    <div class="Row">
-              <div class="Cell">
-		password
-	      </div>
-	      <div class="Cell">
-		<input type="text" name="password">
-	      </div>
-  	    </div>
-	    <div class="Row">
-              <div class="Cell">
-		Organism
-			      </div>
-	      <div class="Cell">
-		{{form.organism_name.value}}
-	      </div>
-  	    </div>
-	    <div class="Row">
-              <div class="Cell">
-	    Jbrowse URL
-	      </div>
-	      <div class="Cell">
-		{{form.jbrowse_url.value}}
-	      </div>
-	    </div>
-	  </div>
-	</div>
-    <input type="submit" value="Confirm" role="button" class="btn btn-warning"/>
-
-</FORM>
-</div>
-{% else %}
-    <br><br>
-    <div class="Heading">
-      <p>You need to log in before you can migrate any accounts.</p>
-
-    </div>
-{% endif %}
-
-{% endblock %}
+	      <input type="submit" value="Confirm" role="button" class="btn btn-warning"/>
+      </FORM>
+      </div>
+      {% else %}
+      <br><br>
+      <div class="Heading">
+	<p>You need to log in before you can migrate any accounts.</p>
+	
+      </div>
+      {% endif %}
+      
+      {% endblock %}

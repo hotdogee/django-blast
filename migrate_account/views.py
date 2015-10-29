@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import Http404
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.core.cache import cache
 from uuid import uuid4
@@ -18,7 +19,8 @@ import traceback
 import stat as Perm
 import os
 import re
-from .forms import AddMigrationForm # MainMigrationForm
+
+from .forms import AddMigrationForm 
 
 # Create your views here.
 
@@ -44,32 +46,14 @@ def add(request):
         form = AddMigrationForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
             organism_id = form.cleaned_data['organism_id']
-            jbrowse_id =  form.cleaned_data['jbrowse_id']
+            jbrowse_url =  form.cleaned_data['jbrowse_url']
 #            username =  form.cleaned_data['username']
 #            password =  form.cleaned_data['password']
-
-
-#            return HttpResponseRedirect('/thanks/')
-
+#        return HttpResponseRedirect('/thanks/')
+        return render(request, 'migrate_account/add.html', {'form': form})
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AddMigrationForm()
-
-    return render(request, 'migrate_account/add.html', {'form': form})
-
-    organism_list = sorted([db.id, db.display_name, db.short_name] for db in Organism.objects.all())
-    blastdb_list = sorted([bdb.id, bdb.organism_id] for bdb in BlastDb.objects.all())
-    jbrowse_list = sorted([jdb.id, jdb.url, jdb.blast_db_id] for jdb in JbrowseSetting.objects.all())
-    user_list = sorted([udb.id, udb.organism_id, udb.user_id] for udb in MigrateUserRecord.objects.all())
-
-    return render(request,'migrate_account/add.html',{
-            'title': 'Organism Listing',
-            'user_list': user_list,
-            'blastdb_list': blastdb_list,
-            'jbrowse_list': jbrowse_list,
-            'organism_list': organism_list
-        })
+        
+        return render(request, 'migrate_account/add.html', {'form': form})
