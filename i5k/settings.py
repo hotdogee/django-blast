@@ -184,7 +184,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'captcha',
     'dashboard',
-    'webapollo',
+    #'webapollo',
     'proxy',
     'data',
     'hmmer',
@@ -329,6 +329,10 @@ LOGGING = {
         },
     }
 }
+
+# Apollo SSO
+ROBOT_ID = 'R2D2@i5k.org'
+ROBOT_PWD = 'demo'
 
 # Celery Settings
 from kombu import Exchange, Queue

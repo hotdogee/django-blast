@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^proxy/', include('proxy.urls', namespace='proxy')),
-    url(r'^webapollo/', include('webapollo.urls', namespace='webapollo')),
+    #url(r'^webapollo/', include('webapollo.urls', namespace='webapollo')),
 
     # user authentication
     url(r'^set_institution$', 'app.views.set_institution', name='set_institution'),

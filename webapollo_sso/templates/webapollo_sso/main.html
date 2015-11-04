@@ -1,0 +1,216 @@
+{% extends "app/layout.html" %}
+{% load staticfiles %}
+{% load jsonify %}
+
+{% block head-scripts %}
+<!--<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<style>
+#fieldset-user-account {float:left;}
+#fieldset-user-info {float:left;padding-left: 20px;}
+#fieldset-user-detail-button {float:left;padding-left: 20px;}
+#fieldset-group-info {float:left;padding-left: 20px;}
+#fieldset-group-detail-button {float:left;padding-left: 20px;}
+.operation-button {padding-bottom: 10px;}
+</style>
+{% endblock%}
+
+{% block scripts %}
+<script src="{% static 'webapollo_sso/scripts/underscore-min.js' %}"></script>
+<script src="{% static 'webapollo_sso/scripts/sso-datatable.js' %}"></script>
+<script src="http://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+$(document).ready(function() {
+    {% if is_admin %}
+        $('#myUserTab').click();
+    {% else %}
+        $('#myOrganismTab').click();
+    {% endif %}
+
+} );
+</script>
+{% endblock%}
+
+
+{% block content %}
+<div class="container">
+    <h2>Web Apollo SSO<span class='glyphicons glyphicons-message-plus'><span></h2>
+    <ul class="nav nav-tabs">
+        {% if is_admin %}
+        <li class='active'><a data-toggle="tab" href="#myUser" id="myUserTab">User(Admin)</a></li>
+        <li><a data-toggle="tab" href="#myGroup" id="myGroupTab">Group(Admin)</a></li>
+        <li><a data-toggle="tab" href="#myOrganism" id="myOrganismTab">My Organism</a></li>
+		<li><a data-toggle="tab" href="#myRequest" id="myRequestTab">My Request</a></li>
+        {% else %}
+        <li class='active'><a data-toggle="tab" href="#myOrganism" id="myOrganismTab">My Organism</a></li>
+        <li><a data-toggle="tab" href="#myRequest" id="myRequestTab">My Request</a></li>
+        {% endif %}
+    </ul>
+
+    <div class="tab-content">
+        {% if is_admin %}
+        <div id="myUser" class="tab-pane fade in active">
+        {% else %}
+        <div id="myUser" class="tab-pane fade hide">
+        {% endif %}
+            <legend style="font-size:20px; padding-top:20px">User Table</legend>
+            <a class="toggle-vis" data-column="4">Species_Admin</a> -
+            <a class="toggle-vis" data-column="5">Species_User</a> -
+            <a class="toggle-vis" data-column="6">UserId</a> -
+            <table id="userTable" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>UserName</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Role</th>
+                        <th>Species_Admin</th>
+                        <th>Species_User</th>
+                        <th>UserId</th>
+                        <!-- <th>AvaiableGroup</th> -->
+                        <th>I5kUserName</th>
+                    </tr>
+                </thead>
+            </table>
+			<p>
+			<fieldset id="main">
+			<legend>User Info</legend>
+			<div class="container">
+				<ul class="nav nav-pills">
+                    <li class="active"><a data-toggle="tab" href="#user-detail">Detail</a></li>
+                    <li><a data-toggle="tab" href="#user-group">Group</a></li>
+                    <!--<li><a data-toggle="tab" href="#user-organism">Organism</a></li>-->
+                </ul>
+                <div class="tab-content">
+                    <div id="user-detail" class="tab-pane fade in active">
+						<fieldset id="fieldset-user-account">
+							<div style="font-size:16px; padding-top:16px">Apollo User Name</div>
+							<input type="text" name="user-name" id="user-name">
+                            <div style="font-size:16px;">I5k User Name</div>
+                            <input type="text" name="django-user-name" id="django-user-name"> <span aria-hidden="true" style="color:red" id="check-django-user-icon"></span>
+							<div style="font-size:16px;">Password</div>
+							<input type="password" name="user-password" id="user-password">
+						</fieldset>
+						<fieldset id="fieldset-user-info">
+                            <div style="font-size:16px; padding-top:16px">First Name</div>
+							<input type="text" name="first-name" id="first-name">
+							<div style="font-size:16px">Last Name</div>
+							<input type="text" name="last-name" id="last-name">
+                            <div style="font-size:16px">Role</div>
+                            <select name="user-role" id="user-role"><option value="USER">USER</option><option value="ADMIN">ADMIN</option></select>
+						</fieldset>
+						<fieldset id="fieldset-user-detail-button" style="padding-top:20px; padding-bottom:20px">
+                            <div class="operation-button"><INPUT TYPE="button" VALUE="Create" class="user-button" id="user-create-button"> <INPUT TYPE="button" VALUE="Cancel" id="user-cancel-button" class="user-button hide"></div>
+							<div class="operation-button"><INPUT TYPE="button" VALUE="Delete" class="user-button" id="user-delete-button"></div>
+							<div class="operation-button"><INPUT TYPE="button" VALUE="Update" class="user-button" id="user-update-button"></div>
+						    <div class="operation-button"><INPUT TYPE="button" VALUE="Disconnect" class="user-button" id="user-disconnect-button"></div>
+                            <div class="operation-button"><INPUT TYPE="button" VALUE="Reset" id="user-reset-button"></div>
+                        </fieldset>
+					</div>
+                    <div id="user-group" class="tab-pane fade">
+                        <h3>Group Table</h3>
+                        <p id="user-group-now-group"></p>
+                        <p> </p>
+                        <p id="user-group-avaiable-group"></p>
+                        <fieldset id="fieldset-user-group-button" style="padding-top:20px; padding-bottom:20px">
+                            <INPUT TYPE="hidden" id="all-groups">
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+			</fieldset>
+        </div>
+        {% if is_admin %}
+        <div id="myGroup" class="tab-pane fade">
+        {% else %}
+        <div id="myGroup" class="tab-pane fade hide">
+        {% endif %}
+            <legend style="font-size:20px; padding-top:20px">Group Table</legend>
+            <table id="groupTable" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Group Name</th>
+						<th>Member Numbers</th>
+                        <th>Public</th>
+                        <th>ID</th>
+                        <th>Users</th>
+                        <th>Permissions</th>
+                    </tr>
+                </thead>
+            </table>
+			<p>
+			<fieldset id="main">
+			<legend>Group Info</legend>
+			<div class="container">
+				<ul class="nav nav-pills">
+                    <li class="active"><a data-toggle="tab" href="#group-detail">Detail</a></li>
+					<li><a data-toggle="tab" href="#group-member">Member</a></li>
+                    <li><a data-toggle="tab" href="#group-organism">Organism</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="group-detail" class="tab-pane fade in active">
+						<fieldset id="fieldset-group-info">
+							<div style="font-size:16px; padding-top:16px">Organism Name</div>
+							<input type="text" name="group-name" id="group-name"> <span aria-hidden="true" style="color:red" id="check-organism-icon"></span>
+
+                            <div style="font-size:16px; padding-top:10px" id="group-admin-name"></div>
+                            <div style="font-size:16px; padding-top:10px" id="group-user-name"></div>
+						</fieldset>
+						<fieldset id="fieldset-group-detail-button" style="padding-top:20px; padding-bottom:20px">
+                            <div class="operation-button"><INPUT TYPE="button" VALUE="Create" class="group-button" id="group-create-button"> <INPUT TYPE="button" VALUE="Cancel" id="group-cancel-button" class="group-button hide"></div>
+							<div class="operation-button"><INPUT TYPE="button" VALUE="Delete" class="group-button" id="group-delete-button"></div>
+                            <div class="operation-button"><INPUT TYPE="button" VALUE="Reset" id="group-reset-button"></div>
+                        </fieldset>
+                    </div>
+					<div id="group-member" class="tab-pane fade">
+                        <h3>Member Table</h3>
+					    <p id="group-member-now-member"></p>
+                        <p></p>
+                        <fieldset style="padding-top:20px; padding-bottom:20px">
+                            <div class="ui-widget">
+                                <label for="tags">Search User: </label>
+                                <input id="tags">
+                                <INPUT TYPE="button" VALUE="Grant" id="group-adduser-button" disabled>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div id="group-organism" class="tab-pane fade">
+                        <h3>Permission Table</h3>
+                        <p id="group-permissions"></p>
+                        <p></p>
+					</div>
+                </div>
+            </div>
+			</fieldset>
+        </div>
+        {% if is_admin %}
+        <div id="myOrganism" class="tab-pane fade">
+        {% else %}
+        <div id="myOrganism" class="tab-pane fade in active">
+        {% endif %}
+		</div>
+        <div id="myRequest" class="tab-pane fade">
+			<legend style="font-size:20px; padding-top:20px">Organism Table</legend>
+            <table id="requestTable" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>CommonName</th>
+                        <th>Species</th>
+                        <th>Genus</th>
+                        <th>Valid</th>
+                        <th>ID</th>
+                        <th>ADMIN</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+            </table>
+		</div>
+    </div>
+</div>
+{% endblock %}
