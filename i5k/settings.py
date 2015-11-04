@@ -189,7 +189,7 @@ INSTALLED_APPS = (
     'data',
     'hmmer',
     'clustal',
-    'webapollo_sso',
+    #'webapollo_sso',
     #'restaurants',
 )
 

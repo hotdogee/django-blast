@@ -1,1 +1,0 @@
-manage.py loaddata sequencetype.json
