@@ -59,11 +59,13 @@
         }
     </style>
     <script>
-    var user_list = {{ user_list|jsonify }};
-    var jbrowse_list = {{ jbrowse_list|jsonify }};
-    var blastdb_list = {{ blastdb_list|jsonify }};
-    var organism_list =  {{ organism_list|jsonify }};
-    var result =  {{ result|jsonify }};
+      var result_set = {{result_set|jsonify}};
+      var organism_id =  {{ organism_id|jsonify}};
+      var organism_name = {{ organism_name|jsonify}};
+      var organism_display_name = {{ organism_display_name|jsonify}};
+      var jbrowse_url = {{ jbrowse_url|jsonify}};
+      var username = {{ username|jsonify}};
+      var password =  {{password|jsonify}};
     </script>
 {% endblock %}
 
@@ -77,105 +79,78 @@
 {% endblock %}
 
 {% block content %}
-
 {% if user.is_authenticated %}
     <div id="myTabContent" class="tab-content">    
     <div class="tripal_details tab-pane fade active in" role="tabpanel" id="run" aria-labelledby="run-tab">
 {% else %}
     <div class="tripal_details">
 {% endif %}
+
 <div class="tripal_organism-info-box tripal-info-box">
 <!--<a href="docs/blast_databases.html">-->
 <fieldset id="fieldset-datasets">
-	<legend>Add Account</legend>
-	<div id="box-datasets">
-		<div class="datasets-div all">
-			<div class="dataset-title"></div>
-			  {% csrf_token %}
-			<div class"Table"><div class="Title">
-			  </div>
-			  <div class="Heading">
-			    <div class="Cell">
-			      <p>Short Name</p>
-			    </div>
-			    <div class="Cell">
-			      <p>Species Name</p>
-			    </div>
-			    <div class="Cell">
-			      <p>JBrowse URL</p>
-			    </div>
-			    <div class="Cell">
-			      <p>Status</p>
-			    </div>
-			  </div>
-			  {% if organism_list %}
-    			  {% for o in organism_list  %}
-			  <div class="Row">
-			      <div class="Cell">
-			      <input type="hidden" name="organism_name" value="{{ o.1 }}">
-			      <input type="hidden" name="organism_id" value="{{ o.0 }}">
-			      <p>{{o.2}}</p>
-			    </div>
-			    <div class="Cell">
-			      <p>{{o.1}}</p>
-			    </div>
-			    <div class="Cell">
-			      {% for r in blastdb_list %}
-			      {% if o.0 == r.1%}
-			      {% for j in jbrowse_list %}
-			      {% if r.0 == j.2 %}
-			      <input type="hidden" name="jbrowse_url" value="{{ j.1 }}">
-			      <a href = {{ j.1 }}>{{ j.1 }}</a>
-			      {% endif %}
-			      {% endfor %}
-			      {% endif %}
-			      {% endfor %}
-			    </div>
-			    <div class="Cell"><center>
-			      {% if user.is_authenticated %}
-			      {% for u in user_list %}
-			      {% if u.2 == user.id %}
-			      {% if o.0 == u.1 %}
-			      <a href="" role="button" class="btn btn-success">Confirmed</a>
-			      {% else %}
-                              {% for r in blastdb_list %}
-                              {% if o.0 == r.1%}
-                              {% for j in jbrowse_list %}
-                              {% if r.0 == j.2 %}
-                              {% endif %}
-                              {% endfor %}
-                              {% endif %}
-                              {% endfor %}
-			      <FORM METHOD="POST" id="MainMigrateForm" NAME="MainMigrateForm" ENCTYPE="multipart/form-data" action="add">
-				{% csrf_token %}
-                              {% for r in blastdb_list %}
-                              {% if o.0 == r.1%}
-                              {% for j in jbrowse_list %}
-                              {% if r.0 == j.2 %}
-			      <input type="hidden" name="organism_name" value="{{ o.1 }}">
-			      <input type="hidden" name="organism_id" value="{{ o.0 }}">
-			      <input type="hidden" name="jbrowse_url" value="{{ j.1 }}">
-                              {% endif %}
-                              {% endfor %}
-                              {% endif %}
-                              {% endfor %}
-				<input type="submit" value="Add Account"  class="btn btn-warning" />
-				</FORM>
-				{% endif %}
-			      {% endif %}
-			      {% endfor %}				 
-			      {% else %}
-                              <a href="" role="button" class="btn btn-danger">Not Logged In</a>
-			      {% endif%}
-                            </center></div>
-			  </div>			  
-			{% endfor %}
-			</div>
-			{% endif %}
-		</div>
+  <legend>Add Account</legend>
+  <div id="box-datasets">
+    <div class="datasets-div all">
+      <div class="dataset-title"></div>
+      <div class"Table"><div class="Title">
 	</div>
-</div>
-</div>
-
-
+	<div class="Heading">
+	  <div class="Cell">
+	    <p>Short Name</p>
+	  </div>
+	  <div class="Cell">
+	    <p>Species Name</p>
+	  </div>
+	  <div class="Cell">
+	    <p>JBrowse URL</p>
+	  </div>
+	  <div class="Cell">
+	    <p>Status</p>
+	  </div>
+	</div>
+    	{% for r in result_set  %}
+	<div class="Row">
+	  <div class="Cell">
+	    <p>{{r.2}}</p>
+	  </div>
+	  <div class="Cell">
+	    <p>{{r.1}}</p>
+	  </div>
+	  <div class="Cell">
+	    <a href = {{ r.3 }}>{{ r.3 }}</a>
+	  </div>
+	  <div class="Cell"><center>
+	      <FORM METHOD="POST" id="MainMigrationForm" NAME="MainMigrationForm" ENCTYPE="multipart/form-data" action="add">
+		{% csrf_token %}
+		<input type="hidden" name="organism_id" value="{{ r.0 }}">
+		<input type="hidden" name="organism_short_name" value="{{ r.2 }}">
+		<input type="hidden" name="organism_display_name" value="{{ r.1 }}">
+		<input type="hidden" name="jbrowse_url" value="{{ r.3 }}">
+		{% if user.is_authenticated %}
+		{% if r.5 == None %}
+		{% else %}
+		<input type="hidden" name="username" value="{{ r.5 }}">
+		<input type="hidden" name="password" value="{{ r.6 }}">
+		{% endif %}
+		{% endif %}		
+		{% if user.is_authenticated %}
+		{% if r.4 = True  %}
+		<a href="" role="button" class="btn btn-success">Confirmed</a>
+		<!--<input type="submit" value="Confirmed"  class="btn btn-success" /> -->
+		{% else %}
+		<input type="submit" value="Add Account"  class="btn btn-warning" />
+		{% endif %}
+		{% else %}
+		<a href="/login" role="button" class="btn btn-danger">Not Logged In</a>
+		{% endif %}
+	      </FORM></center>
+	  </div>
+	</div>
+	{% endfor %}
+        </center>
+      </div>
+    </div>			  
+  </div>
 {% endblock %}
+

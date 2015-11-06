@@ -59,14 +59,11 @@
         }
     </style>
     <script>
-    var result_set =  {{ result_set|jsonify }};
-    var organism_id =  {{ organism_id|jsonify}};
-    var organism_name = {{ organism_name|jsonify}};
-    var organism_display_name = {{ organism_display_name|jsonify}};
-    var jbrowse_url = {{ jbrowse_url|jsonify}};
-    var username = {{ username|jsonify}};
-    var password =  {{password|jsonify}};
-    var result =  {{result|jsonify}};
+    var user_list = {{ user_list|jsonify }};
+    var jbrowse_list = {{ jbrowse_list|jsonify }};
+    var blastdb_list = {{ blastdb_list|jsonify }};
+    var organism_list =  {{ organism_list|jsonify }};
+    var result =  {{ result|jsonify }};
     </script>
 {% endblock %}
 
@@ -84,7 +81,7 @@
 {% if user.is_authenticated %}
     <div id="myTabContent" class="tab-content">    
     <div class="tripal_details tab-pane fade active in" role="tabpanel" id="run" aria-labelledby="run-tab">
-      <FORM METHOD="POST" id="AddMigrationForm" NAME="AddMigrationForm" ENCTYPE="multipart/form-data" action="add">
+      <FORM METHOD="POST" id="ConfirmMigrateForm" NAME="ConfirmMigrateForm" ENCTYPE="multipart/form-data" action="confirm">
 	{% csrf_token %}
 	<div class="tripal_organism-info-box tripal-info-box">
 	  <!--<a href="docs/blast_databases.html">-->
@@ -99,10 +96,8 @@
 		  <div class="Row">
 		    <div class="Cell">Organism</div>
 		    <div class="Cell">
-		      <input type="hidden" name="organism_short_name" value="{{form.organism_short_name.value}}">
-		      <input type="hidden" name="organism_display_name" value="{{form.organism_display_name.value}}">
-		      <input type="hidden" name="organism_id" value="{{form.organism_id.value}}">
-		      {{form.organism_display_name.value}}
+		      <input type="hidden" name="organism_name" value="{{form.organism_name.value}}">
+		      {{form.organism_name.value}}
 		    </div>
 		  </div>
 		  <div class="Row">
@@ -131,21 +126,19 @@
 		      <input type="text" name="password">
                       {% endif %}
 		    </div>
+
 		</div>
 	      </div>
 	      <br>
-	      <input type="submit" value="Add account" role="button" class="btn btn-warning" />
-	    </div>
-	</div>
+	      <input type="submit" value="Confirm" role="button" class="btn btn-warning" />
       </FORM>
-    </div>
-    {% else %}
-    <br><br>
-    <div class="Heading">
-      <p>You need to log in before you can migrate any accounts.</p>
+      </div>
+      {% else %}
+      <br><br>
+      <div class="Heading">
+	<p>You need to log in before you can migrate any accounts.</p>
+	
+      </div>
+      {% endif %}
       
-    </div>
-    {% endif %}
-    
-    {% endblock %}
-    
+      {% endblock %}
