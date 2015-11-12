@@ -25,7 +25,7 @@
 </div>
 </div>
 </div>
-<form action="/hmmer/">
+<form action="{% url 'hmmer:create' %}">
 <input type="button" id="colorful" value="colorful">
 <input type="submit" id="tohmmserach" value="To hmmsearch">
 <input type="hidden" name="clustal_task_id" value="{{ task_id }}">
