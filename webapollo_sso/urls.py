@@ -21,4 +21,5 @@ urlpatterns = patterns('',
     url(r'^delete_group_for_organism$', views.delete_group_for_organism, name='delete_group_for_organism'),
     url(r'^get_all_groups$', views.get_all_groups, name='get_all_groups'),
     url(r'^check_organism_exist$', views.check_organism_exist, name='check_organism_exist'),
+    url(r'^apollo_connect$', views.apollo_connect, name='apollo_connect'),
 )

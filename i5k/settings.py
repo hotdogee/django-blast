@@ -189,7 +189,7 @@ INSTALLED_APPS = (
     'data',
     'hmmer',
     'clustal',
-    #'webapollo_sso',
+    'webapollo_sso',
     #'restaurants',
 )
 
@@ -333,6 +333,7 @@ LOGGING = {
 # Apollo SSO
 ROBOT_ID = 'R2D2@i5k.org'
 ROBOT_PWD = 'demo'
+APOLLO_URL = '10.11.210.37:8085'
 
 # Celery Settings
 from kombu import Exchange, Queue

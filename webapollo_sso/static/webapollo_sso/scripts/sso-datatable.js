@@ -21,7 +21,7 @@ $(document).ready(function() {
     //pre-load data
     var availableUsers = [];
     function loadAllGroups(){
-        $.getJSON("http://10.11.210.63:8000/sso/get_all_groups", function(data){
+        $.getJSON('http://' + I5K_URL + '/sso/get_all_groups', function(data){
             $('#all-groups').val(data);
         });
     }
@@ -101,7 +101,7 @@ $(document).ready(function() {
             "paging":true,
             "deferRender": true,
             "ajax": {
-                "url" : 'http://10.11.210.63:8000/sso/get_users',
+                "url" : 'http://' + I5K_URL + '/sso/get_users',
                 "dataSrc": ""
             },
             "columns": [
@@ -188,7 +188,12 @@ $(document).ready(function() {
         str = table.cell(table.row(this).index(),4).data().split(",");
         if(str != ""){
             for (i = 0; i < str.length; i++){
-                text += "<button type='button' class='btn btn-success user-group-button' value='" + str[i] + "'>" + str[i] + "</button> ";
+                
+                var patt = /GROUP_(\w+)/g;
+                if(patt.test(str[i]) == true){
+                    var shortgname = str[i].substring(6,14);
+                    text += "<button type='button' class='btn btn-success user-group-button' value='" + str[i] + "'>" + shortgname + "</button> ";
+                }
             }
         }
         $('#user-group-now-group').html(text);
@@ -199,7 +204,11 @@ $(document).ready(function() {
 
         for (i = 0; i < str.length; i++){
             if($.inArray(str[i], groupin) == -1){
-                text += "<button type='button' class='btn btn-gray user-group-button' value='" + str[i] + "'>" + str[i] + "</button> ";
+                var patt = /GROUP_(\w+)/g;
+                if(patt.test(str[i]) == true){
+                    var shortgname = str[i].substring(6,14);
+                    text += "<button type='button' class='btn btn-gray user-group-button' value='" + str[i] + "'>" + shortgname + "</button> ";
+                }
             }
         }
         $('#user-group-avaiable-group').html(text);
@@ -220,7 +229,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: 'http://10.11.210.63:8000/sso/remove_user_from_group',
+                url: 'http://' + I5K_URL + '/sso/remove_user_from_group',
                 data: { groupName: groupName ,userId: userId},
                 success: function(data){
                     is_usertable_finish_load = false;
@@ -235,7 +244,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: 'http://10.11.210.63:8000/sso/add_user_to_group',
+                url: 'http://' + I5K_URL + '/sso/add_user_to_group',
                 data: { groupName: groupName , user: userName, userId: userId},
                 success: function(data){
                     is_usertable_finish_load = false;
@@ -256,7 +265,7 @@ $(document).ready(function() {
 
         table_group = $('#groupTable').DataTable({
             "ajax": {
-                "url" : 'http://10.11.210.63:8000/sso/get_groups',
+                "url" : 'http://' + I5K_URL + '/sso/get_groups',
                 "dataSrc": ""
             },
             "columns": [
@@ -267,7 +276,7 @@ $(document).ready(function() {
                 {"data":"users[,].email"},
                 {"data":"permission.permissions"}
             ],
-            "order": [[ 0, "desc" ]],
+            "order": [[ 0, "asc" ]],
             "fnDrawCallback": function (oSettings) {
                 is_grouptable_finish_load = true;
             },
@@ -329,7 +338,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: 'http://10.11.210.63:8000/sso/remove_user_from_group',
+                url: 'http://' + I5K_URL + '/sso/remove_user_from_group',
                 data: { groupName: groupName ,userName: userName},
                 success: function(data){
                     is_grouptable_finish_load = false;
@@ -346,7 +355,7 @@ $(document).ready(function() {
         if(is_myOrganism_loaded == true)return;
         is_myOrganism_loaded = true;
 
-        $.getJSON("http://10.11.210.63:8000/sso/get_my_organism", function(data){
+        $.getJSON('http://' + I5K_URL + '/sso/get_my_organism', function(data){
             var items = [];
             $.each( data, function( key, val ) {
                 if(val[0] == true){
@@ -355,31 +364,33 @@ $(document).ready(function() {
                         box = "<i class='fa fa-envelope-o'></i>"
                         $('#myOrganismTab').html("My Organism <i class='fa fa-envelope-o'></i>");
                     }
-                    name = key.split("_")[0]
-                    oid  = key.split("_")[1]
+                    name = key.split("_")[0];
+                    id   = val[2];
+                    oid  = key.split("_")[1];
                     items.push( "<legend style='font-size:20px; padding-top:20px'>" + name +
                         " <button type='button' class='btn btn-primary' onclick='myFunction()'>Owner</button>" +
                         " <button type='button' class='btn btn-success'>Launch</button>" +
                         "</legend>" +
-                        "<p><a href='#" + name + "-user-collapse' data-toggle='collapse' id='" + name + "' class='userlink'>User Collapsible</a>" +
-                        "<div id='" + name + "-user-collapse' class='collapse'>" +
-                        "<table id='table" + name + "' class='display' cellspacing='0' width='100%' load='none' id='" + name + "' oid = '" + oid + "' oname='" + name + "'><thead><tr>" +
-                        "<th>UserName</th><th>FirstName</th><th>LastName</th><th>Role</th><th>Species_Admin</th><th>Species_User</th><th>Organism</th><th>Permission</th><th>UserId</th><th>action</th>" +
+                        "<p><a href='#" + id + "-user-collapse' data-toggle='collapse' id='" + id + "' class='userlink'>User Collapsible</a>" +
+                        "<div id='" + id + "-user-collapse' class='collapse'>" +
+                        "<table id='table" + id + "' class='display' cellspacing='0' width='100%' load='none' oid = '" + oid + "' oname='" +id + "'><thead><tr>" +
+                        "<th>UserName</th><th>FirstName</th><th>LastName</th><th>Role</th><th>Species_Admin</th><th>Species_User</th><th>UserId</th><th>action</th>" +
                         "</tr></thead></table></div>" +
-                        "<a href='#" + name + "-pending-request-collapse' data-toggle='collapse' id='" + name + "' oid = '" + oid + "' class='pendinglink'>Pending Request Collapsible</a> " + box +
-                        " <div id='" + name + "-pending-request-collapse' class='collapse'>" +
-                        "<table id='tableRequest" + name + "' class='display tableRequest' cellspacing='0' width='100%' load='none' oid='" + oid + "' oname='" + name + "'><thead><tr>" +
-                        "<th>UserName</th><th>FirstName</th><th>LastName</th><th>Role</th><th>Species_Admin</th><th>Species_User</th><th>userID</th><th>Action</th>" +
+                        "<a href='#" + id + "-pending-request-collapse' data-toggle='collapse' id='" + id + "' oid = '" + oid + "' class='pendinglink'>Pending Request Collapsible</a> " + box +
+                        " <div id='" + id + "-pending-request-collapse' class='collapse'>" +
+                        "<table id='tableRequest" + id + "' class='display tableRequest' cellspacing='0' width='100%' load='none' oid='" + oid + "' oname='" + id + "'><thead><tr>" +
+                        "<th>UserName</th><th>FirstName</th><th>LastName</th><th>Role</th><th>Species_Admin</th><th>Species_User</th><th>userID</th><th>Action</th><th>DESC</th>" +
                         "</tr></thead></table></div>"
                         );
                 }else{
-                     name = key.split("_")[0]
+                     name = key.split("_")[0];
+                     id   = val[2];
                      items.push( "<legend style='font-size:20px; padding-top:20px'>" + name +
                         " <button type='button' class='btn btn-info'>Info</button>" +
                         " <button type='button' class='btn btn-success'>Launch</button>" +
                         "</legend>" +
-                        "<a href='#" + name + "-owner-info-collapse' data-toggle='collapse' id='test'>Info Collapsible</a>" +
-                        "<div id='" + name + "-owner-info-collapse' class='collapse'></div>"
+                        "<a href='#" + id + "-owner-info-collapse' data-toggle='collapse' id='test'>Info Collapsible</a>" +
+                        "<div id='" + id + "-owner-info-collapse' class='collapse'></div>"
                         );
                 }
             });
@@ -401,7 +412,7 @@ $(document).ready(function() {
             "processing":true,
             //"serverSide": true,
             "ajax": {
-                "url" : 'http://10.11.210.63:8000/sso/get_my_request',
+                "url" : 'http://' + I5K_URL + '/sso/get_my_request',
                 "dataSrc": ""
             },
             "columns": [
@@ -430,12 +441,13 @@ $(document).ready(function() {
 
                 }}
             ],
+            "order": [[ 0, "asc" ]],
         });
     });
 
 
     $('#myOrganism').delegate('.userlink','click',function(){
-
+        
         tablename = "table" + $(this).attr('id');
 
         if($('#' + tablename).attr("load") == "none"){
@@ -446,7 +458,7 @@ $(document).ready(function() {
                 "processing":true,
                 //"serverSide": true,
                 "ajax": {
-                    "url" : 'http://10.11.210.63:8000/sso/get_users?organism=' + $(this).attr('id'),
+                    "url" : 'http://' + I5K_URL + '/sso/get_users?organism=' + $(this).attr('id'),
                     "dataSrc": ""
                 },
                 "columns": [
@@ -456,8 +468,6 @@ $(document).ready(function() {
                     {"data":"role"},
                     {"data":"groups[,].name"},
                     {"data":"groups[,].name"},
-                    {"data":"organismPermissions[,].organism"},
-                    {"data":"organismPermissions[,].permissions"},
                     {"data":"userId"},
                     {"data":"admin"}
                 ],
@@ -488,7 +498,7 @@ $(document).ready(function() {
                         }
                         return '<a href="' + data  + '" target="_blank">' + text + '</a>';
                     }},{
-                    "aTargets": [9], // Column to target
+                    "aTargets": [7], // Column to target
                     "mRender": function ( data, type, full ) {
                         if(data == false){
                             return '<button type="button" class="btn btn-danger user-manage-button">release</button>'
@@ -497,16 +507,19 @@ $(document).ready(function() {
                         }
                     }},
                 ],
-                "order": [[ 8, "asc" ]],
+                "order": [[ 6, "asc" ]],
             });
+        }else if($('#' + tablename).attr("load") == "RELOAD"){
+            $('#' + tablename).attr("load","OK");
+            $('#' + tablename).DataTable().ajax.reload();
         }
     })
 
     //event handler for myOrganism
     $('#myOrganism').delegate('.pendinglink','click',function(){
-
+        
         tablename = "tableRequest" + $(this).attr('id');
-
+        
         if($('#' + tablename).attr("load") == "none"){
 
             $('#' + tablename).attr("load","OK");
@@ -515,7 +528,7 @@ $(document).ready(function() {
                 "processing":true,
                 //"serverSide": true,
                 "ajax": {
-                    "url" : 'http://10.11.210.63:8000/sso/get_pending_request?oid=' + $(this).attr('oid'),
+                    "url" : 'http://' + I5K_URL + '/sso/get_pending_request?oid=' + $(this).attr('oid'),
                     "dataSrc": ""
                 },
                 "columns": [
@@ -526,7 +539,8 @@ $(document).ready(function() {
                     {"data":"groups[,].name"},
                     {"data":"groups[,].name"},
                     {"data":"userId"},
-                    {"data":"action"}
+                    {"data":"action"},
+                    {"data":"desc"}
                 ],
                 "columnDefs": [{
                     "aTargets": [4], // Column to target
@@ -564,6 +578,14 @@ $(document).ready(function() {
                         }else{
                             return ''
                         }
+                    }},{
+                    "aTargets": [8],
+                    "mRender": function ( data, type, full ) {
+                        if(data != ''){
+                            return "<button  type='button' class='btn btn-default apply-desc-button' data-content='" + data + "'>Desc</button>";
+                        }else{
+                            return '';
+                        }
                     }}
                 ],
             });
@@ -594,10 +616,13 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                     type: "POST",
-                    url: 'http://10.11.210.63:8000/sso/handle_request',
+                    url: 'http://' + I5K_URL + '/sso/handle_request',
                     data: { action: action, oid : oid , oname: oname , user: name, userId: userId, reply_desc : $('.form-control').val()},
                     success: function(data){
-                        table.ajax.reload();
+                            table.ajax.reload();
+                            if($('#table'+oname).attr("load") == 'OK'){
+                                $('#table'+oname).attr("load", "RELOAD");
+                            }
                         }
                     });
                 }
@@ -614,7 +639,7 @@ $(document).ready(function() {
         var oname = $(current_row.parentElement.parentElement).attr("oname");
 
         var idx = table.row(current_row).index();
-        var userId = table.cell(idx,8).data();
+        var userId = table.cell(idx,6).data();
         var name  = table.cell(idx,0).data();
 
         BootstrapDialog.confirm({
@@ -628,7 +653,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                     type: "POST",
-                    url: 'http://10.11.210.63:8000/sso/remove_user_from_group',
+                    url: 'http://' + I5K_URL + '/sso/remove_user_from_group',
                     data: { groupName: "GROUP_" + oname + "_USER", userId: userId, reason : $('.form-control').val()},
                     success: function(data){
                         table.ajax.reload();
@@ -656,7 +681,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                     type: "POST",
-                    url: 'http://10.11.210.63:8000/sso/make_request',
+                    url: 'http://' + I5K_URL + '/sso/make_request',
                     data: { oid: oid , action: action, apply_desc : $('.form-control').val()},
                     success: function(data){
                         if(jQuery.isEmptyObject(data)){
@@ -694,7 +719,7 @@ $(document).ready(function() {
                     if(result) {
                         $.ajax({
                             type: "POST",
-                            url: 'http://10.11.210.63:8000/sso/create_user',
+                            url: 'http://' + I5K_URL + '/sso/create_user',
                             data: {firstName : firstName, lastName : lastName, userName : userName, password : password, djangoUserName : djangoUserName},
                             success: function(data){
                                 if(jQuery.isEmptyObject(data)){
@@ -745,7 +770,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://10.11.210.63:8000/sso/delete_user',
+                        url: 'http://' + I5K_URL + '/sso/delete_user',
                         data: {userId : userId},
                         success: function(data){
                             if(jQuery.isEmptyObject(data)){
@@ -780,7 +805,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://10.11.210.63:8000/sso/update_user',
+                        url: 'http://' + I5K_URL + '/sso/update_user',
                         data: {userId : userId, firstName : firstName, lastName : lastName, userName : userName, role : role, password : password, djangoUserName : djangoUserName},
                         success: function(data){
                             if(jQuery.isEmptyObject(data)){
@@ -813,7 +838,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://10.11.210.63:8000/sso/disconnect_user',
+                        url: 'http://' + I5K_URL + '/sso/disconnect_user',
                         data: {userId : userId},
                         success: function(data){
                             if(jQuery.isEmptyObject(data)){
@@ -859,6 +884,7 @@ $(document).ready(function() {
             $('#group-cancel-button').removeClass('hide');
             $('#group-delete-button').prop('disabled', true);
         }else if($('#group-create-button').val() == 'Save'){
+            var shortName =  $('#group-short-name').text();
             BootstrapDialog.confirm({
                 message: 'You\'re going to create group ' + $('#group-name').val() + ', are you sure?',
                 type: BootstrapDialog.TYPE_WARNING,
@@ -866,12 +892,14 @@ $(document).ready(function() {
                     if(result) {
                         $.ajax({
                             type: "POST",
-                            url: 'http://10.11.210.63:8000/sso/create_group_for_organism',
-                            data: {oname : $('#group-name').val()},
+                            url: 'http://' + I5K_URL + '/sso/create_group_for_organism',
+                            data: {shortName : shortName},
                             success: function(data){
                                 if(jQuery.isEmptyObject(data)){
                                     table_group.ajax.reload();
+                                    BootstrapDialog.alert("Create group " + shortName +  " success!");
                                     loadAllGroups();
+                                    $('#group-reset-button').click();
                                 }else if('error' in data){
                                     errorAlert(data['error']);
                                 }
@@ -890,6 +918,7 @@ $(document).ready(function() {
         enableGroupButtons();
         $('#group-admin-name').text('');
         $('#group-user-name').text('');
+        $('#group-short-name').text('');
         $('#check-organism-icon').removeClass();
     });
 
@@ -902,6 +931,7 @@ $(document).ready(function() {
         if(typeof(table_group.row(table_group.$('tr.selected')).index()) == 'undefined')return;
 
         oid = table_group.cell(table_group.row(table_group.$('tr.selected')).index(),3).data();
+        groupName = $('#group-name').val();
         BootstrapDialog.confirm({
             message: 'You\'re going to delete group ' + oid + ', are you sure?',
             type: BootstrapDialog.TYPE_WARNING,
@@ -909,11 +939,12 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://10.11.210.63:8000/sso/delete_group_for_organism',
+                        url: 'http://' + I5K_URL + '/sso/delete_group_for_organism',
                         data: {oname : $('#group-name').val(), oid : oid},
                         success: function(data){
                             if(jQuery.isEmptyObject(data)){
                                 table_group.ajax.reload();
+                                BootstrapDialog.alert("Delete group " + groupName +  " success!");
                                 $('#group-cancel-button').click();
                                 loadAllGroups();
                             }else if('error' in data){
@@ -940,7 +971,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://10.11.210.63:8000/sso/add_user_to_group',
+                        url: 'http://' + I5K_URL + '/sso/add_user_to_group',
                         data: {groupName : groupName, userName : userName},
                         success: function(data){
                             is_grouptable_finish_load = false;
@@ -979,7 +1010,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: 'http://10.11.210.63:8000/sso/check_django_user_available',
+            url: 'http://' + I5K_URL + '/sso/check_django_user_available',
             data: {userName : $('#django-user-name').val()},
             success: function(data){
                 $('#check-django-user-icon').removeClass();
@@ -1005,14 +1036,15 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: 'http://10.11.210.63:8000/sso/check_organism_exist',
+            url: 'http://' + I5K_URL + '/sso/check_organism_exist',
             data:{oname : $('#group-name').val()},
             success: function(data){
                 $('#check-organism-icon').removeClass();
-                if(jQuery.isEmptyObject(data)){
-                    var organismName = $('#group-name').val().toUpperCase();
-                    $('#group-admin-name').text('GROUP_'+organismName+'_ADMIN');
-                    $('#group-user-name').text('GROUP_'+organismName+'_USER');
+                if('short_name' in data){
+                    var short_name = data['short_name'];
+                    $('#group-admin-name').text('GROUP_'+short_name+'_ADMIN');
+                    $('#group-user-name').text('GROUP_'+short_name+'_USER');
+                    $('#group-short-name').text(short_name);
                     $('#check-organism-icon').addClass("fa fa-check");
                     enableGroupButtons();
                     $('#group-delete-button').prop('disabled', true);
@@ -1049,4 +1081,26 @@ $(document).ready(function() {
                 return matcher.test(value.label || value.value || value);
         });
     };
+
+    $('#myOrganism').popover({
+        selector: '.apply-desc-button', placement: 'auto', container : 'body'
+    });
+
+    $('#apollo').on('click', function(){
+        $.ajax({
+            type: "POST",
+            url: 'http://' + I5K_URL + '/sso/apollo_connect',
+            data:{},
+            success: function(data){
+                alert(data[0]);
+                alert(data[1]);
+                alert(data[2]);
+                alert(data[3]);
+                alert(document.cookie);
+                document.cookie = data[0] + '=' + data[1];
+                alert(document.cookie);
+                window.location.href = 'http://10.11.210.37:8085/apollo/';
+            }
+        });
+    });
 } );

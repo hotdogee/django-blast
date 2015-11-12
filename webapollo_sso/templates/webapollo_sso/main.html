@@ -15,6 +15,7 @@
 #fieldset-group-info {float:left;padding-left: 20px;}
 #fieldset-group-detail-button {float:left;padding-left: 20px;}
 .operation-button {padding-bottom: 10px;}
+.user-group-button {font-family:monospace;}
 </style>
 {% endblock%}
 
@@ -25,6 +26,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/umd/popover.js"></script>
 <script>
 $(document).ready(function() {
     {% if is_admin %}
@@ -34,6 +36,7 @@ $(document).ready(function() {
     {% endif %}
 
 } );
+I5K_URL = "10.11.210.37:8000";
 </script>
 {% endblock%}
 
@@ -54,6 +57,9 @@ $(document).ready(function() {
     </ul>
 
     <div class="tab-content">
+        <form action='http://10.11.210.37:8000/sso/apollo_connect'>
+        <INPUT TYPE="submit" VALUE="apollo" id="apolloi2">
+        </form>
         {% if is_admin %}
         <div id="myUser" class="tab-pane fade in active">
         {% else %}
@@ -161,6 +167,7 @@ $(document).ready(function() {
 
                             <div style="font-size:16px; padding-top:10px" id="group-admin-name"></div>
                             <div style="font-size:16px; padding-top:10px" id="group-user-name"></div>
+                            <div style="font-size:16px; padding-top:10px" id="group-short-name"></div>
 						</fieldset>
 						<fieldset id="fieldset-group-detail-button" style="padding-top:20px; padding-bottom:20px">
                             <div class="operation-button"><INPUT TYPE="button" VALUE="Create" class="group-button" id="group-create-button"> <INPUT TYPE="button" VALUE="Cancel" id="group-cancel-button" class="group-button hide"></div>
