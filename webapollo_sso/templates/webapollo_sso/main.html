@@ -36,7 +36,9 @@ $(document).ready(function() {
     {% endif %}
 
 } );
-I5K_URL = "10.11.210.37:8000";
+//I5K_URL = "http://10.11.210.37:8000";
+I5K_URL = "{{I5K_URL}}";
+APOLLO_URL = "{{APOLLO_URL}}";
 </script>
 {% endblock%}
 
@@ -57,9 +59,6 @@ I5K_URL = "10.11.210.37:8000";
     </ul>
 
     <div class="tab-content">
-        <form action='http://10.11.210.37:8000/sso/apollo_connect'>
-        <INPUT TYPE="submit" VALUE="apollo" id="apolloi2">
-        </form>
         {% if is_admin %}
         <div id="myUser" class="tab-pane fade in active">
         {% else %}

@@ -21,7 +21,7 @@ $(document).ready(function() {
     //pre-load data
     var availableUsers = [];
     function loadAllGroups(){
-        $.getJSON('http://' + I5K_URL + '/sso/get_all_groups', function(data){
+        $.getJSON(I5K_URL + '/sso/get_all_groups', function(data){
             $('#all-groups').val(data);
         });
     }
@@ -101,7 +101,7 @@ $(document).ready(function() {
             "paging":true,
             "deferRender": true,
             "ajax": {
-                "url" : 'http://' + I5K_URL + '/sso/get_users',
+                "url" : I5K_URL + '/sso/get_users',
                 "dataSrc": ""
             },
             "columns": [
@@ -229,7 +229,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: 'http://' + I5K_URL + '/sso/remove_user_from_group',
+                url: I5K_URL + '/sso/remove_user_from_group',
                 data: { groupName: groupName ,userId: userId},
                 success: function(data){
                     is_usertable_finish_load = false;
@@ -244,7 +244,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: 'http://' + I5K_URL + '/sso/add_user_to_group',
+                url: I5K_URL + '/sso/add_user_to_group',
                 data: { groupName: groupName , user: userName, userId: userId},
                 success: function(data){
                     is_usertable_finish_load = false;
@@ -265,7 +265,7 @@ $(document).ready(function() {
 
         table_group = $('#groupTable').DataTable({
             "ajax": {
-                "url" : 'http://' + I5K_URL + '/sso/get_groups',
+                "url" : I5K_URL + '/sso/get_groups',
                 "dataSrc": ""
             },
             "columns": [
@@ -338,7 +338,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "POST",
-                url: 'http://' + I5K_URL + '/sso/remove_user_from_group',
+                url: I5K_URL + '/sso/remove_user_from_group',
                 data: { groupName: groupName ,userName: userName},
                 success: function(data){
                     is_grouptable_finish_load = false;
@@ -355,8 +355,8 @@ $(document).ready(function() {
         if(is_myOrganism_loaded == true)return;
         is_myOrganism_loaded = true;
 
-        $.getJSON('http://' + I5K_URL + '/sso/get_my_organism', function(data){
-            var items = [];
+        $.getJSON(I5K_URL + '/sso/get_my_organism', function(data){
+            var items = ["<form action='" + I5K_URL  + "/sso/apollo_connect' target='_blank'>"];
             $.each( data, function( key, val ) {
                 if(val[0] == true){
                     box = ""
@@ -369,7 +369,7 @@ $(document).ready(function() {
                     oid  = key.split("_")[1];
                     items.push( "<legend style='font-size:20px; padding-top:20px'>" + name +
                         " <button type='button' class='btn btn-primary' onclick='myFunction()'>Owner</button>" +
-                        " <button type='button' class='btn btn-success'>Launch</button>" +
+                        " <button type='submit' class='btn btn-success'>Launch</button>" +
                         "</legend>" +
                         "<p><a href='#" + id + "-user-collapse' data-toggle='collapse' id='" + id + "' class='userlink'>User Collapsible</a>" +
                         "<div id='" + id + "-user-collapse' class='collapse'>" +
@@ -387,7 +387,7 @@ $(document).ready(function() {
                      id   = val[2];
                      items.push( "<legend style='font-size:20px; padding-top:20px'>" + name +
                         " <button type='button' class='btn btn-info'>Info</button>" +
-                        " <button type='button' class='btn btn-success'>Launch</button>" +
+                        " <button type='submit' class='btn btn-success'>Launch</button>" +
                         "</legend>" +
                         "<a href='#" + id + "-owner-info-collapse' data-toggle='collapse' id='test'>Info Collapsible</a>" +
                         "<div id='" + id + "-owner-info-collapse' class='collapse'></div>"
@@ -395,6 +395,7 @@ $(document).ready(function() {
                 }
             });
 
+            items.push("</form>");
             $( items.join( "" )
             ).appendTo( $("#myOrganism") );
 
@@ -412,7 +413,7 @@ $(document).ready(function() {
             "processing":true,
             //"serverSide": true,
             "ajax": {
-                "url" : 'http://' + I5K_URL + '/sso/get_my_request',
+                "url" : I5K_URL + '/sso/get_my_request',
                 "dataSrc": ""
             },
             "columns": [
@@ -458,7 +459,7 @@ $(document).ready(function() {
                 "processing":true,
                 //"serverSide": true,
                 "ajax": {
-                    "url" : 'http://' + I5K_URL + '/sso/get_users?organism=' + $(this).attr('id'),
+                    "url" : I5K_URL + '/sso/get_users?organism=' + $(this).attr('id'),
                     "dataSrc": ""
                 },
                 "columns": [
@@ -528,7 +529,7 @@ $(document).ready(function() {
                 "processing":true,
                 //"serverSide": true,
                 "ajax": {
-                    "url" : 'http://' + I5K_URL + '/sso/get_pending_request?oid=' + $(this).attr('oid'),
+                    "url" : I5K_URL + '/sso/get_pending_request?oid=' + $(this).attr('oid'),
                     "dataSrc": ""
                 },
                 "columns": [
@@ -616,7 +617,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                     type: "POST",
-                    url: 'http://' + I5K_URL + '/sso/handle_request',
+                    url: I5K_URL + '/sso/handle_request',
                     data: { action: action, oid : oid , oname: oname , user: name, userId: userId, reply_desc : $('.form-control').val()},
                     success: function(data){
                             table.ajax.reload();
@@ -653,7 +654,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                     type: "POST",
-                    url: 'http://' + I5K_URL + '/sso/remove_user_from_group',
+                    url: I5K_URL + '/sso/remove_user_from_group',
                     data: { groupName: "GROUP_" + oname + "_USER", userId: userId, reason : $('.form-control').val()},
                     success: function(data){
                         table.ajax.reload();
@@ -681,7 +682,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                     type: "POST",
-                    url: 'http://' + I5K_URL + '/sso/make_request',
+                    url: I5K_URL + '/sso/make_request',
                     data: { oid: oid , action: action, apply_desc : $('.form-control').val()},
                     success: function(data){
                         if(jQuery.isEmptyObject(data)){
@@ -719,7 +720,7 @@ $(document).ready(function() {
                     if(result) {
                         $.ajax({
                             type: "POST",
-                            url: 'http://' + I5K_URL + '/sso/create_user',
+                            url: I5K_URL + '/sso/create_user',
                             data: {firstName : firstName, lastName : lastName, userName : userName, password : password, djangoUserName : djangoUserName},
                             success: function(data){
                                 if(jQuery.isEmptyObject(data)){
@@ -770,7 +771,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://' + I5K_URL + '/sso/delete_user',
+                        url: I5K_URL + '/sso/delete_user',
                         data: {userId : userId},
                         success: function(data){
                             if(jQuery.isEmptyObject(data)){
@@ -805,7 +806,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://' + I5K_URL + '/sso/update_user',
+                        url: I5K_URL + '/sso/update_user',
                         data: {userId : userId, firstName : firstName, lastName : lastName, userName : userName, role : role, password : password, djangoUserName : djangoUserName},
                         success: function(data){
                             if(jQuery.isEmptyObject(data)){
@@ -838,7 +839,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://' + I5K_URL + '/sso/disconnect_user',
+                        url: I5K_URL + '/sso/disconnect_user',
                         data: {userId : userId},
                         success: function(data){
                             if(jQuery.isEmptyObject(data)){
@@ -892,7 +893,7 @@ $(document).ready(function() {
                     if(result) {
                         $.ajax({
                             type: "POST",
-                            url: 'http://' + I5K_URL + '/sso/create_group_for_organism',
+                            url: I5K_URL + '/sso/create_group_for_organism',
                             data: {shortName : shortName},
                             success: function(data){
                                 if(jQuery.isEmptyObject(data)){
@@ -939,7 +940,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://' + I5K_URL + '/sso/delete_group_for_organism',
+                        url: I5K_URL + '/sso/delete_group_for_organism',
                         data: {oname : $('#group-name').val(), oid : oid},
                         success: function(data){
                             if(jQuery.isEmptyObject(data)){
@@ -971,7 +972,7 @@ $(document).ready(function() {
                 if(result) {
                     $.ajax({
                         type: "POST",
-                        url: 'http://' + I5K_URL + '/sso/add_user_to_group',
+                        url: I5K_URL + '/sso/add_user_to_group',
                         data: {groupName : groupName, userName : userName},
                         success: function(data){
                             is_grouptable_finish_load = false;
@@ -1010,7 +1011,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: 'http://' + I5K_URL + '/sso/check_django_user_available',
+            url: I5K_URL + '/sso/check_django_user_available',
             data: {userName : $('#django-user-name').val()},
             success: function(data){
                 $('#check-django-user-icon').removeClass();
@@ -1036,7 +1037,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: 'http://' + I5K_URL + '/sso/check_organism_exist',
+            url: I5K_URL + '/sso/check_organism_exist',
             data:{oname : $('#group-name').val()},
             success: function(data){
                 $('#check-organism-icon').removeClass();
@@ -1086,21 +1087,4 @@ $(document).ready(function() {
         selector: '.apply-desc-button', placement: 'auto', container : 'body'
     });
 
-    $('#apollo').on('click', function(){
-        $.ajax({
-            type: "POST",
-            url: 'http://' + I5K_URL + '/sso/apollo_connect',
-            data:{},
-            success: function(data){
-                alert(data[0]);
-                alert(data[1]);
-                alert(data[2]);
-                alert(data[3]);
-                alert(document.cookie);
-                document.cookie = data[0] + '=' + data[1];
-                alert(document.cookie);
-                window.location.href = 'http://10.11.210.37:8085/apollo/';
-            }
-        });
-    });
 } );

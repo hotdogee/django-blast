@@ -15,7 +15,7 @@ import cookielib
 
 def _get_login(request):
     opener = _get_url_open()
-    response = opener.open(_get_url_request('http://'+request.session['apollo_url']+'/apollo/Login?operation=login'),
+    response = opener.open(_get_url_request(request.session['apollo_url']+'/apollo/Login?operation=login'),
                            json.dumps(_get_robot_priviledge()))
     result = json.loads(response.read())
     if('error' in result):
@@ -62,12 +62,11 @@ def create(request):
         request.session['apollo_name'] = apollo_name
         request.session['apollo_user_id'] = apollo_user_id
     else:
-        apollo_name = request.session['apollo_name']
         apollo_user_id = request.session['apollo_user_id']
 
     if('is_admin' not in request.session):
         opener = _get_login(request)
-        req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/loadUsers')
+        req = _get_url_request(request.session['apollo_url']+'/apollo/user/loadUsers')
         response = opener.open(req, json.dumps({"userId" : apollo_user_id}))
         users = json.loads(response.read())
         request.session['is_admin'] = True if(users[0]['role'] == 'ADMIN') else False
@@ -75,13 +74,15 @@ def create(request):
     return render(request, 'webapollo_sso/main.html', {
             'title': 'SSO',
             'is_admin': request.session['is_admin'],
+            'I5K_URL': i5k.settings.I5K_URL,
+            'APOLLO_URL': i5k.settings.APOLLO_URL,
     })
 
 @login_required
 def get_users(request):
 
     opener = _get_login(request)
-    response = opener.open('http://'+request.session['apollo_url']+'/apollo/user/loadUsers')
+    response = opener.open(request.session['apollo_url']+'/apollo/user/loadUsers')
     users = json.loads(response.read())
 
     #retrieve user info for user management page of myOrganism
@@ -123,7 +124,7 @@ def get_users(request):
 def get_groups(request):
 
     opener = _get_login(request)
-    response = opener.open('http://'+request.session['apollo_url']+'/apollo/group/loadGroups')
+    response = opener.open(request.session['apollo_url']+'/apollo/group/loadGroups')
     groups = json.loads(response.read())
 
     result = []
@@ -136,7 +137,7 @@ def get_groups(request):
             #result.append(group)
 
             for organism_perm in group['organismPermissions']:
-                if(oname == get_short_name(request, "","",organism_perm['organism'])):
+                if(oname == get_short_name(request,organism_perm['organism'])):
                     group['permission'] = organism_perm
                     del group['organismPermissions']
                     result.append(group)
@@ -149,12 +150,12 @@ def get_groups(request):
 def get_my_organism(request):
 
     opener = _get_login(request)
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/loadUsers')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/user/loadUsers')
     response = opener.open(req, json.dumps({"userId" : request.session['apollo_user_id']}))
     users = json.loads(response.read())
     user = users[0]
 
-    response = opener.open('http://'+request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
+    response = opener.open(request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
     organisms = json.loads(response.read())
 
     result = {}
@@ -164,12 +165,12 @@ def get_my_organism(request):
         perms = PermsRequest.objects.filter(oid=organism['id'], status="PENDING").all();
         is_pending_request = True if (len(perms) != 0) else False;
 
-        short_name = get_short_name(request, organism['genus'], organism['species'], organism['commonName'])
-
-        if("_".join(["GROUP",short_name,"ADMIN"]) in user_groups):
-            result[organism['commonName']+"_"+str(organism['id'])] = [True,is_pending_request,short_name]
-        elif("_".join(["GROUP",short_name,"USER"]) in user_groups):
-            result[organism['commonName']+"_"+str(organism['id'])] = [False,is_pending_request,short_name]
+        short_name = get_short_name(request, organism['commonName'])
+        if(short_name != None):
+            if("_".join(["GROUP",short_name,"ADMIN"]) in user_groups):
+                result[organism['commonName']+"_"+str(organism['id'])] = [True,is_pending_request,short_name]
+            elif("_".join(["GROUP",short_name,"USER"]) in user_groups):
+                result[organism['commonName']+"_"+str(organism['id'])] = [False,is_pending_request,short_name]
 
     return HttpResponse(json.dumps(OrderedDict(sorted(result.items()))), content_type="application/json")
 
@@ -177,18 +178,23 @@ def get_my_organism(request):
 def get_my_request(request):
 
     opener = _get_login(request)
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/loadUsers')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/user/loadUsers')
     response = opener.open(req, json.dumps({"userId" : request.session['apollo_user_id']}))
     users = json.loads(response.read())
     user = users[0]
 
-    response = opener.open('http://'+request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
+    response = opener.open(request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
     organisms = json.loads(response.read())
 
     my_groups = map(lambda x:x['name'], user['groups'])
 
+    result = []
     for organism in organisms:
-        short_name = get_short_name(request, organism['genus'], organism['species'], organism['commonName'])
+        short_name = get_short_name(request, organism['commonName'])
+
+        if(short_name == None):
+            continue
+
         if("_".join(["GROUP",short_name,"ADMIN"]) in my_groups):
             organism['admin'] = True
             organism['action'] = "NONE"
@@ -211,7 +217,9 @@ def get_my_request(request):
                 else:
                     organism['action'] = "REQUEST"
 
-    return HttpResponse(json.dumps(organisms), content_type="application/json")
+        result.append(organism)
+
+    return HttpResponse(json.dumps(result), content_type="application/json")
 
 @login_required
 def get_pending_request(request):
@@ -226,7 +234,7 @@ def get_pending_request(request):
         return HttpResponse(json.dumps({}), content_type="application/json")
 
     opener = _get_login(request)
-    response = opener.open('http://'+request.session['apollo_url']+'/apollo/user/loadUsers')
+    response = opener.open(request.session['apollo_url']+'/apollo/user/loadUsers')
     users = json.loads(response.read())
 
     #may be improve efficency
@@ -285,7 +293,7 @@ def handle_request(request):
 
         data = {"group":"GROUP_"+oname+"_USER", "userId":userId_apollo}
         data.update(_get_robot_priviledge())
-        req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/addUserToGroup')
+        req = _get_url_request(request.session['apollo_url']+'/apollo/user/addUserToGroup')
         opener = _get_url_open()
         response = opener.open(req, json.dumps(data))
         result = response.read()
@@ -300,7 +308,7 @@ def handle_request(request):
         data = {"group":"GROUP_"+oname+"_USER", "userId":userId_apollo}
         data.update(_get_robot_priviledge())
 
-        req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/removeUserFromGroup')
+        req = _get_url_request(request.session['apollo_url']+'/apollo/user/removeUserFromGroup')
         opener = _get_url_open()
         response = opener.open(req, json.dumps(data))
         result = response.read()
@@ -326,7 +334,7 @@ def add_user_to_group(request):
         data = {} #fail
 
     data.update(_get_robot_priviledge())
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/addUserToGroup')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/user/addUserToGroup')
     opener = _get_url_open()
     response = opener.open(req, json.dumps(data))
     result = response.read()
@@ -350,7 +358,7 @@ def remove_user_from_group(request):
     print data
 
     data.update(_get_robot_priviledge())
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/removeUserFromGroup')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/user/removeUserFromGroup')
     opener = _get_url_open()
     response = opener.open(req, json.dumps(data))
     result = response.read()
@@ -370,14 +378,14 @@ def create_user(request):
 
     data = {"firstName" : first_name, "lastName" : last_name, "email": email, "new_password" : password, "role" : "USER"}
     data.update(_get_robot_priviledge())
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/createUser')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/user/createUser')
     opener = _get_url_open()
     response = opener.open(req, json.dumps(data))
     result = json.loads(response.read())
     print result
 
     if(len(result) == 0):
-        response = opener.open('http://'+request.session['apollo_url']+'/apollo/user/loadUsers')
+        response = opener.open(request.session['apollo_url']+'/apollo/user/loadUsers')
         users = json.loads(response.read())
 
         for user in users:
@@ -398,7 +406,7 @@ def delete_user(request):
     user_id = request.POST['userId']
     data = {"userId" : user_id}
     data.update(_get_robot_priviledge())
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/deleteUser')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/user/deleteUser')
     opener = _get_url_open()
     response = opener.open(req, json.dumps(data))
     result = json.loads(response.read())
@@ -422,7 +430,7 @@ def update_user(request):
     if(new_password != ''):
         data['newpassword'] = new_password
 
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/user/updateUser')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/user/updateUser')
     opener = _get_url_open()
     response = opener.open(req, json.dumps(data))
     result = json.loads(response.read())
@@ -490,7 +498,7 @@ def create_group_for_organism(request):
     data_user_perms = {"name": group_user, "organism" : short_name, "ADMINISTRATE" : False, "WRITE" : True, "EXPORT" : True, "READ" : True}
     data_user_perms.update(_get_robot_priviledge())
 
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/group/createGroup')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/group/createGroup')
     opener = _get_url_open()
     response = opener.open(req, json.dumps(data))
     result = json.loads(response.read())
@@ -501,7 +509,7 @@ def create_group_for_organism(request):
     #result = response.read()
     print result
 
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/group/createGroup')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/group/createGroup')
     response = opener.open(req, json.dumps(data2))
     result = json.loads(response.read())
     #print result
@@ -524,13 +532,13 @@ def delete_group_for_organism(request):
     data2 = {"name" : group_user}
     data2.update(_get_robot_priviledge())
 
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/group/deleteGroup')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/group/deleteGroup')
     opener = _get_url_open()
     response = opener.open(req, json.dumps(data))
     result = json.loads(response.read())
     print result
 
-    req = _get_url_request('http://'+request.session['apollo_url']+'/apollo/group/deleteGroup')
+    req = _get_url_request(request.session['apollo_url']+'/apollo/group/deleteGroup')
     #opener = _get_url_open()
     response = opener.open(req, json.dumps(data2))
     result = json.loads(response.read())
@@ -541,7 +549,7 @@ def delete_group_for_organism(request):
 def get_all_groups(request):
 
     opener = _get_login(request)
-    response = opener.open('http://'+request.session['apollo_url']+'/apollo/group/loadGroups')
+    response = opener.open(request.session['apollo_url']+'/apollo/group/loadGroups')
     groups = json.loads(response.read())
 
     result = []
@@ -556,32 +564,41 @@ def check_organism_exist(request):
     organism_name = request.POST['oname']
 
     opener = _get_login(request)
-    response = opener.open('http://'+request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
+    response = opener.open(request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
     organisms = json.loads(response.read())
 
     for organism in organisms:
         if(organism['commonName'] == organism_name):
-            short_name = get_short_name(request, organism['genus'], organism['species'], organism['commonName'])
-            return HttpResponse(json.dumps({"short_name" : short_name}), content_type="application/json")
+            short_name = get_short_name(request, organism['commonName'])
+            if(short_name != None):
+                return HttpResponse(json.dumps({"short_name" : short_name}), content_type="application/json")
+            else:
+                break
 
     return HttpResponse(json.dumps({"error":"Organism doesn't exist"}), content_type="application/json")
 
-def get_short_name(request, genus, species, display_name):
+def get_short_name(request, display_name):
     if(display_name in request.session):
         return request.session[display_name]
 
     if("-" in display_name):
         display_name = display_name[0:display_name.index("-")].strip()
-    o = Organism.objects.get(display_name=display_name);
-    #short_name = str(genus[0:3] + species[0:3])
-    short_name = o.short_name
-    short_name = short_name.upper()
+    try:
+        o = Organism.objects.get(display_name=display_name);
+        short_name = o.short_name
+        short_name = short_name.upper()
+    except Organism.DoesNotExist:
+        short_name = None
+
     request.session[display_name] = short_name
     return short_name
 
 def apollo_connect(request):
-    data = {'username':'R2D2@i5k.org', 'password':'demo'}
-    req = urllib2.Request('http://'+request.session['apollo_url']+'/apollo/Login?operation=login')
+    print "AAA"
+    user_mapping = UserMapping.objects.get(django_user=request.user)
+    data = {'username':user_mapping.apollo_user_name, 'password':user_mapping.apollo_user_pwd}
+    #data = {'username':'R2D2@i5k.org', 'password':'demo'}
+    req = urllib2.Request(request.session['apollo_url']+'/apollo/Login?operation=login')
     req.add_header('Content-Type', 'application/json')
 
     cookies = cookielib.LWPCookieJar()
@@ -598,22 +615,11 @@ def apollo_connect(request):
     page
 
     ck = ''
-    response = HttpResponseRedirect('http://10.11.210.37:8085/apollo/annotator/index')
+    response = HttpResponseRedirect(request.session['apollo_url']+'/apollo/annotator/index')
 
     for cookie in cookies:
         if(cookie.name == 'JSESSIONID'):
-            #response.set
-            ck = cookie.value
-            print cookie.name
-            print cookie.value
-            print cookie.domain
-            print cookie.path
-            print cookie.port
-            print cookie.port_specified
-            print dir(cookie)
             response.set_cookie(key=cookie.name, value=cookie.value, domain=cookie.domain, path=cookie.path, expires=cookie.expires)
 
-    print ck
 
     return response
-    #return HttpResponse(json.dumps([cookie.name, cookie.value, cookie.domain, cookie.path]), content_type="application/json")
