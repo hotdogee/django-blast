@@ -67,6 +67,7 @@
     var username = {{ username|jsonify}};
     var password =  {{password|jsonify}};
     var result =  {{result|jsonify}};
+    var status = {{status|jsonify}};
     </script>
 {% endblock %}
 
@@ -133,6 +134,11 @@
 		    </div>
 		</div>
 	      </div>
+	      {% if status %}
+	      <br><font color=red><b>
+	      {{ status }}
+	      </b></font><br>
+	      {% endif %}
 	      <br>
 	      <input type="submit" value="Add account" role="button" class="btn btn-warning" />
 	    </div>

@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import Http404
@@ -25,6 +26,7 @@ from .forms import AddMigrationForm, ConfirmMigrationForm
 
 # Create your views here.
 
+@login_required
 def index(request):
     current_user = request.user
     organism_list = sorted([db.id, db.display_name, db.short_name] for db in Organism.objects.all())
@@ -48,12 +50,10 @@ def index(request):
             'organism_display_name':organism[1], 
             'organism_short_name':organism[2], 
             'jbrowse_url':jbrowse[1],
-#            'registered': True,
-#            'username': user[3], 
-#            'password':user[4],
             'result_set': result_set
             })
 
+@login_required
 def add(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -66,28 +66,33 @@ def add(request):
             organism_short_name = form.cleaned_data['organism_short_name']
             username =  form.cleaned_data['username']
             password =  form.cleaned_data['password']
-#        return HttpResponseRedirect('/thanks/')
-            m = MigrateUserRecord( username = username, password = password, organism_id = organism_id, user_id = request.user.id )
-            m.save()
-            return render(request, 'migrate_account/add.html', {
-                    'organism_id': organism_id,
-                    'organism_short_name': organism_short_name,
-                    'organism_display_name': organism_display_name,
-                    'jbrowse_url': jbrowse_url,
-                    'username': username,
-                    'password': password,
-                    'title': 'Confirm something',
-#                    'result_set': result_set,
-                    'form': form                    
-                    })
+#This is the type of command I need to use to test if the login is good...
+# curl -b cookies.txt -c cookies.txt -e "https://apollo.nal.usda.gov"  -H "Content-Type:application/json" -d "{'username': 'demo', 'password': 'demo'}" "https://apollo.nal.usda.gov/lepdec_training/Login?operation=login" -k
+            try:
+                mu = MigrateUserRecord.objects.get(username=username, password = password, organism_id = organism_id)
+                # Warning! This account has already been claimed!
+                form = AddMigrationForm(request.POST)
+                return render(request, 'migrate_account/add.html', {
+                        'form': form,
+                        'status': 'This account has already been claimed. Please verify your login and re-enter your credentials.'
+                        })
+            except MigrateUserRecord.DoesNotExist:
+                m = MigrateUserRecord( username = username, password = password, organism_id = organism_id, user_id = request.user.id )
+                m.save()
+                return index(request)
     # if a GET (or any other method) we'll create a blank form
         else:
             form = AddMigrationForm(request.POST)
-#            form = AddMigrationForm()
-            
-            return render(request, 'migrate_account/add.html', {
-                    'form': form
-                    })
+#            return index(request)
+        return render(request, 'migrate_account/add.html', {
+                'form': form
+                })
+    else:
+        return index(request)
 
+
+
+
+@login_required
 def confirm(request):
     return()
