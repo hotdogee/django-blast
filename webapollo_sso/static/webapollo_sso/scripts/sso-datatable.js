@@ -418,15 +418,15 @@ $(document).ready(function() {
             },
             "columns": [
                 {"data":"commonName"},
-                {"data":"species"},
-                {"data":"genus"},
+                //{"data":"species"},
+                //{"data":"genus"},
                 {"data":"valid"},
                 {"data":"id"},
                 {"data":"admin"},
                 {"data":"action"},
             ],
             "columnDefs": [{
-                "aTargets": [6], // Column to target
+                "aTargets": [4], // Column to target
                 "mRender": function ( data, type, full ) {
                     if(data == 'REQUEST'){
                         return '<button type="button" class="btn btn-primary action">request</button>'
@@ -669,7 +669,7 @@ $(document).ready(function() {
     $('#myRequest').delegate('.action','click',function(){
         var action = table_request.cell(this.parentElement).data();
         var idx = table_request.row(this.parentElement.parentElement).index();
-        var oid  = table_request.cell(idx,4).data();
+        var oid  = table_request.cell(idx,2).data();
 
         BootstrapDialog.confirm({
             title: 'Are you sure you want to do that?',

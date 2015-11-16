@@ -125,7 +125,7 @@ def create(request, iframe=False):
                 option_params.append('-OUTPUT='+request.POST['OUTPUT'])
                 option_params.append('-OUTORDER='+request.POST['OUTORDER'])
 
-                args_list.append(['clustalw2', '-infile='+query_filename,'-OUTFILE='+task_id+'.aln'] + option_params)
+                args_list.append(['clustalw2', '-TREE', '-PIM', '-infile='+query_filename,'-OUTFILE='+task_id+'.aln'] + option_params)
             else:
                 #clustalo
                 if request.POST['dealing_input'] == "yes":
@@ -146,7 +146,7 @@ def create(request, iframe=False):
                 if request.POST['omega_order'] != "":
                     option_params.append("--output-order="+request.POST['omega_order'])
 
-                args_list.append(['clustalo', '--infile='+query_filename,'--outfile='+task_id+'.aln'] + option_params)
+                args_list.append(['clustalo', '--infile='+query_filename,'--guidetree-out='+task_id+'.ph','--outfile='+task_id+'.aln'] + option_params)
 
             record = ClustalQueryRecord()
             record.task_id = task_id
@@ -161,11 +161,12 @@ def create(request, iframe=False):
                 if (seq_count == 0):
                     seq_count = 1
                 with open('status.json', 'wb') as f:
-                    json.dump({'status': 'pending', 'seq_count': seq_count}, f)
+                    json.dump({'status': 'pending', 'seq_count': seq_count, 'cmd': " ".join(args_list[0])}, f)
 
 
             #args_list.append(['clustalw2', '-infile='+query_filename,'-OUTFILE='+task_id+'.aln'] + option_params)
-
+            print args_list
+            print " ".join(args_list[0])
             run_clustal_task.delay(task_id, args_list, file_prefix)
 
             return redirect('clustal:retrieve', task_id)
@@ -178,7 +179,8 @@ def retrieve(request, task_id='1'):
         r = ClustalQueryRecord.objects.get(task_id=task_id)
         # if result is generated and not expired
         if r.result_date and (r.result_date.replace(tzinfo=None) >= (datetime.utcnow()+ timedelta(days=-7))):
-            file_prefix = path.join("/media", 'clustal', 'task', task_id, task_id+".aln")
+            file_prefix = path.join("/media", 'clustal', 'task', task_id, task_id)
+
 
             os.chdir(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id))
             with open('status.json', 'r') as f:
@@ -194,12 +196,14 @@ def retrieve(request, task_id='1'):
 
             out.append(''.join(report).replace(' ','&nbsp;'))
 
-            if r.result_status in set(['SUCCESS',]):
+            if r.result_status in set(['SUCCESS','NO PH']):
                 return render(
                     request,
                     'clustal/result.html', {
                         'title': 'CLUSTALW2 Result',
-                        'output': file_prefix,
+                        'aln': file_prefix+'.aln',
+                        'ph': file_prefix+'.ph' if r.result_status != 'NO PH' else None,
+                        'status': path.join("/media", 'clustal', 'task', task_id, 'status.json'),
                         'report': out,
                         'task_id': task_id,
                     })

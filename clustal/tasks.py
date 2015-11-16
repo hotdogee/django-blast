@@ -49,21 +49,30 @@ def run_clustal_task(task_id, args_list, file_prefix):
         json.dump(statusdata, f)
 
     # run
-    result_status = 'SUCCESS'
     for args in args_list:
         print args
         p = Popen(args, stdin=None, stdout=PIPE, stderr=PIPE)
         p.wait()
         print(p.communicate())
 
+    # generate status.json for frontend status checking
+    if not path.isfile(file_prefix + '.aln'):
+        result_status = "NO ALN"
+    elif not path.isfile(file_prefix + '.ph'):
+        result_status = "NO PH"
+    else:
+        result_status = 'SUCCESS'
+
     print result_status
     record.result_status = result_status
     record.result_date = datetime.utcnow().replace(tzinfo=utc)
     record.save()
 
-    # generate status.json for frontend status checking
+    with open('status.json', 'r') as f:
+        statusdata = json.load(f)
+        statusdata['status'] = 'done'
     with open('status.json', 'wb') as f:
-        json.dump({'status': 'done'}, f)
+        json.dump(statusdata, f)
 
     return task_id # passed to 'result' argument of task_success_handler
 

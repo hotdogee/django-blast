@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 import i5k.settings
 from  blast.models import Organism
 import re
+import time
 
 import json
 import urllib2
@@ -155,8 +156,12 @@ def get_my_organism(request):
     users = json.loads(response.read())
     user = users[0]
 
-    response = opener.open(request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
-    organisms = json.loads(response.read())
+    if('allOrganism' in request.session):
+        organisms = request.session['allOrganism']
+    else:
+        response = opener.open(request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
+        organisms = json.loads(response.read())
+        request.session['allOrganism'] = organisms
 
     result = {}
     user_groups = map(lambda x:x['name'], user['groups'])
@@ -176,20 +181,30 @@ def get_my_organism(request):
 
 @login_required
 def get_my_request(request):
-
+    print int(round(time.time() * 1000))
     opener = _get_login(request)
     req = _get_url_request(request.session['apollo_url']+'/apollo/user/loadUsers')
     response = opener.open(req, json.dumps({"userId" : request.session['apollo_user_id']}))
     users = json.loads(response.read())
     user = users[0]
-
-    response = opener.open(request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
-    organisms = json.loads(response.read())
-
+    print int(round(time.time() * 1000))
+    if('allOrganism' in request.session):
+        organisms = request.session['allOrganism']
+    else:
+        response = opener.open(request.session['apollo_url']+'/apollo/organism/findAllOrganisms')
+        organisms = json.loads(response.read())
+        request.session['allOrganism'] = organisms
+    print int(round(time.time() * 1000))
     my_groups = map(lambda x:x['name'], user['groups'])
 
     result = []
     for organism in organisms:
+        if('directory' in organism):
+            del organism['directory']
+            del organism['blatdb']
+            del organism['species']
+            del organism['genus']
+            
         short_name = get_short_name(request, organism['commonName'])
 
         if(short_name == None):
@@ -197,7 +212,7 @@ def get_my_request(request):
 
         if("_".join(["GROUP",short_name,"ADMIN"]) in my_groups):
             organism['admin'] = True
-            organism['action'] = "NONE"
+            organism['action'] = None
         else:
             organism['admin'] = False
             try:
@@ -219,6 +234,8 @@ def get_my_request(request):
 
         result.append(organism)
 
+    print int(round(time.time() * 1000))
+    print organism
     return HttpResponse(json.dumps(result), content_type="application/json")
 
 @login_required
@@ -594,7 +611,6 @@ def get_short_name(request, display_name):
     return short_name
 
 def apollo_connect(request):
-    print "AAA"
     user_mapping = UserMapping.objects.get(django_user=request.user)
     data = {'username':user_mapping.apollo_user_name, 'password':user_mapping.apollo_user_pwd}
     #data = {'username':'R2D2@i5k.org', 'password':'demo'}
