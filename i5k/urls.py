@@ -122,7 +122,6 @@ urlpatterns = patterns('',
 
     url(r'^hmmer/', include('hmmer.urls', namespace='hmmer')),
     url(r'^clustal/', include('clustal.urls', namespace='clustal')),
-    url(r'^sso/', include('webapollo_sso.urls', namespace='sso')),
 )
 from django.conf import settings
 if settings.DEBUG:

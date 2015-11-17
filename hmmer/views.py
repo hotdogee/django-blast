@@ -18,28 +18,30 @@ from hmmer.models import HmmerQueryRecord, HmmerDB
 import os
 from subprocess import Popen, PIPE
 
-def create(request, iframe=False):
 
+def create(request):
     if request.method == 'GET':
+        hmmerdb_list = sorted([['Protein', "Protein", db.title, db.organism.display_name, db.description] for db in
+                               HmmerDB.objects.select_related('organism').filter(is_shown=True)],
+                              key=lambda x: (x[3], x[1], x[0], x[2]))
+        hmmerdb_type_counts = dict([(k.lower().replace(' ', '_'), len(list(g))) for k, g in
+                                    groupby(sorted(hmmerdb_list, key=lambda x: x[0]), key=lambda x: x[0])])
 
-        hmmerdb_list = sorted([['Protein', "Protein", db.title, db.organism.display_name, db.description] for db in HmmerDB.objects.select_related('organism').filter(is_shown=True)], key=lambda x: (x[3], x[1], x[0], x[2]))
-        hmmerdb_type_counts = dict([(k.lower().replace(' ', '_'), len(list(g))) for k, g in groupby(sorted(hmmerdb_list, key=lambda x: x[0]), key=lambda x: x[0])])
 
         clustal_content = []
-        if("clustal_task_id" in request.GET):
-            clustal_aln = path.join(settings.MEDIA_ROOT, 'clustal', 'task', request.GET['clustal_task_id'] ,request.GET['clustal_task_id']+".aln")
-            
-            if(os.path.isfile(clustal_aln) == True):
-                with open(clustal_aln, 'r') as content_file:
-                    for line in content_file:
-                        clustal_content.append(line)
+        if ("clustal_task_id" in request.GET):
+            clustal_aln = path.join(settings.MEDIA_ROOT, 'clustal', 'task', request.GET['clustal_task_id'],
+                                     request.GET['clustal_task_id'] + ".aln")
+
+            with open(clustal_aln, 'r') as content_file:
+                for line in content_file:
+                    clustal_content.append(line)
 
         return render(request, 'hmmer/main.html', {
             'title': 'HMMER Query',
             'hmmerdb_list': json.dumps(hmmerdb_list),
-            'hmmerdb_type_counts':hmmerdb_type_counts,
-            'clustal_content':"".join(clustal_content),
-            'iframe': iframe
+            'hmmerdb_type_counts': hmmerdb_type_counts,
+            'clustal_content': "".join(clustal_content),
         })
     elif request.method == 'POST' and request.POST['format_check'] == "True":
 
@@ -49,7 +51,6 @@ def create(request, iframe=False):
         chmod(tmp_dir, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)
         os.chdir(tmp_dir)
 
-        query_filename = ''
         if 'query-file' in request.FILES:
             query_filename = request.FILES['query-file'].name
             with open(query_filename, 'wb') as query_f:
@@ -60,9 +61,9 @@ def create(request, iframe=False):
             with open(query_filename, 'wb') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
-            return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query',})
+            return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query', })
 
-        p = Popen(["hmmbuild","out",query_filename], stdout=PIPE,stderr=PIPE);
+        p = Popen(["hmmbuild", "out", query_filename], stdout=PIPE, stderr=PIPE)
         p.wait()
         result = p.communicate()[1]
         return HttpResponse(result)
@@ -76,11 +77,11 @@ def create(request, iframe=False):
         file_prefix = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, task_id)
         if not path.exists(task_dir):
             makedirs(task_dir)
-        chmod(task_dir, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can open files in the directory
+        chmod(task_dir,
+              Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)  # ensure the standalone dequeuing process can open files in the directory
         # change directory to task directory
         os.chdir(task_dir)
 
-        query_filename = ''
         if 'query-file' in request.FILES:
             query_filename = request.FILES['query-file'].name
             with open(query_filename, 'wb') as query_f:
@@ -91,28 +92,29 @@ def create(request, iframe=False):
             with open(query_filename, 'wb') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
-            return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query',})
+            return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query', })
 
-        chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can access the file
+        chmod(query_filename,
+              Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)  # ensure the standalone dequeuing process can access the file
 
         # build hmmer command
-        db_list = ' '.join([db.fasta_file.path_full for db in HmmerDB.objects.filter(title__in=set(request.POST.getlist('db-name')))])
+        db_list = ' '.join(
+            [db.fasta_file.path_full for db in HmmerDB.objects.filter(title__in=set(request.POST.getlist('db-name')))])
         for db in db_list.split(' '):
-            os.symlink(db, db[db.rindex('/')+1:])
+            os.symlink(db, db[db.rindex('/') + 1:])
 
         if not db_list:
-            return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query',})
+            return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query', })
 
         # check if program is in list for security
         if request.POST['program'] in ['phmmer', 'hmmsearch']:
             option_params = []
-            if(request.POST['cutoff'] == 'evalue'):
+            if (request.POST['cutoff'] == 'evalue'):
                 option_params.extend(['--incE', request.POST['s_sequence'], '--incdomE', request.POST['s_hit']])
                 option_params.extend(['-E', request.POST['r_sequence'], '--domE', request.POST['r_hit']])
-            elif(request.POST['cutoff'] == 'bitscore'):
+            elif (request.POST['cutoff'] == 'bitscore'):
                 option_params.extend(['--incT', request.POST['s_sequence'], '--incdomT', request.POST['s_hit']])
                 option_params.extend(['-T', request.POST['r_sequence'], '--domT', request.POST['r_hit']])
-
 
             record = HmmerQueryRecord()
             record.task_id = task_id
@@ -121,22 +123,25 @@ def create(request, iframe=False):
             record.save()
 
             # generate status.json for frontend statu checking
-            with open(query_filename, 'r') as f: # count number of query sequence by counting '>'
+            with open(query_filename, 'r') as f:  # count number of query sequence by counting '>'
                 qstr = f.read()
                 seq_count = qstr.count('>')
                 if (seq_count == 0):
                     seq_count = 1
                 with open('status.json', 'wb') as f:
-                    json.dump({'status': 'pending', 'seq_count': seq_count, 'db_list': [db[db.rindex('/')+1:]for db in db_list.split(' ')]}, f)
+                    json.dump({'status': 'pending', 'seq_count': seq_count,
+                               'db_list': [db[db.rindex('/') + 1:] for db in db_list.split(' ')]}, f)
 
             args_list = []
-            if(request.POST['program'] == 'hmmsearch'):
-                args_list.append(['hmmbuild','-o', 'hmm.sumary', query_filename + '.hmm', query_filename])
+            if (request.POST['program'] == 'hmmsearch'):
+                args_list.append(['hmmbuild', '-o', 'hmm.sumary', query_filename + '.hmm', query_filename])
                 for idx, db in enumerate(db_list.split()):
-                    args_list.append(['hmmsearch', '-o', str(idx) + '.out']  + option_params + [query_filename + '.hmm', os.path.basename(db)])
+                    args_list.append(['hmmsearch', '-o', str(idx) + '.out'] + option_params + [query_filename + '.hmm',
+                                                                                               os.path.basename(db)])
             else:
-                for idx, db  in enumerate(db_list.split()):
-                    args_list.append(['phmmer', '-o', str(idx) + '.out'] + option_params + [query_filename, os.path.basename(db)])
+                for idx, db in enumerate(db_list.split()):
+                    args_list.append(
+                        ['phmmer', '-o', str(idx) + '.out'] + option_params + [query_filename, os.path.basename(db)])
 
             run_hmmer_task.delay(task_id, args_list, file_prefix)
 
@@ -144,13 +149,13 @@ def create(request, iframe=False):
         else:
             raise Http404
 
+
 def retrieve(request, task_id='1'):
-    #return HttpResponse("BLAST Page: retrieve = %s." % (task_id))
     try:
         r = HmmerQueryRecord.objects.get(task_id=task_id)
         # if result is generated and not expired
-        if r.result_date and (r.result_date.replace(tzinfo=None) >= (datetime.utcnow()+ timedelta(days=-7))):
-            file_prefix = path.join("/media", 'hmmer', 'task', task_id, task_id+".merge")
+        if r.result_date and (r.result_date.replace(tzinfo=None) >= (datetime.utcnow() + timedelta(days=-7))):
+            file_prefix = path.join(settings.MEDIA_URL, 'hmmer', 'task', task_id, task_id + ".merge")
 
             os.chdir(path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id))
             with open('status.json', 'r') as f:
@@ -160,17 +165,17 @@ def retrieve(request, task_id='1'):
             out = []
             report = ["<br>"]
 
-            with open(path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, task_id+".merge"), 'r') as content_file:
+            with open(path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, task_id + ".merge"),
+                      'r') as content_file:
                 for line in content_file:
                     line = line.rstrip('\n')
                     if line == '[ok]':
-                        out.append(''.join(report).replace(' ','&nbsp;'))
+                        out.append(''.join(report).replace(' ', '&nbsp;'))
                         report = ["<br>"]
                     else:
-                        report.append(line+"<br>")
+                        report.append(line + "<br>")
 
-
-            if r.result_status in set(['SUCCESS',]):
+            if r.result_status in set(['SUCCESS', ]):
                 return render(
                     request,
                     'hmmer/result.html', {
@@ -180,13 +185,13 @@ def retrieve(request, task_id='1'):
                         'report': out,
                         'task_id': task_id,
                     })
-            else: # if .csv file size is 0, no hits found
+            else:  # if .csv file size is 0, no hits found
                 return render(request, 'hmmer/results_not_existed.html',
-                {
-                    'title': 'No Hits Found',
-                    'isNoHits': True,
-                    'isExpired': False,
-                })
+                              {
+                                  'title': 'No Hits Found',
+                                  'isNoHits': True,
+                                  'isExpired': False,
+                              })
         else:
             enqueue_date = r.enqueue_date.astimezone(timezone('US/Eastern')).strftime('%d %b %Y %X %Z')
             if r.dequeue_date:
@@ -195,7 +200,7 @@ def retrieve(request, task_id='1'):
                 dequeue_date = None
             # result is exipired
             isExpired = False
-            if r.result_date and (r.result_date.replace(tzinfo=None) < (datetime.utcnow()+ timedelta(days=-7))):
+            if r.result_date and (r.result_date.replace(tzinfo=None) < (datetime.utcnow() + timedelta(days=-7))):
                 isExpired = True
             return render(request, 'hmmer/results_not_existed.html', {
                 'title': 'Query Submitted',
@@ -211,6 +216,7 @@ def retrieve(request, task_id='1'):
         else:
             return HttpResponse(traceback.format_exc())
 
+
 def status(request, task_id):
     if request.method == 'GET':
         status_file_path = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, 'status.json')
@@ -219,16 +225,16 @@ def status(request, task_id):
             with open(status_file_path, 'rb') as f:
                 statusdata = json.load(f)
                 if statusdata['status'] == 'pending' and settings.USE_CACHE:
-                    tlist = cache.get('task_list_cache', []) 
-                    num_preceding = -1; 
+                    tlist = cache.get('task_list_cache', [])
+                    num_preceding = -1;
                     if tlist:
                         for index, tuple in enumerate(tlist):
                             if task_id in tuple:
-                                num_preceding = index 
+                                num_preceding = index
                                 break
                     statusdata['num_preceding'] = num_preceding
                 elif statusdata['status'] == 'running':
-                    asn_path = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, (task_id+'.out'))
+                    asn_path = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, (task_id + '.out'))
                     if path.isfile(asn_path):
                         with open(asn_path, 'r') as asn_f:
                             astr = asn_f.read()
@@ -244,14 +250,18 @@ def status(request, task_id):
 # to-do: integrate with existing router of restframework
 from rest_framework.renderers import JSONRenderer
 from .serializers import UserHmmerQueryRecordSerializer
+
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
     """
+
     def __init__(self, data, **kwargs):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
+
 
 def user_tasks(request, user_id):
     """
@@ -260,6 +270,5 @@ def user_tasks(request, user_id):
     if request.method == 'GET':
         records = HmmerQueryRecord.objects.filter(user__id=user_id)
         serializer = UserHmmerQueryRecordSerializer(records, many=True)
+        print serializer.data
         return JSONResponse(serializer.data)
-
-

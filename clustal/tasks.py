@@ -28,8 +28,6 @@ def run_clustal_task(task_id, args_list, file_prefix):
     import django
     django.setup()
 
-    print "CLUSTALW"
-
     logger.info("clustal_task_id: %s" % (task_id,))
 
     chdir(path.dirname(file_prefix))
@@ -50,20 +48,16 @@ def run_clustal_task(task_id, args_list, file_prefix):
 
     # run
     for args in args_list:
-        print args
         p = Popen(args, stdin=None, stdout=PIPE, stderr=PIPE)
         p.wait()
         print(p.communicate())
 
     # generate status.json for frontend status checking
     if not path.isfile(file_prefix + '.aln'):
-        result_status = "NO ALN"
-    elif not path.isfile(file_prefix + '.ph'):
-        result_status = "NO PH"
+        result_status = "FAILURE"
     else:
         result_status = 'SUCCESS'
 
-    print result_status
     record.result_status = result_status
     record.result_date = datetime.utcnow().replace(tzinfo=utc)
     record.save()

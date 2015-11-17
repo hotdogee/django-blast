@@ -184,13 +184,10 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'captcha',
     'dashboard',
-    #'webapollo',
     'proxy',
     'data',
     'hmmer',
     'clustal',
-    'webapollo_sso',
-    #'restaurants',
 )
 
 # deprecated in Django 1.8
@@ -331,10 +328,6 @@ LOGGING = {
 }
 
 # Apollo SSO
-ROBOT_ID = 'R2D2@i5k.org'
-ROBOT_PWD = 'demo'
-APOLLO_URL = 'http://10.11.210.37:8085'
-I5K_URL = 'http://10.11.210.37:8000'
 
 # Celery Settings
 from kombu import Exchange, Queue
