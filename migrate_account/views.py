@@ -26,6 +26,30 @@ from .forms import AddMigrationForm, ConfirmMigrationForm
 
 # Create your views here.
 
+def check_login_apollo1(apollo_ip, username, password):
+    #apollo_ip, format => protocol://ip/species_name 
+    #ex. https://apollo.nal.usda.gov/lepdec_training
+
+    cookies = cookielib.LWPCookieJar()
+    handlers = [
+        urllib2.HTTPHandler(),
+        urllib2.HTTPSHandler(),
+        urllib2.HTTPCookieProcessor(cookies)
+        ]
+    opener = urllib2.build_opener(*handlers)
+    try:
+        req = urllib2.Request(apollo_ip + "/Login?operation=login")
+        req.add_header('Content-Type', 'application/json')
+        response = opener.open(req, json.dumps({'username':username, 'password':password}))
+        result = json.loads(response.read())
+        if('sessionId' in result):
+            return True
+        else:
+            return False
+    except:
+        return False
+
+
 @login_required
 def index(request):
     current_user = request.user
@@ -69,16 +93,20 @@ def add(request):
 #This is the type of command I need to use to test if the login is good...
 # curl -b cookies.txt -c cookies.txt -e "https://apollo.nal.usda.gov"  -H "Content-Type:application/json" -d "{'username': 'demo', 'password': 'demo'}" "https://apollo.nal.usda.gov/lepdec_training/Login?operation=login" -k
             try:
-                mu = MigrateUserRecord.objects.get(username=username, password = password, organism_id = organism_id)
+                login = check_login_apollo1(jbrowse_url, username, password)
+                try:
+                    mu = MigrateUserRecord.objects.get(username=username, password = password, organism_id = organism_id)
                 # Warning! This account has already been claimed!
-                form = AddMigrationForm(request.POST)
-                return render(request, 'migrate_account/add.html', {
-                        'form': form,
-                        'status': 'This account has already been claimed. Please verify your login and re-enter your credentials.'
-                        })
-            except MigrateUserRecord.DoesNotExist:
-                m = MigrateUserRecord( username = username, password = password, organism_id = organism_id, user_id = request.user.id )
-                m.save()
+                    form = AddMigrationForm(request.POST)
+                    return render(request, 'migrate_account/add.html', {
+                            'form': form,
+                            'status': 'This account has already been claimed. Please verify your login and re-enter your credentials.'
+                            })
+                except MigrateUserRecord.DoesNotExist:
+                    m = MigrateUserRecord( username = username, password = password, organism_id = organism_id, user_id = request.user.id )
+                    m.save()
+                    return index(request)
+            except:
                 return index(request)
     # if a GET (or any other method) we'll create a blank form
         else:
