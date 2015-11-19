@@ -94,6 +94,7 @@ def add(request):
 # curl -b cookies.txt -c cookies.txt -e "https://apollo.nal.usda.gov"  -H "Content-Type:application/json" -d "{'username': 'demo', 'password': 'demo'}" "https://apollo.nal.usda.gov/lepdec_training/Login?operation=login" -k
             try:
                 login = check_login_apollo1(jbrowse_url, username, password)
+                print login
                 try:
                     mu = MigrateUserRecord.objects.get(username=username, password = password, organism_id = organism_id)
                 # Warning! This account has already been claimed!
