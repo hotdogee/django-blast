@@ -10,10 +10,10 @@ ALLOWED_HOSTS = (
     '.example.com',
 )
 
-MEDIA_URL = '/url/to/media/'
-STATIC_URL = '/url/to/static/'
-LOGIN_URL = '/url/to/login'
-LOGIN_REDIRECT_URL = '/url/to/home'
+MEDIA_URL = '/webapp/media/'
+STATIC_URL = '/webapp/static/'
+LOGIN_URL = '/webapp/login'
+LOGIN_REDIRECT_URL = '/webapp/home'
 
 DATABASES = {
     'default': {

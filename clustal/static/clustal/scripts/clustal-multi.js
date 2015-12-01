@@ -102,13 +102,13 @@ $(function() { // document ready
         $('.sequenceType').attr('disabled', false).removeClass('disabled-radio');
 		if (qtype == '') {
 			$('.enter-query-text').before("<label id='texterror' class=\"error\">No sequence found!</label>");
-			$('.enter-query-text').html('Enter sequence below in <a href="docs/fasta.html">FASTA</a> format:');
+			$('.enter-query-text').html('Enter sequence below in <a href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format:');
 		} else if (qtype == 'invalid') {
 			$('.enter-query-text').before("<label id='texterror' class=\"error\">Your sequence is invalid:</label>");
-			$('.enter-query-text').html('Enter sequence below in <a href="docs/fasta.html">FASTA</a> format:');
+			$('.enter-query-text').html('Enter sequence below in <a href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format:');
 		} else if (qtype == 'not_multiple') {
             $('.enter-query-text').before("<label id='texterror' class=\"error\">You must provide 2+ sequence</label>");
-			$('.enter-query-text').html('Enter sequence below in <a href="docs/fasta.html">FASTA</a> format:');
+			$('.enter-query-text').html('Enter sequence below in <a href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format:');
 		} else if (qtype == 'nucleotide') {
 			$('.enter-query-text').html('Your sequence is detected as nucleotide:');
 			$('.sequenceType.protein').attr('disabled', 'disabled').addClass('disabled-radio');
@@ -356,7 +356,7 @@ $(function() { // document ready
 	$('.btn_reset').click(function() {
 		{
 			$('.sequenceType').attr('disabled', false).removeClass('disabled-radio');
-			$('.enter-query-text').html('Enter sequence below in <a href="docs/fasta.html">FASTA</a> format:');
+			$('.enter-query-text').html('Enter sequence below in <a href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format:');
 			var validator = $( "#MainClustalForm" ).validate();
 			validator.resetForm();
             $('.sequenceType.protein').prop('checked', true);

@@ -109,7 +109,6 @@ $(function() { // document ready
 	////////////////////
 	var default_data_type = $('.all-dataset-checkbox').attr('dataset-type') || 'genome-assembly';
 	//alert($('.all-dataset-checkbox').attr('dataset-type'));
-    $('')
 	$('.organism-div').hoverIntent(function() {
 		// show and hide right panel
 		$('.datasets-div').hide();
@@ -573,27 +572,7 @@ function On_Submit(){
 			$('#click_submit_hidden').val('true');
 			$('#MainHmmerForm').submit();
 		};
-
-		/*
-		var data = new FormData($('#click_submit_hidden')[0]);
-		data.append('csrfmiddlewaretoken',$('#csrfmiddlewaretoken').val());
-
-		$.ajax({
-			url: 'http://10.11.210.89:8000/hmmer/',
-			data: data,
-			cache: false,
-			contentType: 'multipart/form-data',
-			processData: false,
-			type: 'POST',
-			success: function(data){
-        		alert(data);
-			}
-		});
-		*/
 	}
-
-
-
 }
 
 //prevention of cache pages

@@ -185,13 +185,10 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'captcha',
     'dashboard',
-    #'webapollo',
     'proxy',
     'data',
     'hmmer',
     'clustal',
-    #'webapollo_sso',
-    #'restaurants',
 )
 
 # deprecated in Django 1.8
@@ -330,6 +327,8 @@ LOGGING = {
         },
     }
 }
+
+# Apollo SSO
 
 # Celery Settings
 from kombu import Exchange, Queue

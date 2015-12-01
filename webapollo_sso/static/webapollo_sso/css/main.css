@@ -167,7 +167,7 @@ table.tripal-table-horz .tripal-table-odd-row {
   -webkit-box-shadow: 3px 3px 4px #888888;
   box-shadow: 3px 3px 4px #888888;
   padding: 20px;
-  //min-height: 500px;
+  min-height: 500px;
   margin-top: 10px;
   margin-bottom: 10px;
   border-style:solid;

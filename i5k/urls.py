@@ -122,8 +122,11 @@ urlpatterns = patterns('',
 
     url(r'^hmmer/', include('hmmer.urls', namespace='hmmer')),
     url(r'^clustal/', include('clustal.urls', namespace='clustal')),
+<<<<<<< HEAD
     url(r'^migrate_account/', include('migrate_account.urls', namespace='migrate_account')),
     #url(r'^sso/', include('webapollo_sso.urls', namespace='sso')),
+=======
+>>>>>>> origin/master
 )
 from django.conf import settings
 if settings.DEBUG:

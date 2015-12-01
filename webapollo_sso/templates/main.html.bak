@@ -1,0 +1,734 @@
+{% extends "app/layout.html" %}
+{% load staticfiles %}
+{% load jsonify %}
+
+{% block head-scripts %}
+<!--<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+{% endblock%}
+
+{% block scripts %}
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+<script src="http://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
+<script>
+$(document).ready(function() {
+
+    var comfirm_code = $('#source-code').html().replace('<!--', '').replace('-->', '');
+
+   
+    /* 
+    $('.source-code').each(function(index){
+        var $section = $(this);
+        var code = $(this).html().replace('<!--', '').replace('-->', '');
+        
+        var $codePreview = $('<pre class="prettyprint lang-javascript"></pre>');
+        $codePreview.text(code);
+        $section.html($codePreview);
+
+        if($section.hasClass('runnable')){
+            var $button = $('<button class="btn btn-primary">Run the code</button>');
+            $button.on('click', {code: code}, function(event){
+                eval(event.data.code);
+            });
+            $button.insertAfter($section);
+            $('<div class="clearfix" style="margin-bottom: 10px;"></div>').insertAfter($button);
+        }
+    });
+    */
+
+    //idx for dtatable
+    idx = 0;
+    var table = $('#example').DataTable({
+        "processing":true,
+        //"serverSide": true,
+        "ajax": {
+            "url" : 'http://10.11.210.63:8000/sso/getUsers',
+            "dataSrc": ""
+        },
+        "columns": [
+            {"data":"username"},
+            {"data":"firstName"},
+            {"data":"lastName"},
+            {"data":"role"},
+            {"data":"groups[,].name"},
+            {"data":"groups[,].name"},
+            {"data":"organismPermissions[,].organism"},
+            {"data":"organismPermissions[,].permissions"},
+            {"data":"userId"},
+            {"data":"availableGroups[,].name"}
+        ],
+        "columnDefs": [{
+            "aTargets": [4], // Column to target
+            "mRender": function ( data, type, full ) {
+                text = '';
+                var str = data.split(",");
+                for (i = 0; i < str.length; i++){
+                    var patt = /GROUP_(\w+)_ADMIN/g;
+                    if(patt.test(str[i]) == true){
+                        var organism = str[i].split("_")[1];
+                        text += organism + ",";
+                    }
+                }
+                return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+            }},{
+            "aTargets": [5], // Column to target
+            "mRender": function ( data, type, full ) {
+                text = '';
+                var str = data.split(",");
+                for (i = 0; i < str.length; i++){
+                    var patt = /GROUP_(\w+)_USER/g;
+                    if(patt.test(str[i]) == true){
+                        var organism = str[i].split("_")[1];
+                        text += organism + ",";
+                    }
+                }
+                return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+            }},
+        ],
+        "order": [[ 8, "asc" ]],
+    });
+
+    $('a.toggle-vis').on( 'click', function (e) {
+            e.preventDefault();
+            var column = table.column( $(this).attr('data-column') );
+            column.visible( ! column.visible() );
+    });
+
+    //dis visible forinfomation column (idx is not good)
+    table.column(9).visible(false);
+
+    $('#example tbody').on( 'click', 'td', function () {
+        //alert(table.cell(this).data());
+    });
+
+    $('#example tbody').on( 'click', 'tr', function () {
+        //alert(this);
+        //alert(table.row( this ).index());
+        //alert(table.cell(table.row( $(this) ).index(),0).data());
+
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        text = "";
+        $('#fieldset-user-detail-username').val(table.cell(table.row(this).index(),0).data());
+        $('#fieldset-user-detail-firstname').val(table.cell(table.row(this).index(),1).data());
+        $('#fieldset-user-detail-lastname').val(table.cell(table.row(this).index(),2).data());
+        $('#fieldset-user-detail-role').val(table.cell(table.row(this).index(),3).data());
+        str = table.cell(table.row(this).index(),4).data().split(",");
+        if(str != ""){
+            for (i = 0; i < str.length; i++){
+                text += "<b>" +str[i] + "</b> <button type='button' class='btn btn-danger'>Release</button> ";
+            }
+        }
+        $('#user-group-now-group').html(text);
+
+        text = "";
+        str = table.cell(table.row(this).index(),9).data().split(",");
+        if(str != ""){
+            for (i = 0; i < str.length; i++){
+                text += "<b>" +str[i] + "</b> <button type='button' class='btn btn-success'>Join</button> ";
+            }
+        }
+        $('#user-group-avaiable-group').html(text);
+
+
+        text = "";
+        orags = table.cell(table.row(this).index(),6).data().split(",");
+        perms = table.cell(table.row(this).index(),7).data().match(/\[\"[A-Z,"]+\"\]|\[\]/g);
+
+        perms_type = ["ADMINISTRATE", "READ", "WRITE", "EXPORT"];
+
+        //alert($(this).index());
+        //alert(table.cell($(this).index(),8).data());
+        //alert(table.cell($(this).index(),7).data());
+
+        if(orags != ""){
+            for (i = 0; i < orags.length; i++){
+                text += "<b>" + orags[i] + "</b>";
+                for (j = 0; j < perms_type.length; j++){
+                    var regex = new RegExp(perms_type[j], 'g');
+                    if(perms[i].match(regex)){
+                        text += "" + perms_type[j] + " <button type='button' class='btn btn-success'>Yes</button> ";
+                    }else{
+                        text += "" + perms_type[j] + " <button type='button' class='btn btn-info'>NO</button> ";
+                    }
+                }
+                text += "<br>";
+            }
+        }
+        //$('#user-organism-permission').html(text);
+
+    } );
+
+    var table_group = $('#group-example').DataTable({
+         "ajax": {
+            "url" : 'http://10.11.210.63:8000/sso/getGroups',
+            "dataSrc": ""
+        },
+        "columns": [
+            {"data":"name"},
+            {"data":"numberOfUsers"},
+            {"data":"public"},
+        ],
+        "order": [[ 0, "desc" ]],
+    });
+
+    $('#group-example tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table_group.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    } );
+
+    $('#group-example tbody').on( 'click', 'td', function () {
+        //alert(table_group.cell(this).data());
+    });
+
+    $.getJSON("http://10.11.210.63:8000/sso/getMyOrganism", function(data){
+        var items = [];
+        $.each( data, function( key, val ) {
+            if(val == true){
+                name = key.split("_")[0]
+                oid  = key.split("_")[1]
+                items.push( "<legend style='font-size:20px; padding-top:20px'>" + name +
+                    " <button type='button' class='btn btn-primary' onclick='myFunction()'>Owner</button>" +
+                    " <button type='button' class='btn btn-success'>Launch</button>" +
+                    "</legend>" +
+                    "<p><a href='#" + name + "-user-collapse' data-toggle='collapse' id='" + name + "' class='userlink'>User Collapsible</a>" +
+                    "<div id='" + name + "-user-collapse' class='collapse'>" +
+                    "<table id='table" + name + "' class='display' cellspacing='0' width='100%' load='none' id='" + name + "' oid = '" + oid + "' oname='" + name + "'><thead><tr>" +
+                    "<th>UserName</th><th>FirstName</th><th>LastName</th><th>Role</th><th>Species_Admin</th><th>Species_User</th><th>Organism</th><th>Permission</th><th>UserId</th><th>admin</th>" +
+                    "</tr></thead></table></div>" +
+                    "<a href='#" + name + "-pending-request-collapse' data-toggle='collapse' id='" + name + "' oid = '" + oid + "' class='pendinglink'>Pending Request Collapsible</a>" +
+                    "<div id='" + name + "-pending-request-collapse' class='collapse'>" +
+                    "<table id='tableRequest" + name + "' class='display tableRequest' cellspacing='0' width='100%' load='none' oid='" + oid + "' oname='" + name + "'><thead><tr>" +
+                    "<th>UserName</th><th>FirstName</th><th>LastName</th><th>Role</th><th>Species_Admin</th><th>Species_User</th><th>userID</th><th>Action</th>" +
+                    "</tr></thead></table></div>"
+                    );
+            }else{
+                 name = key.split("_")[0]
+                 items.push( "<legend style='font-size:20px; padding-top:20px'>" + name +
+                    " <button type='button' class='btn btn-info'>Info</button>" +
+                    " <button type='button' class='btn btn-success'>Launch</button>" +
+                    "</legend>" +
+                    "<a href='#" + name + "-owner-info-collapse' data-toggle='collapse' id='test'>Info Collapsible</a>" +
+                    "<div id='" + name + "-owner-info-collapse' class='collapse'></div>"
+                    );
+            }
+        });
+
+        $( items.join( "" )
+        ).appendTo( $("#menu3") );
+
+    })
+
+    var table_request = $('#request-example').DataTable({
+        "processing":true,
+        //"serverSide": true,
+        "ajax": {
+            "url" : 'http://10.11.210.63:8000/sso/getMyRequest',
+            "dataSrc": ""
+        },
+        "columns": [
+            {"data":"commonName"},
+            {"data":"species"},
+            {"data":"genus"},
+            {"data":"valid"},
+            {"data":"id"},
+            {"data":"admin"},
+            {"data":"action"},
+        ],
+        "columnDefs": [{
+            "aTargets": [6], // Column to target
+            "mRender": function ( data, type, full ) {
+                if(data == 'Request'){
+                    return '<button type="button" class="btn btn-primary action">request</button>'
+                }else if(data == 'Release'){
+                    return '<button type="button" class="btn btn-danger action">release</button>'
+                }else if(data == 'W_Request'){
+                    return '<button type="button" class="btn btn-primary action">requesting</button>'
+                }else if(data == 'W_Release'){
+                    return '<button type="button" class="btn btn-danger action">releaseing</button>'
+                }else{
+                    return ''
+                }
+
+            }}
+        ],
+    });
+
+    $('#request-example tbody').on( 'click', 'td', function () {
+        //alert(table_request.cell(this).data());
+    });
+
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getCookie('csrftoken');
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+
+    $('#menu3').delegate('.userlink','click',function(){
+
+        tablename = "table" + $(this).attr('id');
+
+        if($('#' + tablename).attr("load") == "none"){
+
+            $('#' + tablename).attr("load","OK");
+
+            var table = $('#' + tablename).DataTable({
+                "processing":true,
+                //"serverSide": true,
+                "ajax": {
+                    "url" : 'http://10.11.210.63:8000/sso/getUsers?organism=' + $(this).attr('id'),
+                    "dataSrc": ""
+                },
+                "columns": [
+                    {"data":"username"},
+                    {"data":"firstName"},
+                    {"data":"lastName"},
+                    {"data":"role"},
+                    {"data":"groups[,].name"},
+                    {"data":"groups[,].name"},
+                    {"data":"organismPermissions[,].organism"},
+                    {"data":"organismPermissions[,].permissions"},
+                    {"data":"userId"},
+                    {"data":"admin"}
+                ],
+                "columnDefs": [{
+                    "aTargets": [4], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        text = '';
+                        var str = data.split(",");
+                        for (i = 0; i < str.length; i++){
+                            var patt = /GROUP_(\w+)_ADMIN/g;
+                            if(patt.test(str[i]) == true){
+                                var organism = str[i].split("_")[1];
+                                text += organism + ",";
+                            }
+                        }
+                        return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                    }},{
+                    "aTargets": [5], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        text = '';
+                        var str = data.split(",");
+                        for (i = 0; i < str.length; i++){
+                            var patt = /GROUP_(\w+)_USER/g;
+                            if(patt.test(str[i]) == true){
+                                var organism = str[i].split("_")[1];
+                                text += organism + ",";
+                            }
+                        }
+                        return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                    }},{
+                    "aTargets": [9], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        if(data == false){
+                            return '<button type="button" class="btn btn-danger user-manage-button">release</button>'
+                        }else{
+                            return ''
+                        }
+                    }},
+                ],
+                "order": [[ 8, "asc" ]],
+            });
+        }
+    })
+
+
+    $('#menu3').delegate('.pendinglink','click',function(){
+
+        tablename = "tableRequest" + $(this).attr('id');
+
+        if($('#' + tablename).attr("load") == "none"){
+
+            $('#' + tablename).attr("load","OK");
+
+                var table = $('#' + tablename).DataTable({
+                "processing":true,
+                //"serverSide": true,
+                "ajax": {
+                    "url" : 'http://10.11.210.63:8000/sso/getPendingRequest?oid=' + $(this).attr('oid'),
+                    "dataSrc": ""
+                },
+                "columns": [
+                    {"data":"username"},
+                    {"data":"firstName"},
+                    {"data":"lastName"},
+                    {"data":"role"},
+                    {"data":"groups[,].name"},
+                    {"data":"groups[,].name"},
+                    {"data":"userId"},
+                    {"data":"action"}
+                ],
+                "columnDefs": [{
+                    "aTargets": [4], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        text = '';
+                        var str = data.split(",");
+                        for (i = 0; i < str.length; i++){
+                            var patt = /GROUP_(\w+)_ADMIN/g;
+                            if(patt.test(str[i]) == true){
+                                var organism = str[i].split("_")[1];
+                                text += organism + ",";
+                            }
+                        }
+                        return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                    }},{
+                    "aTargets": [5], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        text = '';
+                        var str = data.split(",");
+                        for (i = 0; i < str.length; i++){
+                            var patt = /GROUP_(\w+)_USER/g;
+                            if(patt.test(str[i]) == true){
+                                var organism = str[i].split("_")[1];
+                                text += organism + ",";
+                            }
+                        }
+                        return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                    }},{
+                    "aTargets": [7], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        if(data == 'Request'){
+                            return '<button type="button" class="btn btn-primary pending-request-button" action="accept">request-accept</button>' + ' <button type="button" class="btn btn-primary pending-request-button" action="refuse">request-refuse</button>'
+                        }else if(data == 'Release'){
+                            return '<button type="button" class="btn btn-danger pending-request-button" action="refuse">release-accept</button>' + ' <button type="button" class="btn btn-danger pending-request-button"action="refuse">release-refuse</button>'
+                        }else{
+                            return ''
+                        }
+                    }}
+                ],
+            });
+        }
+    })
+
+    $('#menu3').delegate('.pending-request-button','click',function(){
+        var current_column = this.parentElement;
+        var current_row = current_column.parentElement;
+        var table_name = current_row.parentElement.parentElement.id;
+        var oid = $(current_row.parentElement.parentElement).attr("oid");
+        var oname = $(current_row.parentElement.parentElement).attr("oname");
+        var action = $(this).attr("action");
+        var table = $('#'+table_name).DataTable();
+
+        var idx = table.row(current_row).index();
+        var name  = table.cell(idx,0).data();
+        var userId = table.cell(idx,6).data();
+
+        eval(comfirm_code);
+
+        $.ajax({
+            type: "POST",
+            url: 'http://10.11.210.63:8000/sso/handleRequest',
+            data: { action: action, oid : oid , oname: oname , user: name, userId: userId},
+            success: function(data){
+                table.ajax.reload();
+            }
+        });
+    })
+
+    $('#menu3').delegate('.user-manage-button','click',function(){
+        var current_column = this.parentElement;
+        var current_row = current_column.parentElement;
+        var table_name = current_row.parentElement.parentElement.id;
+        var table = $('#'+table_name).DataTable();
+        var oid = $(current_row.parentElement.parentElement).attr("oid");
+        var oname = $(current_row.parentElement.parentElement).attr("oname");
+        var userId = table.cell(idx,8).data();
+        var name  = table.cell(idx,0).data();
+
+        eval(comfirm_code); 
+
+         $.ajax({
+            type: "POST",
+            url: 'http://10.11.210.63:8000/sso/removeUserFromGroup',
+            data: { oid : oid , oname: oname , user: name, userId: userId},
+            success: function(data){
+                table.ajax.reload();
+            }
+        });
+    })
+
+    $('#menu4').delegate('.action','click',function(){
+        var action = table_request.cell(this.parentElement).data();
+        var idx = table_request.row(this.parentElement.parentElement).index();
+        var oid  = table_request.cell(idx,4).data();
+
+        eval(comfirm_code); 
+
+        $.ajax({
+            type: "POST",
+            url: 'http://10.11.210.63:8000/sso/makeRequest',
+            data: { oid: oid , action: action},
+            success: function(data){
+                table_request.ajax.reload();
+
+            }
+        });
+    })
+
+
+} );
+</script>
+{% endblock%}
+
+
+{% block content %}
+<div class="container">
+    <h2>Web Apollo SSO</h2>
+    <ul class="nav nav-tabs">
+        {% if is_admin %}
+        <li class='active'><a data-toggle="tab" href="#home">User(Admin)</a></li>
+        <li><a data-toggle="tab" href="#menu1">Group(Admin)</a></li>
+        <li><a data-toggle="tab" href="#menu3">My Organism</a></li>
+		<li><a data-toggle="tab" href="#menu4">My Request</a></li>
+        {% else %}
+        <li class='active'><a data-toggle="tab" href="#menu3">My Organism</a></li>
+        <li><a data-toggle="tab" href="#menu4">My Request</a></li>
+        {% endif %}
+    </ul>
+
+    <div class="tab-content">
+        {% if is_admin %}
+        <div id="home" class="tab-pane fade in active">
+        {% else %}
+        <div id="home" class="tab-pane fade hide">
+        {% endif %}
+            <legend style="font-size:20px; padding-top:20px">User Table</legend>
+            <a class="toggle-vis" data-column="4">Species_Admin</a> -
+            <a class="toggle-vis" data-column="5">Species_User</a> -
+            <a class="toggle-vis" data-column="6">Organism</a> -
+            <a class="toggle-vis" data-column="7">Permission</a><p>
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>UserName</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Role</th>
+                        <th>Species_Admin</th>
+                        <th>Species_User</th>
+                        <th>Organism</th>
+                        <th>Permission</th>
+                        <th>UserId</th>
+                        <th>AvaiableGroup</th>
+                    </tr>
+                </thead>
+            </table>
+			<p>
+			<fieldset id="main">
+			<legend>User Info</legend>
+			<div class="container">
+				<ul class="nav nav-pills">
+                    <li class="active"><a data-toggle="tab" href="#user-detail">Detail</a></li>
+                    <li><a data-toggle="tab" href="#user-group">Group</a></li>
+                    <!--<li><a data-toggle="tab" href="#user-organism">Organism</a></li>-->
+                </ul>
+                <div class="tab-content">
+                    <div id="user-detail" class="tab-pane fade in active">
+						<fieldset id="fieldset-user-detail">
+							<div style="font-size:16px; padding-top:20px">First Name</div>
+							<input type="text" name="user-name" id="fieldset-user-detail-username">
+							<div style="font-size:16px">User Name</div>
+							<input type="text" name="first-name" id="fieldset-user-detail-firstname">
+							<div style="font-size:16px">Last Name</div>
+							<input type="text" name="last-name" id="fieldset-user-detail-lastname">
+							<div style="font-size:16px">Role</div>
+							<input type="text" name="role" id="fieldset-user-detail-role">
+						</fieldset>
+						<fieldset id="fieldset-user-detail-button" style="padding-top:20px; padding-bottom:20px">
+							<INPUT TYPE="button" VALUE="Insert">
+							<INPUT TYPE="button" VALUE="Delete">
+							<INPUT TYPE="button" VALUE="Update">
+						</fieldset>
+					</div>
+                    <div id="user-group" class="tab-pane fade">
+                        <h3>Group Table</h3>
+                        <p id="user-group-now-group"></p>
+                        <p> </p>
+                        <p id="user-group-avaiable-group"></p>
+                        <fieldset id="fieldset-user-group-button" style="padding-top:20px; padding-bottom:20px">
+						    <INPUT TYPE="button" VALUE="Update">
+                        </fieldset>
+                    </div>
+                    <!--
+                    <div id="user-organism" class="tab-pane fade">
+                        <h3>Permission Table</h3>
+                        <p id="user-organism-permission"></p>
+                        <p> </p>
+                        <fieldset id="fieldset-user-organism-button" style="padding-top:20px; padding-bottom:20px">
+							<INPUT TYPE="button" VALUE="Update">
+						</fieldset>
+					</div>
+                    -->
+                </div>
+            </div>
+			</fieldset>
+        </div>
+        {% if is_admin %}
+        <div id="menu1" class="tab-pane fade">
+        {% else %}
+        <div id="menu1" class="tab-pane fade hide">
+        {% endif %}
+            <legend style="font-size:20px; padding-top:20px">Group Table</legend>
+            <table id="group-example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Group Name</th>
+						<th>Member Numbers</th>
+                        <th>Public</th>
+                    </tr>
+                </thead>
+            </table>
+			<p>
+			<fieldset id="main">
+			<legend>Group Info</legend>
+			<div class="container">
+				<ul class="nav nav-pills">
+                    <li class="active"><a data-toggle="tab" href="#group-detail">Detail</a></li>
+					<li><a data-toggle="tab" href="#group-member">Member</a></li>
+                    <li><a data-toggle="tab" href="#group-organism">Organism</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="group-detail" class="tab-pane fade in active">
+						<fieldset id="fieldset-group-detail">
+							<div style="font-size:16px; padding-top:20px">Group Name</div>
+							<!--
+                            <input type="text" name="user-name">
+                            -->
+						</fieldset>
+						<fieldset id="fieldset-group-detail-button" style="padding-top:20px; padding-bottom:20px">
+							<!--
+                            <INPUT TYPE="button" VALUE="Insert">
+							<INPUT TYPE="button" VALUE="Delete">
+							<INPUT TYPE="button" VALUE="Update">
+                            -->
+						</fieldset>
+					</div>
+					<div id="group-member" class="tab-pane fade">
+                        <h3>Member Table</h3>
+                        <fieldset id="fieldset-group-member-button" style="padding-top:20px; padding-bottom:20px">
+							<INPUT TYPE="button" VALUE="Insert">
+							<INPUT TYPE="button" VALUE="Delete">
+							<INPUT TYPE="button" VALUE="Update">
+						</fieldset>
+					</div>
+                    <div id="group-organism" class="tab-pane fade">
+                        <h3>Permission Table</h3>
+                        <fieldset id="fieldset-group-organism-button" style="padding-top:20px; padding-bottom:20px">
+                            <INPUT TYPE="button" VALUE="Insert">
+							<INPUT TYPE="button" VALUE="Delete">
+							<INPUT TYPE="button" VALUE="Update">
+						</fieldset>
+					</div>
+                </div>
+            </div>
+			</fieldset>
+        </div>
+        {% if is_admin %}
+        <div id="menu3" class="tab-pane fade">
+        {% else %}
+        <div id="menu3" class="tab-pane fade in active">
+        {% endif %}
+		</div>
+        <div id="menu4" class="tab-pane fade">
+			<legend style="font-size:20px; padding-top:20px">Organism Table</legend>
+
+            <table id="request-example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>CommonName</th>
+                        <th>Species</th>
+                        <th>Genus</th>
+                        <th>Valid</th>
+                        <th>ID</th>
+                        <th>ADMIN</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+            </table>
+		</div>
+    </div>
+</div>
+<div id = "source-code">
+        <!--
+        BootstrapDialog.confirm({
+        title: 'Are you sure you want to do that?',
+        message: $('<textarea class="form-control" maxlength="100" placeholder="Type the reason that you do this here... (<100 words)"></textarea>'),
+        type: BootstrapDialog.TYPE_WARNING, 
+        closable: true, 
+        draggable: true, 
+        //btnCancelLabel: 'Do not drop it!', 
+        //btnOKLabel: 'Drop it!', 
+        btnOKClass: 'btn-warning', 
+        callback: function(result) {
+            if(result) {
+                alert('Yup.');
+            }else {
+                alert('Nope.');
+            }
+        }
+        });-->
+</div>
+{% endblock %}
+        <!--
+        BootstrapDialog.show({
+    title: 'Are you sure you want to do that?',
+    message: $('<textarea class="form-control" maxlength="100" placeholder="Type the reason that you do this here... (<100 words)"></textarea>'),
+    buttons: [{
+        label: 'Comfirm',
+        cssClass: 'btn-primary',
+        hotkey: 13, // Enter.
+        action: function() {
+            alert('You pressed Comfirm.');
+        }
+    },
+    {
+        label: 'Canccel',
+        cssClass: 'btn-danger',
+        hotkey: 13, // Enter.
+        action: function() {
+            alert('You pressed Cancel.');
+        }
+    }
+    ]
+    });-->
+

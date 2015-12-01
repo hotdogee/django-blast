@@ -3,6 +3,7 @@
 {% load staticfiles %}
 
 {% block head-scripts %}
+<link type="text/css" rel="stylesheet" media="all" href="{% static 'clustal/css/main.css' %}" />
 {% endblock %}
 {% block content %}
 
@@ -11,11 +12,13 @@
 </script>
 <h2>CLUSTAL Success</h2>
 <h3>Download Reports</h3>
-<p>Your query is completed. Result is availabe for <a href="{{output}}">download txt</a> .</p>
+<p><a href="{{aln}}">Alignement</a><p>
+<p>{% if ph != None %} <a href="{{ph}}">Phylogenetic Tree</a>{% endif %}</p>
+<p>{% if dnd != None %} <a href="{{dnd}}">Phylogenetic Tree</a>{% endif %}</p>
+<p><a href="{{status}}">Submission Details</a></p>
 <h3>Details Reports</h3>
-<fieldset style="padding:4px;border:1px solid #24748c;">
-<div style="clear:none;">
-<div style="font-family: monospace; font-weight:normal;font-size:12px;padding: 6px;margin-top:10px;">
+<div class="tripal_details">
+<div style="font-family: monospace; font-weight:normal;font-size:12px;padding: 6px;">
 <div id="msa">
 {% for o in report %}
     {% autoescape off %}
@@ -25,12 +28,11 @@
 </div>
 </div>
 </div>
-<form action="/hmmer/">
-<input type="button" id="colorful" value="colorful">
+<form action="{% url 'hmmer:create' %}">
+    <input type="{% if colorful %}button{% else %}hidden{%endif %}" id="colorful" value="colorful">
 <input type="submit" id="tohmmserach" value="To hmmsearch">
 <input type="hidden" name="clustal_task_id" value="{{ task_id }}">
 </form >
-</fieldset>
 {% endblock %}
 
 {% block scripts %}
@@ -41,8 +43,7 @@
     });
 
 	function color(seq){
-
-        if(!seq){
+		if(!seq){
 			return false;
 		}
 
@@ -71,31 +72,26 @@
 	};
 
     $('#colorful').click(function(){
-        if($('#colorful').val() == "colorful"){
-            
-            var text = "";
-            var lines = $('#msa').html().split('<br>');
-            for(var i = 0; i < lines.length -1 ; i++){
-                n = lines[i].indexOf("&nbsp;&nbsp");
-                len = lines[i].length;
-                if(n != -1){
-                    text += lines[i].substr(0, n) + color(lines[i].substr(n, len)) + "<br>";
-                }else{
-                    text += lines[i] + "<br>";
+            if($('#colorful').val() == "colorful"){
+                var text = "";
+                var lines = $('#msa').html().split('<br>');
+                for(var i = 0; i < lines.length -1 ; i++){
+                    n = lines[i].indexOf("&nbsp;&nbsp");
+                    len = lines[i].length;
+                    if(n != -1){
+                        text += lines[i].substr(0, n) + color(lines[i].substr(n, len)) + "<br>";
+                    }else{
+                        text += lines[i] + "<br>";
+                    }
                 }
-            }
-
-            $('#msa').html(text);
-            $('#colorful').val("uncolorful");
-        }else{
-            $('#msa').html(raw_seq);
-            $('#colorful').val("colorful");
+                $('#msa').html(text);
+                $('#colorful').val("uncolorful");
+            }else{
+                $('#msa').html(raw_seq);
+                $('#colorful').val("colorful");
         }
     });
 
-    $('#tohmmserach').click(function(){
-
-    });
     </script>
 {% endblock %}
 

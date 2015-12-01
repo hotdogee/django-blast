@@ -3,187 +3,176 @@
 {% load jsonify %}
 
 {% block head-scripts %}
-    {% if iframe == True %}
-    <style>
-    nav {
-        display: none;
-    }
-    body {
-        padding-top: 0px;
-    }
-    </style>
-    {% endif %}
-    <link type="text/css" rel="stylesheet" media="all" href="{% static 'hmmer/css/main.css' %}" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
-    <style>
-        .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
-            box-shadow: inset 0 -2px 0 #317eac;
-            color: #317eac;
-            border: 0px;
-        }
-    </style>
-    <script>
-    var dataset_list = {{ hmmerdb_list|safe }};
-    var hmmerdb_type_counts = {{ hmmerdb_type_counts|jsonify }};
-    </script>
+<link type="text/css" rel="stylesheet" media="all" href="{% static 'hmmer/css/main.css' %}" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
+<style>
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+    box-shadow: inset 0 -2px 0 #317eac;
+    color: #317eac;
+    border: 0px;
+}
+</style>
+<script>
+var dataset_list = {{ hmmerdb_list|safe }};
+var hmmerdb_type_counts = {{ hmmerdb_type_counts|jsonify }};
+</script>
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'hmmer/scripts/underscore-min.js' %}"></script>
-    <script src="{% static 'hmmer/scripts/jquery.hoverIntent.minified.js' %}"></script>
-    <script src="{% static 'hmmer/scripts/jquery.validate.min.js' %}"></script>
-    <script src="{% static 'hmmer/scripts/hmmer-multi.js' %}"></script>
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
+<script src="{% static 'hmmer/scripts/underscore-min.js' %}"></script>
+<script src="{% static 'hmmer/scripts/jquery.hoverIntent.minified.js' %}"></script>
+<script src="{% static 'hmmer/scripts/jquery.validate.min.js' %}"></script>
+<script src="{% static 'hmmer/scripts/hmmer-multi.js' %}"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 {% endblock %}
 
 {% block content %}
 
 {% if user.is_authenticated %}
-    <ul id="myTab" class="nav nav-tabs nav-justified" role="tablist">
-        <li role="presentation" class="active"><a href="#run" id="run-tab" role="tab" data-toggle="tab" aria-controls="run" aria-expanded="true">Run</a></li>
-        <li role="presentation"><a href="#queries" role="tab" id="queries-tab" data-toggle="tab" aria-controls="queries" aria-expanded="false">Queries</a></li>
-    </ul>
+<ul id="myTab" class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation" class="active"><a href="#run" id="run-tab" role="tab" data-toggle="tab" aria-controls="run" aria-expanded="true">Run</a></li>
+    <li role="presentation"><a href="#queries" role="tab" id="queries-tab" data-toggle="tab" aria-controls="queries" aria-expanded="false">Queries</a></li>
+</ul>
 {% endif %}
 
 {% if user.is_authenticated %}
-    <div id="myTabContent" class="tab-content">    
+<div id="myTabContent" class="tab-content">    
     <div class="tripal_details tab-pane fade active in" role="tabpanel" id="run" aria-labelledby="run-tab">
-{% else %}
-    <div class="tripal_details">
-{% endif %}
-<FORM METHOD="POST" id="MainHmmerForm" NAME="MainHmmerForm" ENCTYPE="multipart/form-data">
-{% csrf_token %}
-<div class="tripal_organism-info-box tripal-info-box">
-<fieldset id="fieldset-datasets">
-	<legend>HMMER Protein</legend>
-	<fieldset class="organism" id="fieldset-organism">
-		<legend id="legend-Organisms">Organisms</legend>
-		<div id="box-organism">
-			<label><div organism="all" class="all organism-div organism-active-background"><input type="checkbox" organism="all" class="all-organism-checkbox">All organisms</div></label>
-		</div>
-	</fieldset>
-	<div id="box-datasets">
-		<div class="datasets-div all">
-			<div class="dataset-title">All organisms</div>
-            {% if hmmerdb_type_counts.genome_assembly or hmmerdb_type_counts.transcript %}
-			<fieldset class="nucleotide">
-				<legend>Nucleotide</legend>
-				{% if hmmerdb_type_counts.genome_assembly %}<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly">Genome Assembly - {{ hmmerdb_type_counts.genome_assembly|default:0 }} databases</label></div>{% endif %}
-				{% if hmmerdb_type_counts.transcript %}<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript">Transcript - {{ hmmerdb_type_counts.transcript|default:0 }} databases</label></div>{% endif %}
-			</fieldset>
+        {% else %}
+        <div class="tripal_details">
             {% endif %}
-            {% if hmmerdb_type_counts.protein %}
-			<fieldset class="peptide">
-				<legend>Peptide</legend>
-				<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein">Protein - {{ hmmerdb_type_counts.protein|default:0 }} databases</label></div>
-			</fieldset>
-            {% endif %}
-		</div>
-	</div>
-</fieldset>
+            <FORM METHOD="POST" id="MainHmmerForm" NAME="MainHmmerForm" ENCTYPE="multipart/form-data">
+                {% csrf_token %}
+                <div class="tripal_organism-info-box tripal-info-box">
+                    <fieldset id="fieldset-datasets">
+                        <legend>HMMER Protein</legend>
+                        <fieldset class="organism" id="fieldset-organism">
+                            <legend id="legend-Organisms">Organisms</legend>
+                            <div id="box-organism">
+                                <label><div organism="all" class="all organism-div organism-active-background"><input type="checkbox" organism="all" class="all-organism-checkbox">All organisms</div></label>
+                            </div>
+                        </fieldset>
+                        <div id="box-datasets">
+                            <div class="datasets-div all">
+                                <div class="dataset-title">All organisms</div>
+                                {% if hmmerdb_type_counts.genome_assembly or hmmerdb_type_counts.transcript %}
+                                <fieldset class="nucleotide">
+                                    <legend>Nucleotide</legend>
+                                    {% if hmmerdb_type_counts.genome_assembly %}<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="genome-assembly" class="all-dataset-checkbox nucleotide genome-assembly">Genome Assembly - {{ hmmerdb_type_counts.genome_assembly|default:0 }} databases</label></div>{% endif %}
+                                    {% if hmmerdb_type_counts.transcript %}<div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="transcript" class="all-dataset-checkbox nucleotide transcript">Transcript - {{ hmmerdb_type_counts.transcript|default:0 }} databases</label></div>{% endif %}
+                                </fieldset>
+                                {% endif %}
+                                {% if hmmerdb_type_counts.protein %}
+                                <fieldset class="peptide">
+                                    <legend>Peptide</legend>
+                                    <div><label><input type="checkbox" name="dataset-checkbox[]" organism="all" dataset-type="protein" class="all-dataset-checkbox peptide protein">Protein - {{ hmmerdb_type_counts.protein|default:0 }} databases</label></div>
+                                </fieldset>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </fieldset>
 
-<fieldset id="fieldset-query">
-	<legend id="legend-sequence">Query Sequence / Mutliple sequence alignment</legend>
-	<div class="enter-query-text">Enter sequence below in <a target="_blank" href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format / in <a target="_blank" href="http://toolkit.tuebingen.mpg.de/reformat/help_params#format">MSA (format descriptions)</a> :</div>
-	<textarea id="query-textarea" name="query-sequence" rows=12 cols=80% spellcheck="false" autocomplete="off">{{ clustal_content }}</textarea>
-	<br>
-	<span class="load-nucleotide">Or</span> <span class="load-peptide">load</span> it from disk 
-	<input type="file" name="query-file" class="query-file" id="query-file">
-</fieldset>
+                    <fieldset id="fieldset-query" style="padding-bottom: 10px;">
+                        <legend id="legend-sequence">Query Sequence / Mutliple sequence alignment</legend>
+                        <div class="enter-query-text">Enter sequence below in <a target="_blank" href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format / in <a target="_blank" href="http://toolkit.tuebingen.mpg.de/reformat/help_params#format">MSA (format descriptions)</a> :</div>
+                        <textarea id="query-textarea" name="query-sequence" rows=12 cols=80% spellcheck="false" autocomplete="off" style="font-family: monospace; font-weight:normal;font-size:14px;padding: 6px;margin-top:10px;">{{ clustal_content }}</textarea>
+                        <div>Or load it from disk </div>
+                        <input type="file" name="query-file" class="query-file" id="query-file">
+                    </fieldset>
 
-<fieldset id="fieldset-program">
-	<legend>Program</legend>
-	<label class="program phmmer">
-            <input type="radio" name="program" value="phmmer" checked class="program phmmer">
-		phmmer
-	</label>
-	<label class="program hmmsearch">
-		<input type="radio" name="program" value="hmmsearch" class="program hmmsearch">
-		hmmsearch
-	</label>
-	<div id="hmmerProgramDescription">phmmer - Protein sequence vs. Ptotein sequence database</div>
-</fieldset>
+                    <fieldset id="fieldset-program">
+                        <legend>Program</legend>
+                        <label class="program phmmer">
+                            <input type="radio" name="program" value="phmmer" checked class="program phmmer">
+                            phmmer
+                        </label>
+                        <label class="program hmmsearch">
+                            <input type="radio" name="program" value="hmmsearch" class="program hmmsearch">
+                            hmmsearch
+                        </label>
+                        <div id="hmmerProgramDescription">phmmer - Protein sequence vs. Ptotein sequence database</div>
+                    </fieldset>
 
-<fieldset id="fieldset-cutoff">
-	<legend>Cuff-off</legend>
-	<label class="cutoff evalue">
-		<input type="radio" name="cutoff" value="evalue" checked="checked" class="cutoff evalue">
-		E-value
-	</label>
-	<label class="cutoff bitscore">
-		<input type="radio" name="cutoff" value="bitscore" class="cutoff bitscore">
-		Bit Score
-	</label>
-	<div id="cuffoffDescription"></div>
-</fieldset>
+                    <fieldset id="fieldset-cutoff">
+                        <legend>Cuff-off</legend>
+                        <label class="cutoff evalue">
+                            <input type="radio" name="cutoff" value="evalue" checked="checked" class="cutoff evalue">
+                            E-value
+                        </label>
+                        <label class="cutoff bitscore">
+                            <input type="radio" name="cutoff" value="bitscore" class="cutoff bitscore">
+                            Bit Score
+                        </label>
+                        <div id="cuffoffDescription"></div>
+                    </fieldset>
 
-<div id="hmmer_options">
-    <fieldset id="fieldset-options-hmmer">
-        <legend>Cut-off values</legend>
-		<div class="parms">
-        <fieldset id="fieldset-options-hmmer-general-param">
-        <legend>Significance</legend>
-        <table id="general-param-table">
-        <tr>
-          <td>
-            <span class="span-title" title="">Sequence </span>
-          </td>
-          <td>
-          <input TYPE="text" ID="s_sequence" NAME="s_sequence" VALUE="0.01" SIZE="10" class="input-fields">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span class="span-title" ID="span_word_size" title="">Hit </span>
-          </td>
-          <td>
-            <input TYPE="text" ID="s_hit" NAME="s_hit" VALUE="0.03" SIZE="10" class="input-fields">
-          </td>
-        </tr>
-        </table>
-        </fieldset>
+                    <div id="hmmer_options">
+                        <fieldset id="fieldset-options-hmmer">
+                            <legend>Cut-off values</legend>
+                            <div class="parms">
+                                <fieldset id="fieldset-options-hmmer-general-param">
+                                    <legend>Significance</legend>
+                                    <table id="general-param-table">
+                                        <tr>
+                                            <td>
+                                                <span class="span-title" title="">Sequence </span>
+                                            </td>
+                                            <td>
+                                                <input TYPE="text" ID="s_sequence" NAME="s_sequence" VALUE="0.01" SIZE="10" class="input-fields">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="span-title" ID="span_word_size" title="">Hit </span>
+                                            </td>
+                                            <td>
+                                                <input TYPE="text" ID="s_hit" NAME="s_hit" VALUE="0.03" SIZE="10" class="input-fields">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </fieldset>
 
-        <fieldset id="fieldset-options-hmmer-scoring-param">
-        <legend>Report </legend>
-		<table id="hmmer-scoring-param">
-		<tr><td><span title="">Sequence </span></td>
-			<td><input TYPE="text" ID="r_sequence" NAME="r_sequence" VALUE="0.01" SIZE="10" class="input-fields"></td></tr>
-			<tr><td><span title="">Hit </span></td><td>
-			<input TYPE="text" ID="r_hit" NAME="r_hit" VALUE="0.03" SIZE="10" class="input-fields"></td></tr>
-		</table>
+                                <fieldset id="fieldset-options-hmmer-scoring-param">
+                                    <legend>Report </legend>
+                                    <table id="hmmer-scoring-param">
+                                        <tr><td><span title="">Sequence </span></td>
+                                            <td><input TYPE="text" ID="r_sequence" NAME="r_sequence" VALUE="0.01" SIZE="10" class="input-fields"></td></tr>
+                                        <tr><td><span title="">Hit </span></td><td>
+                                                <input TYPE="text" ID="r_hit" NAME="r_hit" VALUE="0.03" SIZE="10" class="input-fields"></td></tr>
+                                    </table>
 
-        </fieldset>
-		</div>
-</div>
+                                </fieldset>
+                            </div>
+                        </div>
 
-<input type="hidden" ID="click_submit_hidden" NAME="click_submit_hidden" VALUE="false">
-<input type="hidden" id='csrfmiddlewaretoken' name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-<input type="hidden" id="format_check" name="format_check" value="true">
-	<div>
-		<INPUT TYPE="button" VALUE="Reset" CLASS="btn_reset">
-		<INPUT TYPE="button" VALUE="Search" onclick="On_Submit();">
-	</div>
-</div>
-</FORM>
-</div>
-{% if user.is_authenticated %}
-    <div role="tabpanel" class="tab-pane fade" id="queries" aria-labelledby="queries-tab">
-    <!-- Table -->
-    <table id="queries-{{user.id}}" class="display" cellspacing="0" width="100%">
-    <thead>
-    <tr>
-        <th>Submission time</th>
-        <th>Status</th>
-        <th>Link</th>
-    </tr>
-    </thead>
-    </table>
-    </div>
-  </div> <!-- myTabContent -->
+                        <input type="hidden" ID="click_submit_hidden" NAME="click_submit_hidden" VALUE="false">
+                        <input type="hidden" id='csrfmiddlewaretoken' name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <input type="hidden" id="format_check" name="format_check" value="true">
+                        <div>
+                            <INPUT TYPE="button" VALUE="Reset" CLASS="btn_reset">
+                            <INPUT TYPE="button" VALUE="Search" onclick="On_Submit();">
+                        </div>
+                    </div>
+                </FORM>
+            </div>
+            {% if user.is_authenticated %}
+            <div role="tabpanel" class="tab-pane fade" id="queries" aria-labelledby="queries-tab">
+                <!-- Table -->
+                <table id="queries-{{user.id}}" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Submission time</th>
+                            <th>Status</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div> <!-- myTabContent -->
 
-{% endif %}
+        {% endif %}
 
-{% endblock %}
+        {% endblock %}
