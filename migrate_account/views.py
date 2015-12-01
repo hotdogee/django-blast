@@ -11,8 +11,6 @@ from uuid import uuid4
 from os import path, makedirs, chmod
 from blast.models import BlastDb, Organism, JbrowseSetting
 from migrate_account.models import MigrateUserRecord
-#from .tasks import run_clustal_task
-#from clustal.models import ClustalQueryRecord
 from datetime import datetime, timedelta
 from pytz import timezone
 import json
@@ -90,32 +88,46 @@ def add(request):
             organism_short_name = form.cleaned_data['organism_short_name']
             username =  form.cleaned_data['username']
             password =  form.cleaned_data['password']
+
+            try: 
+                mu = MigrateUserRecord.objects.get(user_id = request.user.id, organism_id = organism_id)
+            # Warning! This account has already been claimed!
+                form = AddMigrationForm(request.POST)
+                return render(request, 'migrate_account/add.html', {
+                        'form': form,
+                        'status': 'You have already claimed an Apollo account for this organism. Please verify your login and re-enter your credentials.'
+                        })
+
+            except MigrateUserRecord.DoesNotExist:
 #This is the type of command I need to use to test if the login is good...
 # curl -b cookies.txt -c cookies.txt -e "https://apollo.nal.usda.gov"  -H "Content-Type:application/json" -d "{'username': 'demo', 'password': 'demo'}" "https://apollo.nal.usda.gov/lepdec_training/Login?operation=login" -k
-            try:
                 login = check_login_apollo1(jbrowse_url, username, password)
-                print login
-                try:
-                    mu = MigrateUserRecord.objects.get(username=username, password = password, organism_id = organism_id)
-                # Warning! This account has already been claimed!
-                    form = AddMigrationForm(request.POST)
+#                print login
+                if (login is True):
+                    try:
+                        mu = MigrateUserRecord.objects.get(username=username, organism_id = organism_id)
+                    # Warning! This account has already been claimed!
+                        form = AddMigrationForm(request.POST)
+                        return render(request, 'migrate_account/add.html', {
+                                'form': form,
+                                'status': 'This account has already been claimed. Please verify your login and re-enter your credentials.'
+                                })
+                    except MigrateUserRecord.DoesNotExist:
+                        m = MigrateUserRecord( username = username, password = password, organism_id = organism_id, user_id = request.user.id )
+                        m.save()
+                        return index(request)
+                else:
                     return render(request, 'migrate_account/add.html', {
                             'form': form,
-                            'status': 'This account has already been claimed. Please verify your login and re-enter your credentials.'
+                            'status': 'This username or password does not exist. Please verify and re-enter your login credentials.'
                             })
-                except MigrateUserRecord.DoesNotExist:
-                    m = MigrateUserRecord( username = username, password = password, organism_id = organism_id, user_id = request.user.id )
-                    m.save()
-                    return index(request)
-            except:
-                return index(request)
-    # if a GET (or any other method) we'll create a blank form
+# if a GET (or any other method) we'll create a blank form
         else:
             form = AddMigrationForm(request.POST)
 #            return index(request)
-        return render(request, 'migrate_account/add.html', {
-                'form': form
-                })
+            return render(request, 'migrate_account/add.html', {
+                    'form': form
+                    })
     else:
         return index(request)
 

@@ -68,6 +68,7 @@
     var password =  {{password|jsonify}};
     var result =  {{result|jsonify}};
     var status = {{status|jsonify}};
+    
     </script>
 {% endblock %}
 
@@ -127,9 +128,9 @@
 		    <div class="Cell">Apollo Password</div>
 		    <div class="Cell">
                       {% if form.username.value %}
-                      <input type="text" name="password" value="{{form.password.value}}">
+                      <input type="password" name="password" value="{{form.password.value}}">
                       {% else %}
-		      <input type="text" name="password">
+		      <input type="password" name="password">
                       {% endif %}
 		    </div>
 		</div>
@@ -140,7 +141,12 @@
 	      </b></font><br>
 	      {% endif %}
 	      <br>
-	      <input type="submit" value="Add account" role="button" class="btn btn-warning" />
+	      <input type="submit" value="Claim Account" role="button" class="btn btn-lg btn-warning" />
+	      &nbsp &nbsp &nbsp
+	      <input type="reset" value="Reset Form" role="button" class="btn btn-sm btn-danger" />
+	      <br><br>
+	      <a href="/migrate_account" role="button" class="btn btn-lg btn-default">Return to Main Menu</a>
+	      </div>
 	    </div>
 	</div>
       </FORM>
