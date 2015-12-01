@@ -63,7 +63,8 @@ def index(request):
                 var = [organism[0], organism[1], organism[2], jbrowse[1], False, None, None]
                 for user in user_list:
                     if organism[0] == user[1] and user[2] == request.user.id:
-                        var = [organism[0], organism[1], organism[2], jbrowse[1], True, user[3], user[4] ]
+#                        var = [organism[0], organism[1], organism[2], jbrowse[1], True, user[3], user[4] ]
+                        var = [organism[0], organism[1], organism[2], jbrowse[1], True ]
                 result_set.append(var)
 
     return render(request,'migrate_account/main.html',{
@@ -95,7 +96,7 @@ def add(request):
                 form = AddMigrationForm(request.POST)
                 return render(request, 'migrate_account/add.html', {
                         'form': form,
-                        'status': 'You have already claimed an Apollo account for this organism. Please verify your login and re-enter your credentials.'
+                        'status': 'You have already claimed an Apollo account for this organism. '
                         })
 
             except MigrateUserRecord.DoesNotExist:

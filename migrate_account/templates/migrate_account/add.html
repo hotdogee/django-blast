@@ -59,16 +59,14 @@
         }
     </style>
     <script>
-    var result_set =  {{ result_set|jsonify }};
     var organism_id =  {{ organism_id|jsonify}};
     var organism_name = {{ organism_name|jsonify}};
     var organism_display_name = {{ organism_display_name|jsonify}};
     var jbrowse_url = {{ jbrowse_url|jsonify}};
-    var username = {{ username|jsonify}};
-    var password =  {{password|jsonify}};
-    var result =  {{result|jsonify}};
     var status = {{status|jsonify}};
-    
+    var username =  {{ username|jsonify }};
+    var password =  {{ password|jsonify }};
+
     </script>
 {% endblock %}
 
@@ -118,7 +116,7 @@
 		    <div class="Cell">Apollo Username</div>
 		    <div class="Cell">
 		      {% if form.username.value %}
-		      <input type="text" name="username" value="{{form.username.value}}">
+		      <input type="text" name="username" value="">
 		      {% else %}
 		      <input type="text" name="username" value="">
 		      {% endif %}
@@ -128,7 +126,7 @@
 		    <div class="Cell">Apollo Password</div>
 		    <div class="Cell">
                       {% if form.username.value %}
-                      <input type="password" name="password" value="{{form.password.value}}">
+                      <input type="password" name="password" value="">
                       {% else %}
 		      <input type="password" name="password">
                       {% endif %}

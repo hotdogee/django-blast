@@ -60,12 +60,12 @@
     </style>
     <script>
       var result_set = {{result_set|jsonify}};
+      var username = {{ username|jsonify}};
+      var password =  {{password|jsonify}};
       var organism_id =  {{ organism_id|jsonify}};
       var organism_name = {{ organism_name|jsonify}};
       var organism_display_name = {{ organism_display_name|jsonify}};
       var jbrowse_url = {{ jbrowse_url|jsonify}};
-      var username = {{ username|jsonify}};
-      var password =  {{password|jsonify}};
     </script>
 {% endblock %}
 
@@ -130,8 +130,8 @@
 		{% if user.is_authenticated %}
 		{% if r.5 == None %}
 		{% else %}
-		<input type="hidden" name="username" value="{{ r.5 }}">
-		<input type="hidden" name="password" value="{{ r.6 }}">
+		<input type="hidden" name="username" value="">
+		<input type="hidden" name="password" value="">
 		{% endif %}
 		{% endif %}		
 		{% if user.is_authenticated %}
