@@ -64,10 +64,20 @@
     var organism_display_name = {{ organism_display_name|jsonify}};
     var jbrowse_url = {{ jbrowse_url|jsonify}};
     var status = {{status|jsonify}};
-    var username =  {{ username|jsonify }};
-    var password =  {{ password|jsonify }};
+    var un =  {{ un|jsonify }};
+    var pw =  {{ pw|jsonify }};
 
     </script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+      $(document).ready(function() {
+
+      $('#un').val('');          
+      $('#pw').val('');
+      });
+ 
+</script>
+
 {% endblock %}
 
 {% block scripts %}
@@ -84,9 +94,11 @@
 {% if user.is_authenticated %}
     <div id="myTabContent" class="tab-content">    
     <div class="tripal_details tab-pane fade active in" role="tabpanel" id="run" aria-labelledby="run-tab">
-      <FORM METHOD="POST" id="AddMigrationForm" NAME="AddMigrationForm" ENCTYPE="multipart/form-data" action="add">
+      <FORM METHOD="POST" id="AddMigrationForm" NAME="AddMigrationForm" ENCTYPE="multipart/form-data" action="add" autocomplete="FALSE">
 	{% csrf_token %}
-	<div class="tripal_organism-info-box tripal-info-box">
+        <input type="text" name="xspw" value="" style="display:none">
+        <input type="password" name="pxsw" value="" style="display:none">
+ 	<div class="tripal_organism-info-box tripal-info-box">
 	  <!--<a href="docs/blast_databases.html">-->
 	  <fieldset id="fieldset-datasets">
 	    <legend>Add Account</legend>
@@ -115,20 +127,20 @@
 		  <div class="Row">
 		    <div class="Cell">Apollo Username</div>
 		    <div class="Cell">
-		      {% if form.username.value %}
-		      <input type="text" name="username" value="">
+		      {% if form.un.value %}
+		      <input type="text" name="un" id="un" value="">
 		      {% else %}
-		      <input type="text" name="username" value="">
+		      <input type="text" name="un" id="un" value="">
 		      {% endif %}
 		    </div>
 		  </div>
 		  <div class="Row">
 		    <div class="Cell">Apollo Password</div>
 		    <div class="Cell">
-                      {% if form.username.value %}
-                      <input type="password" name="password" value="">
+                      {% if form.un.value %}
+                      <input type="password" name="pw" id="pw" value="">
                       {% else %}
-		      <input type="password" name="password">
+		      <input type="password" name="pw" id="pw" value="">
                       {% endif %}
 		    </div>
 		</div>

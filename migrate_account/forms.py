@@ -1,8 +1,8 @@
 from django import forms
 
 class AddMigrationForm(forms.Form):
-    username = forms.CharField(label='Your user name', max_length=100)
-    password = forms.CharField(label='Your password', max_length=100)
+    un = forms.CharField(label='Your user name', max_length=100)
+    pw = forms.CharField(label='Your password', max_length=100, widget=forms.PasswordInput)
     organism_display_name = forms.CharField(label='Organism Name')
     organism_short_name = forms.CharField(label='Organism Short Name')
     organism_id = forms.IntegerField(label='Organism ID')

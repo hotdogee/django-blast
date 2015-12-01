@@ -87,8 +87,8 @@ def add(request):
             jbrowse_url =  form.cleaned_data['jbrowse_url']
             organism_display_name = form.cleaned_data['organism_display_name']
             organism_short_name = form.cleaned_data['organism_short_name']
-            username =  form.cleaned_data['username']
-            password =  form.cleaned_data['password']
+            username =  form.cleaned_data['un']
+            password =  form.cleaned_data['pw']
 
             try: 
                 mu = MigrateUserRecord.objects.get(user_id = request.user.id, organism_id = organism_id)
