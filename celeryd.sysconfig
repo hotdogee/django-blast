@@ -4,10 +4,10 @@
 CELERYD_NODES="celery_consumer"
 
 # Where to chdir at start. This could be the root of a virtualenv.
-CELERYD_CHDIR="/path/to/i5k"
+CELERYD_CHDIR="/home/ifish/django-blast"
 
 # How to call celeryd-multi
-CELERYD_MULTI="/path/to/i5k/virtualenv/py2.7/bin/celery multi"
+CELERYD_MULTI="/home/ifish/django-blast/virtualenv/py2.7/bin/celery multi"
 
 # Extra arguments
 CELERYD_OPTS="--app=i5k --concurrency=3 -Q i5k"
@@ -17,7 +17,7 @@ CELERY_CREATE_DIRS=1
 
 # %n will be replaced with the nodename
 CELERYD_LOG_FILE="/var/log/celery/%n.log"
-#CELERYD_PID_FILE="/var/run/celery/%n.pid"
+CELERYD_PID_FILE="/var/run/celery/%n.pid"
 
 # Workers run as an unprivileged user
 #CELERYD_USER=nobody

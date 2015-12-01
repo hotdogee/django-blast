@@ -13,6 +13,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^home$', 'dashboard.views.dashboard', name='dashboard'),
+    #url(r'^home/', include('dashboard.urls', namespace='dashboard')),
     #url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
     url('', include('social.apps.django_app.urls', namespace='social')),
@@ -21,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^proxy/', include('proxy.urls', namespace='proxy')),
-    url(r'^webapollo/', include('webapollo.urls', namespace='webapollo')),
+    #url(r'^webapollo/', include('webapollo.urls', namespace='webapollo')),
 
     # user authentication
     url(r'^set_institution$', 'app.views.set_institution', name='set_institution'),
@@ -118,6 +119,11 @@ urlpatterns = patterns('',
     url(r'^blast/', include('blast.urls', namespace='blast')),
     # BLAST
     url(r'^data/', include('data.urls', namespace='data')),
+
+    url(r'^hmmer/', include('hmmer.urls', namespace='hmmer')),
+    url(r'^clustal/', include('clustal.urls', namespace='clustal')),
+    url(r'^migrate_account/', include('migrate_account.urls', namespace='migrate_account')),
+    #url(r'^sso/', include('webapollo_sso.urls', namespace='sso')),
 )
 from django.conf import settings
 if settings.DEBUG:

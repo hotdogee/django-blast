@@ -1,0 +1,55 @@
+{% extends "app/layout.html" %}
+
+{% load staticfiles %}
+
+{% block head-scripts %}
+{% endblock %}
+{% block content %}
+
+<script>
+
+</script>
+<h2>HMMER Success</h2>
+<h3>Download Reports</h3>
+<p>Your query is completed. Result is availabe for <a href="{{output}}">download txt</a> .</p>
+<h3>Details Reports</h3>
+<fieldset style="padding:4px;border:1px solid #24748c;">
+<div style="clear:none;">
+<div style="font-family: monospace; font-weight:normal;font-size:12px;padding: 6px;margin-top:10px;">
+<div style="font-size:12pt;font-weight:bold;margin-bottom:10px;">
+Jump To Dataset <select id="datasetSelect">
+{% for o in options %}
+    <option value="{{ forloop.counter }}">{{ o }}</option>
+{% endfor %}
+</select>
+</div>
+
+{% for o in report %}
+    <span id="{{ forloop.counter }}"/>
+    {% autoescape off %}
+    {{ o }}
+    {% endautoescape %}
+    <a href="#top">back to top</a> <br>
+{% endfor %}
+
+</div>
+</div>
+</fieldset>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    $(document).ready(function () {
+        //$('#report').text('aaaa');
+    });
+
+    $("#datasetSelect").change(function () {
+        if($("#datasetSelect").val() == 1){
+            $(document).scrollTop();
+        }else{
+            $(document).scrollTop($("#"+$("#datasetSelect").val()).offset().top - 90);
+        }
+    });
+    </script>
+{% endblock %}
+
