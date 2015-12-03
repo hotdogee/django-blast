@@ -66,7 +66,7 @@ def index(request):
 #                        var = [organism[0], organism[1], organism[2], jbrowse[1], True, user[3], user[4] ]
                         var = [organism[0], organism[1], organism[2], jbrowse[1], True ]
                 result_set.append(var)
-
+                result_set.sort(key=lambda result_set: result_set[1], reverse=False)
     return render(request,'migrate_account/main.html',{
             'title': 'Organism Listing',
             'organism_id':organism[0], 
