@@ -36,7 +36,7 @@ def check_login_apollo1(apollo_ip, username, password):
         ]
     opener = urllib2.build_opener(*handlers)
     try:
-        req = urllib2.Request(apollo_ip + "/Login?operation=login")
+        req = urllib2.Request(apollo_ip + "/../Login?operation=login")
         req.add_header('Content-Type', 'application/json')
         response = opener.open(req, json.dumps({'username':username, 'password':password}))
         result = json.loads(response.read())
