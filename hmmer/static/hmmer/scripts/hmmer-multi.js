@@ -2,8 +2,6 @@
 /////////////////////
 // DATA PROCESSING //
 /////////////////////
-// Sort dataset_list by organism
-//var dataset_list = [['Genome Assembly', 'Nucleotide', 'Agla_Btl03082013.genome_new_ids.fa', 'Anoplophora glabripennis'], ['Genome Assembly', 'Nucleotide', 'Aros01112013-genome_new_ids.fa', 'Athalia rosae'], ['Genome Assembly', 'Nucleotide', 'Ccap01172013-genome_new_ids.fa', 'Ceratitis capitata'], ['Genome Assembly', 'Nucleotide', 'Clec_Bbug02212013.genome_new_ids.fa', 'Cimex lectularius'], ['Genome Assembly', 'Nucleotide', 'diaci1.1_new_ids.fa', 'Diaphorina citri'], ['Genome Assembly', 'Nucleotide', 'Edan07162013.scaffolds_new_ids.fa', 'Ephemera danica'], ['Genome Assembly', 'Nucleotide', 'Eaff_11172013.genome_new_ids.fa', 'Eurytemora affinis'], ['Genome Assembly', 'Nucleotide', 'Focc_FINAL.scaffolds_new_ids.fa', 'Frankliniella occidentalis'], ['Genome Assembly', 'Nucleotide', 'Lful_Scha04012013-genome_new_ids.fa', 'Ladona fulva'], ['Genome Assembly', 'Nucleotide', 'Ldec.genome.10062013_new_ids.fa', 'Leptinotarsa decemlineata'], ['Genome Assembly', 'Nucleotide', 'Ofas.scaffolds_new_ids.fa', 'Oncopeltus fasciatus'], ['Genome Assembly', 'Nucleotide', 'Oabi11242013.genome_new_ids.fa', 'Orussus abietinus'], ['Genome Assembly', 'Nucleotide', 'Pven10162013.scaffolds_new_ids.fa', 'Pachypsylla venusta'], ['Genome Assembly', 'Nucleotide', 'Ptep01282013.genome_new_ids.fa', 'Parasteatoda tepidariorum'], ['Genome Assembly', 'Nucleotide', 'Tpre_FINAL.scaffolds_new_ids.fa', 'Trichogramma pretiosum'], ['Transcript', 'Nucleotide', 'AGLA_new_ids.fna', 'Anoplophora glabripennis'], ['Transcript', 'Nucleotide', 'AROS_new_ids.fna', 'Athalia rosae'], ['Transcript', 'Nucleotide', 'CCAP_new_ids.fna', 'Ceratitis capitata'], ['Transcript', 'Nucleotide', 'CLEC_new_ids.fna', 'Cimex lectularius'], ['Transcript', 'Nucleotide', 'maker_genes_diaci1.1_transcripts_NALmod_new_ids.fasta', 'Diaphorina citri'], ['Transcript', 'Nucleotide', 'EDAN_new_ids.fna', 'Ephemera danica'], ['Transcript', 'Nucleotide', 'EAFF_new_ids.fna', 'Eurytemora affinis'], ['Transcript', 'Nucleotide', 'FOCC_new_ids.fna', 'Frankliniella occidentalis'], ['Transcript', 'Nucleotide', 'LFUL_new_ids.fna', 'Ladona fulva'], ['Transcript', 'Nucleotide', 'LDEC_new_ids.fna', 'Leptinotarsa decemlineata'], ['Transcript', 'Nucleotide', 'OFAS_new_ids.fna', 'Oncopeltus fasciatus'], ['Transcript', 'Nucleotide', 'OABI_new_ids.fna', 'Orussus abietinus'], ['Transcript', 'Nucleotide', 'PVEN_new_ids.fna', 'Pachypsylla venusta'], ['Transcript', 'Nucleotide', 'PTEP_new_ids.fna', 'Parasteatoda tepidariorum'], ['Transcript', 'Nucleotide', 'TPRE_new_ids.fna', 'Trichogramma pretiosum'], ['Protein', 'Peptide', 'AGLA_new_ids.faa', 'Anoplophora glabripennis'], ['Protein', 'Peptide', 'AROS_new_ids.faa', 'Athalia rosae'], ['Protein', 'Peptide', 'CCAP_new_ids.faa', 'Ceratitis capitata'], ['Protein', 'Peptide', 'CLEC_new_ids.faa', 'Cimex lectularius'], ['Protein', 'Peptide', 'maker_genes_diaci1.1_proteins_NALmod_new_ids.fasta', 'Diaphorina citri'], ['Protein', 'Peptide', 'EDAN_new_ids.faa', 'Ephemera danica'], ['Protein', 'Peptide', 'EAFF_new_ids.faa', 'Eurytemora affinis'], ['Protein', 'Peptide', 'FOCC_new_ids.faa', 'Frankliniella occidentalis'], ['Protein', 'Peptide', 'LFUL_new_ids.faa', 'Ladona fulva'], ['Protein', 'Peptide', 'LDEC_new_ids.faa', 'Leptinotarsa decemlineata'], ['Protein', 'Peptide', 'OFAS_new_ids.faa', 'Oncopeltus fasciatus'], ['Protein', 'Peptide', 'OABI_new_ids.faa', 'Orussus abietinus'], ['Protein', 'Peptide', 'PVEN_new_ids.faa', 'Pachypsylla venusta'], ['Protein', 'Peptide', 'PTEP_new_ids.faa', 'Parasteatoda tepidariorum'], ['Protein', 'Peptide', 'TPRE_new_ids.faa', 'Trichogramma pretiosum']];
 
 var dataset_dict = {};
 var organism_list = [];
@@ -141,7 +139,6 @@ $(function() { // document ready
 				$('.organism-checkbox.' + $(this).attr('organism')).prop('checked', false);
 			}
 		}
-
 		setDatabaseType();
 	});
 	$('.all-organism-checkbox').change(function() {
@@ -157,7 +154,6 @@ $(function() { // document ready
 	});
 
 	$('.all-dataset-checkbox').change(function() {
-		//alert('2');
 		if ($(this).is(':checked')) {
 			// check organism checkbox
 			$('.all-organism-checkbox').prop('checked', true);
@@ -199,7 +195,7 @@ $(function() { // document ready
 	function setQueryType(qtype) {
 		query_type = qtype;
 		if (qtype == '') {
-			$('.enter-query-text').html('Enter sequence below in <a target="_blank" href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> / MSA in <a target="_blank" href="http://en.wikipedia.org/wiki/Stockholm_format">Stockholm</a> format:');
+			$('.enter-query-text').html('Enter sequence below in <a target="_blank" href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> / IN <a target="_blank" href="http://toolkit.tuebingen.mpg.de/reformat/help_params#format">MSA (format descriptions)</a>:');
 		} else if (qtype == 'invalid') {
 			$('.enter-query-text').html('Your sequence is invalid:');
 		} else if (qtype == 'fasta') {
@@ -221,7 +217,7 @@ $(function() { // document ready
 			$('.hmmsearch').attr('disabled', 'disabled').addClass('disabled-radio');
 			$('.phmmer').attr('disabled', 'disabled').addClass('disabled-radio');
 		}
-		query_type = '';
+		//query_type = '';
 		// select first non disabled option
 		$('input.program:not([disabled])').first().prop('checked', true);
 		program_selected = $('input.program:not([disabled])').first().val();
@@ -230,7 +226,8 @@ $(function() { // document ready
 
     //Reset all element if reload of previous page when back button is pressed
 	if ($('#click_submit_hidden').val() == 'true') {
-	    $('#click_submit_hidden').val('false');
+	    alert('xxx');
+        $('#click_submit_hidden').val('false');
 	    $('#query-textarea').val('');
 	    $(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
 	    $('.all-organism-checkbox').prop("checked", false).attr("checked", false);
@@ -289,7 +286,7 @@ $(function() { // document ready
 
 		// note that the empty string is caught above
 		// allow for Selenocysteine (U)
-		return /^[ACDEFGHIKLMNPQRSTUVWY\s]+$/i.test(fasta);
+		return /^[ABCDEFGHIKLMNPQRSTVWXYZ*\s]+$/i.test(fasta);
 	}
 
 	function validateSTO(sto){
@@ -335,7 +332,7 @@ $(function() { // document ready
 		var seq_count = 0;
 		var alphabets = {};
 		var normal_nucleic_codes = 'ATCGN';
-		var valid_amino_codes = 'ABCDEFGHIKLMNPQRSTUVWXYZ*';
+		var valid_amino_codes = 'ABCDEFGHIKLMNPQRSTVWXYZ*';
 		var amino_only_codes = 'EFILPQZX*';
 		for (var i = 0; i < line_count; i++) {
 			//console.log(i + ' ' + lines[i]);

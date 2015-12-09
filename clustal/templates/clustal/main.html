@@ -23,6 +23,10 @@ body {
     color: #317eac;
     border: 0px;
 }
+.d_col {padding-bottom: 10px}
+.p_col {padding-bottom: 5px}
+.t_font {font-size:16px}
+//input[type="text"]{size:10}
 #fieldset-basic {float:left;}
 #fieldset-dna-full {float:left;padding-left: 20px; display:none}
 #fieldset-protein-full {float:left;padding-left: 20px;}
@@ -65,137 +69,130 @@ html {overflow-y: scroll;}
             <FORM METHOD="POST" id="MainClustalForm" NAME="MainClustalForm" ENCTYPE="multipart/form-data">
                 <input type="hidden" name="program" id="program" value="clustalo">
                 {% csrf_token %}
-
-
-
                 <div class="tripal_organism-info-box tripal-info-box">
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#clustalo">CLUSTALO</a></li>
                         <li><a data-toggle="tab" href="#clustalw">CLUSTALW</a></li>
                     </ul>
-                            <fieldset id="fieldset-query">
-                                <legend id="legend-sequence">Query Sequence</legend>
-                                <div class="enter-query-text">Enter sequence below in <a target="_blank" href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format: </div>
-                                <textarea id="query-textarea" name="query-sequence" rows=12 cols=80% spellcheck="false" autocomplete="off"></textarea>
-                                <br>
-                                Or load it from disk
-                                <input type="file" name="query-file" class="query-file" id="queryfile">
-                            </fieldset>
+                    <fieldset id="fieldset-query">
+                        <legend id="legend-sequence">Query Sequence</legend>
+                        <div class="enter-query-text">Enter sequence below in <a target="_blank" href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format: </div>
+                        <textarea id="query-textarea" name="query-sequence" rows=12 cols=80% spellcheck="false" autocomplete="off"></textarea>
+                        <br>
+                        Or load it from disk
+                        <input type="file" name="query-file" class="query-file" id="queryfile">
+                    </fieldset>
                     <div class="tab-content">
-                           <div id="clustalo" class="tab-pane fade in active">
+                        <div id="clustalo" class="tab-pane fade in active">
+                            <fieldset id="fieldset-omega" class="t_font">
+                                <legend>Sequence Input</legend>
+                                <div>Dealign input sequences</div>
+                                <div>
+                                    <label>
+                                        <input type="radio" name="dealing_input" value="yes">
+                                        yes
+                                    </label><label>
+                                        <input type="radio" name="dealing_input" value="no" checked>
+                                        no
+                                    </label>
+                                </div>
+                                <div class='d_col'>
+                                    <INPUT TYPE="reset" VALUE="Reset" class="btn_reset">
+                                </div>
+                                <div class='d_col'>
+                                    <INPUT TYPE="button" VALUE="Search" id="clustalo_submit">
+                                </div>
+                            </fieldset>
+                            <fieldset id="fieldset-omega-clustering" class="t_font">
+                                <legend>Clustering and Iteration</legend>
+                                <div>MBED-Like Clustering Guide-Tree</div>
+                                <div>
+                                    <label>
+                                        <input type="radio" name="clustering_guide_tree" value="yes" checked>
+                                        yes
+                                    </label><label>
+                                        <input type="radio" name="clustering_guide_tree" value="no">
+                                        no
+                                    </label>
+                                </div>
+                                <div>MBED-Like Clustering Iteration</div>
+                                <div>
+                                    <label>
+                                        <input type="radio" name="clustering_guide_iter" value="yes" checked>
+                                        yes
+                                    </label><label>
+                                        <input type="radio" name="clustering_guide_iter" value="no">
+                                        no
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <fieldset id="fieldset-omega-iteration" class="t_font">
+                                <legend>Iteration</legend>
+                                <div class="d_col">
+                                    <div class="p_col">NUMBER of COMBINED ITERATIONS</div>
+                                    <div>
+                                        <select name="combined_iter">
+                                            <option value="0">Default</option>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d_col">
+                                    <div class="p_col">MAX GUIDE TREE ITERATIONS</div>
+                                    <div>
+                                        <select name="max_gt_iter">
+                                            <option value="">Default</option>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="p_col">MAX HMM ITERATIONS</div>
+                                    <div>
+                                        <select name="max_hmm_iter">
+                                            <option value="">Default</option>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset id="fieldset-omega-output" class="t_font">
+                                <legend>Output</legend>
+                                <div>Format</div>
+                                <select name="omega_output">
+                                    <option value="clu">Clustal</option>
+                                    <option value="phy">PHYLIP</option>
+                                    <option value="fa">FASTA</option>
+                                    <option value="st">STOCKHOLM</option>
+                                </select>
+                                <div style="padding-top: 10px">Out Order</div>
+                                <select name="omega_order">
+                                    <option value="tree-order">Aligned</option>
+                                    <option value="input-order">Input</option>
+                                </select>
+                            </fieldset>
 
 
-                                <fieldset id="fieldset-omega">
-                                    <legend>Sequence Input</legend>
-                                    <div style="font-size:16px;">Dealign input sequences</div>
-                                    <div style="padding-bottom: 10px">
-                                        <label>
-                                            <input type="radio" name="dealing_input" value="yes" class="">
-                                            yes
-                                        </label><label>
-                                            <input type="radio" name="dealing_input" value="no" checked class="">
-                                            no
-                                        </label>
-                                    </div>
-                                    <div  style="padding-bottom: 10px">
-                                        <INPUT TYPE="reset" VALUE="Reset" class="btn_reset">
-                                    </div>
-                                    <div  style="padding-bottom: 10px">
-                                        <INPUT TYPE="button" VALUE="Search" id="clustalo_submit">
-                                    </div>
-                                </fieldset>
-                                <fieldset id="fieldset-omega-clustering">
-                                    <legend>Clustering and Iteration</legend>
-                                    <div style="font-size:16px;">MBED-Like Clustering Guide-Tree</div>
-                                    <div style="padding-bottom: 10px">
-                                        <label>
-                                            <input type="radio" name="clustering_guide_tree" value="yes" checked class="">
-                                            yes
-                                        </label><label>
-                                            <input type="radio" name="clustering_guide_tree" value="no" class="">
-                                            no
-                                        </label>
-                                    </div>
-                                    <div style="font-size:16px;">MBED-Like Clustering Iteration</div>
-                                    <div style="padding-bottom: 10px">
-                                        <label>
-                                            <input type="radio" name="clustering_guide_iter" value="yes" checked class="">
-                                            yes
-                                        </label><label>
-                                            <input type="radio" name="clustering_guide_iter" value="no" class="">
-                                            no
-                                        </label>
-                                    </div>
-                                </fieldset>
-                                <fieldset id="fieldset-omega-iteration">
-                                    <legend>Iteration</legend>
-                                    <div style="font-size:16px;padding-bottom: 10px">
-                                        <div style="font-size:16px;padding-bottom: 5px">NUMBER of COMBINED ITERATIONS</div>
-                                        <div>
-                                            <select name="combined_iter">
-                                                <option value="0">Default</option>
-                                                <option value="0">0</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div style="font-size:16px;padding-bottom: 10px">
-                                        <div style="font-size:16px;padding-bottom: 5px">MAX GUIDE TREE ITERATIONS</div>
-                                        <div>
-                                            <select name="max_gt_iter">
-                                                <option value="">Default</option>
-                                                <option value="0">0</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div style="font-size:16px;padding-bottom: 10px">
-                                        <div style="font-size:16px;padding-bottom: 5px">MAX HMM ITERATIONS</div>
-                                        <div>
-                                            <select name="max_hmm_iter">
-                                                <option value="">Default</option>
-                                                <option value="0">0</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                                <fieldset id="fieldset-omega-output">
-                                    <legend>Output</legend>
-                                    <div style="font-size:16px;">Format</div>
-                                    <select name="omega_output">
-                                        <option value="clu">Clustal</option>
-                                        <option value="phy">PHYLIP</option>
-                                        <option value="fa">FASTA</option>
-                                        <option value="st">STOCKHOLM</option>
-                                    </select>
-                                    <div style="font-size:16px;">Out Order</div>
-                                    <select name="omega_order">
-                                        <option value="tree-order">Aligned</option>
-                                        <option value="input-order">Input</option>
-                                    </select>
-                                </fieldset>
-
-
-                            </div>
+                        </div>
                         <div id="clustalw" class="tab-pane fade">
-
-
-                            <fieldset id="fieldset-basic">
+                            <fieldset id="fieldset-basic" class="t_font">
                                 <legend>Basic</legend>
-                                <div style="font-size:16px;">Sequence Type</div>
+                                <div>Sequence Type</div>
                                 <div>
                                     <label>
                                         <input type="radio" name="sequenceType" value="dna" class="sequenceType dna">
@@ -205,8 +202,8 @@ html {overflow-y: scroll;}
                                         Protein
                                     </label>
                                 </div>
-                                <div style="font-size:16px;">Pairwise Alignment</div>
-                                <div style="padding-bottom: 10px">
+                                <div>Pairwise Alignment</div>
+                                <div class="d_col">
                                     <label>
                                         <input type="radio" name="pairwise" value="full" checked class="pairwise full">
                                         Full
@@ -216,18 +213,18 @@ html {overflow-y: scroll;}
                                     </label>
                                 </div>
 
-                                <div  style="padding-bottom: 10px">
+                                <div class="d_col">
                                     <INPUT TYPE="reset" VALUE="Reset" class="btn_reset">
                                 </div>
-                                <div  style="padding-bottom: 10px">
+                                <div class="d_col">
                                     <INPUT TYPE="button" VALUE="Search" id="clustalw_submit">
                                 </div>
                             </fieldset>
 
-                            <fieldset id="fieldset-dna-full">
+                            <fieldset id="fieldset-dna-full" class="t_font">
                                 <legend>Full options</legend>
-                                <div style="font-size:16px;padding-bottom: 10px">
-                                    <div style="font-size:16px;padding-bottom: 5px">DNA weight matrix</div>
+                                <div class="d_col">
+                                    <div class="p_col">DNA weight matrix</div>
                                     <div>
                                         <select name="PWDNAMATRIX">
                                             <option value="">Default</option>
@@ -236,24 +233,24 @@ html {overflow-y: scroll;}
                                         </select>
                                     </div>
                                 </div>
-                                <div style="padding-bottom: 5px">
+                                <div class="p_col">
                                     <label>
                                         Gap Open Penalty
-                                        <input type="text" name="dna-PWGAPOPEN" checked="checked">
+                                        <input type="text" name="dna-PWGAPOPEN" checked="checked" size=10>
                                     </label>
                                 </div>
-                                <div style="padding-bottom: 5px">
+                                <div class="p_col">
                                     <label>
                                         Gap Extension Penalty
-                                        <input type="text" name="dna-PWGAPEXT">
+                                        <input type="text" name="dna-PWGAPEXT" size=10>
                                     </label>
                                 </div>
                             </fieldset>
 
-                            <fieldset id="fieldset-protein-full">
+                            <fieldset id="fieldset-protein-full" class="t_font">
                                 <legend>Full options</legend>
-                                <div style="font-size:16px;padding-bottom: 10px">
-                                    <div style="font-size:16px;padding-bottom: 5px">Protein weight matrix</div>
+                                <div class="p_col">
+                                    <div style="padding-bottom: 5px">Protein weight matrix</div>
                                     <div>
                                         <select name="PWMATRIX">
                                             <option value="">Default</option>
@@ -264,68 +261,68 @@ html {overflow-y: scroll;}
                                         </select>
                                     </div>
                                 </div>
-                                <div style="padding-bottom: 5px">
+                                <div class="p_col">
                                     <label>
                                         Gap Open Penalty
-                                        <input type="text" name="protein-PWGAPOPEN">
+                                        <input type="text" name="protein-PWGAPOPEN" size=10>
                                     </label>
                                 </div>
-                                <div style="padding-bottom: 5px">
+                                <div class="p_col">
                                     <label>
                                         Gap Extension Penalty
-                                        <input type="text" name="protein-PWGAPEXT">
+                                        <input type="text" name="protein-PWGAPEXT" size=10>
                                     </label>
                                 </div>
                             </fieldset>
 
-                            <fieldset id="fieldset-fast">
+                            <fieldset id="fieldset-fast" class="t_font">
                                 <legend>Fast options</legend>
-                                <div style="padding-bottom: 5px">
+                                <div class="p_col">
                                     <label>
                                         K-tuple (word) Size
-                                        <input type="text" name="KTUPLE">
+                                        <input type="text" name="KTUPLE" size=10>
                                     </label>
                                 </div>
-                                <div style="padding-bottom: 5px">
+                                <div class="p_col">
                                     <label>
                                         Window Size
-                                        <input type="text" name="WINDOW">
+                                        <input type="text" name="WINDOW" size=10>
                                     </label>
                                 </div>
-                                <div style="padding-bottom: 5px">
+                                <div class="p_col">
                                     <label>
                                         Gap Penalty
-                                        <input type="text" name="PAIRGAP">
+                                        <input type="text" name="PAIRGAP" size=10>
                                     </label>
                                 </div>
-                                <div style="padding-bottom: 5px">
+                                <div class="p_col">
                                     <label>
                                         Number of Top Diagonals
-                                        <input type="text" name="TOPDIAGS">
+                                        <input type="text" name="TOPDIAGS" size=10>
                                     </label>
                                 </div>
-                                <div style="font-size:16px;padding-bottom: 5px">Scoring Method</div>
+                                <div class="p_col">Scoring Method</div>
                                 <div>
                                     <label>
-                                        <input type="radio" name="SCORE" value="percent" checked class="sequenceType dna">
+                                        <input type="radio" name="SCORE" value="percent" checked>
                                         Percent
                                     </label>
                                 </div>
                                 <div>
                                     <label>
-                                        <input type="radio" name="SCORE" value="absolute" class="sequenceType protein">
+                                        <input type="radio" name="SCORE" value="absolute">
                                         Absolute
                                     </label>
                                 </div>
                             </fieldset>
 
-                            <fieldset id="fieldset-dna-multi">
+                            <fieldset id="fieldset-dna-multi" class="t_font">
                                 <legend>Multiple Alignment</legend>
-                                <div style="font-size:16px;padding-bottom: 5px">
+                                <div class="p_col">
                                     DNA weight matrix
                                 </div>
 
-                                <div style="font-size:16px;padding-bottom: 5px">
+                                <div class="p_col">
                                     <select name="DNAMATRIX">
                                         <option value="">Default</option>
                                         <option value="IUB">IUB</option>
@@ -336,19 +333,19 @@ html {overflow-y: scroll;}
                                     <div>
                                         <label>
                                             Gap Opening Penalty
-                                            <input type="text" name="dna-GAPOPEN">
+                                            <input type="text" name="dna-GAPOPEN" size=10>
                                         </label>
                                     </div>
                                     <div>
                                         <label>
                                             Gap Extension Penalty
-                                            <input type="text" name="dna-GAPEXT">
+                                            <input type="text" name="dna-GAPEXT" size=10>
                                         </label>
                                     </div>
                                     <div>
                                         <label>
                                             Gap Separation Penalty
-                                            <input type="text" name="dna-GAPDIST">
+                                            <input type="text" name="dna-GAPDIST" size=10>
                                         </label>
                                     </div>
                                     Output
@@ -360,34 +357,31 @@ html {overflow-y: scroll;}
                                     <div>
                                         <label>
                                             Maximum Number of Iterations
-                                            <input type="text" name="dna-NUMITER">
+                                            <input type="text" name="dna-NUMITER" size=10>
                                         </label>
                                     </div>
-                                    <div style="font-size:16px;padding-bottom: 5px">Clustering</div>
+                                    <div class="p_col">Clustering</div>
                                     <div>
                                         <label>
-                                            <input type="radio" name="dna-CLUSTERING" value="NJ" checked class="sequenceType dna">
+                                            <input type="radio" name="dna-CLUSTERING" value="NJ" checked>
                                             Neighbour Joining
                                         </label>
                                     </div>
                                     <div>
                                         <label>
-                                            <input type="radio" name="dna-CLUSTERING" value="UPGMA" class="sequenceType protein">
+                                            <input type="radio" name="dna-CLUSTERING" value="UPGMA">
                                             UPGMA
                                         </label>
                                     </div>
                                 </fieldset>
 
-                                <fieldset id="fieldset-protein-multi">
+                                <fieldset id="fieldset-protein-multi" class="t_font">
                                     <legend>Multiple Alignment</legend>
-
-
-
-                                    <div style="font-size:16px;padding-bottom: 5px">
+                                    <div class="p_col">
                                         Protein weight matrix
                                     </div>
 
-                                    <div style="font-size:16px;padding-bottom: 5px">
+                                    <div class="p_col">
                                         <select name="MATRIX">
                                             <option value="">Default</option>
                                             <option value="Blosum">Blosum</option>
@@ -400,19 +394,19 @@ html {overflow-y: scroll;}
                                     <div>
                                         <label>
                                             Gap Opening Penalty
-                                            <input type="text" name="protein-GAPOPEN">
+                                            <input type="text" name="protein-GAPOPEN" size=10>
                                         </label>
                                     </div>
                                     <div>
                                         <label>
                                             Gap Extension Penalty
-                                            <input type="text" name="protein-GAPEXT">
+                                            <input type="text" name="protein-GAPEXT" size=10>
                                         </label>
                                     </div>
                                     <div>
                                         <label>
                                             Gap Separation Penalty
-                                            <input type="text" name="protein-GAPDIST">
+                                            <input type="text" name="protein-GAPDIST" size=10>
                                         </label>
                                     </div>
                                     Output
@@ -424,40 +418,40 @@ html {overflow-y: scroll;}
                                     <div>
                                         <label>
                                             Maximum Number of Iterations
-                                            <input type="text" name="protein-NUMITER">
+                                            <input type="text" name="protein-NUMITER" size=10>
                                         </label>
                                     </div>
-                                    <div style="font-size:16px;padding-bottom: 5px">Clustering</div>
+                                    <div class="p_col">Clustering</div>
                                     <div>
                                         <label>
-                                            <input type="radio" name="protein-CLUSTERING" value="NJ" checked class="sequenceType dna">
+                                            <input type="radio" name="protein-CLUSTERING" value="NJ" checked>
                                             Neighbour Joining
                                         </label>
                                     </div>
                                     <div>
                                         <label>
-                                            <input type="radio" name="protein-CLUSTERING" value="UPGMA" class="sequenceType protein">
+                                            <input type="radio" name="protein-CLUSTERING" value="UPGMA">
                                             UPGMA
                                         </label>
                                     </div>
                                 </fieldset>
 
-                                <fieldset id="fieldset-output">
+                                <fieldset id="fieldset-output" class="t_font">
                                     <legend>Output</legend>
-                                    <div style="font-size:16px;">Format</div>
-                                    <select name="OUTPUT">
-                                        <option value="clustal">Clustal</option>
+                                    <div>Format</div>
+                                    <select name="OUTPUT" style="width: 100px">
+                                        <option value="clustal">Clustal&nbsp;&nbsp; </option>
                                         <option value="phylip">PHYLIP</option>
                                         <option value="fasta">FASTA</option>
                                     </select>
-                                    <div style="font-size:16px;">Out Order</div>
+                                    <div>Out Order</div>
                                     <select name="OUTORDER">
                                         <option value="Aligned">Aligned</option>
                                         <option value="input">Input</option>
                                     </select>
                                 </fieldset>
                             </div>
- 
+
                         </div>
                     </div>
                 </FORM>

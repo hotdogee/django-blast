@@ -22,4 +22,8 @@ urlpatterns = patterns('',
     url(r'^get_all_groups$', views.get_all_groups, name='get_all_groups'),
     url(r'^check_organism_exist$', views.check_organism_exist, name='check_organism_exist'),
     url(r'^apollo_connect$', views.apollo_connect, name='apollo_connect'),
+    url(r'^get_pending_request_admin$', views.get_pending_request_admin, name='get_pending_request_admin'),
+    url(r'^register_newUser$', views.register_newUser, name='register_newUser'),
+    url(r'^get_my_reqhist$', views.get_my_reqhist, name='get_my_reqhist'),
+    url(r'^update_group_permissions$', views.update_group_permissions, name='update_group_permissions'),
 )

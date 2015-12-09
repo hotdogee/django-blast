@@ -90,7 +90,7 @@ $(function() { // document ready
 		// note that the empty string is caught above
 		// allow for Selenocysteine (U)
 		if(/^[ATCGU*\s]+$/i.test(fasta)){return 1;}
-		if(/^[ACDEFGHIKLMNPQRSTUVWY*\s]+$/i.test(fasta)){return 2;}
+		if(/^[ABCDEFGHIKLMNPQRSTVWXYZ*\s]+$/i.test(fasta)){return 2;}
 		return 3;
 	}
 
@@ -111,14 +111,12 @@ $(function() { // document ready
 			$('.enter-query-text').html('Enter sequence below in <a href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> format:');
 		} else if (qtype == 'nucleotide') {
 			$('.enter-query-text').html('Your sequence is detected as nucleotide:');
-			$('.sequenceType.protein').attr('disabled', 'disabled').addClass('disabled-radio');
 			$('.sequenceType.dna').prop('checked', true);
-			$('.sequenceType.dna').change();
+			$('.sequenceType').change();
 		} else if (qtype == 'peptide') {
 			$('.enter-query-text').html('Your sequence is detected as peptide:');
-			$('.sequenceType.dna').attr('disabled', 'disabled').addClass('disabled-radio');
 			$('.sequenceType.protein').prop('checked', true);
-			$('.sequenceType.protein').change();
+			$('.sequenceType').change();
 		}
 	}
 

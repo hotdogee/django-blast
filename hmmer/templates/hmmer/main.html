@@ -148,9 +148,9 @@ var hmmerdb_type_counts = {{ hmmerdb_type_counts|jsonify }};
                             </div>
                         </div>
 
-                        <input type="hidden" ID="click_submit_hidden" NAME="click_submit_hidden" VALUE="false">
-                        <input type="hidden" id='csrfmiddlewaretoken' name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <input type="hidden" id="click_submit_hidden" name="click_submit_hidden" name="false">
                         <input type="hidden" id="format_check" name="format_check" value="true">
+                        {% csrf_token %}
                         <div>
                             <INPUT TYPE="button" VALUE="Reset" CLASS="btn_reset">
                             <INPUT TYPE="button" VALUE="Search" onclick="On_Submit();">

@@ -25,14 +25,17 @@
 <script src="http://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/umd/popover.js"></script>
+<script src="https://cdn.datatables.net/select/1.1.0/js/dataTables.select.min.js"></script>
 <script>
 $(document).ready(function() {
-    {% if is_admin %}
+    {% if user_type == 'ADMIN' %}
         $('#myUserTab').click();
-    {% else %}
+    {% elif user_type == 'USER' %}
         $('#myOrganismTab').click();
+    {% elif user_type == 'NEW' %}
+        $('#newUserTab').click();
     {% endif %}
 
 } );
@@ -46,19 +49,84 @@ APOLLO_URL = "{{APOLLO_URL}}";
 <div class="container">
     <h2>Web Apollo SSO<span class='glyphicons glyphicons-message-plus'><span></h2>
     <ul class="nav nav-tabs">
-        {% if is_admin %}
+        {% if user_type == 'ADMIN' %}
         <li class='active'><a data-toggle="tab" href="#myUser" id="myUserTab">User(Admin)</a></li>
         <li><a data-toggle="tab" href="#myGroup" id="myGroupTab">Group(Admin)</a></li>
+        <li><a data-toggle="tab" href="#PReq" id="pReqTab">PReq(Admin)</a></li>
         <li><a data-toggle="tab" href="#myOrganism" id="myOrganismTab">My Organism</a></li>
 		<li><a data-toggle="tab" href="#myRequest" id="myRequestTab">My Request</a></li>
-        {% else %}
+        <li><a data-toggle="tab" href="#myInfo" id="myInfoTab">My Info</a></li>
+        {% elif user_type == 'USER'%}
         <li class='active'><a data-toggle="tab" href="#myOrganism" id="myOrganismTab">My Organism</a></li>
         <li><a data-toggle="tab" href="#myRequest" id="myRequestTab">My Request</a></li>
+        <li><a data-toggle="tab" href="#myInfo" id="myInfoTab">My Info</a></li>
+        {% elif user_type == 'NEW'%}
+        <li><a data-toggle="tab" href="#newUser" id="newUserTab">New User</a></li>
         {% endif %}
     </ul>
 
     <div class="tab-content">
-        {% if is_admin %}
+        <div id="myInfo" class="tab-pane fade">
+            <legend style="font-size:20px; padding-top:20px">Account Info</legend>
+            {{apollo_user_name}}
+            <legend style="font-size:20px; padding-top:20px">Request History</legend>
+            <table id="myReqHist" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>ReqType</th>
+                        <th>Organism</th>
+                        <th>ApplyDate</th>
+                        <th>ApplyNote</th>
+                        <th>ReplyDate</th>
+                        <th>ReplyNote</th>
+                        <th>WhoReply</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        {% if user_type == 'NEW' %} 
+        <div id="newUser" class="tab-pane fade in active">
+        {% else %}
+        <div id="newUser" class="tab-pane fade">
+        {% endif %}
+            <legend style="font-size:20px; padding-top:20px">If you already have an Apollo Account</legend>
+            <form role="form">
+             <div class="form-group">
+                <label for="my-apollo-uname">Your Apollo User Name(email)</label>
+                <div><input class="form-control" style="width: 50%;" maxlength="30" name="my-apollo-uname" type="text" id="my-apollo-uname"/></div>
+            </div>
+            <div class="form-group">
+                <label for="my-apollo-pwd">Your Password</label>
+                <div><input class="form-control" style="width: 50%;" maxlength="30" name="my-apollo-pwd" type="password" id="my-apollo-pwd"/></div>
+            </div>          
+            <button type='button' class='btn btn-default newUserbt' id="newUser-register-bt">Register your  Apollo Account</button> 
+            </form>
+
+            <legend style="font-size:20px; padding-top:20px">else create one now.</legend>
+            <form role="form">
+            <div><input style="display:none;" name="i5kUserName" type="text" id="newUser-i5kUserName" value="{{i5k_usre_name}}" disabled></div>
+            <div class="form-group">
+                <label for="apollo-uname">Apollo User Name(email)</label>
+                <div><input class="form-control" style="width: 50%;" maxlength="30" name="apollo-uname" type="text" id="apollo-uname"/></div>
+            </div>
+            <div class="form-group">
+                <label for="apollo-pwd">Password</label>
+                <div><input class="form-control" style="width: 50%;" maxlength="30" name="apollo-pwd" type="password" id="apollo-pwd"/></div> 
+            </div>
+            <div class="form-group">
+                <label for="apollo-fname">FirstName</label>
+                <div><input class="form-control" style="width: 50%;" maxlength="30" name="apollo-fname" type="text" id="apollo-fname"/></div>
+            <div class="form-group">
+            </div>
+                <label for="apollo-lname">LastName</label>
+                <div><input class="form-control" style="width: 50%;" maxlength="30" name="apollo-lname" type="text" id="apollo-lname"/></div>
+            </div>
+            <button type='button' class='btn btn-default newUserbt' id="newUser-create-bt">Create new Apollo Account</button>
+            </form>
+        </div>
+        
+        {% if user_type == 'ADMIN' %}
         <div id="myUser" class="tab-pane fade in active">
         {% else %}
         <div id="myUser" class="tab-pane fade hide">
@@ -94,6 +162,9 @@ APOLLO_URL = "{{APOLLO_URL}}";
                 <div class="tab-content">
                     <div id="user-detail" class="tab-pane fade in active">
 						<fieldset id="fieldset-user-account">
+                            <!-- fake for diable auto fill-->
+                            <input type="text" name="fakeName" style="display:none;">
+                            <input type="password" name="fakePwd" style="display:none;">
 							<div style="font-size:16px; padding-top:16px">Apollo User Name</div>
 							<input type="text" name="user-name" id="user-name">
                             <div style="font-size:16px;">I5k User Name</div>
@@ -130,7 +201,7 @@ APOLLO_URL = "{{APOLLO_URL}}";
             </div>
 			</fieldset>
         </div>
-        {% if is_admin %}
+        {% if user_type == 'ADMIN' %}
         <div id="myGroup" class="tab-pane fade">
         {% else %}
         <div id="myGroup" class="tab-pane fade hide">
@@ -141,6 +212,7 @@ APOLLO_URL = "{{APOLLO_URL}}";
                     <tr>
                         <th>Group Name</th>
 						<th>Member Numbers</th>
+                        <th>FullName</th>
                         <th>Public</th>
                         <th>ID</th>
                         <th>Users</th>
@@ -194,10 +266,24 @@ APOLLO_URL = "{{APOLLO_URL}}";
             </div>
 			</fieldset>
         </div>
-        {% if is_admin %}
-        <div id="myOrganism" class="tab-pane fade">
-        {% else %}
+        <div id="PReq" class="tab-pane fade">
+            <legend style="font-size:20px; padding-top:20px">PReq Table</legend>
+            <table id="preqTable" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Apollo_name</th>
+						<th>ReqType</th>
+                        <th>Organism</th>
+                        <th>Desc</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+            </table>	
+        </div>
+        {% if user_type == 'USER' %}
         <div id="myOrganism" class="tab-pane fade in active">
+        {% else %}
+        <div id="myOrganism" class="tab-pane fade">
         {% endif %}
 		</div>
         <div id="myRequest" class="tab-pane fade">

@@ -169,10 +169,10 @@ Enter here your input data as
         </tr>
         <tr>
           <td>
-            <span class="span-title" ID="span_word_size" title="Length of initial exact match. (Default: 28)">Word size </span>
+            <span class="span-title" ID="span_word_size" title="Length of initial exact match. (Default: 11)">Word size </span>
           </td>
           <td>
-            <input TYPE="text" ID="word_size" NAME="word_size" VALUE="28" SIZE="10" class="input-fields">
+            <input TYPE="text" ID="word_size" NAME="word_size" VALUE="11" SIZE="10" class="input-fields">
           </td>
         </tr>
         </table>
@@ -181,12 +181,12 @@ Enter here your input data as
         <fieldset id="fieldset-options-blast-scoring-param">
         <legend>Scoring Parameters </legend>
 		<table id="blastn-scoring-param">
-		<tr><td><span title="Reward for a nucleotide match.  (Default: 1)">Match score </span></td>
-			<td><input TYPE="text" ID="reward" NAME="reward" VALUE="1" SIZE="10" class="input-fields"></td></tr>
-			<tr><td><span title="Penalty for a nucleotide mismatch.  (Default: -2)">Mismatch score </span></td><td>
-			<input TYPE="text" ID="penalty" NAME="penalty" VALUE="-2" SIZE="10" class="input-fields"></td></tr>
-			<tr><td><span title="Cost to open a gap.  (Default: 0)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="0" SIZE="10" class="input-fields"></td></tr>
-			<tr><td><span title="Cost to extend a gap.  (Default: 0)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="0" SIZE="10" class="input-fields"></td></tr>
+		<tr><td><span title="Reward for a nucleotide match.  (Default: 2)">Match score </span></td>
+			<td><input TYPE="text" ID="reward" NAME="reward" VALUE="2" SIZE="10" class="input-fields"></td></tr>
+			<tr><td><span title="Penalty for a nucleotide mismatch.  (Default: -3)">Mismatch score </span></td><td>
+			<input TYPE="text" ID="penalty" NAME="penalty" VALUE="-3" SIZE="10" class="input-fields"></td></tr>
+			<tr><td><span title="Cost to open a gap.  (Default: 5)">Gap opening penalty </span></td><td><input TYPE="text" ID="gapopen" NAME="gapopen" VALUE="5" SIZE="10" class="input-fields"></td></tr>
+			<tr><td><span title="Cost to extend a gap.  (Default: 2)">Gap extension penalty </span></td><td><input TYPE="text" ID="gapextend" NAME="gapextend" VALUE="2" SIZE="10" class="input-fields"></td></tr>
 			<tr><td><span title="Query strand(s) to search against database/subject.  (Default: both)">Strand </span></td>
 			<td><select id="strand" name="strand">
 				<option value="both" selected>both</option>
