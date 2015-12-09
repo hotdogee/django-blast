@@ -99,7 +99,8 @@ class BlastDb(models.Model):
             return 1, 'FASTA file not found', ''
         from sys import platform
         from subprocess import Popen, PIPE
-        bin_name = 'bin_linux'
+#        bin_name = 'bin_linux'
+        bin_name = '/usr/local/bin'
         if platform == 'win32':
             bin_name = 'bin_win'
         makeblastdb_path = os.path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'makeblastdb')

@@ -1,0 +1,161 @@
+{% extends "app/layout.html" %}
+{% load staticfiles %}
+{% load jsonify %}
+
+{% block head-scripts %}
+    {% if iframe == True %}
+    <style>
+    nav {
+        display: none;
+    }
+    body {
+        padding-top: 0px;
+    }
+    </style>
+    {% endif %}
+    <link type="text/css" rel="stylesheet" media="all" href="{% static 'blast/css/main.css' %}" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
+    <style type="text/css">
+      .Table
+      {
+      display: table;
+      }
+      .Title
+      {
+      display: table-caption;
+      text-align: center;
+      font-weight: bold;
+      font-size: larger;
+      }
+      .Heading
+      {
+      display: table-row;
+      font-weight: bold;
+      text-align: center;
+      }
+      .Row
+      {
+      display: table-row;
+      }
+      .Cell
+      {
+      display: table-cell;
+      border: solid;
+      border-width: thin;
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      }
+    </style>
+
+    <style>
+        .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+            box-shadow: inset 0 -2px 0 #317eac;
+            color: #317eac;
+            border: 0px;
+        }
+    </style>
+    <script>
+    var organism_id =  {{ organism_id|jsonify}};
+    var organism_name = {{ organism_name|jsonify}};
+    var organism_display_name = {{ organism_display_name|jsonify}};
+    var jbrowse_url = {{ jbrowse_url|jsonify}};
+    var status = {{status|jsonify}};
+    var username =  {{ username|jsonify }};
+    var password=  {{ password|jsonify }};
+
+    </script>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'blast/scripts/underscore-min.js' %}"></script>
+    <script src="{% static 'blast/scripts/jquery.hoverIntent.minified.js' %}"></script>
+    <script src="{% static 'blast/scripts/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'blast/scripts/blast-multi.js' %}"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <div id="myTabContent" class="tab-content">    
+    <div class="tripal_details tab-pane fade active in" role="tabpanel" id="run" aria-labelledby="run-tab">
+      <FORM METHOD="POST" id="AddMigrationForm" NAME="AddMigrationForm" ENCTYPE="multipart/form-data" action="add">
+	{% csrf_token %}
+	<div class="tripal_organism-info-box tripal-info-box">
+	  <!--<a href="docs/blast_databases.html">-->
+	  <fieldset id="fieldset-datasets">
+	    <legend>Add Account</legend>
+	    <div id="box-datasets">
+	      <div class="datasets-div all">
+		<div class="dataset-title"></div>
+		<div class"Table">
+		  <div class="Title"></div>
+		  </div>
+		  <div class="Row">
+		    <div class="Cell">Organism</div>
+		    <div class="Cell">
+		      <input type="hidden" name="organism_short_name" value="{{form.organism_short_name.value}}">
+		      <input type="hidden" name="organism_display_name" value="{{form.organism_display_name.value}}">
+		      <input type="hidden" name="organism_id" value="{{form.organism_id.value}}">
+		      {{form.organism_display_name.value}}
+		    </div>
+		  </div>
+		  <div class="Row">
+		    <div class="Cell">Jbrowse URL</div>
+		    <div class="Cell">
+		      <input type="hidden" name="jbrowse_url" value="{{form.jbrowse_url.value}}">
+		      {{form.jbrowse_url.value}}
+		    </div>
+		  </div>
+		  <div class="Row">
+		    <div class="Cell">Apollo Username</div>
+		    <div class="Cell">
+		      {% if form.username.value %}
+		      <input type="text" name="username" value="">
+		      {% else %}
+		      <input type="text" name="username" value="">
+		      {% endif %}
+		    </div>
+		  </div>
+		  <div class="Row">
+		    <div class="Cell">Apollo Password</div>
+		    <div class="Cell">
+                      {% if form.username.value %}
+                      <input type="password" name="password" value="">
+                      {% else %}
+		      <input type="password" name="password">
+                      {% endif %}
+		    </div>
+		</div>
+	      </div>
+	      {% if status %}
+	      <br><font color=red><b>
+	      {{ status }}
+	      </b></font><br>
+	      {% endif %}
+	      <br>
+	      <input type="submit" value="Claim Account" role="button" class="btn btn-lg btn-warning" />
+	      &nbsp &nbsp &nbsp
+	      <input type="reset" value="Reset Form" role="button" class="btn btn-sm btn-danger" />
+	      <br><br>
+	      <a href="/migrate_account" role="button" class="btn btn-lg btn-default">Return to Main Menu</a>
+	      </div>
+	    </div>
+	</div>
+      </FORM>
+    </div>
+    {% else %}
+    <br><br>
+    <div class="Heading">
+      <p>You need to log in before you can migrate any accounts.</p>
+      
+    </div>
+    {% endif %}
+    
+    {% endblock %}
+    

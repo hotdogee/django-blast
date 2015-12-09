@@ -379,3 +379,13 @@ table.dataTable tbody td.center-cell {
 .dataTables_wrapper .ui-widget-header {
     font-weight: normal;
 }
+
+/*jbrowse button visited*/
+a.btn.btn-primary.btn-xs:visited:hover {
+    background-color: #572E9C;
+    border-color: #401865;
+}
+a.btn.btn-primary.btn-xs:visited {
+    background-color: #6E42CA;
+    border-color: #541D86;
+} 
