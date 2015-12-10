@@ -226,7 +226,6 @@ $(function() { // document ready
 
     //Reset all element if reload of previous page when back button is pressed
 	if ($('#click_submit_hidden').val() == 'true') {
-	    alert('xxx');
         $('#click_submit_hidden').val('false');
 	    $('#query-textarea').val('');
 	    $(".query-file").replaceWith('<input type="file" name="query-file" class="query-file">');
@@ -496,6 +495,8 @@ $(function() { // document ready
     });
 
     $('.btn_reset').click(function() {
+        query_type = '';
+        $('.program').attr('disabled', false).removeClass('disabled-radio');
         $('#query-textarea').val('');
         $('.all-organism-checkbox').prop("checked", false).attr("checked", false);
         $('.all-organism-checkbox').change();
@@ -543,16 +544,16 @@ $(function() { // document ready
 });
 
 function On_Submit(){
-
 	if($("#MainHmmerForm").valid()) {
 		$('#click_submit_hidden').val('true');
 
 		if($('input[name=program]:checked', '#MainHmmerForm').val() == 'hmmsearch'){
 			$('#format_check').val("True");
-			$.ajaxSetup({
+            $.ajaxSetup({
 			   enctype: "multipart/form-data;",
 			});
-			$.post("/hmmer/",
+			
+            $.post("/hmmer/",
 				$("#MainHmmerForm").serialize(),
 				function(data, result){
 					if(data == ''){
@@ -561,7 +562,6 @@ function On_Submit(){
 						$('#MainHmmerForm').submit();
 					}else{
 						$('.enter-query-text').before("<label  class=\"error\">"+data+"</label>");
-						//$('.enter-query-text').append("<label  class=\"error\">"+data+"</label>");
 					}
 			});
 		}else if($('input[name=program]:checked', '#MainHmmerForm').val() == 'phmmer'){

@@ -162,7 +162,7 @@ def create(request, iframe=False):
                 if (seq_count == 0):
                     seq_count = 1
                 with open('status.json', 'wb') as f:
-                    json.dump({'status': 'pending', 'seq_count': seq_count, 'cmd': " ".join(args_list[0]), 'query_filename': query_filename}, f)
+                    json.dump({'status': 'pending', 'seq_count': seq_count, 'program':request.POST['program'], 'cmd': " ".join(args_list[0]), 'query_filename': query_filename}, f)
 
 
             #args_list.append(['clustalw2', '-infile='+query_filename,'-OUTFILE='+task_id+'.aln'] + option_params)

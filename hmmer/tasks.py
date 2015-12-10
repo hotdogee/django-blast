@@ -79,8 +79,13 @@ def run_hmmer_task(task_id, args_list, file_prefix):
     record.save()
 
     # generate status.json for frontend status checking
+    with open('status.json', 'r') as f:
+        statusdata = json.load(f)
+        statusdata['status'] = 'done'
+
     with open('status.json', 'wb') as f:
-        json.dump({'status': 'done', 'db_list': db_list}, f)
+        json.dump(statusdata, f)
+        #json.dump({'status': 'done', 'db_list': db_list}, f)
 
     return task_id # passed to 'result' argument of task_success_handler
 

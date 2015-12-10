@@ -44,7 +44,6 @@ def create(request):
             'clustal_content': "".join(clustal_content),
         })
     elif request.method == 'POST' and request.POST['format_check'] == "True":
-
         tmp_dir = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp')
         if not path.exists(tmp_dir):
             makedirs(tmp_dir)
@@ -63,7 +62,7 @@ def create(request):
         else:
             return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query', })
 
-        p = Popen(["hmmbuild", "out", query_filename], stdout=PIPE, stderr=PIPE)
+        p = Popen(["hmmbuild","--fast", '--amino', "out", query_filename], stdout=PIPE, stderr=PIPE)
         p.wait()
         result = p.communicate()[1]
         return HttpResponse(result)
@@ -130,11 +129,11 @@ def create(request):
                     seq_count = 1
                 with open('status.json', 'wb') as f:
                     json.dump({'status': 'pending', 'seq_count': seq_count,
-                               'db_list': [db[db.rindex('/') + 1:] for db in db_list.split(' ')]}, f)
+                               'db_list': [db[db.rindex('/') + 1:] for db in db_list.split(' ')], 'program':request.POST['program'], 'params':option_params, 'input':query_filename}, f)
 
             args_list = []
             if (request.POST['program'] == 'hmmsearch'):
-                args_list.append(['hmmbuild', '-o', 'hmm.sumary', query_filename + '.hmm', query_filename])
+                args_list.append(['hmmbuild', '--amino', '-o', 'hmm.sumary', query_filename + '.hmm', query_filename])
                 for idx, db in enumerate(db_list.split()):
                     args_list.append(['hmmsearch', '-o', str(idx) + '.out'] + option_params + [query_filename + '.hmm',
                                                                                                os.path.basename(db)])
@@ -161,6 +160,7 @@ def retrieve(request, task_id='1'):
             with open('status.json', 'r') as f:
                 statusdata = json.load(f)
                 db_list = statusdata['db_list']
+                file_in = path.join(settings.MEDIA_URL, 'hmmer', 'task', task_id, statusdata['input'])
 
             out = []
             report = ["<br>"]
@@ -181,6 +181,8 @@ def retrieve(request, task_id='1'):
                     'hmmer/result.html', {
                         'title': 'HMMER Result',
                         'output': file_prefix,
+                        'status': path.join(settings.MEDIA_URL, 'hmmer', 'task', task_id, 'status.json'),
+                        'input': file_in,
                         'options': db_list,
                         'report': out,
                         'task_id': task_id,
