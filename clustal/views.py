@@ -62,7 +62,7 @@ def create(request, iframe=False):
 
                 #parameters setting for full option or fast option
                 if request.POST['pairwise'] == "full":
-                    option_params.append('-ALIGN')
+                    #option_params.append('-TREE')
                     if request.POST['sequenceType'] == "dna":
                         if request.POST['PWDNAMATRIX'] != "":
                             option_params.append('-PWDNAMATRIX='+request.POST['PWDNAMATRIX'])
@@ -126,7 +126,7 @@ def create(request, iframe=False):
                 option_params.append('-OUTPUT='+request.POST['OUTPUT'])
                 option_params.append('-OUTORDER='+request.POST['OUTORDER'])
 
-                args_list.append(['clustalw2', '-TREE', '-infile='+query_filename, '-OUTFILE='+task_id+'.aln'] + option_params)
+                args_list.append(['clustalw2', '-TREE', '-ALIGN', '-infile='+query_filename, '-OUTFILE='+task_id+'.aln'] + option_params)
             else:
                 #clustalo
                 if request.POST['dealing_input'] == "yes":

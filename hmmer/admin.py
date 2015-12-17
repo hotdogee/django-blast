@@ -11,7 +11,12 @@ class HmmerDbForm(ModelForm):
 
 class HmmerDbAdmin(admin.ModelAdmin):
     form = HmmerDbForm
-    list_display = ('organism', 'fasta_file',)
+    list_display = ('title', 'organism', 'fasta_file', 'fasta_file_exists', 'description', 'is_shown')
+    list_editable = ('is_shown',)
+    list_filter = ('organism', 'is_shown',)
+    search_fields = ('fasta_file','title',)
+    actions_on_top = True
+    actions_on_bottom = True
 
 admin.site.register(HmmerDB, HmmerDbAdmin)
 

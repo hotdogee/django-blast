@@ -8,4 +8,7 @@ class ClustalQueryRecord(models.Model):
     result_date = models.DateTimeField(null=True)
     result_status = models.CharField(max_length=32, default='WAITING') # ex. WAITING, SUCCESS, NO_ASN, ASN_EMPTY, NO_CSV, CSV_EMPTY
     user = models.ForeignKey(User, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Clustal result'
 # Create your models here.

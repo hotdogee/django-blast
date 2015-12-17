@@ -201,7 +201,7 @@ $(function() { // document ready
 		} else if (qtype == 'fasta') {
 			$('.enter-query-text').html('Your sequence is detected as fasta:');
 		} else if (qtype == 'msa'){
-			$('.enter-query-text').html('Your sequence is detected not a fasta (phmmer disabled):');
+			$('.enter-query-text').html('Your sequence is not detected a fasta (phmmer disabled):');
 		}
 		chooseProgram();
 	}
@@ -553,7 +553,7 @@ function On_Submit(){
 			   enctype: "multipart/form-data;",
 			});
 			
-            $.post("/hmmer/",
+            $.post("",
 				$("#MainHmmerForm").serialize(),
 				function(data, result){
 					if(data == ''){
