@@ -334,8 +334,8 @@ LOGGING = {
 }
 
 # Apollo SSO
-ROBOT_ID = apollo_admin_account
-ROBOT_PWD = account_password
+ROBOT_ID = ''
+ROBOT_PWD = ''
 I5K_URL = 'http://ip:port'
 APOLLO_URL = 'http://ip:port'
 
