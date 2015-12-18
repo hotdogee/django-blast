@@ -23,7 +23,6 @@ class HmmerDB(models.Model):
     is_shown = models.BooleanField(default=None, help_text='Display this database in the HMMER submit form') # to temporarily remove from hmmer db selection ui
 
     def fasta_file_exists(self):
-        print self.fasta_file.path_full
         return os.path.isfile(self.fasta_file.path_full)
 
     fasta_file_exists.boolean = True

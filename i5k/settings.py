@@ -189,7 +189,7 @@ INSTALLED_APPS = (
     'data',
     'hmmer',
     'clustal',
-    'webapollo_sso'
+    #'webapollo_sso'
 )
 
 # deprecated in Django 1.8
@@ -334,10 +334,10 @@ LOGGING = {
 }
 
 # Apollo SSO
-ROBOT_ID = 'R2D2@i5k.org'
-ROBOT_PWD = 'demo'
-I5K_URL = 'http://10.11.210.66:8000'
-APOLLO_URL = 'http://10.11.210.66:8085'
+ROBOT_ID = apollo_admin_account
+ROBOT_PWD = account_password
+I5K_URL = #http://ip:port
+APOLLO_URL = #http://ip:port
 
 # Celery Settings
 from kombu import Exchange, Queue

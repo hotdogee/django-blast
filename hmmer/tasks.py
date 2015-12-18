@@ -73,7 +73,6 @@ def run_hmmer_task(task_id, args_list, file_prefix):
     if(result_status == 'SUCCESS'):
         call(merge_result_command, shell=True)
 
-    print result_status
     record.result_status = result_status
     record.result_date = datetime.utcnow().replace(tzinfo=utc)
     record.save()
