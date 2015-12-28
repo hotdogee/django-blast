@@ -34,16 +34,16 @@ def create(request, iframe=False):
             makedirs(task_dir)
         chmod(task_dir, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can open files in the directory
         # change directory to task directory
-        os.chdir(task_dir)
+        #os.chdir(task_dir)
 
         query_filename = ''
         if 'query-file' in request.FILES:
-            query_filename = request.FILES['query-file'].name
+            query_filename = path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, request.FILES['query-file'].name)
             with open(query_filename, 'wb') as query_f:
                 for chunk in request.FILES['query-file'].chunks():
                     query_f.write(chunk)
         elif 'query-sequence' in request.POST and request.POST['query-sequence']:
-            query_filename = task_id + 'in'
+            query_filename = path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id + 'in')
             with open(query_filename, 'wb') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
@@ -126,7 +126,8 @@ def create(request, iframe=False):
                 option_params.append('-OUTPUT='+request.POST['OUTPUT'])
                 option_params.append('-OUTORDER='+request.POST['OUTORDER'])
 
-                args_list.append(['clustalw2', '-TREE', '-ALIGN', '-infile='+query_filename, '-OUTFILE='+task_id+'.aln'] + option_params)
+                args_list.append(['clustalw2', '-TREE', '-ALIGN', '-infile='+query_filename,
+                                  '-OUTFILE='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+'.aln')] + option_params)
             else:
                 #clustalo
                 if request.POST['dealing_input'] == "yes":
@@ -147,7 +148,8 @@ def create(request, iframe=False):
                 if request.POST['omega_order'] != "":
                     option_params.append("--output-order="+request.POST['omega_order'])
 
-                args_list.append(['clustalo', '--infile='+query_filename,'--guidetree-out='+task_id+'.ph','--outfile='+task_id+'.aln'] + option_params)
+                args_list.append(['clustalo', '--infile='+query_filename,'--guidetree-out='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id)+'.ph',
+                                  '--outfile='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id)+'.aln'] + option_params)
 
             record = ClustalQueryRecord()
             record.task_id = task_id
@@ -161,7 +163,7 @@ def create(request, iframe=False):
                 seq_count = qstr.count('>')
                 if (seq_count == 0):
                     seq_count = 1
-                with open('status.json', 'wb') as f:
+                with open(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, 'status.json'), 'wb') as f:
                     json.dump({'status': 'pending', 'seq_count': seq_count, 'program':request.POST['program'], 'cmd': " ".join(args_list[0]), 'query_filename': query_filename}, f)
 
 

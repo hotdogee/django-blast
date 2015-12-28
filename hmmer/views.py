@@ -48,15 +48,15 @@ def create(request):
         if not path.exists(tmp_dir):
             makedirs(tmp_dir)
         chmod(tmp_dir, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)
-        os.chdir(tmp_dir)
+        #os.chdir(tmp_dir)
 
         if 'query-file' in request.FILES:
-            query_filename = request.FILES['query-file'].name
+            query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', request.FILES['query-file'].name)
             with open(query_filename, 'wb') as query_f:
                 for chunk in request.FILES['query-file'].chunks():
                     query_f.write(chunk)
         elif 'query-sequence' in request.POST and request.POST['query-sequence']:
-            query_filename = uuid4().hex + 'in'
+            query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', uuid4().hex + 'in')
             with open(query_filename, 'wb') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
@@ -79,15 +79,15 @@ def create(request):
         chmod(task_dir,
               Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)  # ensure the standalone dequeuing process can open files in the directory
         # change directory to task directory
-        os.chdir(task_dir)
+        #os.chdir(task_dir)
 
         if 'query-file' in request.FILES:
-            query_filename = request.FILES['query-file'].name
+            query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, request.FILES['query-file'].name)
             with open(query_filename, 'wb') as query_f:
                 for chunk in request.FILES['query-file'].chunks():
                     query_f.write(chunk)
         elif 'query-sequence' in request.POST and request.POST['query-sequence']:
-            query_filename = task_id + '.in'
+            query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, task_id + '.in')
             with open(query_filename, 'wb') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
@@ -100,7 +100,7 @@ def create(request):
         db_list = ' '.join(
             [db.fasta_file.path_full for db in HmmerDB.objects.filter(title__in=set(request.POST.getlist('db-name')))])
         for db in db_list.split(' '):
-            os.symlink(db, db[db.rindex('/') + 1:])
+            os.symlink(db, path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, db[db.rindex('/') + 1:]))
 
         if not db_list:
             return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query', })
@@ -127,8 +127,8 @@ def create(request):
                 seq_count = qstr.count('>')
                 if (seq_count == 0):
                     seq_count = 1
-                with open('status.json', 'wb') as f:
-                    json.dump({'status': 'pending', 'seq_count': seq_count,
+                with open(path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, 'status.json'), 'wb') as f:
+                   json.dump({'status': 'pending', 'seq_count': seq_count,
                                'db_list': [db[db.rindex('/') + 1:] for db in db_list.split(' ')], 'program':request.POST['program'], 'params':option_params, 'input':query_filename}, f)
 
             args_list = []
