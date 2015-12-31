@@ -129,7 +129,7 @@ def create(request):
                     seq_count = 1
                 with open(path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, 'status.json'), 'wb') as f:
                    json.dump({'status': 'pending', 'seq_count': seq_count,
-                               'db_list': [db[db.rindex('/') + 1:] for db in db_list.split(' ')], 'program':request.POST['program'], 'params':option_params, 'input':query_filename}, f)
+                               'db_list': [db[db.rindex('/') + 1:] for db in db_list.split(' ')], 'program':request.POST['program'], 'params':option_params, 'input':os.path.basename(query_filename)}, f)
 
             args_list = []
             if (request.POST['program'] == 'hmmsearch'):
