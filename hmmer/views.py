@@ -52,19 +52,23 @@ def create(request):
 
         if 'query-file' in request.FILES:
             query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', request.FILES['query-file'].name)
+            testout_file = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', request.FILES['query-file'].name + ".test")
             with open(query_filename, 'wb') as query_f:
                 for chunk in request.FILES['query-file'].chunks():
                     query_f.write(chunk)
         elif 'query-sequence' in request.POST and request.POST['query-sequence']:
-            query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', uuid4().hex + 'in')
+            query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', uuid4().hex + '.in')
+            testout_file = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', uuid4().hex + ".testout")
             with open(query_filename, 'wb') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
             return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query', })
-
-        p = Popen(["hmmbuild","--fast", '--amino', "out", query_filename], stdout=PIPE, stderr=PIPE)
+        
+        p = Popen(["hmmbuild","--fast", '--amino', testout_file, query_filename], stdout=PIPE, stderr=PIPE)
         p.wait()
         result = p.communicate()[1]
+        os.remove(query_filename)
+        os.remove(testout_file)
         return HttpResponse(result)
 
     elif request.method == 'POST':
