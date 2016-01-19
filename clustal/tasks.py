@@ -4,7 +4,7 @@ from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 from subprocess import Popen, PIPE, call
 from datetime import datetime, timedelta
-from os import path, chdir, getcwd
+from os import path, chdir, getcwd, devnull
 from pytz import utc
 from celery.utils.log import get_task_logger
 from celery.signals import task_sent, task_success, task_failure
@@ -37,7 +37,7 @@ def run_clustal_task(task_id, args_list, file_prefix):
     record.dequeue_date = datetime.utcnow().replace(tzinfo=utc)
     record.save()
 
-
+    
     # update status from 'pending' to 'running' for frontend
     with open('status.json', 'r') as f:
         statusdata = json.load(f)
@@ -47,8 +47,9 @@ def run_clustal_task(task_id, args_list, file_prefix):
         json.dump(statusdata, f)
 
     # run
+    FNULL = open(devnull, 'w')
     for args in args_list:
-        p = Popen(args, stdin=None, stdout=PIPE, stderr=PIPE)
+        p = Popen(args, stdout=FNULL, stderr=PIPE)
         p.wait()
         print(p.communicate())
 

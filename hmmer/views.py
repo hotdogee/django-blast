@@ -18,6 +18,8 @@ from hmmer.models import HmmerQueryRecord, HmmerDB
 import os
 from subprocess import Popen, PIPE
 
+def manual(request):
+    return render(request, 'hmmer/manual.html',{}) 
 
 def create(request):
     if request.method == 'GET':
@@ -43,34 +45,6 @@ def create(request):
             'hmmerdb_type_counts': hmmerdb_type_counts,
             'clustal_content': "".join(clustal_content),
         })
-    elif request.method == 'POST' and request.POST['format_check'] == "True":
-        tmp_dir = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp')
-        if not path.exists(tmp_dir):
-            makedirs(tmp_dir)
-        chmod(tmp_dir, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)
-        #os.chdir(tmp_dir)
-
-        if 'query-file' in request.FILES:
-            query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', request.FILES['query-file'].name)
-            testout_file = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', request.FILES['query-file'].name + ".test")
-            with open(query_filename, 'wb') as query_f:
-                for chunk in request.FILES['query-file'].chunks():
-                    query_f.write(chunk)
-        elif 'query-sequence' in request.POST and request.POST['query-sequence']:
-            query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', uuid4().hex + '.in')
-            testout_file = path.join(settings.MEDIA_ROOT, 'hmmer', 'tmp', uuid4().hex + ".testout")
-            with open(query_filename, 'wb') as query_f:
-                query_f.write(request.POST['query-sequence'])
-        else:
-            return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query', })
-        
-        p = Popen(["hmmbuild","--fast", '--amino', testout_file, query_filename], stdout=PIPE, stderr=PIPE)
-        p.wait()
-        result = p.communicate()[1]
-        os.remove(query_filename)
-        os.remove(testout_file)
-        return HttpResponse(result)
-
     elif request.method == 'POST':
         # setup file paths
 
@@ -80,6 +54,7 @@ def create(request):
         file_prefix = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, task_id)
         if not path.exists(task_dir):
             makedirs(task_dir)
+
         chmod(task_dir,
               Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)  # ensure the standalone dequeuing process can open files in the directory
         # change directory to task directory
@@ -95,10 +70,26 @@ def create(request):
             with open(query_filename, 'wb') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
-            return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query', })
+            return render(request, 'hmmer/invalid_query.html', {'title': '', })
 
         chmod(query_filename,
               Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)  # ensure the standalone dequeuing process can access the file
+
+
+        if(request.POST['program'] == 'phmmer'):
+            with open(query_filename, 'r') as f:
+                qstr = f.read()
+                if(qstr.count('>') > 10):
+                    os.remove(query_filename)
+                    return render(request, 'hmmer/invalid_query.html', {'title': 'Phmmer, Max number of query sequences: 10 sequences', }) 
+
+        if(request.POST['program'] == 'hmmsearch'):
+            p = Popen(["hmmbuild","--fast", '--amino', path.join(settings.MEDIA_ROOT, 'hmmer', 'task',  "hmmbuild.test"), query_filename], stdout=PIPE, stderr=PIPE)
+            p.wait()
+            result = p.communicate()[1]
+            if(result != ''):
+                return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid MSA format', 'info' :'<a href="http://toolkit.tuebingen.mpg.de/reformat/help_params#format" target="_blank"> Valid MSA format descriptions </a>' })
+
 
         # build hmmer command
         db_list = ' '.join(
@@ -107,7 +98,7 @@ def create(request):
             os.symlink(db, path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, db[db.rindex('/') + 1:]))
 
         if not db_list:
-            return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid Query', })
+            return render(request, 'hmmer/invalid_query.html', {'title': '', })
 
         # check if program is in list for security
         if request.POST['program'] in ['phmmer', 'hmmsearch']:
@@ -240,14 +231,7 @@ def status(request, task_id):
                                 break
                     statusdata['num_preceding'] = num_preceding
                 elif statusdata['status'] == 'running':
-                    asn_path = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, (task_id + '.out'))
-                    if path.isfile(asn_path):
-                        with open(asn_path, 'r') as asn_f:
-                            astr = asn_f.read()
-                            processed_seq_count = astr.count('Scores for complete sequences')
-                            statusdata['processed'] = processed_seq_count
-                    else:
-                        statusdata['processed'] = 0
+                    statusdata['processed'] = 0
                 return HttpResponse(json.dumps(statusdata))
         return HttpResponse(json.dumps(status))
     else:

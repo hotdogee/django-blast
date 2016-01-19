@@ -546,26 +546,9 @@ $(function() { // document ready
 function On_Submit(){
 	if($("#MainHmmerForm").valid()) {
 		$('#click_submit_hidden').val('true');
-
 		if($('input[name=program]:checked', '#MainHmmerForm').val() == 'hmmsearch'){
-			$('#format_check').val("True");
-            $.ajaxSetup({
-			   enctype: "multipart/form-data;",
-			});
-			
-            $.post("",
-				$("#MainHmmerForm").serialize(),
-				function(data, result){
-					if(data == ''){
-						$('#format_check').val("false");
-						$('#click_submit_hidden').val('true');
-						$('#MainHmmerForm').submit();
-					}else{
-						$('.enter-query-text').before("<label  class=\"error\">"+data+"</label>");
-					}
-			});
+            $('#MainHmmerForm').submit();
 		}else if($('input[name=program]:checked', '#MainHmmerForm').val() == 'phmmer'){
-			$('#format_check').val("false");
 			$('#click_submit_hidden').val('true');
 			$('#MainHmmerForm').submit();
 		};

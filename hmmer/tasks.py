@@ -109,8 +109,8 @@ def task_sent_handler(sender=None, task_id=None, task=None, args=None,
             if args:
                 bid = args[0] # blast_task_id
                 tlist.append( (task_id,bid) )
-                #logger.info('[task_sent] task sent: %s. queue length: %s' % (bid, len(tlist)) )
-                print('[task_sent] task sent: %s. queue length: %s' % (bid, len(tlist)) )
+                logger.info('[task_sent] task sent: %s. queue length: %s' % (bid, len(tlist)) )
+                #print('[task_sent] task sent: %s. queue length: %s' % (bid, len(tlist)) )
                 cache.set(CACHE_ID, tlist)
             else:
                 logger.info('[task_sent] no args. rabbit task_id: %s' % (task_id) )

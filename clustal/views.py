@@ -17,6 +17,9 @@ import stat as Perm
 from clustal.models import ClustalQueryRecord
 import os
 
+def manual(request):
+    return render(request, 'clustal/manual.html', {})
+
 def create(request, iframe=False):
     #return HttpResponse("BLAST Page: create.")
     if request.method == 'GET':
@@ -47,9 +50,15 @@ def create(request, iframe=False):
             with open(query_filename, 'wb') as query_f:
                 query_f.write(request.POST['query-sequence'])
         else:
-            return render(request, 'clustal/invalid_query.html', {'title': 'Invalid Query',})
+            return render(request, 'clustal/invalid_query.html', {'title': '',})
 
         chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can access the file
+
+        with open(query_filename, 'r') as f: # count number of query sequence by counting '>'
+            qstr = f.read()
+            seq_count = qstr.count('>')
+            if(seq_count > 600):
+                return render(request, 'clustal/invalid_query.html', {'title': 'Clustal: Max number of query sequences: 600 sequences.',})
 
         # check if program is in list for security
         if request.POST['program'] in ['clustalw','clustalo']:
@@ -126,8 +135,12 @@ def create(request, iframe=False):
                 option_params.append('-OUTPUT='+request.POST['OUTPUT'])
                 option_params.append('-OUTORDER='+request.POST['OUTORDER'])
 
-                args_list.append(['clustalw2', '-TREE', '-ALIGN', '-infile='+query_filename,
-                                  '-OUTFILE='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+'.aln')] + option_params)
+                args_list.append(['clustalw2', '-infile='+query_filename,
+                                  '-OUTFILE='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+'.aln'), '-type=protein'])
+
+                args_list_log = []
+                args_list_log.append(['clustalw2', '-infile='+os.path.basename(query_filename), '-OUTFILE='+task_id+'.aln', '-type=protein'])
+
             else:
                 #clustalo
                 if request.POST['dealing_input'] == "yes":
@@ -150,6 +163,9 @@ def create(request, iframe=False):
 
                 args_list.append(['clustalo', '--infile='+query_filename,'--guidetree-out='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id)+'.ph',
                                   '--outfile='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id)+'.aln'] + option_params)
+                
+                args_list_log = []
+                args_list_log.append(['clustalo', '--infile='+os.path.basename(query_filename),'--guidetree-out=' + task_id + '.ph', '--outfile=' + task_id +'.aln'] + option_params)
 
             record = ClustalQueryRecord()
             record.task_id = task_id
@@ -164,10 +180,9 @@ def create(request, iframe=False):
                 if (seq_count == 0):
                     seq_count = 1
                 with open(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, 'status.json'), 'wb') as f:
-                    json.dump({'status': 'pending', 'seq_count': seq_count, 'program':request.POST['program'], 'cmd': " ".join(args_list[0]), 'query_filename': query_filename}, f)
+                    json.dump({'status': 'pending', 'seq_count': seq_count, 'program':request.POST['program'], 'cmd': " ".join(args_list_log[0]), 'query_filename': os.path.basename(query_filename)}, f)
 
 
-            #args_list.append(['clustalw2', '-infile='+query_filename,'-OUTFILE='+task_id+'.aln'] + option_params)
             run_clustal_task.delay(task_id, args_list, file_prefix)
 
             return redirect('clustal:retrieve', task_id)
@@ -187,15 +202,23 @@ def retrieve(request, task_id='1'):
             with open('status.json', 'r') as f:
                 statusdata = json.load(f)
 
+
+            #10mb
+            exceed_max_limit = False
             out = []
-            report = ["<br>"]
+            if(os.path.getsize(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+".aln")) > 1024 * 1024  * 10):
+                report = ["The Alignment file exceeds 10 Megabyte, please download it."]
+                out.append(''.join(report).replace(' ','&nbsp;'))
+                exceed_max_limit = True
+            else:
+                report = ["<br>"]
 
-            with open(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+".aln"), 'r') as content_file:
-                for line in content_file:
-                    line = line.rstrip('\n')
-                    report.append(line+"<br>")
+                with open(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+".aln"), 'r') as content_file:
+                    for line in content_file:
+                        line = line.rstrip('\n')
+                        report.append(line+"<br>")
 
-            out.append(''.join(report).replace(' ','&nbsp;'))
+                out.append(''.join(report).replace(' ','&nbsp;'))
 
             dnd_filename = path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, os.path.splitext(statusdata['query_filename'])[0]+'.dnd')
             if path.isfile(dnd_filename):
@@ -218,7 +241,7 @@ def retrieve(request, task_id='1'):
                         'ph': return_ph,
                         'dnd': return_dnd,
                         'status': path.join(settings.MEDIA_URL, 'clustal', 'task', task_id, 'status.json'),
-                        'colorful': True if("=clu" in statusdata['cmd']) else False,
+                        'colorful': True if("=clu" in statusdata['cmd'] and exceed_max_limit == False) else False,
                         'report': out,
                         'task_id': task_id,
                     })
@@ -270,14 +293,7 @@ def status(request, task_id):
                                 break
                     statusdata['num_preceding'] = num_preceding
                 elif statusdata['status'] == 'running':
-                    asn_path = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, (task_id+'.out'))
-                    if path.isfile(asn_path):
-                        with open(asn_path, 'r') as asn_f:
-                            astr = asn_f.read()
-                            processed_seq_count = astr.count('Scores for complete sequences')
-                            statusdata['processed'] = processed_seq_count
-                    else:
-                        statusdata['processed'] = 0
+                    statusdata['processed'] = 0
                 return HttpResponse(json.dumps(statusdata))
         return HttpResponse(json.dumps(status))
     else:

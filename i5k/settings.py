@@ -174,7 +174,7 @@ INSTALLED_APPS = (
     'pipeline',
     'app',
     'blast',
-    'migrate_account',
+    #'migrate_account',
     # 'userprofile',
     # Uncomment the next line to enable the admin:
     'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
@@ -334,10 +334,13 @@ LOGGING = {
 }
 
 # Apollo SSO
-ROBOT_ID = ''
-ROBOT_PWD = ''
-I5K_URL = 'http://ip:port'
-APOLLO_URL = 'http://ip:port'
+#ROBOT_ID = 'R2D2@i5k.org'
+#ROBOT_PWD = ''
+
+#I5K_URL = 'http://192.168.0.3:8000'
+#APOLLO_URL = 'http://192.168.0.3:8085'
+#I5K_URL = 'http://10.11.210.66:8000'
+#APOLLO_URL = 'http://10.11.210.66:8085'
 
 # Celery Settings
 from kombu import Exchange, Queue

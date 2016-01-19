@@ -3,15 +3,6 @@ from hmmer import views
 #from .api import *
 from rest_framework.routers import DefaultRouter
 
-'''
-router = DefaultRouter()
-router.register(r'organism', OrganismViewSet)
-router.register(r'seqtype', SequenceTypeViewSet)
-router.register(r'blastdb', BlastDbViewSet)
-router.register(r'seq', SequenceViewSet)
-router.register(r'task', BlastQueryRecordViewSet)
-router.register(r'user', UserViewSet)
-'''
 urlpatterns = patterns('',
     # ex: /blast/
     url(r'^$', views.create, name='create'),
@@ -24,4 +15,5 @@ urlpatterns = patterns('',
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^api-docs/', include('rest_framework_swagger.urls')),
     url('^user-tasks/(?P<user_id>[0-9]+)$', views.user_tasks),
+    url('manual/', views.manual, name='manual'),
 )

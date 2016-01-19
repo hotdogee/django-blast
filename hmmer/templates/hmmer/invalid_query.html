@@ -3,8 +3,8 @@
 {% block content %}
 
 <h2>Invalid Query</h2>
-<h3>Please input query sequence and choose organism. <a href="{% url 'hmmer:create' %}">Try again.</a></h3>
-
+<h3>{% if title %}{{title}}.{% else %} Please input query sequence and choose organism. {% endif %} <a href="{% url 'hmmer:create' %}">Try again.</a></h3>
+{% autoescape off %}<p>{{info}}</p>{% endautoescape %}
 {% endblock %}
 
 
