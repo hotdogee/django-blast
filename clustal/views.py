@@ -18,7 +18,7 @@ from clustal.models import ClustalQueryRecord
 import os
 
 def manual(request):
-    return render(request, 'clustal/manual.html', {})
+    return render(request, 'clustal/manual.html', {'title':'Clustal Manual'})
 
 def create(request, iframe=False):
     #return HttpResponse("BLAST Page: create.")

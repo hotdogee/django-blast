@@ -19,7 +19,7 @@ import os
 from subprocess import Popen, PIPE
 
 def manual(request):
-    return render(request, 'hmmer/manual.html',{}) 
+    return render(request, 'hmmer/manual.html',{'title':'HMMER Manaul'}) 
 
 def create(request):
     if request.method == 'GET':
