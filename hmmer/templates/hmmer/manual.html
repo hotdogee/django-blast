@@ -6,34 +6,34 @@
 {% endblock %}
 {% block content %}
 
-
+<center><h1><b>HMMER Tutorial</b><h1></center>
 <h2>HMMER: biosequence analysis using profile hidden Markov models</h2>
-<p>Reference: <a href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a></p>
-<h3>Introduction</h3>
+<p><a href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a></p>
 <p>HMMER is used for searching sequence databases for homologs of protein sequences, and for making protein sequence alignments. It implements methods using probabilistic models called profile hidden Markov models (profile HMMs).<p>
-<p>HMMER can be used to search sequence databases with single query sequences (phmmer) and an alignment of multiple instances of a sequence family (hmmsearch). It provides significantly accurate and more able to detect remote homologs because of the strength of its underlying mathematical models.<p>
+<p>Compared to BLAST, FASTA, and other sequence alignment and database search tools based on older scoring methodology, HMMER aims to be significantly more accurate and more able to detect remote homologs because of the strength of its underlying mathematical models.<p>
+<p>Take a look at the HMMER manual for more detailed information.
 <br>
-<h3>i5K-HMMER Tutorial</h3>
-<p>In this tutorial, we explain some of the features of the HMMER site.<p>
-<p>To begin, navigate to the HMMER site via the bar, or go directly to <a href="http://i5k.nal.usda.gov/hmmer/">http://i5k.nal.usda.gov/hmmer/</a> <p>
+<br>
+<p>In this tutorial, we explain some of the features of the HMMER web application.<p>
+<p>To begin, navigate to the HMMER web application via the bar, or go directly to <a href="http://i5k.nal.usda.gov/hmmer/">http://i5k.nal.usda.gov/hmmer/</a> <p>
 <p>Under the 'Organism menu', select one or several organisms that you would like to search against. Then, select which database should be searched. Unlike BLAST, available databases only include protein sequences predicted from the genome.<p>
 <img src={% static 'hmmer/images/hmmer_p1.jpg' %} style="border:1px groove;width:600px;height:600px">
 <p><br>
 <p><br>
 
 <p>Paste your query sequence into the 'Query Sequence' field, or load it from disk. <p>
-<p>Program phmmer only accepts fasta file as query input, so it's not avaiable when input file is not fasta. However, program hmmsearch accept several different formats of multiple sequence alignment(also include fasta), format will be checked after submitting job.<p>
-<p>Fasta as the input file.  Phmmer and Hmmsearch are both avaiable.<p>
+<p>Program phmmer only accepts fasta files as query input, so it's not avaiable when then input file is not in fasta format. However, the program hmmsearch accepts several different formats of multiple sequence alignment(which also include fasta). The format will be checked after submitting the query.<p>
+<p>In this example, the query is in fasta format.  Phmmer and Hmmsearch are both avaiable.<p>
 <img src={% static 'hmmer/images/hmmer_p2.jpg' %} style="border:1px groove;width:600px;height:600px">
 <p><br>
 <p><br>
 
-<p>When CLUSTAL MSA format as input type and phmmer is greyed out.<p>
+<p>In this example, the query is in CLUSTAL MSA format, and phmmer is greyed out (not available).<p>
 <img src={% static 'hmmer/images/hmmer_p3.jpg' %} style="border:1px groove;width:600px;height:600px">
 <p><br>
 <p><br>
 
-<p>Once the correct HMMER program is selected, choosing parameters which are suitable for individual condition. Hit the 'Search' button when finished.<p>
+<p>Once the correct HMMER program is selected, you can customize the parameters for your search. Hit the 'Search' button when finished.<p>
 <img src={% static 'hmmer/images/hmmer_p4.jpg' %} style="border:1px groove;width:600px;height:600px">
 <p><br>
 <p><br>
@@ -44,13 +44,13 @@
 <p><br>
 
 <p>When the HMMER program has finished, your results will be displayed.<p>
-<p>In 'Download' could download input file, HMMER result (showed in 'Details Report') and submission details including parameters used in this job. <p>
-<p>In 'Details Reports', reports are separated into independent sections by protein datasets. Use the drop-down list to navigate among them.i<p>
+<p>In 'Download' you can download the input file, the HMMER result (showed in 'Report Details') and the submission details including parameters used in this job. <p>
+<p>In 'Report Details', reports are separated into independent sections by protein datasets. Use the drop-down list to navigate among them.i<p>
 <img src={% static 'hmmer/images/hmmer_p6.jpg' %} style="border:1px groove;width:600px;height:600px">
 <p><br>
 <p><br>
 
-<p>If having user account of I5K workspace, you can review your jobs by<p> 
+<p>If you have a user account for the I5K workspace, you can review your jobs by clicking 'Queries' tab.<p> 
 <img src={% static 'hmmer/images/hmmer_p7.jpg' %} style="border:1px groove;width:800px;height:400px">
 <p><br>
 {% endblock %}

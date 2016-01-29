@@ -128,15 +128,16 @@ def create(request):
 
             args_list = []
             if (request.POST['program'] == 'hmmsearch'):
-                args_list.append(['hmmbuild', '--amino', '-o', 'hmm.sumary', query_filename + '.hmm', query_filename])
+                args_list.append(['hmmbuild', '--amino', '-o', 'hmm.sumary', os.path.basename(query_filename) + '.hmm', os.path.basename(query_filename)])
                 for idx, db in enumerate(db_list.split()):
-                    args_list.append(['hmmsearch', '-o', str(idx) + '.out'] + option_params + [query_filename + '.hmm',
+                    args_list.append(['hmmsearch', '-o', str(idx) + '.out'] + option_params + [os.path.basename(query_filename) + '.hmm',
                                                                                                os.path.basename(db)])
             else:
                 for idx, db in enumerate(db_list.split()):
                     args_list.append(
-                        ['phmmer', '-o', str(idx) + '.out'] + option_params + [query_filename, os.path.basename(db)])
+                            ['phmmer', '-o', str(idx) + '.out'] + option_params + [os.path.basename(query_filename), os.path.basename(db)])
 
+            print args_list
             run_hmmer_task.delay(task_id, args_list, file_prefix)
 
             return redirect('hmmer:retrieve', task_id)
