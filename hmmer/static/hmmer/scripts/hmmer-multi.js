@@ -201,7 +201,7 @@ $(function() { // document ready
 		} else if (qtype == 'fasta') {
 			$('.enter-query-text').html('Your sequence is detected as fasta:');
 		} else if (qtype == 'msa'){
-			$('.enter-query-text').html('Your sequence is not detected a fasta (phmmer disabled):');
+			$('.enter-query-text').html('Your sequence is not detected as fasta (phmmer disabled):');
 		}
 		chooseProgram();
 	}
