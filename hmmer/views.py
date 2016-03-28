@@ -7,21 +7,32 @@ from django.conf import settings
 from django.core.cache import cache
 from uuid import uuid4
 from os import path, makedirs, chmod
+import os
 from .tasks import run_hmmer_task
+from .models import HmmerQueryRecord, HmmerDB
 from datetime import datetime, timedelta
 from pytz import timezone
+from django.utils.timezone import localtime, now
 import json
 import traceback
 import stat as Perm
 from itertools import groupby
-from hmmer.models import HmmerQueryRecord, HmmerDB
-import os
 from subprocess import Popen, PIPE
 
 def manual(request):
+    '''
+    Manual page of Hmmer
+    '''
     return render(request, 'hmmer/manual.html',{'title':'HMMER Manaul'}) 
 
 def create(request):
+    '''
+    Main page of Hmmer
+    Use hmmsearch fast mode for format validation
+
+    Input limitation:
+    (1). Phmmer, Max number of query sequences: 10 sequences
+    '''
     if request.method == 'GET':
         hmmerdb_list = sorted([['Protein', "Protein", db.title, db.organism.display_name, db.description] for db in
                                HmmerDB.objects.select_related('organism').filter(is_shown=True)],
@@ -30,10 +41,14 @@ def create(request):
                                     groupby(sorted(hmmerdb_list, key=lambda x: x[0]), key=lambda x: x[0])])
 
 
+        '''
+        Redirect from clustal result
+        '''
         clustal_content = []
         if ("clustal_task_id" in request.GET):
-            clustal_aln = path.join(settings.MEDIA_ROOT, 'clustal', 'task', request.GET['clustal_task_id'],
-                                     request.GET['clustal_task_id'] + ".aln")
+            clustal_aln = path.join(settings.MEDIA_ROOT, 'clustal', 
+                                    'task', request.GET['clustal_task_id'],
+                                    request.GET['clustal_task_id'] + ".aln")
 
             with open(clustal_aln, 'r') as content_file:
                 for line in content_file:
@@ -45,6 +60,7 @@ def create(request):
             'hmmerdb_type_counts': hmmerdb_type_counts,
             'clustal_content': "".join(clustal_content),
         })
+
     elif request.method == 'POST':
         # setup file paths
 
@@ -56,9 +72,9 @@ def create(request):
             makedirs(task_dir)
 
         chmod(task_dir,
-              Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)  # ensure the standalone dequeuing process can open files in the directory
+              Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)  
+        # ensure the standalone dequeuing process can open files in the directory
         # change directory to task directory
-        #os.chdir(task_dir)
 
         if 'query-file' in request.FILES:
             query_filename = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, request.FILES['query-file'].name)
@@ -73,7 +89,8 @@ def create(request):
             return render(request, 'hmmer/invalid_query.html', {'title': '', })
 
         chmod(query_filename,
-              Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)  # ensure the standalone dequeuing process can access the file
+              Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO)  
+        # ensure the standalone dequeuing process can access the file
 
 
         if(request.POST['program'] == 'phmmer'):
@@ -81,14 +98,25 @@ def create(request):
                 qstr = f.read()
                 if(qstr.count('>') > 10):
                     os.remove(query_filename)
-                    return render(request, 'hmmer/invalid_query.html', {'title': 'Phmmer, Max number of query sequences: 10 sequences', }) 
+                    return render(request, 'hmmer/invalid_query.html', 
+                            {'title': 'Phmmer, Max number of query sequences: 10 sequences', }) 
 
+        '''
+        Format validation by hmmsearch fast mode
+        If the machine can't perform it in short time, it could be marked.
+        But you need find a good to check format in front-end
+        '''
         if(request.POST['program'] == 'hmmsearch'):
-            p = Popen(["hmmbuild","--fast", '--amino', path.join(settings.MEDIA_ROOT, 'hmmer', 'task',  "hmmbuild.test"), query_filename], stdout=PIPE, stderr=PIPE)
+            p = Popen(["hmmbuild","--fast", '--amino', 
+                      path.join(settings.MEDIA_ROOT, 'hmmer', 'task',  "hmmbuild.test"), query_filename], 
+                      stdout=PIPE, stderr=PIPE)
             p.wait()
             result = p.communicate()[1]
             if(result != ''):
-                return render(request, 'hmmer/invalid_query.html', {'title': 'Invalid MSA format', 'info' :'<a href="http://toolkit.tuebingen.mpg.de/reformat/help_params#format" target="_blank"> Valid MSA format descriptions </a>' })
+                return render(request, 'hmmer/invalid_query.html', 
+                             {'title': 'Invalid MSA format', 
+                              'info' :'<a href="http://toolkit.tuebingen.mpg.de/reformat/help_params#format" target="_blank"> \
+                                      Valid MSA format descriptions </a>' })
 
 
         # build hmmer command
@@ -117,27 +145,32 @@ def create(request):
             record.save()
 
             # generate status.json for frontend statu checking
-            with open(query_filename, 'r') as f:  # count number of query sequence by counting '>'
+            with open(query_filename, 'r') as f:
                 qstr = f.read()
                 seq_count = qstr.count('>')
                 if (seq_count == 0):
                     seq_count = 1
                 with open(path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, 'status.json'), 'wb') as f:
                    json.dump({'status': 'pending', 'seq_count': seq_count,
-                               'db_list': [db[db.rindex('/') + 1:] for db in db_list.split(' ')], 'program':request.POST['program'], 'params':option_params, 'input':os.path.basename(query_filename)}, f)
+                               'db_list': [db[db.rindex('/') + 1:] for db in db_list.split(' ')], 
+                               'program':request.POST['program'], 
+                               'params':option_params, 
+                               'input':os.path.basename(query_filename)}, f)
 
             args_list = []
             if (request.POST['program'] == 'hmmsearch'):
-                args_list.append(['hmmbuild', '--amino', '-o', 'hmm.sumary', os.path.basename(query_filename) + '.hmm', os.path.basename(query_filename)])
+                #hmmsearch
+                args_list.append(['hmmbuild', '--amino', '-o', 'hmm.sumary', 
+                    os.path.basename(query_filename) + '.hmm', os.path.basename(query_filename)])
                 for idx, db in enumerate(db_list.split()):
-                    args_list.append(['hmmsearch', '-o', str(idx) + '.out'] + option_params + [os.path.basename(query_filename) + '.hmm',
-                                                                                               os.path.basename(db)])
+                    args_list.append(['hmmsearch', '-o', str(idx) + '.out'] 
+                            + option_params + [os.path.basename(query_filename) + '.hmm', os.path.basename(db)])
             else:
+                #phmmer
                 for idx, db in enumerate(db_list.split()):
-                    args_list.append(
-                            ['phmmer', '-o', str(idx) + '.out'] + option_params + [os.path.basename(query_filename), os.path.basename(db)])
+                    args_list.append(['phmmer', '-o', str(idx) + '.out'] 
+                            + option_params + [os.path.basename(query_filename), os.path.basename(db)])
 
-            print args_list
             run_hmmer_task.delay(task_id, args_list, file_prefix)
 
             return redirect('hmmer:retrieve', task_id)
@@ -146,44 +179,56 @@ def create(request):
 
 
 def retrieve(request, task_id='1'):
+    '''
+    Retrieve output fo Hmmer tasks
+    '''
     try:
         r = HmmerQueryRecord.objects.get(task_id=task_id)
         # if result is generated and not expired
         if r.result_date and (r.result_date.replace(tzinfo=None) >= (datetime.utcnow() + timedelta(days=-7))):
-            file_prefix = path.join(settings.MEDIA_URL, 'hmmer', 'task', task_id, task_id + ".merge")
+            url_base_prefix = path.join(settings.MEDIA_URL, 'hmmer', 'task', task_id)
+            dir_base_prefix = path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id)
+            url_prefix = path.join(url_base_prefix, task_id)
+            dir_prefix = path.join(dir_base_prefix, task_id)
 
-            os.chdir(path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id))
-            with open('status.json', 'r') as f:
+            with open(path.join(dir_base_prefix, 'status.json'), 'r') as f:
                 statusdata = json.load(f)
                 db_list = statusdata['db_list']
-                file_in = path.join(settings.MEDIA_URL, 'hmmer', 'task', task_id, statusdata['input'])
+                file_in = path.join(url_base_prefix, statusdata['input'])
 
-            out = []
+            out_txt = []
             report = ["<br>"]
 
-            with open(path.join(settings.MEDIA_ROOT, 'hmmer', 'task', task_id, task_id + ".merge"),
-                      'r') as content_file:
-                for line in content_file:
-                    line = line.rstrip('\n')
-                    if line == '[ok]':
-                        out.append(''.join(report).replace(' ', '&nbsp;'))
-                        report = ["<br>"]
-                    else:
-                        report.append(line + "<br>")
+            #10mb limitation
+            if path.isfile(dir_prefix + '.merge') and path.getsize(dir_prefix + '.merge') > 1024 * 10:
+                out_txt = 'The Hmmer reports exceed 10 Megabyte, please download it.'
+                isExceed = True
+            else:
+                isExceed = False
+                #'[ok]' is the end line of each hmmer output (delimiter for different dbs)
+                with open(dir_prefix + ".merge", 'r') as content_file:
+                    for line in content_file:
+                        line = line.rstrip('\n')
+                        if line == '[ok]':
+                            out_txt.append(''.join(report).replace(' ', '&nbsp;'))
+                            report = ["<br>"]
+                        else:
+                            report.append(line + "<br>")
 
             if r.result_status in set(['SUCCESS', ]):
                 return render(
                     request,
                     'hmmer/result.html', {
                         'title': 'HMMER Result',
-                        'output': file_prefix,
-                        'status': path.join(settings.MEDIA_URL, 'hmmer', 'task', task_id, 'status.json'),
+                        'output': url_prefix + '.merge',
+                        'status': path.join(url_base_prefix, 'status.json'),
                         'input': file_in,
-                        'options': db_list,
-                        'report': out,
+                        'options': db_list, #for interation in result page
+                        'report': out_txt,
                         'task_id': task_id,
+                        'isExceed': isExceed
                     })
-            else:  # if .csv file size is 0, no hits found
+            else:
                 return render(request, 'hmmer/results_not_existed.html',
                               {
                                   'title': 'No Hits Found',
@@ -259,7 +304,6 @@ def user_tasks(request, user_id):
     Return tasks performed by the user.
     """
     if request.method == 'GET':
-        records = HmmerQueryRecord.objects.filter(user__id=user_id)
+        records = HmmerQueryRecord.objects.filter(user__id=user_id, result_date__gt=(localtime(now())+ timedelta(days=-7)))
         serializer = UserHmmerQueryRecordSerializer(records, many=True)
-        print serializer.data
         return JSONResponse(serializer.data)

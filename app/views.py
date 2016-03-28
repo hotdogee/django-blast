@@ -59,14 +59,47 @@ def ajax_login_required(view_func):
             return view_func(request, *args, **kwargs)
         return HttpResponse(json.dumps({ 'invalid_request': True }), content_type='application/json')
     return wrapper
-    
+
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+
+        import urllib2
+        import cookielib
+        import json
+        import i5k.settings
+
+        def _get_url_request(url):
+            req = urllib2.Request(url)
+            req.add_header('Content-Type', 'application/json')
+            return req
+
+        def _get_url_open():
+            cookies = cookielib.LWPCookieJar()
+            handlers = [
+                urllib2.HTTPHandler(),
+                urllib2.HTTPSHandler(),
+                urllib2.HTTPCookieProcessor(cookies)
+                ]
+            opener = urllib2.build_opener(*handlers)
+            return opener
+
         if form.is_valid():
             new_user = form.save();
             new_user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
             if new_user is not None:
+                
+                data = {"firstName" : form.cleaned_data['first_name'], "lastName" : form.cleaned_data['last_name'],
+                        "email": form.cleaned_data['email'], "new_password" : form.cleaned_data['password1'], "role" : "USER"}
+                data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
+
+                req = _get_url_request(i5k.settings.APOLLO_URL+'/apollo/user/createUser')
+                opener = _get_url_open()
+                response = opener.open(req, json.dumps(data))
+                result = json.loads(response.read())
+
+                opener.close()
+
                 login(request, new_user)
             return HttpResponseRedirect(reverse('dashboard'))
     else:

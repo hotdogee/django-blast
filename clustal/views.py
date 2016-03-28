@@ -8,24 +8,28 @@ from django.core.cache import cache
 from uuid import uuid4
 from os import path, makedirs, chmod
 from .tasks import run_clustal_task
+from .models import ClustalQueryRecord
 from datetime import datetime, timedelta
 from pytz import timezone
-from os.path import basename
+from django.utils.timezone import localtime, now
 import json
 import traceback
 import stat as Perm
-from clustal.models import ClustalQueryRecord
-import os
 
 def manual(request):
+    '''
+    Manual page of Clustal
+    '''
     return render(request, 'clustal/manual.html', {'title':'Clustal Manual'})
 
-def create(request, iframe=False):
-    #return HttpResponse("BLAST Page: create.")
+def create(request):
+    '''
+    Main page of Clustal
+    * Max number of query sequences: 600 sequences
+    '''
     if request.method == 'GET':
         return render(request, 'clustal/main.html', {
             'title': 'Clustal Query',
-            'iframe': iframe
         })
     elif request.method == 'POST':
         # setup file paths
@@ -35,9 +39,9 @@ def create(request, iframe=False):
         file_prefix = path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id)
         if not path.exists(task_dir):
             makedirs(task_dir)
-        chmod(task_dir, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can open files in the directory
+        chmod(task_dir, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) 
+        # ensure the standalone dequeuing process can open files in the directory
         # change directory to task directory
-        #os.chdir(task_dir)
 
         query_filename = ''
         if 'query-file' in request.FILES:
@@ -52,14 +56,18 @@ def create(request, iframe=False):
         else:
             return render(request, 'clustal/invalid_query.html', {'title': '',})
 
-        chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) # ensure the standalone dequeuing process can access the file
+        chmod(query_filename, Perm.S_IRWXU | Perm.S_IRWXG | Perm.S_IRWXO) 
+        # ensure the standalone dequeuing process can access the file
 
-        with open(query_filename, 'r') as f: # count number of query sequence by counting '>'
+        # count number of query sequence by counting '>'
+        with open(query_filename, 'r') as f:
             qstr = f.read()
             seq_count = qstr.count('>')
             if(seq_count > 600):
-                return render(request, 'clustal/invalid_query.html', {'title': 'Clustal: Max number of query sequences: 600 sequences.',})
+                return render(request, 'clustal/invalid_query.html', 
+                        {'title': 'Clustal: Max number of query sequences: 600 sequences.',})
 
+        is_color = False
         # check if program is in list for security
         if request.POST['program'] in ['clustalw','clustalo']:
 
@@ -67,11 +75,11 @@ def create(request, iframe=False):
             args_list = []
 
             if request.POST['program'] == 'clustalw':
+                #clustalw
                 option_params.append("-type="+request.POST['sequenceType'])
 
                 #parameters setting for full option or fast option
                 if request.POST['pairwise'] == "full":
-                    #option_params.append('-TREE')
                     if request.POST['sequenceType'] == "dna":
                         if request.POST['PWDNAMATRIX'] != "":
                             option_params.append('-PWDNAMATRIX='+request.POST['PWDNAMATRIX'])
@@ -132,14 +140,17 @@ def create(request, iframe=False):
                         option_params.append('-CLUSTERING='+request.POST['protein-CLUSTERING'])
 
                 #parameters setting of  Output
+                is_color = True if request.POST['OUTPUT'] == 'clustal' else False
                 option_params.append('-OUTPUT='+request.POST['OUTPUT'])
                 option_params.append('-OUTORDER='+request.POST['OUTORDER'])
 
                 args_list.append(['clustalw2', '-infile='+query_filename,
-                                  '-OUTFILE='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+'.aln'), '-type=protein'])
+                                  '-OUTFILE='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+'.aln'),
+                                  '-type=protein'])
 
                 args_list_log = []
-                args_list_log.append(['clustalw2', '-infile='+os.path.basename(query_filename), '-OUTFILE='+task_id+'.aln', '-type=protein'])
+                args_list_log.append(['clustalw2', '-infile='+path.basename(query_filename), 
+                                     '-OUTFILE='+task_id+'.aln', '-type=protein'])
 
             else:
                 #clustalo
@@ -158,14 +169,19 @@ def create(request, iframe=False):
                     option_params.append("--max-hmm-iterations="+request.POST['max_hmm_iter'])
                 if request.POST['omega_output'] != "":
                     option_params.append("--outfmt="+request.POST['omega_output'])
+                    is_color = True if request.POST['omega_output'] == 'clu' else False
                 if request.POST['omega_order'] != "":
                     option_params.append("--output-order="+request.POST['omega_order'])
-
-                args_list.append(['clustalo', '--infile='+query_filename,'--guidetree-out='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id)+'.ph',
-                                  '--outfile='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id)+'.aln'] + option_params)
+ 
+                args_list.append(['clustalo', '--infile='+query_filename,
+                                  '--guidetree-out='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id)+'.ph',
+                                  '--outfile='+path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id)+'.aln'] 
+                                  + option_params)
                 
                 args_list_log = []
-                args_list_log.append(['clustalo', '--infile='+os.path.basename(query_filename),'--guidetree-out=' + task_id + '.ph', '--outfile=' + task_id +'.aln'] + option_params)
+                args_list_log.append(['clustalo', '--infile='+path.basename(query_filename),
+                                      '--guidetree-out=' + task_id + '.ph', 
+                                      '--outfile=' + task_id +'.aln'] + option_params)
 
             record = ClustalQueryRecord()
             record.task_id = task_id
@@ -173,15 +189,16 @@ def create(request, iframe=False):
                 record.user = request.user
             record.save()
 
-            # generate status.json for frontend statu checking
+            # generate status.json for frontend status checking
             with open(query_filename, 'r') as f: # count number of query sequence by counting '>'
                 qstr = f.read()
                 seq_count = qstr.count('>')
                 if (seq_count == 0):
                     seq_count = 1
                 with open(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, 'status.json'), 'wb') as f:
-                    json.dump({'status': 'pending', 'seq_count': seq_count, 'program':request.POST['program'], 'cmd': " ".join(args_list_log[0]), 'query_filename': os.path.basename(query_filename)}, f)
-
+                    json.dump({'status': 'pending', 'seq_count': seq_count, 'program':request.POST['program'], 
+                               'cmd': " ".join(args_list_log[0]), 'is_color': is_color, 
+                               'query_filename': path.basename(query_filename)}, f)
 
             run_clustal_task.delay(task_id, args_list, file_prefix)
 
@@ -190,62 +207,67 @@ def create(request, iframe=False):
             raise Http404
 
 def retrieve(request, task_id='1'):
-    #return HttpResponse("BLAST Page: retrieve = %s." % (task_id))
+    '''
+    Retrieve output of clustal tasks
+    '''
     try:
         r = ClustalQueryRecord.objects.get(task_id=task_id)
         # if result is generated and not expired
         if r.result_date and (r.result_date.replace(tzinfo=None) >= (datetime.utcnow()+ timedelta(days=-7))):
-            file_prefix = path.join(settings.MEDIA_URL, 'clustal', 'task', task_id, task_id)
+            url_base_prefix = path.join(settings.MEDIA_URL, 'clustal', 'task', task_id)
+            dir_base_prefix = path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id)
+            url_prefix = path.join(url_base_prefix, task_id)
+            dir_prefix = path.join(dir_base_prefix, task_id)
 
-
-            os.chdir(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id))
-            with open('status.json', 'r') as f:
+            with open(path.join(dir_base_prefix, 'status.json'), 'r') as f:
                 statusdata = json.load(f)
 
+            #10mb limitation
+            out_txt = []
 
-            #10mb
-            exceed_max_limit = False
-            out = []
-            if(os.path.getsize(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+".aln")) > 1024 * 1024  * 10):
-                report = ["The Alignment file exceeds 10 Megabyte, please download it."]
-                out.append(''.join(report).replace(' ','&nbsp;'))
-                exceed_max_limit = True
+            aln_url = dir_prefix + '.aln'
+            if path.isfile(aln_url):
+                if(path.getsize(aln_url) > 1024 * 1024  * 10):
+                    report = 'The Clustal reports exceed 10 Megabyte, please download it.'
+                    out_txt.append(report)
+                else:
+                    report = ["<br>"]
+                    with open(dir_prefix + '.aln', 'r') as content_file:
+                        for line in content_file:
+                            line = line.rstrip('\n')
+                            report.append(line + "<br>")
+
+                    out_txt.append(''.join(report).replace(' ','&nbsp;'))
             else:
-                report = ["<br>"]
+                return render(request, 'clustal/results_not_existed.html',
+                {
+                    'title': 'Internal Error',
+                    'isError': True,
+                })    
 
-                with open(path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+".aln"), 'r') as content_file:
-                    for line in content_file:
-                        line = line.rstrip('\n')
-                        report.append(line+"<br>")
+            dnd_url, ph_url = None, None
+            query_prefix = path.splitext(statusdata['query_filename'])[0]
+            if path.isfile(path.join(dir_base_prefix,query_prefix + '.dnd')):
+                dnd_url = path.join(url_base_prefix, query_prefix + '.dnd')
 
-                out.append(''.join(report).replace(' ','&nbsp;'))
-
-            dnd_filename = path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, os.path.splitext(statusdata['query_filename'])[0]+'.dnd')
-            if path.isfile(dnd_filename):
-                return_dnd = path.join(settings.MEDIA_URL, 'clustal', 'task', task_id, os.path.splitext(statusdata['query_filename'])[0]+'.dnd')
-            else:
-                return_dnd = None
-
-            ph_filename = path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, task_id+'.ph')
-            if path.isfile(ph_filename):
-                return_ph = file_prefix + '.ph'
-            else:
-                return_ph = None
+            ph_file = path.join(dir_base_prefix + '.ph')
+            if path.isfile(ph_file):
+                ph_url = url_prefix + '.ph'
 
             if r.result_status in set(['SUCCESS']):
                 return render(
                     request,
                     'clustal/result.html', {
                         'title': 'CLUSTAL Result',
-                        'aln': file_prefix+'.aln',
-                        'ph': return_ph,
-                        'dnd': return_dnd,
-                        'status': path.join(settings.MEDIA_URL, 'clustal', 'task', task_id, 'status.json'),
-                        'colorful': True if("=clu" in statusdata['cmd'] and exceed_max_limit == False) else False,
-                        'report': out,
+                        'aln': url_prefix + '.aln',
+                        'ph': ph_url,
+                        'dnd': dnd_url,
+                        'status': path.join(url_base_prefix, 'status.json'),
+                        'colorful': statusdata['is_color'],
+                        'report': out_txt,
                         'task_id': task_id,
                     })
-            else: # if .csv file size is 0, no hits found
+            else:
                 return render(request, 'clustal/results_not_existed.html',
                 {
                     'title': 'No Hits Found',
@@ -277,6 +299,9 @@ def retrieve(request, task_id='1'):
             return HttpResponse(traceback.format_exc())
 
 def status(request, task_id):
+    '''
+    function for front-end to check task status
+    '''
     if request.method == 'GET':
         status_file_path = path.join(settings.MEDIA_ROOT, 'clustal', 'task', task_id, 'status.json')
         status = {'status': 'unknown'}
@@ -316,7 +341,7 @@ def user_tasks(request, user_id):
     Return tasks performed by the user.
     """
     if request.method == 'GET':
-        records = ClustalQueryRecord.objects.filter(user__id=user_id)
+        records = ClustalQueryRecord.objects.filter(user__id=user_id, result_date__gt=(localtime(now()) + timedelta(days=-7)))
         serializer = UserClustalQueryRecordSerializer(records, many=True)
         return JSONResponse(serializer.data)
 

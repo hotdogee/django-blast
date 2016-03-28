@@ -16,6 +16,9 @@
 <p><a href="{{output}}">Hmmer result</a></p>
 <p><a href="{{status}}">Submission Details</a></p>
 <h3>Report Details</h3>
+{% if isExceed %}
+{{report}}
+{% else %}
 <div class="tripal_details">
 <div style="font-family: monospace; font-weight:normal; font-size:12px; padding:6px; margin-top:10px;">
 <div style="font-size:12pt;font-weight:bold;margin-bottom:10px;">
@@ -36,6 +39,8 @@ Jump To Dataset <select id="datasetSelect">
 
 </div>
 </div>
+{% endif %}
+
 {% endblock %}
 
 {% block scripts %}
@@ -52,4 +57,3 @@ Jump To Dataset <select id="datasetSelect">
     });
     </script>
 {% endblock %}
-

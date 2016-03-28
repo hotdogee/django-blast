@@ -26,7 +26,7 @@ $(document).ready(function() {
         });
     }
 
-    function func_timer_new(flag, t_table){
+    function func_timer(flag, t_table){
         if(flag){
             t_table.$('tr.selected').click();
             for(i=0; i<9999; i++){clearInterval(i);}
@@ -89,9 +89,7 @@ $(document).ready(function() {
                 {"data":"groups[,].name"},
                 {"data":"groups[,].name"},
                 {"data":"userId"},
-                //{"data":"availableGroups[,].name"},
                 {"data":"djangoUser"},
-                //{"data":"organismPermissions[,].permissions"},
             ],
             rowId:'userId',
             select: true,
@@ -100,34 +98,38 @@ $(document).ready(function() {
                 "aTargets": [4], // Column to target
                 "mRender": function ( data, type, full ) {
                     text = '';
+                    show_count = 0;
                     var str = data.split(",");
                     for (i = 0; i < str.length; i++){
                         var patt = /GROUP_(\w+)_ADMIN/g;
                         if(patt.test(str[i]) == true){
+                            show_count++;
                             var organism = str[i].split("_")[1];
-                            text += organism + ",";
+                            text += organism + ", ";
                         }
                     }
-                    return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                    return "<a href='#' class='user-info-link' data-content='" + text + "'>"+ show_count+"</a>";
                 }},{
                 "aTargets": [5], // Column to target
                 "mRender": function ( data, type, full ) {
                     text = '';
+                    show_count = 0;
                     var str = data.split(",");
                     for (i = 0; i < str.length; i++){
                         var patt = /GROUP_(\w+)_USER/g;
                         if(patt.test(str[i]) == true){
+                            show_count++
                             var organism = str[i].split("_")[1];
-                            text += organism + ",";
+                            text += organism + ", ";
                         }
                     }
-                    return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                    return "<a href='#' class='user-info-link' data-content='" + text + "'>"+ show_count+"</a>";
                 }},
             ],
             "order": [[ 6, "asc" ]],
             "fnInitComplete": function (oSettings) {
                 loadAllGroups();
-                $('#user-reset-button').click();
+                resetUserDetail();
                 //pre-load data of user list
                 for (i = 0; i < table.column(0, {order:'current'}).data().length; i++){
                     availableUsers[i] = table.column(0, {order:'current'}).data()[i];
@@ -148,13 +150,11 @@ $(document).ready(function() {
     });
 
     $('#userTable').delegate('tbody tr','click',function() {
-        if ( $(this).hasClass('selected') ) {
-            //$(this).removeClass('selected');
-        }
-        else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
+        resetUserDetail();
+
+        if(!$(this).hasClass('selected')){
+            return;
+        } 
 
         $('#user-name').val(table.cell(table.row(this).index(),0).data());
         $('#first-name').val(table.cell(table.row(this).index(),1).data());
@@ -198,14 +198,12 @@ $(document).ready(function() {
         if(typeof(table.row(table.$('tr.selected')).index()) == 'undefined'){
             return;
         }
+
         userId = table.cell(table.row(table.$('tr.selected')).index(),6).data();
         userName = table.cell(table.row(table.$('tr.selected')).index(),0).data();
         groupName = $(this).val();
 
-        alert(table.row(table.$('tr.selected')).index());
-        alert(table.cell(table.row(table.$('tr.selected')).index(),0).data());
-
-        $('.user-group-button').addClass('disabled');
+        //$('.user-group-button').addClass('disabled');
         if($(this).hasClass('btn-success') == true){
             $(this).removeClass('btn-success');
             $(this).addClass('btn-gray');
@@ -217,7 +215,7 @@ $(document).ready(function() {
                 success: function(data){
                     is_usertable_finish_load = false;
                     table.ajax.reload(null, false);
-                    setInterval(function(){func_timer_new(is_usertable_finish_load, table)}, 10);
+                    setInterval(function(){func_timer(is_usertable_finish_load, table)}, 10);
                 }
             });
 
@@ -232,10 +230,9 @@ $(document).ready(function() {
                 success: function(data){
                     is_usertable_finish_load = false;
                     table.ajax.reload(null, false);
-                    setInterval(function(){func_timer_new(is_usertable_finish_load, table)}, 10);
+                    setInterval(function(){func_timer(is_usertable_finish_load, table)}, 10);
                 }
             });
-
         }
     });
 
@@ -273,12 +270,11 @@ $(document).ready(function() {
 
     $('#groupTable').delegate('tbody tr','click',function(){
 
-        if ( $(this).hasClass('selected') ) {
-            //$(this).removeClass('selected');
-        }else {
-            table_group.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
+        $('#group-reset-button').click();
+
+        if(!$(this).hasClass('selected')){
+            return;
+        }         
 
         groupName = table_group.cell(table_group.row(this).index(),0).data();
         var organism = '';
@@ -331,7 +327,7 @@ $(document).ready(function() {
                 success: function(data){
                     is_grouptable_finish_load = false;
                     table_group.ajax.reload(null, false);
-                    setInterval(function(){func_timer_new(is_grouptable_finish_load, table_group)}, 10);
+                    setInterval(function(){func_timer(is_grouptable_finish_load, table_group)}, 10);
                 }
             });
         }
@@ -389,7 +385,7 @@ $(document).ready(function() {
         },
         "columns": [
             {"data":"req_type"},
-            {"data":"oid"},
+            {"data":"oname"},
             {"data":"apply_date"},
             {"data":"apply_note"},
             {"data":"reply_date"},
@@ -402,7 +398,7 @@ $(document).ready(function() {
             "aTargets": [3],
             "mRender": function ( data, type, full ) {
                 if(data != ''){
-                    return "<button  type='button' class='btn btn-default apply-desc-button' data-content='" + data + "'>Desc</button>";
+                    return "<button type='button' class='btn btn-default apply-desc-button' data-content='" + data + "'>Desc</button>";
                 }else{
                     return '';
                 }
@@ -411,7 +407,7 @@ $(document).ready(function() {
             "aTargets": [5],
             "mRender": function ( data, type, full ) {
                 if(data != ''){
-                    return "<button  type='button' class='btn btn-default apply-desc-button' data-content='" + data + "'>Desc</button>";
+                    return "<button type='button' class='btn btn-default apply-desc-button' data-content='" + data + "'>Desc</button>";
                 }else{
                     return '';
                 }
@@ -438,7 +434,7 @@ $(document).ready(function() {
         "columns": [
             {"data":"apollo_name"},
             {"data":"action"},
-            {"data":"oid"},
+            {"data":"oname"},
             {"data":"desc"},
             {"data":"date"},
         ],
@@ -467,24 +463,23 @@ $(document).ready(function() {
 
         $.getJSON(I5K_URL + '/sso/get_my_organism', function(data){
             var items = ["<form action='" + I5K_URL  + "/sso/apollo_connect' id='apollo_connect' target='_blank'><input type='hidden' id='ap_oid' name='oid'/>"];
-                
+            
             if(jQuery.isEmptyObject(data)){
                 items.push("<legend style='font-size:20px; padding-top:20px'>Welcome! please use \"My Request\" to make application. </legend>");
                 items.push("</form>");
                 $(items.join( "" )).appendTo( $("#myOrganism") );
                 return;
             }
-
             $.each( data, function( key, val ) {
+                name = key.split("_")[0];
+                id   = val[2];
+                oid  = key.split("_")[1];
                 if(val[0] == true){
                     box = ""
                     if(val[1] == true){
                         box = "<i class='fa fa-envelope-o'></i>"
                         $('#myOrganismTab').html("My Organism <i class='fa fa-envelope-o'></i>");
                     }
-                    name = key.split("_")[0];
-                    id   = val[2];
-                    oid  = key.split("_")[1];
                     items.push( "<legend style='font-size:20px; padding-top:20px'>" +
                         " <button type='button' class='btn btn-primary'>Owner</button>" +
                         " <button type='button' class='btn btn-success redirect-apollo-bt' oid='" + oid + "'>Launch</button> " + name +
@@ -501,8 +496,6 @@ $(document).ready(function() {
                         "</tr></thead></table></div>"
                         );
                 }else{
-                     name = key.split("_")[0];
-                     id   = val[2];
                      items.push( "<legend style='font-size:20px; padding-top:20px'>" +
                         " <button type='button' class='btn btn-info'>User</button>" +
                         " <button type='button' class='btn btn-success redirect-apollo-bt' oid='" + oid + "'>Launch</button> " + name +
@@ -512,7 +505,7 @@ $(document).ready(function() {
                         );
                 }
             });
-            
+           
             items.push("</form>");
             $( items.join( "" )
             ).appendTo( $("#myOrganism") );
@@ -566,7 +559,6 @@ $(document).ready(function() {
 
 
     $('#myOrganism').delegate('.userlink','click',function(){
-        
         tablename = "table" + $(this).attr('id');
 
         if($('#' + tablename).attr("load") == "none"){
@@ -594,28 +586,32 @@ $(document).ready(function() {
                     "aTargets": [4], // Column to target
                     "mRender": function ( data, type, full ) {
                         text = '';
+                        show_count = 0;
                         var str = data.split(",");
                         for (i = 0; i < str.length; i++){
                             var patt = /GROUP_(\w+)_ADMIN/g;
                             if(patt.test(str[i]) == true){
+                                show_count++;
                                 var organism = str[i].split("_")[1];
-                                text += organism + ",";
+                                text += organism + ", ";
                             }
                         }
-                        return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                        return "<a href='#' class='user-info-link' data-content='" + text + "'>"+ show_count+"</a>";
                     }},{
                     "aTargets": [5], // Column to target
                     "mRender": function ( data, type, full ) {
                         text = '';
+                        show_count = 0;
                         var str = data.split(",");
                         for (i = 0; i < str.length; i++){
                             var patt = /GROUP_(\w+)_USER/g;
                             if(patt.test(str[i]) == true){
+                                show_count++;
                                 var organism = str[i].split("_")[1];
-                                text += organism + ",";
+                                text += organism + ", ";
                             }
                         }
-                        return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                        return "<a href='#' class='user-info-link' data-content='" + text + "'>"+ show_count+"</a>";
                     }},{
                     "aTargets": [7], // Column to target
                     "mRender": function ( data, type, full ) {
@@ -665,28 +661,32 @@ $(document).ready(function() {
                     "aTargets": [4], // Column to target
                     "mRender": function ( data, type, full ) {
                         text = '';
+                        show_count = 0;
                         var str = data.split(",");
                         for (i = 0; i < str.length; i++){
                             var patt = /GROUP_(\w+)_ADMIN/g;
                             if(patt.test(str[i]) == true){
                                 var organism = str[i].split("_")[1];
-                                text += organism + ",";
+                                text += organism + ", ";
+                                show_count++;
                             }
                         }
-                        return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                        return "<a href='#' class='user-info-link' data-content='" + text + "'>"+ show_count+"</a>";
                     }},{
                     "aTargets": [5], // Column to target
                     "mRender": function ( data, type, full ) {
                         text = '';
+                        show_count = 0;
                         var str = data.split(",");
                         for (i = 0; i < str.length; i++){
                             var patt = /GROUP_(\w+)_USER/g;
                             if(patt.test(str[i]) == true){
                                 var organism = str[i].split("_")[1];
-                                text += organism + ",";
+                                text += organism + ", ";
+                                show_count++;
                             }
                         }
-                        return '<a href="' + data  + '" target="_blank">' + text + '</a>';
+                        return "<a href='#' class='user-info-link' data-content='" + text + "'>"+ show_count+"</a>";
                     }},{
                     "aTargets": [7], // Column to target
                     "mRender": function ( data, type, full ) {
@@ -793,6 +793,7 @@ $(document).ready(function() {
         var action = table_request.cell(this.parentElement).data();
         var idx = table_request.row(this.parentElement.parentElement).index();
         var oid  = table_request.cell(idx,2).data();
+        var oname = table_request.cell(idx,0).data();
 
         BootstrapDialog.confirm({
             title: 'Are you sure you want to do that?',
@@ -806,7 +807,7 @@ $(document).ready(function() {
                     $.ajax({
                     type: "POST",
                     url: I5K_URL + '/sso/make_request',
-                    data: { oid: oid , action: action, apply_desc : $('#make-request-note').val()},
+                    data: { oid: oid, oname: oname, action: action, apply_desc : $('#make-request-note').val()},
                     success: function(data){
                         if(jQuery.isEmptyObject(data)){
                             if(is_myInfo_loaded){
@@ -883,11 +884,8 @@ $(document).ready(function() {
         enableUserButtons();
     });
 
-
     $('#user-delete-button').on('click', function(){
-        if(typeof(table.row(table.$('tr.selected')).index()) == 'undefined'){
-            return;
-        }
+        if(typeof(table.row(table.$('tr.selected')).index()) == 'undefined') return;
 
         userId = table.cell(table.row(table.$('tr.selected')).index(),6).data();
         BootstrapDialog.confirm({
@@ -950,8 +948,7 @@ $(document).ready(function() {
     });
 
     $('#user-disconnect-button').on('click', function(){
-        table.ajax.reload();
-        
+        //table.ajax.reload();        
         if(typeof(table.row(table.$('tr.selected')).index()) == 'undefined')return;
 
         userId = table.cell(table.row(table.$('tr.selected')).index(),6).data();
@@ -984,9 +981,16 @@ $(document).ready(function() {
         });
     });
 
-    $('#user-reset-button').on('click', function(){
+    function resetUserDetail(){
         enableUserButtons();
         $('#user-cancel-button').click();
+        $('#user-group-now-group').html('');
+        $('#user-group-avaiable-group').html('');
+    }
+
+    $('#user-reset-button').on('click', function(){
+        resetUserDetail();
+        table.$('tr.selected').removeClass('selected');
     });
 
     function disableUserButtons(){
@@ -1106,7 +1110,7 @@ $(document).ready(function() {
                             is_grouptable_finish_load = false;
                             table_group.ajax.reload(null, false);
                             //timer_groupTable = setInterval(function(){func_timer_groupTable(groupName)}, 10);
-                            setInterval(function(){func_timer_new(is_grouptable_finish_load, table_group)}, 10);
+                            setInterval(function(){func_timer(is_grouptable_finish_load, table_group)}, 10);
 
                             if(jQuery.isEmptyObject(data)){
                                 $('#tags').val('');
@@ -1120,24 +1124,30 @@ $(document).ready(function() {
                 }
             }
         });
-
     });
-
 
     //debounce setting
     var checkDjangoUserProgram = _.debounce(function () {
         disableUserButtons();
-        if($('#django-user-name').val() == ''){
-            enableUserButtons();
-            if($('#group-create-button').val('') == 'Create'){
-                $('#user-update-button').prop('disabled', false);
-                $('#user-delete-button').prop('disabled', false);
-                $('#user-disconnect-button').prop('disabled', false);
+
+        var newfunc = {
+            met1 : function(flag){
+                if($('#django-user-name').val() == '' || flag == true){
+                    if($('#user-create-button').val() == 'Create'){
+                        $('#user-update-button').prop('disabled', false);
+                        $('#user-delete-button').prop('disabled', false);
+                        $('#user-disconnect-button').prop('disabled', false);
+                    }
+                    $('#user-create-button').prop('disabled', false);
+                    $('#user-cancel-button').prop('disabled', false);
+                    $('#check-django-user-icon').removeClass();
+                    return true;
+                }
             }
-            $('#check-django-user-icon').removeClass();
-            return true;
         }
 
+        if(newfunc.met1(false) == true)return;
+        
         $.ajax({
             type: "POST",
             url: I5K_URL + '/sso/check_django_user_available',
@@ -1145,10 +1155,12 @@ $(document).ready(function() {
             success: function(data){
                 $('#check-django-user-icon').removeClass();
                 if(jQuery.isEmptyObject(data)){
+                    newfunc.met1(true);
                     $('#check-django-user-icon').addClass("fa fa-check");
-                    enableUserButtons();
                 }else if('error' in data){
                     $('#check-django-user-icon').addClass("fa fa-close");
+                }else if('empty' in data){
+                    newfunc.met1(true);
                 }
             }
         });
@@ -1212,19 +1224,25 @@ $(document).ready(function() {
         });
     };
 
+    $('#myUser').popover({
+        selector: '.user-info-link', placement: 'auto', container : 'body', trigger : 'hover'
+    });
+
     $('#myOrganism').popover({
-        selector: '.apply-desc-button', placement: 'auto', container : 'body'
+        selector: '.user-info-link', placement: 'auto', container : 'body', trigger : 'hover'
+    });
+
+    $('#myOrganism').popover({
+        selector: '.apply-desc-button', placement: 'auto', container : 'body', trigger: 'focus'
     });
 
     $('#PReq').popover({
-        selector: '.apply-desc-button', placement: 'auto', container : 'body'
+        selector: '.apply-desc-button', placement: 'auto', container : 'body', trigger: 'focus'
     });
 
     $('#myInfo').popover({
-        selector: '.apply-desc-button', placement: 'auto', container : 'body'
+        selector: '.apply-desc-button', placement: 'auto', container : 'body', trigger: 'focus'
     });
-
-
 
     $('#newUser-create-bt').on('click', function(){
         var firstName = $('#apollo-fname').val();
@@ -1289,7 +1307,4 @@ $(document).ready(function() {
             }
         });
     });
-
-
-
-} );
+});

@@ -3,7 +3,7 @@ from .models import PermsRequest, UserMapping
 
 
 class PermsRequestAdmin(admin.ModelAdmin):
-    list_display = ('action', 'oid', 'user_apply', 'status', 'apply_date', 'apply_desc', 'reply_desc','user_reply', 'end_date')
+    list_display = ('action', 'oid', 'oname', 'user_apply', 'status', 'apply_date', 'apply_desc', 'reply_desc','user_reply', 'end_date')
 
 class UserMappingAdmin(admin.ModelAdmin):
     list_display = ('apollo_user_id', 'apollo_user_name', 'apollo_user_pwd', 'django_user', 'last_date')

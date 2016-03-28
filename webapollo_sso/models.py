@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class PermsRequest(models.Model):
     action = models.CharField(max_length=100)
     oid = models.IntegerField()
+    oname = models.CharField(max_length=100)
     user_apply = models.ForeignKey(User, related_name='user_apply')
     apply_date = models.DateTimeField(auto_now_add=True)
     apply_desc = models.CharField(max_length=120, blank=True)

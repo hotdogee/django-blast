@@ -51,7 +51,6 @@ def run_clustal_task(task_id, args_list, file_prefix):
     for args in args_list:
         p = Popen(args, stdout=FNULL, stderr=PIPE)
         p.wait()
-        print(p.communicate())
 
     # generate status.json for frontend status checking
     if not path.isfile(file_prefix + '.aln'):

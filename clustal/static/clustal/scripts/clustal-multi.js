@@ -89,8 +89,8 @@ $(function() { // document ready
 
 		// note that the empty string is caught above
 		// allow for Selenocysteine (U)
-		if(/^[ATCGU*\s]+$/i.test(fasta)){return 1;}
-		if(/^[ABCDEFGHIKLMNPQRSTVWXYZ*\s]+$/i.test(fasta)){return 2;}
+		if(/^[ATCGUN*\s]+$/i.test(fasta)){return 1;}
+		if(/^[ABCDEFGHIKLMNPQRSTVWXYZN*\s]+$/i.test(fasta)){return 2;}
 		return 3;
 	}
 

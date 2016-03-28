@@ -40,6 +40,7 @@
                                 <li><a href="{% url 'hmmer:create' %}">HMMER</a></li>
                                 <li><a href="{% url 'clustal:create' %}">CLUSTAL</a></li>
                                 <li><a href="{% url 'migrate_account:index' %}">MIGRATE_ACCT</a>
+                                <!--                <li><a href="{% url 'sso:create' %}">SSO</a> -->
                         </ul>
                     </li>
                     <!-- <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li> -->
@@ -65,7 +66,7 @@
 {% block content %}{% endblock %}
             <hr/>
             <footer>
-                <p>{{ year|default:"2015" }} - National Agricultural Library</p>
+                <p>{{ year|default:"2016" }} - National Agricultural Library</p>
             </footer>
         </div>
 {% endblock %}

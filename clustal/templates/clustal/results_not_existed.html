@@ -6,7 +6,10 @@
 {% endblock %}
 
 {% block content %}
-{% if isNoHits %}
+{% if isError %}
+<h2>Internal Error</h2>
+<h3>The task didn't execute properly. please <a href="../clustal">try later.</a></h3>
+{% elif isNoHits %}
 <h2>No Hits Found</h2>
 <h3>No hits found on your query. <a href="../clustal">Try another.</a></h3>
 {% elif isExpired %}
