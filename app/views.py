@@ -20,6 +20,28 @@ from .forms import InfoChangeForm, SetInstitutionForm, RegistrationForm
 from .models import Profile
 from social.apps.django_app.default.models import UserSocialAuth
 
+#weblogin/weblogout for tripal
+def web_login(request):
+    try:
+        if request.user.is_authenticated() == True:
+            return HttpResponse(json.dumps({'user':request.user.username}), content_type="application/json")
+
+        userdata = json.loads(request.body)
+        username = userdata['username']
+        password = userdata['password']
+        user = authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            login(request, user)
+            return HttpResponse(json.dumps({}), content_type="application/json")
+        else:
+            return HttpResponse(json.dumps({'error':'login failed'}), content_type="application/json")
+    except:
+        return HttpResponse(json.dumps({'error':'login failed'}), content_type="application/json")
+
+def web_logout(request):
+    logout(request)
+    return HttpResponse(json.dumps({}), content_type="application/json")
+
 def home(request):
     assert isinstance(request, HttpRequest)
     return render(

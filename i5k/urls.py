@@ -12,6 +12,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
+    url(r'^web_login$', 'app.views.web_login', name='web_login'),
+    url(r'^web_logout$', 'app.views.web_logout', name='web_logout'),
     url(r'^home$', 'dashboard.views.dashboard', name='dashboard'),
     #url(r'^home/', include('dashboard.urls', namespace='dashboard')),
     #url(r'^contact$', 'app.views.contact', name='contact'),
