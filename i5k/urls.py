@@ -5,10 +5,15 @@ from app.forms import BootstrapAuthenticationForm, BootStrapPasswordChangeForm, 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.contrib.sites.models import Site
+from django.contrib.auth.views import login
+from django.contrib.auth.decorators import user_passes_test
+
 admin.autodiscover()
 #admin.site.unregister(Site)
 
 #from filebrowser.sites import site
+
+login_forbidden =  user_passes_test(lambda u: u.is_anonymous(), '/home')
 
 urlpatterns = patterns('',
     # Examples:
@@ -31,7 +36,8 @@ urlpatterns = patterns('',
     url(r'^info_change$', 'app.views.info_change', name='info_change'),
     url(r'^register$', 'app.views.register', name='register'),
     url(r'^login/$',
-        'django.contrib.auth.views.login',
+        #'django.contrib.auth.views.logini',
+        login_forbidden(login),
         {
             'template_name': 'app/login.html',
             'authentication_form': BootstrapAuthenticationForm,

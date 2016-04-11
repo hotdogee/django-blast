@@ -22,21 +22,24 @@ from social.apps.django_app.default.models import UserSocialAuth
 
 #weblogin/weblogout for tripal
 def web_login(request):
-    try:
+
         if request.user.is_authenticated() == True:
             return HttpResponse(json.dumps({'user':request.user.username}), content_type="application/json")
-
-        userdata = json.loads(request.body)
-        username = userdata['username']
-        password = userdata['password']
+        
+        print request.COOKIES
+        username = request.GET['username']
+        password = request.GET['password']
+        #userdata = json.loads(request.body)
+        #username = userdata['username']
+        #password = userdata['password']
         user = authenticate(username=username, password=password)
         if user is not None and user.is_active:
             login(request, user)
-            return HttpResponse(json.dumps({}), content_type="application/json")
+            print request.session._session_key
+            return HttpResponse(json.dumps({'sessionid': request.session._session_key}), content_type="application/json")
+            #return HttpResponse(json.dumps({'sessionid': request.COOKIES['sessionid']}), content_type="application/json")
         else:
             return HttpResponse(json.dumps({'error':'login failed'}), content_type="application/json")
-    except:
-        return HttpResponse(json.dumps({'error':'login failed'}), content_type="application/json")
 
 def web_logout(request):
     logout(request)
@@ -115,7 +118,7 @@ def register(request):
                         "email": form.cleaned_data['email'], "new_password" : form.cleaned_data['password1'], "role" : "USER"}
                 data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
 
-                req = _get_url_request(i5k.settings.APOLLO_URL+'/apollo/user/createUser')
+                req = _get_url_request(i5k.settings.APOLLO_URL+'/user/createUser')
                 opener = _get_url_open()
                 response = opener.open(req, json.dumps(data))
                 result = json.loads(response.read())
