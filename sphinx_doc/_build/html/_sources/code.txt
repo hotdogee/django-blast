@@ -1,0 +1,5 @@
+Auto Generated Documentation
+============================
+
+.. automodule:: homework2
+   :members

@@ -1,0 +1,6 @@
+Pre-requeisites
+===============
+Python modules
+--------------
+1. django
+2. xxxxx
