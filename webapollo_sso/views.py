@@ -20,11 +20,9 @@ _APOLLO_URL = i5k.settings.APOLLO_URL
 def _get_login(request, user_password = None):
     opener = _get_url_open()
     if user_password == None:
-        print request.session['apollo_url']+'/Login?operation=login'
         response = opener.open(_get_url_request(request.session['apollo_url']+'/Login?operation=login'),
                            json.dumps(_get_robot_priviledge()))
     else:
-        print request.session['apollo_url']+'/Login?operation=login'
         response = opener.open(_get_url_request(request.session['apollo_url']+'/Login?operation=login'),
                            json.dumps(user_password))
 
@@ -81,7 +79,6 @@ def create(request):
     2. apollo_user_id: apollo account id
     3. user_type: (1) Admin (2) Users (3) New (don't have apollo account/change passwd)
     '''
-    print i5k.settings.APOLLO_URL
     request.session['apollo_url'] = i5k.settings.APOLLO_URL
 
     try:
@@ -119,7 +116,6 @@ def create(request):
         req = _get_url_request(_APOLLO_URL+'/user/loadUsers')
         response = opener.open(req, json.dumps({"userId" : request.session['apollo_user_id']}))
         users = json.loads(response.read())
-        print len(users)
         request.session['user_type'] = 'ADMIN' if(users[0]['role'] == 'ADMIN') else 'USER'
 
     return render(request, 'webapollo_sso/main.html', {
@@ -274,17 +270,12 @@ def get_my_request(request):
     response = opener.open(req, json.dumps(data))
     user = json.loads(response.read())[0]
    
-    print user['groups']
-
     if('allOrganism' in request.session):
         organisms = request.session['allOrganism']
     else:
         response = opener.open(_APOLLO_URL+'/organism/findAllOrganisms')
         organisms = json.loads(response.read())
-        print organisms
         request.session['allOrganism'] = organisms
-
-    print len(organisms)
 
     my_groups = map(lambda x:x['name'], user['groups'])
 
@@ -820,7 +811,12 @@ def apollo_connect(request):
     #set sookie
     for cookie in cookies:
         if(cookie.name == 'JSESSIONID'):
-            response.set_cookie(key=cookie.name, value=cookie.value, domain=cookie.domain, path=cookie.path, expires=cookie.expires)
+            print cookie.name
+            print cookie.value
+            print cookie.domain
+            print cookie.path
+            print cookie.expires
+            response.set_cookie(key=cookie.name, value=cookie.value, domain=i5k.settings.APOLLO_COOKIE_DOMAIN, path=cookie.path, expires=cookie.expires)
 
     return response
 

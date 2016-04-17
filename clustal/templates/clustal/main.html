@@ -1,5 +1,6 @@
 {% extends "app/layout.html" %}
 {% load staticfiles %}
+{% load pipeline %}
 {% load jsonify %}
 
 {% block head-scripts %}
@@ -13,7 +14,7 @@ body {
 }
 </style>
 {% endif %}
-<link type="text/css" rel="stylesheet" media="all" href="{% static 'clustal/css/main.css' %}" />
+{% stylesheet 'clustal-css' %}
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
@@ -43,10 +44,7 @@ html {overflow-y: scroll;}
 {% endblock %}
 
 {% block scripts %}
-<script src="{% static 'clustal/scripts/underscore-min.js' %}"></script>
-<script src="{% static 'clustal/scripts/jquery.hoverIntent.minified.js' %}"></script>
-<script src="{% static 'clustal/scripts/jquery.validate.min.js' %}"></script>
-<script src="{% static 'clustal/scripts/clustal-multi.js' %}"></script>
+{% javascript 'clustal-js' %}
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 {% endblock %}

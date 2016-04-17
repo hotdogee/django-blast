@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from blast.models import Organism
 from filebrowser.fields import FileBrowseField
 import os.path
+import i5k.settings
 
 class HmmerQueryRecord(models.Model):
     task_id = models.CharField(max_length=32, primary_key=True) # ex. 128c8661c25d45b8-9ca7809a09619db9

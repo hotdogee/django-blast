@@ -38,7 +38,7 @@ TEMPLATES = [
 ]
 
 ALLOWED_HOSTS = (
-    'localhost',
+    '*',
 )
 
 ADMINS = (
@@ -178,6 +178,7 @@ INSTALLED_APPS = (
     # 'userprofile',
     # Uncomment the next line to enable the admin:
     'suit', # Optional, Creative Commons Attribution-NonCommercial 3.0 license
+    #'grappelli',
     'filebrowser',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -186,10 +187,11 @@ INSTALLED_APPS = (
     'captcha',
     'dashboard',
     'proxy',
-    'data',
+    #'data',
     'hmmer',
     'clustal',
-    'webapollo_sso'
+    'webapollo_sso',
+    'drupal_sso'
 )
 
 # deprecated in Django 1.8
@@ -337,12 +339,16 @@ LOGGING = {
 ROBOT_ID = 'R2D2@i5k.org'
 ROBOT_PWD = 'demo'
 
-#I5K_URL = 'http://192.168.0.3:8000'
-#APOLLO_URL = 'http://192.168.0.3:8085'
-I5K_URL = 'http://10.11.210.67:8000'
-APOLLO_URL = 'http://10.11.210.67:8085'
+#APOLLO_URL = 'https://apollo-stage.nal.usda.gov/apollo'
+APOLLO_URL = 'https://gmod-dev.nal.usda.gov/apollo'
+I5K_URL = 'http://gmod-dev.nal.usda.gov/webapp'
+
 #AES key must be either 16, 24, or 32 bytes long
 SSO_CIPHER = '1234567890123456'
+
+DRUPAL_URL = 'https://gmod-dev.nal.usda.gov'
+DRUPAL_COOKIE_DOMAIN=".nal.usda.gov"
+APOLLO_COOKIE_DOMAIN=".nal.usda.gov"
 
 # Celery Settings
 from kombu import Exchange, Queue
@@ -406,68 +412,109 @@ REST_FRAMEWORK = {
 # django-pipeline
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
-PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
-PIPELINE_CSSMIN_BINARY = 'cssmin'
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.JSMinCompressor'
-
-PIPELINE_CSS = {
-    'app-layout': {
-        'source_filenames': (
-            'app/content/site.css',
-            'app/content/bootstrap.min.css',
-        ),
-        'output_filename': 'app/content/app-layout.min.css',
+PIPELINE = {
+    'STYLESHEETS':{
+        'app-layout': {
+            'source_filenames': (
+                'app/content/site.css',
+                'app/content/bootstrap.min.css',
+            ),
+            'output_filename': 'app/content/app-layout.min.css',
+        },
+        'blast-results': {
+            'source_filenames': (
+                'blast/css/codemirror.css',
+                'blast/css/xq-light.css',
+                'blast/css/kendo.common-bootstrap.core.css',
+                'blast/css/kendo.bootstrap.min.css',
+                'blast/css/jquery-ui.min.css',
+                'blast/dataTables/css/jquery.dataTables.min.css',
+                'blast/dataTables/css/dataTables.scroller.min.css',
+                'blast/dataTables/css/dataTables.colReorder.min.css',
+                'blast/dataTables/css/dataTables.bootstrap.css',
+                'blast/css/bootstrap-select.min.css',
+                'blast/css/bootstrap-switch.min.css',
+                'blast/css/blast-results.css',
+            ),
+            'output_filename': 'blast/css/blast-results.min.css',
+        },
+        'clustal-css': {
+            'source_filenames': (
+                'clustal/css/main.css',
+            ),
+            'output_filename': 'clustal/css/clustal-css.min.css',
+        },
+        'hmmer-css' : {
+            'source_filenames': (
+                'hmmer/css/main.css',
+            ),
+            'output_filename': 'hmmer/css/hmmer-css.min.css',
+        },
     },
-    'blast-results': {
-        'source_filenames': (
-            'blast/css/codemirror.css',
-            'blast/css/xq-light.css',
-            'blast/css/kendo.common-bootstrap.core.css',
-            'blast/css/kendo.bootstrap.min.css',
-            'blast/css/jquery-ui.min.css',
-            'blast/dataTables/css/jquery.dataTables.min.css',
-            'blast/dataTables/css/dataTables.scroller.min.css',
-            'blast/dataTables/css/dataTables.colReorder.min.css',
-            'blast/dataTables/css/dataTables.bootstrap.css',
-            'blast/css/bootstrap-select.min.css',
-            'blast/css/bootstrap-switch.min.css',
-            'blast/css/blast-results.css',
-        ),
-        'output_filename': 'blast/css/blast-results.min.css',
+    'JAVASCRIPT': {
+        'app-layout': {
+            'source_filenames': (
+                'app/scripts/jquery-1.11.1.min.js',
+                'app/scripts/bootstrap.js',
+                'app/scripts/respond.js',
+            ),
+            'output_filename': 'app/scripts/app-layout.min.js',
+        },
+        'blast-results': {
+            'source_filenames': (
+                'blast/scripts/chroma.min.js',
+                'blast/scripts/codemirror-compressed.js',
+                'blast/scripts/kendo-hotdogee.js',
+                'blast/scripts/jquery-ui.min.js',
+                'blast/scripts/dragscrollable.js',
+                'blast/dataTables/js/jquery.dataTables-hotdogee.js',
+                'blast/dataTables/js/dataTables.scroller.js',
+                'blast/dataTables/js/dataTables.colReorder.min.js',
+                'blast/dataTables/js/dataTables.tableTools.min.js',
+                'blast/dataTables/js/dataTables.bootstrap.js',
+                'blast/scripts/underscore-min.js',
+                'blast/scripts/backbone-min.js',
+                'blast/scripts/scribl.1.1.5-hotdogee.js',
+                'blast/scripts/bootstrap-select-hotdogee.js',
+                'blast/scripts/bootstrap-switch.min.js',
+                'blast/scripts/blast-results.js',
+            ),
+            'output_filename': 'blast/scripts/blast-results.min.js',
+        },
+        'clustal-js': {
+            'source_filenames': (
+                    'clustal/scripts/underscore-min.js',
+                    'clustal/scripts/jquery.hoverIntent.minified.js',
+                    'clustal/scripts/jquery.validate.min.js',
+                    'clustal/scripts/clustal-multi.js',
+            ),
+            'output_filename': 'clustal/scripts/clustal-js.min.js',
+        },
+        'hmmer-js': {
+            'source_filenames': (
+                    'hmmer/scripts/underscore-min.js',
+                    'hmmer/scripts/jquery.hoverIntent.minified.js',
+                    'hmmer/scripts/jquery.validate.min.js',
+                    'hmmer/scripts/hmmer-multi.js',
+            ),
+            'output_filename': 'hmmer/scripts/hmmer-js.min.js',
+        },
+        'sso-js': {
+            'source_filenames': (
+                    'webapollo_sso/scripts/underscore-min.js',
+                    'webapollo_sso/scripts/sso-datatable.js',
+            ),
+            'output_filename': 'sso/scripts/sso-js.min.js',
+        },       
     },
 }
 
-PIPELINE_JS = {
-    'app-layout': {
-        'source_filenames': (
-            'app/scripts/jquery-1.11.1.min.js',
-            'app/scripts/bootstrap.js',
-            'app/scripts/respond.js',
-        ),
-        'output_filename': 'app/scripts/app-layout.min.js',
-    },
-    'blast-results': {
-        'source_filenames': (
-            'blast/scripts/chroma.min.js',
-            'blast/scripts/codemirror-compressed.js',
-            'blast/scripts/kendo-hotdogee.js',
-            'blast/scripts/jquery-ui.min.js',
-            'blast/scripts/dragscrollable.js',
-            'blast/dataTables/js/jquery.dataTables-hotdogee.js',
-            'blast/dataTables/js/dataTables.scroller.js',
-            'blast/dataTables/js/dataTables.colReorder.min.js',
-            'blast/dataTables/js/dataTables.tableTools.min.js',
-            'blast/dataTables/js/dataTables.bootstrap.js',
-            'blast/scripts/underscore-min.js',
-            'blast/scripts/backbone-min.js',
-            'blast/scripts/scribl.1.1.5-hotdogee.js',
-            'blast/scripts/bootstrap-select-hotdogee.js',
-            'blast/scripts/bootstrap-switch.min.js',
-            'blast/scripts/blast-results.js',
-        ),
-        'output_filename': 'blast/scripts/blast-results.min.js',
-    },
-}
+#PIPELINE['PIPELINE_ENABLED'] = True
+PIPELINE['CSSMIN_BINARY'] = 'cssmin'
+PIPELINE['CSS_COMPRESSOR'] = 'pipeline.compressors.cssmin.CSSMinCompressor'
+PIPELINE['JS_COMPRESSOR']  = 'pipeline.compressors.jsmin.JSMinCompressor'
+
+
 
 # social login settings
 AUTHENTICATION_BACKENDS = (

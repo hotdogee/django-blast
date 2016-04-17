@@ -1,9 +1,9 @@
 {% extends "app/layout.html" %}
-
 {% load staticfiles %}
+{% load pipeline %}
 
 {% block head-scripts %}
-<link type="text/css" rel="stylesheet" media="all" href="{% static 'clustal/css/main.css' %}" />
+{% stylesheet 'clustal-css' %}
 {% endblock %}
 {% block content %}
 

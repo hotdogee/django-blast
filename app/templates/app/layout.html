@@ -1,5 +1,5 @@
 ﻿{% load staticfiles %}
-{% load compressed %}
+{% load pipeline %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{{ title }} | i5k - App{% endblock %}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    {% compressed_css 'app-layout' %}
+    {% stylesheet 'app-layout' %}
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:400,700'>
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Inconsolata:400,700'>
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Tangerine">
@@ -53,6 +53,18 @@
                     {% endif %}
 {% block navbar %}{% endblock %}
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Submit Data<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                                <li><a href="{% url 'tripal_assembly_data' %}">Genome Assembly</a></li>
+                                <li><a href="{% url 'tripal_gene_prediction' %}">Mapped Gene Predictions</a></li>
+                                <li><a href="{% url 'tripal_mapped' %}">Other Mapped features</a></li>
+                        </ul>
+                    </li>
+                    <!-- <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li> -->
+                </ul>
+ 
                 {% if isLoginEnabled %}
                 {% include 'app/loginpartial.html' %}
                 {% endif %}
@@ -72,7 +84,7 @@
 {% endblock %}
     </div>
     
-{% compressed_js 'app-layout' %}
+{% javascript 'app-layout' %}
 {% block scripts %}{% endblock %}
 
 </body>

@@ -10,13 +10,15 @@ from django.contrib.auth.decorators import user_passes_test
 
 admin.autodiscover()
 #admin.site.unregister(Site)
-
 #from filebrowser.sites import site
 
 login_forbidden =  user_passes_test(lambda u: u.is_anonymous(), '/home')
 
 urlpatterns = patterns('',
-    # Examples:
+    
+    url(r'^tripal_assembly_data', 'app.views.tripal_assembly_data', name='tripal_assembly_data'),
+    url(r'^tripal_gene_prediction', 'app.views.tripal_gene_prediction', name='tripal_gene_prediction'),
+    url(r'^tripal_mapped', 'app.views.tripal_mapped', name='tripal_mapped'),
     url(r'^web_login$', 'app.views.web_login', name='web_login'),
     url(r'^web_logout$', 'app.views.web_logout', name='web_logout'),
     url(r'^home$', 'dashboard.views.dashboard', name='dashboard'),
@@ -25,6 +27,8 @@ urlpatterns = patterns('',
     url(r'^about', 'app.views.about', name='about'),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/filebrowser/', include('filebrowser.urls')),
+    #url(r'^admin/filebrowser/', include(site.urls)),
+    #url(r'^grappelli/', include('grappelli.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls'), name='doc'),
     url(r'^captcha/', include('captcha.urls')),
@@ -126,7 +130,7 @@ urlpatterns = patterns('',
     # BLAST
     url(r'^blast/', include('blast.urls', namespace='blast')),
     # BLAST
-    url(r'^data/', include('data.urls', namespace='data')),
+    #url(r'^data/', include('data.urls', namespace='data')),
 
     url(r'^hmmer/', include('hmmer.urls', namespace='hmmer')),
     url(r'^clustal/', include('clustal.urls', namespace='clustal')),

@@ -1,6 +1,6 @@
 import requests, json
 from datetime import datetime
-from django.shortcuts import render, resolve_url
+from django.shortcuts import render, resolve_url, redirect
 from django.http import HttpRequest, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.template.response import TemplateResponse
@@ -19,12 +19,99 @@ from functools import wraps
 from .forms import InfoChangeForm, SetInstitutionForm, RegistrationForm
 from .models import Profile
 from social.apps.django_app.default.models import UserSocialAuth
+from i5k.settings import DRUPAL_URL, DRUPAL_COOKIE_DOMAIN  
+from drupal_sso.models import DrupalUserMapping
+from django.contrib.auth.models import User
+
+def _tripal_login(tripal_login_url, user):
+    import urllib2
+    import cookielib
+    import json
+    import i5k.settings
+
+    def _get_url_request(url):
+        req = urllib2.Request(url)
+        req.add_header('Content-Type', 'application/json')
+        return req
+
+    def _get_url_open():
+        cookies = cookielib.LWPCookieJar()
+        handlers = [
+            urllib2.HTTPHandler(),
+            urllib2.HTTPSHandler(),
+            urllib2.HTTPCookieProcessor(cookies),
+        ]
+        opener = urllib2.build_opener(*handlers)
+        return opener, cookies
+
+    try:
+
+        user_info = DrupalUserMapping.objects.get(django_user=user)
+        password = user_info.drupal_user_pwd
+        old_user = True
+
+    except DrupalUserMapping.DoesNotExist:
+    
+        old_user = False
+        password = User.objects.make_random_password(length=20)
+
+    data = {"name" : user.username, "pass" : password}
+
+    req = _get_url_request(tripal_login_url)
+    opener, cookies = _get_url_open()
+
+    #try:
+
+    response = opener.open(req, json.dumps(data))
+    result = json.loads(response.read())
+    if(old_user==False):
+        DrupalUserMapping.objects.create(django_user=user, drupal_user_pwd=password)
+    #except:
+    #    print "login fail"
+    #    pass
+
+    opener.close()
+
+    return cookies
+
+# tripal submit form
+def tripal_assembly_data(request):
+
+    print DRUPAL_URL + '/datasets/assembly-data'
+    print request.user.username
+    response = HttpResponseRedirect(DRUPAL_URL + '/datasets/assembly-data')
+    cookies = _tripal_login(DRUPAL_URL + '/rest/user/login', request.user)
+
+    for cookie in cookies:
+        response.set_cookie(key=cookie.name, value=cookie.value, domain=DRUPAL_COOKIE_DOMAIN, path=cookie.path)
+
+    return response
+
+def tripal_gene_prediction(request):
+
+    response = HttpResponseRedirect(DRUPAL_URL + '/datasets/gene-prediction')
+    cookies = _tripal_login(DRUPAL_URL + '/rest/user/login', request.user)
+
+    for cookie in cookies:
+        response.set_cookie(key=cookie.name, value=cookie.value, domain=DRUPAL_COOKIE_DOMAIN, path=cookie.path)
+
+    return response
+
+def tripal_mapped(request):
+
+    response = HttpResponseRedirect(DRUPAL_URL + '/datasets/mapped')
+    cookies = _tripal_login(DRUPAL_URL + '/rest/user/login', request.user)
+
+    for cookie in cookies:
+        response.set_cookie(key=cookie.name, value=cookie.value, domain=DRUPAL_COOKIE_DOMAIN, path=cookie.path)
+
+    return response
 
 #weblogin/weblogout for tripal
 def web_login(request):
 
         if request.user.is_authenticated() == True:
-            return HttpResponse(json.dumps({'user':request.user.username}), content_type="application/json")
+            return HttpResponse(json.dumps({'user':request.user.username, 'sessionid': request.session._session_key, 'email':request.user.email}), content_type="application/json")
         
         print request.COOKIES
         username = request.GET['username']
@@ -36,7 +123,7 @@ def web_login(request):
         if user is not None and user.is_active:
             login(request, user)
             print request.session._session_key
-            return HttpResponse(json.dumps({'sessionid': request.session._session_key}), content_type="application/json")
+            return HttpResponse(json.dumps({'user':request.user.username, 'sessionid': request.session._session_key, 'email':request.user.email}), content_type="application/json")
             #return HttpResponse(json.dumps({'sessionid': request.COOKIES['sessionid']}), content_type="application/json")
         else:
             return HttpResponse(json.dumps({'error':'login failed'}), content_type="application/json")
