@@ -184,7 +184,7 @@ def remove_files():
     for expired_task in BlastQueryRecord.objects.filter(result_date__lt=(datetime.utcnow().replace(tzinfo=utc) + timedelta(days=-7))):
         task_path = path.join(settings.MEDIA_ROOT, 'blast', 'task', expired_task.task_id)
         if path.exists(task_path):
-            #rmtree(task_path)
+            rmtree(task_path)
             logger.info('removed directory %s' % (task_path))
 
 @task_sent.connect

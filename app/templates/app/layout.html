@@ -34,7 +34,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Web Apps<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tools<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                                 <li><a href="{% url 'blast:create' %}">BLAST</a></li>
                                 <li><a href="{% url 'hmmer:create' %}">HMMER</a></li>
@@ -45,15 +45,7 @@
                     </li>
                     <!-- <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li> -->
                 </ul>
-                <ul class="nav navbar-nav">
-                    <li><a href="https://i5k.nal.usda.gov/about-us">About i5K Workspace Services</a></li>
-                    <li><a href="http://i5k.nal.usda.gov/contact">Contact</a></li>
-                    {% if request.user.is_superuser %}
-                    <li><a href="{% url 'admin:index' %}">Admin</a></li>
-                    {% endif %}
-{% block navbar %}{% endblock %}
-                </ul>
-                {% if request.user.is_superuser %}
+               {% if request.user.is_superuser %}
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Submit Data<span class="caret"></span></a>
@@ -65,6 +57,14 @@
                     </li>
                     <!-- <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li> -->
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="https://i5k.nal.usda.gov/about-us">About Us</a></li>
+                    <li><a href="http://i5k.nal.usda.gov/contact">Contact</a></li>
+                    {% if request.user.is_superuser %}
+                    <li><a href="{% url 'admin:index' %}">Admin</a></li>
+                    {% endif %}
+                    {% block navbar %}{% endblock %}
+                </ul> 
                 {% endif %}
                 {% if isLoginEnabled %}
                 {% include 'app/loginpartial.html' %}

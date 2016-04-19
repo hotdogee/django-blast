@@ -12,6 +12,7 @@ from sys import platform
 from .models import BlastQueryRecord, BlastDb, Sequence, JbrowseSetting
 from .tasks import run_blast_task
 from datetime import datetime, timedelta
+from django.utils.timezone import localtime, now
 from pytz import timezone
 import subprocess
 import json
@@ -265,7 +266,7 @@ def user_tasks(request, user_id):
     Return tasks performed by the user.
     """
     if request.method == 'GET':
-        records = BlastQueryRecord.objects.filter(user__id=user_id, is_shown=True)
+        records = BlastQueryRecord.objects.filter(user__id=user_id, is_shown=True, result_date__gt=(localtime(now())+ timedelta(days=-7)))
         serializer = UserBlastQueryRecordSerializer(records, many=True)
         return JSONResponse(serializer.data)
 
