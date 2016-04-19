@@ -39,6 +39,10 @@ class BootStrapPasswordChangeForm(PasswordChangeForm):
         new_password1 = self.cleaned_data.get("new_password1")
         if len(new_password1) < 8:
             raise forms.ValidationError('Password must be at least 8 characters long.')
+
+        first_isalpha = password1[0].isalpha()
+        if all(c.isalpha() == first_isalpha for c in password1):
+            raise forms.ValidationError("The new password must contain at least one letter and at least one digit.")
         return new_password1
 
 class BootStrapPasswordResetForm(PasswordResetForm):
@@ -51,6 +55,10 @@ class BootStrapSetPasswordForm(SetPasswordForm):
         new_password1 = self.cleaned_data.get("new_password1")
         if len(new_password1) < 8:
             raise forms.ValidationError('Password must be at least 8 characters long.')
+        
+        first_isalpha = password1[0].isalpha()
+        if all(c.isalpha() == first_isalpha for c in password1):
+            raise forms.ValidationError("The new password must contain at least one letter and at least one digit.")
         return new_password1
 
     def __init__(self, *args, **kw):
@@ -124,6 +132,10 @@ class RegistrationForm(UserCreationForm):
         password1 = self.cleaned_data.get("password1")
         if len(password1) < 8:
             raise forms.ValidationError('Password must be at least 8 characters long.')
+        first_isalpha = password1[0].isalpha()
+        if all(c.isalpha() == first_isalpha for c in password1):
+            raise forms.ValidationError("The new password must contain at least one letter and at least one digit.")
+        
         return password1
     
     def clean_email(self):
