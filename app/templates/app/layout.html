@@ -55,17 +55,15 @@
                                 <li><a href="{% url 'tripal_mapped' %}">Other Mapped features</a></li>
                         </ul>
                     </li>
+                    <li><a href="{% url 'admin:index' %}">Admin</a></li>
                     <!-- <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li> -->
                 </ul>
+                {% endif %}
                 <ul class="nav navbar-nav">
                     <li><a href="https://i5k.nal.usda.gov/about-us">About Us</a></li>
                     <li><a href="http://i5k.nal.usda.gov/contact">Contact</a></li>
-                    {% if request.user.is_superuser %}
-                    <li><a href="{% url 'admin:index' %}">Admin</a></li>
-                    {% endif %}
                     {% block navbar %}{% endblock %}
                 </ul> 
-                {% endif %}
                 {% if isLoginEnabled %}
                 {% include 'app/loginpartial.html' %}
                 {% endif %}
