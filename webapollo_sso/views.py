@@ -81,6 +81,7 @@ def create(request):
     '''
     request.session['apollo_url'] = i5k.settings.APOLLO_URL
 
+
     try:
         #Login fail, maybe change password from Apollo
         user_mapping = UserMapping.objects.get(django_user=request.user)
@@ -130,6 +131,7 @@ def create(request):
 
 @login_required
 def get_users(request):
+
 
     req = _get_url_request(_APOLLO_URL+'/user/loadUsers')
     opener = _get_url_open()
@@ -598,6 +600,7 @@ def update_user(request):
     response = opener.open(req, json.dumps(data))
     result = json.loads(response.read())
 
+
     opener.close()
 
     if(len(result) == 0):
@@ -611,15 +614,15 @@ def update_user(request):
             user_info.save()
         except UserMapping.DoesNotExist:
             #for secure
-            return HttpResponse(json.dumps({'error':'User not existed'}), content_type="application/json")
-            '''
+            #return HttpResponse(json.dumps({'error':'User not existed'}), content_type="application/json")
+            
             password = encodeAES(User.objects.make_random_password(length=20)) if new_password == '' else encodeAES(new_password)
             user_info = UserMapping.objects.create(apollo_user_id=user_id,
                                                    apollo_user_name=email,
                                                    apollo_user_pwd=password,
                                                    django_user=User.objects.get(username=django_username) if(django_username != '') else None)
             user_info.save()
-            '''
+            
 
     return HttpResponse(json.dumps(result), content_type="application/json")
 
