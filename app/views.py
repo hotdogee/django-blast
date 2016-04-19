@@ -60,15 +60,16 @@ def _tripal_login(tripal_login_url, user):
     req = _get_url_request(tripal_login_url)
     opener, cookies = _get_url_open()
 
-    #try:
+    try:
 
-    response = opener.open(req, json.dumps(data))
-    result = json.loads(response.read())
-    if(old_user==False):
-        DrupalUserMapping.objects.create(django_user=user, drupal_user_pwd=password)
-    #except:
-    #    print "login fail"
-    #    pass
+        response = opener.open(req, json.dumps(data))
+        result = json.loads(response.read())
+        if(old_user==False):
+            DrupalUserMapping.objects.create(django_user=user, drupal_user_pwd=password)
+
+    except:
+        print "login fail"
+        pass
 
     opener.close()
 
