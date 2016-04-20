@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import login, authenticate, update_session_auth_hash
-from django.contrib.auth.views import logout
+from django.contrib.auth.views import logout, password_reset_confirm
 from django.contrib.contenttypes.models import ContentType
 from django.apps import apps
 from functools import wraps
@@ -301,9 +301,26 @@ def password_change(request,
             print userId            
             #user_info.save()
 
+            opener = _get_url_open()
+            print 'dddd'
+            response = opener.open(i5k.settings.APOLLO_URL+'/Login?operation=login', json.dumps({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD}))
+            result = json.loads(response.read())
+
+            print result
+            
+            req = _get_url_request(i5k.settings.APOLLO_URL+'/user/loadUsers')
+            response = opener.open(req, json.dumps({"userId" : userId}))
+            users = json.loads(response.read())
+            print user[0]
+            print user[0]['role']
+            print user[0]['firstName']
+            print user[0]['lastName']
+            print user[0]['username']
+
+            opener.close()
 
             print new_password
-            data = {"userId" : userId, "newPassword": new_password}
+            data = {"userId" : userId, "newPassword": new_password, "role": "ADMIN", "firstName":'fish', 'lastName':'lin', 'email':'ifish@i5k.org'}
             data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
 
             req = _get_url_request(i5k.settings.APOLLO_URL+'/user/updateUser')
@@ -314,7 +331,7 @@ def password_change(request,
             print result
 
             if(len(result)==0):
-                user_info.apollo_user_pwd = encoded(new_password)
+                user_info.apollo_user_pwd = encodeAES(new_password)
                 user_info.save()
 
             opener.close()
@@ -422,3 +439,6 @@ def decodeAES(encoded):
     decoded  = cipher.decrypt(base64.b64decode(encoded)).rstrip(PADDING)
     return decoded
 
+def testView(request, template_name, set_password_form, extra_context):
+    return password_reset_confirm(request, template_name=template_name, set_password_form=set_password_form, extra_context=extra_context)
+        
