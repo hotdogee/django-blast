@@ -23,7 +23,7 @@ def manual(request):
     '''
     Manual page of Hmmer
     '''
-    return render(request, 'hmmer/manual.html',{'title':'HMMER Manaul'}) 
+    return render(request, 'hmmer/manual.html',{'title':'HMMER Manual'}) 
 
 def create(request):
     '''
