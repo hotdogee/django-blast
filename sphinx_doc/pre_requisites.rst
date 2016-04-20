@@ -6,7 +6,7 @@ Descibed in requirements.txt
 
 * Django==1.8.12
 * Markdown==2.6.6
-* celery==3.1.13
+* celery==3.1.23
 * cssmin==0.2.0
 * django-pipeline==1.6.8
 * django-simple-captcha==0.4.5
@@ -21,6 +21,7 @@ Descibed in requirements.txt
 * python-social-auth==0.2.16
 * requests-oauthlib==0.6.1
 * wsgiref 
+* django-suit==0.2.18
 
 Service-side pre-requisites
 ---------------------------
