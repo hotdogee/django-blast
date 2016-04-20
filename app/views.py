@@ -21,6 +21,7 @@ from .models import Profile
 from social.apps.django_app.default.models import UserSocialAuth
 from i5k.settings import DRUPAL_URL, DRUPAL_COOKIE_DOMAIN  
 from drupal_sso.models import DrupalUserMapping
+from webapollo_sso.models import PermsRequest, UserMapping
 from django.contrib.auth.models import User
 from Crypto.Cipher import AES
 import base64
@@ -261,11 +262,63 @@ def password_change(request,
         post_change_redirect,
         password_change_form,
         current_app=None, extra_context=None):
+    print 'aa'
     post_change_redirect = resolve_url(post_change_redirect)
     if request.method == "POST":
         form = password_change_form(user=request.user, data=request.POST)
+        print request.POST['new_password1']
         if form.is_valid():
             form.save()
+
+            import urllib2
+            import cookielib
+            import json
+            import i5k.settings
+
+            def _get_url_request(url):
+                req = urllib2.Request(url)
+                req.add_header('Content-Type', 'application/json')
+                return req
+
+            def _get_url_open():
+                cookies = cookielib.LWPCookieJar()
+                handlers = [
+                    urllib2.HTTPHandler(),
+                    urllib2.HTTPSHandler(),
+                    urllib2.HTTPCookieProcessor(cookies)
+                    ]
+                opener = urllib2.build_opener(*handlers)
+                return opener
+
+
+
+            new_password = request.POST['new_password1']
+            
+
+            user_info = UserMapping.objects.get(django_user=request.user)
+            #user_info.apollo_user_pwd = encodeAES(new_password)
+            userId = user_info.apollo_user_id
+            print userId            
+            #user_info.save()
+
+
+            print new_password
+            data = {"userId" : userId, "newPassword": new_password}
+            data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
+
+            req = _get_url_request(i5k.settings.APOLLO_URL+'/user/updateUser')
+            opener = _get_url_open()
+            response = opener.open(req, json.dumps(data))
+            result = json.loads(response.read())
+
+            print result
+
+            if(len(result)==0):
+                user_info.apollo_user_pwd = encoded(new_password)
+                user_info.save()
+
+            opener.close()
+
             # Updating the password logs out all other sessions for the user
             # except the current one if
             # django.contrib.auth.middleware.SessionAuthenticationMiddleware
@@ -278,11 +331,14 @@ def password_change(request,
         'form': form,
         'title': 'Password change',
     }
+    print 'bb'
     if extra_context is not None:
         context.update(extra_context)
     context.update({'isOAuth': checkOAuth(request.user)})
     if current_app is not None:
         request.current_app = current_app
+
+    print 'cc'
     return TemplateResponse(request, template_name, context)
 
 
