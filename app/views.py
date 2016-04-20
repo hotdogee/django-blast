@@ -22,6 +22,9 @@ from social.apps.django_app.default.models import UserSocialAuth
 from i5k.settings import DRUPAL_URL, DRUPAL_COOKIE_DOMAIN  
 from drupal_sso.models import DrupalUserMapping
 from django.contrib.auth.models import User
+from Crypto.Cipher import AES
+import base64
+import i5k.settings
 
 def _tripal_login(tripal_login_url, user):
     import urllib2
@@ -117,7 +120,6 @@ def web_login(request):
         print request.COOKIES
         username = request.GET['username']
         password = request.GET['password']
-        #userdata = json.loads(request.body)
         #username = userdata['username']
         #password = userdata['password']
         user = authenticate(username=username, password=password)
@@ -200,20 +202,49 @@ def register(request):
         if form.is_valid():
             new_user = form.save();
             new_user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
-            if new_user is not None:
+            
+            try:
+                if new_user is not None:
+                    from webapollo_sso.models import PermsRequest, UserMapping
+                    data = {"firstName" : form.cleaned_data['first_name'], "lastName" : form.cleaned_data['last_name'],
+                            "email": form.cleaned_data['username'], "newPassword" : form.cleaned_data['password1'], "role" : "USER"}
+                    data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
+
+                    req = _get_url_request(i5k.settings.APOLLO_URL+'/user/createUser')
+                    opener = _get_url_open()
+                    response = opener.open(req, json.dumps(data))
+                    result = json.loads(response.read())
+
+                    opener.close()
+
+
+                    if(len(result) == 0):
+                        data = {"userId": form.cleaned_data['username']}
+                        data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
+
+                        req = _get_url_request(i5k.settings.APOLLO_URL+'/user/loadUsers')
+                        opener = _get_url_open()
+                        response = opener.open(req, json.dumps(data))
+                        users = json.loads(response.read())
+
+                        for user in users:
+                            if(user['username'] == form.cleaned_data['username']):
+                                userId = user['userId']
+                                break
+                    
+                        user_info = UserMapping.objects.create(apollo_user_id=userId,
+                                                               apollo_user_name=form.cleaned_data['username'],
+                                                               apollo_user_pwd=encodeAES(form.cleaned_data['password1']),
+                                                               django_user=User.objects.get(username=form.cleaned_data['username']))
+                        user_info.save()
+
+                        opener.close()
+
+            except:
+                print "apollo is down"
+                pass
                 
-                data = {"firstName" : form.cleaned_data['first_name'], "lastName" : form.cleaned_data['last_name'],
-                        "email": form.cleaned_data['email'], "new_password" : form.cleaned_data['password1'], "role" : "USER"}
-                data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
-
-                req = _get_url_request(i5k.settings.APOLLO_URL+'/user/createUser')
-                opener = _get_url_open()
-                response = opener.open(req, json.dumps(data))
-                result = json.loads(response.read())
-
-                opener.close()
-
-                login(request, new_user)
+            login(request, new_user)
             return HttpResponseRedirect(reverse('dashboard'))
     else:
         form = RegistrationForm()
@@ -320,4 +351,18 @@ def logout_all(request):
         logout_all_instances(request)
     logout(request)
     return HttpResponseRedirect(reverse('login'))
+
+def encodeAES(password):
+    BLOCK_SIZE = 32
+    PADDING = '{'
+    pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
+    cipher = AES.new(i5k.settings.SSO_CIPHER)
+    encoded = base64.b64encode(cipher.encrypt(pad(password)))
+    return encoded
+
+def decodeAES(encoded):
+    PADDING = '{'
+    cipher = AES.new(i5k.settings.SSO_CIPHER)
+    decoded  = cipher.decrypt(base64.b64decode(encoded)).rstrip(PADDING)
+    return decoded
 

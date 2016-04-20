@@ -522,7 +522,7 @@ def create_user(request):
 
     #password format checking??
 
-    data = {"firstName" : first_name, "lastName" : last_name, "email": email, "new_password" : password, "role" : "USER"}
+    data = {"firstName" : first_name, "lastName" : last_name, "email": email, "newPassword" : password, "role" : "USER"}
     data.update(_get_robot_priviledge())
 
     req = _get_url_request(_APOLLO_URL+'/user/createUser')
