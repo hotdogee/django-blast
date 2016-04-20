@@ -132,7 +132,6 @@ def create(request):
 @login_required
 def get_users(request):
 
-
     req = _get_url_request(_APOLLO_URL+'/user/loadUsers')
     opener = _get_url_open()
     response = opener.open(req, json.dumps(_get_robot_priviledge()))
@@ -513,6 +512,7 @@ def create_user(request):
     Used in User(Admin) page
     Create an apollo user (not manatory to bind a django user)
     '''
+
     first_name = request.POST['firstName']
     last_name  = request.POST['lastName']
     email      = request.POST['userName']
@@ -523,7 +523,7 @@ def create_user(request):
     #password format checking??
 
     data = {"firstName" : first_name, "lastName" : last_name, "email": email, "new_password" : password, "role" : "USER"}
-    data.update(_get_my_priviledge(request))
+    data.update(_get_robot_priviledge())
 
     req = _get_url_request(_APOLLO_URL+'/user/createUser')
     opener = _get_url_open()
@@ -593,7 +593,8 @@ def update_user(request):
     data.update(_get_my_priviledge(request))
 
     password = User.objects.make_random_password(length=20) if new_password == '' else new_password
-    data['newpassword'] = password
+
+    data['newPassword'] = password
 
     req = _get_url_request(_APOLLO_URL+'/user/updateUser')
     opener = _get_url_open()
@@ -616,10 +617,10 @@ def update_user(request):
             #for secure
             #return HttpResponse(json.dumps({'error':'User not existed'}), content_type="application/json")
             
-            password = encodeAES(User.objects.make_random_password(length=20)) if new_password == '' else encodeAES(new_password)
+            #password = encodeAES(User.objects.make_random_password(length=20)) if new_password == '' else encodeAES(new_password)
             user_info = UserMapping.objects.create(apollo_user_id=user_id,
                                                    apollo_user_name=email,
-                                                   apollo_user_pwd=password,
+                                                   apollo_user_pwd=encodeAES(password),
                                                    django_user=User.objects.get(username=django_username) if(django_username != '') else None)
             user_info.save()
             
@@ -814,11 +815,6 @@ def apollo_connect(request):
     #set sookie
     for cookie in cookies:
         if(cookie.name == 'JSESSIONID'):
-            print cookie.name
-            print cookie.value
-            print cookie.domain
-            print cookie.path
-            print cookie.expires
             response.set_cookie(key=cookie.name, value=cookie.value, domain=i5k.settings.APOLLO_COOKIE_DOMAIN, path=cookie.path, expires=cookie.expires)
 
     return response

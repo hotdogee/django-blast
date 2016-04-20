@@ -135,6 +135,9 @@ SECRET_KEY = 'n(bd1f1c%e8=_xad02x5qtfn%wg2pi492e$8_erx+d)!tpeoim'
 #     'django.template.loaders.eggs.Loader',
 #)
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+#SESSION_COOKIE_AGE = 120 * 60
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -340,8 +343,8 @@ ROBOT_ID = 'R2D2@i5k.org'
 ROBOT_PWD = 'demo'
 
 #APOLLO_URL = 'https://apollo-stage.nal.usda.gov/apollo'
-APOLLO_URL = 'https://gmod-dev.nal.usda.gov/apollo'
-I5K_URL = 'http://gmod-dev.nal.usda.gov/webapp'
+APOLLO_URL = 'http://192.168.0.5:8085/apollo'
+I5K_URL = 'http://192.168.0.5:8000'
 
 #AES key must be either 16, 24, or 32 bytes long
 SSO_CIPHER = '1234567890123456'

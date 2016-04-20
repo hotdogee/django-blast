@@ -899,6 +899,7 @@ $(document).ready(function() {
                         data: {userId : userId},
                         success: function(data){
                             if(jQuery.isEmptyObject(data)){
+                                BootstrapDialog.alert("delete user " + userId +  " success!");
                                 table.ajax.reload();
                                 $('#user-cancel-button').click();
                             }else if('error' in data){
