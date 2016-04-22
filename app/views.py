@@ -303,7 +303,8 @@ def password_change(request,
 
             opener = _get_url_open()
             print 'dddd'
-            response = opener.open(i5k.settings.APOLLO_URL+'/Login?operation=login', json.dumps({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD}))
+            response = opener.open(_get_url_request(i5k.settings.APOLLO_URL+'/Login?operation=login'), 
+                                   json.dumps({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD}))
             result = json.loads(response.read())
 
             print result
@@ -311,6 +312,12 @@ def password_change(request,
             req = _get_url_request(i5k.settings.APOLLO_URL+'/user/loadUsers')
             response = opener.open(req, json.dumps({"userId" : userId}))
             users = json.loads(response.read())
+
+            firstName = user[0]['firstName']
+            lastName  = user[0]['lastName']
+            username  = user[0]['username']
+            role      = user[0]['role']
+
             print user[0]
             print user[0]['role']
             print user[0]['firstName']
@@ -320,7 +327,8 @@ def password_change(request,
             opener.close()
 
             print new_password
-            data = {"userId" : userId, "newPassword": new_password, "role": "ADMIN", "firstName":'fish', 'lastName':'lin', 'email':'ifish@i5k.org'}
+            #data = {"userId" : userId, "newPassword": new_password, "role": "ADMIN", "firstName":'fish', 'lastName':'lin', 'email':'ifish@i5k.org'}
+            data = {"userId" : userId, "newPassword": new_password, "role": role, "firstName": firstName, 'lastName': lastName, 'email': username}
             data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
 
             req = _get_url_request(i5k.settings.APOLLO_URL+'/user/updateUser')
