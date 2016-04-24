@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import login, authenticate, update_session_auth_hash
+from django.contrib.auth import login, authenticate, update_session_auth_hash, get_user_model
 from django.contrib.auth.views import logout, password_reset_confirm
 from django.contrib.contenttypes.models import ContentType
 from django.apps import apps
@@ -26,6 +26,8 @@ from django.contrib.auth.models import User
 from Crypto.Cipher import AES
 import base64
 import i5k.settings
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 
 def _tripal_login(tripal_login_url, user):
     import urllib2
@@ -290,59 +292,45 @@ def password_change(request,
                 opener = urllib2.build_opener(*handlers)
                 return opener
 
-
-
-            new_password = request.POST['new_password1']
+            try:
+                new_password = request.POST['new_password1']
             
+                user_info = UserMapping.objects.get(django_user=request.user)
+                userId = user_info.apollo_user_id
 
-            user_info = UserMapping.objects.get(django_user=request.user)
-            #user_info.apollo_user_pwd = encodeAES(new_password)
-            userId = user_info.apollo_user_id
-            print userId            
-            #user_info.save()
-
-            opener = _get_url_open()
-            print 'dddd'
-            response = opener.open(_get_url_request(i5k.settings.APOLLO_URL+'/Login?operation=login'), 
+                opener = _get_url_open()
+                response = opener.open(_get_url_request(i5k.settings.APOLLO_URL+'/Login?operation=login'), 
                                    json.dumps({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD}))
-            result = json.loads(response.read())
+                result = json.loads(response.read())
 
-            print result
-            
-            req = _get_url_request(i5k.settings.APOLLO_URL+'/user/loadUsers')
-            response = opener.open(req, json.dumps({"userId" : userId}))
-            users = json.loads(response.read())
+                req = _get_url_request(i5k.settings.APOLLO_URL+'/user/loadUsers')
+                response = opener.open(req, json.dumps({"userId" : userId}))
+                users = json.loads(response.read())
 
-            firstName = user[0]['firstName']
-            lastName  = user[0]['lastName']
-            username  = user[0]['username']
-            role      = user[0]['role']
+                firstName = users[0]['firstName']
+                lastName  = users[0]['lastName']
+                username  = users[0]['username']
+                role      = users[0]['role']
 
-            print user[0]
-            print user[0]['role']
-            print user[0]['firstName']
-            print user[0]['lastName']
-            print user[0]['username']
+                opener.close()
 
-            opener.close()
+                data = {"userId" : userId, "newPassword": new_password, "role": role, "firstName": firstName, 'lastName': lastName, 'email': username}
+                data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
 
-            print new_password
-            #data = {"userId" : userId, "newPassword": new_password, "role": "ADMIN", "firstName":'fish', 'lastName':'lin', 'email':'ifish@i5k.org'}
-            data = {"userId" : userId, "newPassword": new_password, "role": role, "firstName": firstName, 'lastName': lastName, 'email': username}
-            data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
+                req = _get_url_request(i5k.settings.APOLLO_URL+'/user/updateUser')
+                opener = _get_url_open()
+                response = opener.open(req, json.dumps(data))
+                result = json.loads(response.read())
 
-            req = _get_url_request(i5k.settings.APOLLO_URL+'/user/updateUser')
-            opener = _get_url_open()
-            response = opener.open(req, json.dumps(data))
-            result = json.loads(response.read())
+                if(len(result)==0):
+                    user_info.apollo_user_pwd = encodeAES(new_password)
+                    user_info.save()
 
-            print result
+                opener.close()
 
-            if(len(result)==0):
-                user_info.apollo_user_pwd = encodeAES(new_password)
-                user_info.save()
-
-            opener.close()
+            except:
+                print "apollo is down"
+                opener.close()
 
             # Updating the password logs out all other sessions for the user
             # except the current one if
@@ -356,14 +344,12 @@ def password_change(request,
         'form': form,
         'title': 'Password change',
     }
-    print 'bb'
     if extra_context is not None:
         context.update(extra_context)
     context.update({'isOAuth': checkOAuth(request.user)})
     if current_app is not None:
         request.current_app = current_app
 
-    print 'cc'
     return TemplateResponse(request, template_name, context)
 
 
@@ -447,6 +433,77 @@ def decodeAES(encoded):
     decoded  = cipher.decrypt(base64.b64decode(encoded)).rstrip(PADDING)
     return decoded
 
-def testView(request, template_name, set_password_form, extra_context):
-    return password_reset_confirm(request, template_name=template_name, set_password_form=set_password_form, extra_context=extra_context)
+def testView(request, uidb64, token, template_name, set_password_form, post_reset_redirect=None, extra_context=None):
+    httpresponse = password_reset_confirm(request, uidb64=uidb64, token=token, template_name=template_name, set_password_form=set_password_form, extra_context=extra_context)
+    if type(httpresponse) == HttpResponseRedirect:
+        import urllib2
+        import cookielib
+        import json
+        import i5k.settings
+
+        def _get_url_request(url):
+            req = urllib2.Request(url)
+            req.add_header('Content-Type', 'application/json')
+            return req
+
+        def _get_url_open():
+            cookies = cookielib.LWPCookieJar()
+            handlers = [
+                urllib2.HTTPHandler(),
+                urllib2.HTTPSHandler(),
+                urllib2.HTTPCookieProcessor(cookies)
+                ]
+            opener = urllib2.build_opener(*handlers)
+            return opener
+
+        #copy from password_reset_confirm
+
+        UserModel = get_user_model()
+        assert uidb64 is not None and token is not None
+        try:
+            uid = force_text(urlsafe_base64_decode(uidb64))
+            user = UserModel._default_manager.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+            user = None
+
+        try:
+	    new_password = request.POST['new_password1']
+	    user_info = UserMapping.objects.get(django_user=user)
+	    userId = user_info.apollo_user_id
+
+	    opener = _get_url_open()
+	    response = opener.open(_get_url_request(i5k.settings.APOLLO_URL+'/Login?operation=login'), 
+					   json.dumps({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD}))
+	    result = json.loads(response.read())
+
+	    req = _get_url_request(i5k.settings.APOLLO_URL+'/user/loadUsers')
+	    response = opener.open(req, json.dumps({"userId" : userId}))
+	    users = json.loads(response.read())
+
+	    firstName = users[0]['firstName']
+	    lastName  = users[0]['lastName']
+	    username  = users[0]['username']
+	    role      = users[0]['role']
+
+	    opener.close()
+
+	    data = {"userId" : userId, "newPassword": new_password, "role": role, "firstName": firstName, 'lastName': lastName, 'email': username}
+	    data.update({'username':i5k.settings.ROBOT_ID, 'password':i5k.settings.ROBOT_PWD})
+
+	    req = _get_url_request(i5k.settings.APOLLO_URL+'/user/updateUser')
+	    opener = _get_url_open()
+	    response = opener.open(req, json.dumps(data))
+	    result = json.loads(response.read())
+
+	    if(len(result)==0):
+                user_info.apollo_user_pwd = encodeAES(new_password)
+		user_info.save()
+
+            opener.close()
+        except:
+            opener.close()
+            pass
+   
+    return httpresponse
+
         
