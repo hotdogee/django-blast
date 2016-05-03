@@ -1,9 +1,9 @@
 {% extends "app/layout.html" %}
 {% load staticfiles %}
-{% load pipeline %}
+{% load compressed %}
 
 {% block head-scripts %}
-{% stylesheet 'hmmer-css' %}
+{% compressed_css 'hmmer-css' %}
 {% endblock %}
 {% block content %}
 

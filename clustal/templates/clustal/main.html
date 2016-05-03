@@ -1,6 +1,6 @@
 {% extends "app/layout.html" %}
 {% load staticfiles %}
-{% load pipeline %}
+{% load compressed %}
 {% load jsonify %}
 
 {% block head-scripts %}
@@ -14,7 +14,7 @@ body {
 }
 </style>
 {% endif %}
-{% stylesheet 'clustal-css' %}
+{% compressed_css 'clustal-css' %}
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
@@ -44,7 +44,7 @@ html {overflow-y: scroll;}
 {% endblock %}
 
 {% block scripts %}
-{% javascript 'clustal-js' %}
+{% compressed_js 'clustal-js' %}
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 {% endblock %}

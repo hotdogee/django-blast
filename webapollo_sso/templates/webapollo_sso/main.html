@@ -1,6 +1,6 @@
 {% extends "app/layout.html" %}
 {% load staticfiles %}
-{% load pipeline %}
+{% load compressed %}
 {% load jsonify %}
 
 {% block head-scripts %}
@@ -21,7 +21,7 @@
 {% endblock%}
 
 {% block scripts %}
-{% javascript 'sso-js' %}
+{% compressed_js 'sso-js' %}
 <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>

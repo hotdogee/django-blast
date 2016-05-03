@@ -1,9 +1,9 @@
 {% extends "app/layout.html" %}
 {% load staticfiles %}
-{% load pipeline %}
+{% load compressed %}
 
 {% block head-scripts %}
-{% stylesheet 'clustal-css' %}
+{% compressed_css 'clustal-css' %}
 {% endblock %}
 {% block content %}
 

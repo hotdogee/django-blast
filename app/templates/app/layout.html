@@ -1,5 +1,5 @@
 ﻿{% load staticfiles %}
-{% load pipeline %}
+{% load compressed %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{{ title }} | i5k - App{% endblock %}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    {% stylesheet 'app-layout' %}
+    {% compressed_css 'app-layout' %}
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:400,700'>
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Inconsolata:400,700'>
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Tangerine">
@@ -82,8 +82,10 @@
         </div>
 {% endblock %}
     </div>
-    
-{% javascript 'app-layout' %}
+
+<script type="application/javascript" src="/static/app/scripts/jquery-1.11.1.min.js" charset="utf-8"></script>
+<script type="application/javascript" src="/static/app/scripts/bootstrap.min.js" charset="utf-8"></script>
+<script type="application/javascript" src="/static/app/scripts/respond.min.js" charset="utf-8"></script>    
 {% block scripts %}{% endblock %}
 
 </body>
