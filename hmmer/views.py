@@ -199,9 +199,9 @@ def retrieve(request, task_id='1'):
             out_txt = []
             report = ["<br>"]
 
-            #10mb limitation
-            if path.isfile(dir_prefix + '.merge') and path.getsize(dir_prefix + '.merge') > 1024 * 10 * 10:
-                out_txt = 'The Hmmer reports exceed 10 Megabyte, please download it.'
+            #1mb limitation
+            if path.isfile(dir_prefix + '.merge') and path.getsize(dir_prefix + '.merge') > 1024000:
+                out_txt = 'The Hmmer reports exceed 1 Megabyte, please download it.'
                 isExceed = True
             else:
                 isExceed = False
