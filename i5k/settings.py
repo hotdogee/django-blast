@@ -462,7 +462,7 @@ PIPELINE_JS = {
     'app-layout': {
         'source_filenames': (
             'app/scripts/jquery-1.11.1.min.js',
-            'app/scripts/bootstrap.js',
+            'app/scripts/bootstrap.min.js',
             'app/scripts/respond.js',
         ),
         'output_filename': 'app/scripts/app-layout.min.js',
