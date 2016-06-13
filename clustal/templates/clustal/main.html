@@ -1,6 +1,6 @@
 {% extends "app/layout.html" %}
 {% load staticfiles %}
-{% load compressed %}
+{% load pipeline %}
 {% load jsonify %}
 
 {% block head-scripts %}
@@ -14,7 +14,7 @@ body {
 }
 </style>
 {% endif %}
-{% compressed_css 'clustal-css' %}
+{% stylesheet 'clustal-css' %}
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
@@ -44,7 +44,10 @@ html {overflow-y: scroll;}
 {% endblock %}
 
 {% block scripts %}
-{% compressed_js 'clustal-js' %}
+<script src="{% static 'blast/scripts/underscore-min.js' %}"></script>
+<script src="{% static 'blast/scripts/jquery.hoverIntent.minified.js' %}"></script>
+<script src="{% static 'blast/scripts/jquery.validate.min.js' %}"></script>
+<script src="{% static 'blast/scripts/clustal-multi.js' %}"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 {% endblock %}

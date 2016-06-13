@@ -2,7 +2,6 @@
 /////////////////////
 // DATA PROCESSING //
 /////////////////////
-
 var dataset_dict = {};
 var organism_list = [];
 var alphabet_list = [];

@@ -1,10 +1,10 @@
 {% extends "app/layout.html" %}
 {% load staticfiles %}
-{% load compressed %}
+{% load pipeline %}
 {% load jsonify %}
 
 {% block head-scripts %}
-{% compressed_css 'hmmer-css' %}
+{% stylesheet 'hmmer-css' %}
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
@@ -22,11 +22,10 @@ var hmmerdb_type_counts = {{ hmmerdb_type_counts|jsonify }};
 {% endblock %}
 
 {% block scripts %}
-<!-- {% compressed_js 'hmmer-js' %} -->
-<script type="text/javascript" src="{% static 'hmmer/scripts/underscore-min.js' %}" charset="utf-8"></script>
-<script type="text/javascript" src="{% static 'hmmer/scripts/jquery.hoverIntent.minified.js' %}" charset="utf-8"></script>
-<script type="text/javascript" src="{% static 'hmmer/scripts/jquery.validate.min.js' %}" charset="utf-8"></script>
-<script type="text/javascript" src="{% static 'hmmer/scripts/hmmer-multi.js' %}" charset="utf-8"></script>
+<script src="{% static 'blast/scripts/underscore-min.js' %}"></script>
+<script src="{% static 'blast/scripts/jquery.hoverIntent.minified.js' %}"></script>
+<script src="{% static 'blast/scripts/jquery.validate.min.js' %}"></script>
+<script src="{% static 'blast/scripts/hmmer-multi.js' %}"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 {% endblock %}
