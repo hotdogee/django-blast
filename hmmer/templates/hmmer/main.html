@@ -1,10 +1,9 @@
 {% extends "app/layout.html" %}
 {% load staticfiles %}
-{% load pipeline %}
 {% load jsonify %}
 
 {% block head-scripts %}
-{% stylesheet 'hmmer-css' %}
+<link href="{% static 'hmmer/css/main.css' %}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css">
