@@ -10,7 +10,7 @@ Descibed in requirements.txt
 * cssmin==0.2.0
 * django-pipeline==1.6.8
 * django-simple-captcha==0.4.5
-* djangorestframework==3.3.3
+* djangorestframework==2.3.4
 * django-rest-swagger==0.3.5
 * docutils==0.12
 * jsmin==2.0.11

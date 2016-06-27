@@ -214,7 +214,7 @@ Install rest framework (rest framework is still ongoing)
 
 ::
 
-    pip install djangorestframework==3.3.3
+    pip install djangorestframework==2.3.4
     pip install django-rest-swagger==0.3.5
 
 Django Suit
