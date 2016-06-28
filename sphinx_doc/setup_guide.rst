@@ -39,7 +39,7 @@ Install necessary packages::
     sudo yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel 
     sudo yum -y install readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel python-devel
 
-Install python 2.7.8 from source.::
+Install python 2.7.8 from source::
 
     wget http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tar.xz  
     tar -xf Python-2.7.8.tar  
@@ -58,7 +58,7 @@ Install python 2.7.8 from source.::
     # Checking Python version (output should be: Python 2.7.8):
     python2.7 -V
     
-Install pip and virtualenv.::
+Install pip and virtualenv::
 
     wget https://bootstrap.pypa.io/ez_setup.py
     sudo /usr/local/bin/python2.7 ez_setup.py
@@ -117,31 +117,7 @@ Install additional Python packages::
         fi
     done
     
-Python-social-auth - TBD
-------------------------
-
-Supported by `python-social-auth`_ package. You will need a google account and a facebook account 
-to setup your app and get the keys and secrets for the app. Then fill the following section in 
-<virt-env>/i5k/settings_prod.py. Refer to this instruction for detailed settings.
-
-    .. _python-social-auth: https://github.com/omab/python-social-auth
-
-::
-
-    # social login settings
-    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
-    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
-    SOCIAL_AUTH_FACEBOOK_KEY = ''
-    SOCIAL_AUTH_FACEBOOK_SECRET = ''
-
-Tables and data under Social Auth are automatically generated. Social Auth -> User social auths stores mappings between users OAuth data and their Django user accounts.
-
-Some notes about current python-social-auth settings:
-
-* Social and local accounts are corresponded by email address. Different social accounts with the same email would be mapped to the same local user in Django.
-* User can register a local account through our registration form, or the system would create a new one for the user who first logs in with his/her social account. Only the former can update their account information (the later can only update their institutions), change their password and request for password reset.
-
-RabbitMQ 
+RabbitMQ
 --------
 
 Install RabbitMQ Server::
@@ -294,7 +270,3 @@ Use Django with Apache and mod_wsgi ( `configuration reference`_ )
     LoadModule wsgi_module modules/mod_wsgi.so
 
 
-Continuous integration - TBD
-----------------------------
-Jenkins
--------
