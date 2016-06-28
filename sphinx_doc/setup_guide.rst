@@ -3,7 +3,7 @@ Setup guide
 
 This setup guide is tested in Centos 6.7 and django 1.8.12
 
-Note: The following variables may be used in path names; substitute as appropriate. 
+Note: The following variables may be used in path names; substitute as appropriate:: 
 
    <user>      :  the name of the user doing a set up. 
    <user-home> :  the user's home directory, e.g., /home/<user>
@@ -12,28 +12,28 @@ Note: The following variables may be used in path names; substitute as appropria
    <git-home>  :  the directory containing the django-blast git repository, e.g. <user-home>/git
 
 Project Applications 
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
-Clone or refresh the django-blast project.::
+Clone or refresh the django-blast project::
 
     cd <git-home>
     git clone https://github.com/NAL-i5K/django-blast
     
-    # Or if the django-blast repository exists.
+    # Or if the django-blast repository exists:
     cd <git-home>
     git fetch
 
 Yum
-~~~
+---
 
-Update list of packages.::
+Update list of packages::
 
     sudo yum -y update
     
 Python 2.7.8
-~~~~~~~~~~~~
+------------
 
-Install necessary packages.::
+Install necessary packages::
 
     sudo yum -y groupinstall "Development tools"
     sudo yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel 
@@ -44,7 +44,7 @@ Install python 2.7.8 from source.::
     wget http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tar.xz  
     tar -xf Python-2.7.8.tar  
     
-    # Run configure:
+    # Configure as a shared library:
     cd Python-2.7.8
     ./configure --prefix=/usr/local --enable-unicode=ucs4 --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib"
 
@@ -52,13 +52,13 @@ Install python 2.7.8 from source.::
     make  
     sudo make altinstall
     
-    # Checking Python version (output should be: Python 2.7.8):
-    python2.7 -V
-    
     # Update PATH:
     export PATH="/usr/local/bin:$PATH"
     
-Intall pip and virtualenv.::
+    # Checking Python version (output should be: Python 2.7.8):
+    python2.7 -V
+    
+Install pip and virtualenv.::
 
     wget https://bootstrap.pypa.io/ez_setup.py
     sudo /usr/local/bin/python2.7 ez_setup.py
@@ -68,7 +68,7 @@ Intall pip and virtualenv.::
     
     sudo /usr/local/bin/pip2.7 install virtualenv
 
-Build a separate virtualenv.::
+Build a separate virtualenv::
 
     # Make root dir for virtualenv and cd into it:
     mkdir <virt-env>
@@ -85,9 +85,9 @@ Build a separate virtualenv.::
 Python Modules and Packages
 ---------------------------
 
-Install additional Python packages.::
+Install additional Python packages::
 
-     cd <virt-env>
+    cd <virt-env>
      
     # Cut, paste and run the following bash script.
     # If any installation fails script halts:  
@@ -118,7 +118,7 @@ Install additional Python packages.::
     done
     
 Python-social-auth - TBD
-~~~~~~~~~~~~~~~~~~
+------------------------
 
 Supported by `python-social-auth`_ package. You will need a google account and a facebook account 
 to setup your app and get the keys and secrets for the app. Then fill the following section in 
@@ -142,9 +142,9 @@ Some notes about current python-social-auth settings:
 * User can register a local account through our registration form, or the system would create a new one for the user who first logs in with his/her social account. Only the former can update their account information (the later can only update their institutions), change their password and request for password reset.
 
 RabbitMQ 
-~~~~~~~~
+--------
 
-Install RabbitMQ Server.::
+Install RabbitMQ Server::
 
     # Install RHEL/CentOS 7 64-Bit Extra Packages for Enterprise Linux (Epel): 
     wget https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
@@ -163,9 +163,9 @@ Install RabbitMQ Server.::
     sudo /sbin/service rabbitmq-server start
     
 Celery
-~~~~~~
+------
 
-Install celery in the virtualenv and configure.::
+Install celery in the virtualenv and configure::
 
     cd <virt-env>
     pip install celery==3.1.23
@@ -189,7 +189,7 @@ Install celery in the virtualenv and configure.::
     sudo chkconfig celerydbeat on
 
 Memcached
-~~~~~~~~~
+---------
 
 Install and activate memcached::
 
@@ -201,7 +201,7 @@ Install and activate memcached::
 Database
 --------
 
-Install PostgreSQL.::
+Install PostgreSQL::
 
     # Add line to yum repository: 
     echo 'exclude=postgresql*' | sudo tee -a /etc/yum.repos.d/CentOS-Base.repo
@@ -213,7 +213,7 @@ Install PostgreSQL.::
     sudo yum -y install postgresql95-server postgresql95-contrib postgresql95-devel
     
     # Initialize (uses default data directory: /var/lib/pgsql):
-    service postgresql-9.5 initdb   
+    sudo service postgresql-9.5 initdb   
     
     # Startup at boot:
     sudo chkconfig postgresql-9.5 on
@@ -259,6 +259,8 @@ Install PostgreSQL.::
 Migrate Schema to to PostgreSQL
 ------------------------------- 
 
+Run migrate::
+
     cd <virt-env>
     python manage.py migrate
 
@@ -293,6 +295,6 @@ Use Django with Apache and mod_wsgi ( `configuration reference`_ )
 
 
 Continuous integration - TBD
-----------------------
+----------------------------
 Jenkins
-~~~~~~~
+-------
