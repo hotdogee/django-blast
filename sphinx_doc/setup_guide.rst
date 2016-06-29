@@ -26,9 +26,9 @@ Clone or refresh the django-blast project::
 Yum
 ---
 
-Update list of packages::
+Generate metadata cache::
 
-    sudo yum -y update
+    yum makecache
     
 Python 2.7.8
 ------------
@@ -195,7 +195,7 @@ Install PostgreSQL::
     sudo chkconfig postgresql-9.5 on
     
     # Control:
-    # sudo service <name> <command>
+    # sudo service postgresql-9.5 <command>
     # 
     # where <command> can be:
     #  
