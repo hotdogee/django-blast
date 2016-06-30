@@ -1,8 +1,8 @@
-Pre-requeisites
+Pre-requisites
 ===============
 Python modules
 --------------
-Descibed in requirements.txt
+Described in requirements.txt
 
 * Django==1.8.12
 * Markdown==2.6.6
