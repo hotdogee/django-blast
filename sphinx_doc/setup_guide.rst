@@ -41,8 +41,9 @@ Install necessary packages::
 
 Install python 2.7.8 from source::
 
+    cd <user-home>
     wget http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tar.xz  
-    tar -xf Python-2.7.8.tar  
+    tar -xf Python-2.7.8.tar.xz
     
     # Configure as a shared library:
     cd Python-2.7.8
@@ -57,6 +58,9 @@ Install python 2.7.8 from source::
     
     # Checking Python version (output should be: Python 2.7.8):
     python2.7 -V
+
+    # Cleanup if desired:
+    rm -rf Python-2.7.8.tar.xz Python-2.7.8
     
 Install pip and virtualenv::
 
@@ -80,7 +84,7 @@ Build a separate virtualenv::
     
     # Install the project in the virtual environment:
     cd <app-home> 
-    cp -pr <app-home> <virt-env> 
+    cp -pr * <virt-env> 
     
 Python Modules and Packages
 ---------------------------
@@ -122,9 +126,12 @@ RabbitMQ
 
 Install RabbitMQ Server::
 
-    # Install RHEL/CentOS 7 64-Bit Extra Packages for Enterprise Linux (Epel): 
+    cd <user-home> 
+
+    # Install RHEL/CentOS 6.8 64-Bit Extra Packages for Enterprise Linux (Epel). 
+    # The 6.8 Epel caters for CentOS 6.*:
     wget https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-    sudo rpm -ivh epel-release-7-5.noarch.rpm
+    sudo rpm -ivh epel-release-6-8.noarch.rpm
 
     # Install Erlang:
     sudo yum -y install erlang
@@ -137,27 +144,33 @@ Install RabbitMQ Server::
 
     # Start the server:
     sudo /sbin/service rabbitmq-server start
+
+    # Clean up:
+    rm epel-release-6-8.noarch.rpm
+
     
 Celery
 ------
 
 Install celery in the virtualenv and configure::
 
+    # At this point <virt-env> has all project files
+    # including celery config files.
     cd <virt-env>
     pip install celery==3.1.23
 
     # Copy files:
-    sudo cp <app-home>/celeryd /etc/init.d
-    sudo cp <app-home>/celerybeat /etc/init.d
-    sudo cp <app-home>/celeryd.sysconfig /etc/default/celeryd
-    sudo cp <app-home>/celerybeat.sysconfig /etc/default/celerybeat
+    sudo cp celeryd /etc/init.d
+    sudo cp celerybeat /etc/init.d
+    sudo cp celeryd.sysconfig /etc/default/celeryd
+    sudo cp celerybeat.sysconfig /etc/default/celerybeat
     
     # Sudo edit '/etc/default/celeryd' as follows: 
     CELERYD_CHDIR="<virt-env>"
     CELERYD_MULTI="<vert-env>/py2.7/bin/celery multi"
     
     # Sudo edit '/etc/default/celerybeat' as follows:
-    CELERYBEAT_CHDIR="<app-home>"
+    CELERYBEAT_CHDIR="<virt-env>"
     CELERY_BIN="<virt-env>/py2.7/bin/celery"
 
     # Set as daemon:
@@ -183,7 +196,7 @@ Install PostgreSQL::
     echo 'exclude=postgresql*' | sudo tee -a /etc/yum.repos.d/CentOS-Base.repo
 
     # Install the PostgreSQL Global Development Group (PGDG) RPM file:
-    sudo yum -y localinstall http://yum.postgresql.org/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm
+    sudo yum -y install http://yum.postgresql.org/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm
     
     # Install PostgreSQL 9.5:
     sudo yum -y install postgresql95-server postgresql95-contrib postgresql95-devel
@@ -225,6 +238,10 @@ Install PostgreSQL::
     
     # Create extension hstore:
     create extension hstore;
+
+    # Exit psql and postgres user:
+    \q
+    exit
 
     # Config in pg_hba.conf:
     cd <virt-env> 
