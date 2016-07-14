@@ -1,52 +1,59 @@
+DASHBOARD DESIGN - USABILITY
+=========================================
 
-# DJANGO-BLAST DASHBOARD DESIGN
+A  list of key-points and bon mots on usability from several 
+references, mostly notes from a corporate course attended yeas ago.  
 
-What follows are the key-points of my guide to usability when 
-creating a Web site.  It underlies and influences almost every 
-design decision that involves layout, navigation, structure, 
-look and feel.  
+This may help craft a usability standard for our dashboard/site,
+to help with decisions involving layout, navigation, structure, look and feel.  
 
 Please feel free to critique it so I can amend it and we can 
-share a common set of guidelines on which to base our new 
-dashboard.  
+share a common set of guidelines. 
 
-Usability is just common sense, so much of what follows may sound
-obvious.  
+Basic Concepts
+~~~~~~~~~~~~~~
 
-## Usability
+Usability is just common sense, so much of what follows may sound obvious.  
 
-### The Average User.  
+People, including Web developers, want to innovate. Nobody gets an award for 
+following conventions. However, refrain! 
+(Like nav bars on top or left, 
+
+*Follow well-established conventions*
+
+
+The Average User
+~~~~~~~~~~~~~~~~
 
 Even if the actual audience is composed of highly educated people, it 
-pays to assume that the audience is: the average user (AU). 
+pays to assume that the audience is: the Average User. 
 
 The actual Average User is kept in a hermetically sealed vault at the 
 International Bureau of Standards in Geneva. 
 It's a person of average intelligence, or even a tad below.  
 
-The AU's motto is:  ***DON'T MAKE ME THINK***
+The Average Useer's motto is:  ***DON'T MAKE ME THINK***
 
-AUs don't read they scan.  
+The Average User does not read they scan.  
 
-AUs don't look for correct choices, they muddle through (let's make muddling through easy)
+They don't look for correct choices, they muddle through (let's make muddling through easy)
+
 
 A bit like the dog-owner admonishing Spot to leave the garbage can alone; 
 the dog only hears: blah, blah, blah, Spot, blah, blah, blah, Spot, blah.  
 
-The Web developer sees in his web pages a product brochure, The AU
+The Average User sees on a page only that which may match what he looks for, all else is a blur. 
+
+The Web developer sees in his web pages a product brochure, The Average User
 sees billboards at 60 mph (let's give them billboards).  
 
-AU gets it, life is good.  
+When the Average User gets it, life is good.  
 
 From here on I will call the AU simply, 'user' or 'users.'
 
 
  
-People, including Web developers, want to innovate. Nobody gets an award for 
-following conventions. However, refrain! And follow established conventions.
-(Like nav bars on top or left, 
-
-Follow established conventions 
+ 
 
 
 
