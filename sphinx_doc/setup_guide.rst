@@ -16,7 +16,6 @@ Project Applications
 
 Clone or refresh the django-blast project::
 
-    cd <git-home>
     git clone https://github.com/NAL-i5K/django-blast
     
     # Or if the django-blast repository exists:
@@ -60,6 +59,7 @@ Install python 2.7.8 from source::
     python2.7 -V
 
     # Cleanup if desired:
+    cd ..
     rm -rf Python-2.7.8.tar.xz Python-2.7.8
     
 Install pip and virtualenv::
@@ -75,16 +75,12 @@ Install pip and virtualenv::
 Build a separate virtualenv::
 
     # Make root dir for virtualenv and cd into it:
-    mkdir <virt-env>
-    cd <virt-env> 
+    cd django-blast
     
     # Create a virtual environment called py2.7 and activate:
     virtualenv py2.7 
     source py2.7/bin/activate
     
-    # Install the project in the virtual environment:
-    cd <app-home> 
-    cp -pr * <virt-env> 
     
 Python Modules and Packages
 ---------------------------
@@ -167,7 +163,7 @@ Install celery in the virtualenv and configure::
     
     # Sudo edit '/etc/default/celeryd' as follows: 
     CELERYD_CHDIR="<virt-env>"
-    CELERYD_MULTI="<vert-env>/py2.7/bin/celery multi"
+    CELERYD_MULTI="<virt-env>/py2.7/bin/celery multi"
     
     # Sudo edit '/etc/default/celerybeat' as follows:
     CELERYBEAT_CHDIR="<virt-env>"
@@ -175,7 +171,7 @@ Install celery in the virtualenv and configure::
 
     # Set as daemon:
     sudo chkconfig celeryd on
-    sudo chkconfig celerydbeat on
+    sudo chkconfig celerybeat on
 
 Memcached
 ---------
@@ -246,6 +242,11 @@ Install PostgreSQL::
     # Config in pg_hba.conf:
     cd <virt-env> 
     export PATH=/usr/pgsql-9.5/bin:$PATH
+
+    # Restart:
+    sudo service postgresql-9.5 restart
+
+    # Install pycopg2:
     pip install psycopg2==2.6
 
  
