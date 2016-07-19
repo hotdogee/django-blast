@@ -9,7 +9,21 @@ Please feel free to *critique it* so I can amend it and we can share a common se
 
 Joseph Suriol - July 2016 - jsuriol@tiglath.net
 
-## Basic Concepts
+## Table of Contents
+
+- [Basic Concepts](#BasicConcepts)
+- [The Average User](#AverageUser)
+- [Creating a Visual Hierarchy](#VisualHierarchy)
+- [Clicking](#Clicking)
+- [Navigation](#Navigation)
+- [Usability Testing](#Testing)
+- [The Mobile Platform](#Mobile)
+- [User Goodwill](#Goodwill)
+- [Accesibility](#Access)
+- [Making Usability Happen](#MakeHappen)
+- [It Depends](#ItDepends)
+
+## Basic Concepts <a name="BasicConcepts"></a>
 
 - Usability is common sense, so much of what follows may well sound obvious. 
 
@@ -54,9 +68,15 @@ Joseph Suriol - July 2016 - jsuriol@tiglath.net
 
   ***Follow well-established conventions.***
 
+- Happy talk must die. Happy talk (you know... "Welcome to..." and a voice inside goes "blah, blal, blah).  
+
+- Instructions  must die. Users don't read, they muddle through. 
+
+- Must get right: Navigation and Home Page
+
 - There is always a plausible rationale and good intentions behind every usability flaw. 
 
-## The Average User.  
+## The Average User  <a name="AverageUser"></a>
 
 Even if the actual audience is composed of highly educated people, it pays to assume that 
 the audience is the Average User. 
@@ -88,7 +108,7 @@ Average User gets it, life is good.
 From here on I will call the Average User simply, 'user' or 'users.'
 
 
-## Creating a visual hierarchy
+## Creating a Visual Hierarchy <a name="VisualHierarchy"></a>
 
 - Keep visual noise down: too many elements clamoring for attention, bright colors, exclamation points, animation, etc.
 - Disorganization.  Does your page look like a ransacked room?  
@@ -101,7 +121,7 @@ From here on I will call the Average User simply, 'user' or 'users.'
 - Don't highlight too many things, but highlight key words and phrases.
 
 
-## Clicking 
+## Clicking <a name="Clicking"></a>
 
 ***Make clickables obvious and consistent, same color or shape.***
 
@@ -127,19 +147,7 @@ Brief, timely, unavoidable:
 
 ![alt text](GoodHelp.jpg)
   
-  
-## Happy talk must die.  
-
-Happy talk (you know... "Welcome to..." and a voice inside goes "blah, blal, blah).  
-
-
-## Instructions  must die.  
-
-Users don't read, they muddle through, remember?  
-
-
-## Must get right: Navigation and Home Page
-### Navigation
+## Navigation <a name="Navigation"></a>
 
 *And you may find yourself in a beautiful house, with a beautiful wife... and you may ask yourself, How did I get here?*  
 
@@ -222,7 +230,7 @@ How to do the test:
 
 Ask others to do other pages.  
 
-### Home Page
+## Home Page <a name="HomePage"></a>
 
 Home Page has to accommodate:
 
@@ -313,7 +321,7 @@ What works is good, integrated design that fills a need, carefully thought out, 
 Testing: it answers the important question of whether we created a good experience for most people who are likely to use *this* site. There is no substitute for it.    
 
 
-## Usability Testing 
+## Usability Testing  <a name="Testing"></a>
 
 Usability tests are about watching one person at a time trying to use something to do typical tasks so you can detect and fix the things that confuse or frustrate them. 
 
@@ -444,7 +452,7 @@ Top plausible excuses not to test:
 Having things pinned down can have a focusing effect, while a white canvas as well as freeing can be paralyzing. 
 
 
-## The Mobile Platform 
+## The Mobile Platform <a name="Mobile"></a>
 
 **The tyranny of itty-bitty spaces** 
 
@@ -507,7 +515,7 @@ Until robust ways appear you can point a camera at the screen, instead of screen
 **Make sure usability is not lost in the shuffle, and the best way to do this is by testing.**
 
 
-## User Goodwill
+## User Goodwill <a name="Goodwill"></a>
 
 When a user enters a Web site carries with him a reservoir of good will that will either be 
 preserved or depleted proportionately to how the site meets expectations. 
@@ -539,7 +547,7 @@ A single mistake can empty it: A form with tons of fields may turn goodwill to z
 - Make it easy to recover from errors.  User testing should uncover most.  
 - When in doubt, apologize. 
 
-**Accessibility**
+## Accessibility <a name="Access"></a>
 
 When accessibility and touch screens mature you'll be able to read Braille on your mobile.  
 
@@ -563,7 +571,7 @@ It is still hard to make a site accessible, and the sad truth is that Web design
 - Create significant contrast between text/foreground and background. 
 
 
-## Making Usability Happen
+## Making Usability Happen <a name="MakeHappen"></a>
 
 **What can you do in an environment where you desire to do usability is not supported?**
 
@@ -580,8 +588,7 @@ It is still hard to make a site accessible, and the sad truth is that Web design
   of cogs. You want your enthusiasm for usability to be infectious, but it just doesn't work to go around like the Bringer 
   of Truth. Share what you know, but don't tell people how things should be done. 
 
-
-## It Depends
+## It Depends <a name="ItDepends"></a>
 
 Much of the advice on usability comes with the proviso: "It depends." 
 
