@@ -16,6 +16,7 @@ Joseph Suriol - July 2016 - jsuriol@tiglath.net
 - [Creating a Visual Hierarchy](#VisualHierarchy)
 - [Clicking](#Clicking)
 - [Navigation](#Navigation)
+- [Home Page](#HomePage)
 - [Usability Testing](#Testing)
 - [The Mobile Platform](#Mobile)
 - [User Goodwill](#Goodwill)
