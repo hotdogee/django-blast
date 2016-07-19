@@ -93,7 +93,7 @@ From here on I will call the Average User simply, 'user' or 'users.'
 - Keep visual noise down: too many elements clamoring for attention, bright colors, exclamation points, animation, etc.
 - Disorganization.  Does your page look like a ransacked room?  
 - Clutter.  Think Google.
-- Format test for easy scanning.
+- Format text for easy scanning.
 - Use plenty of headings and put time into writing them.
 - No floating headers (keep headers closer to the following text than the preceding text) and if using header levels make them easy to distinguish.
 - Keep paragraphs short.
@@ -153,7 +153,7 @@ Users don't read, they muddle through, remember?
 
 - The Home Page is like the North Star.  Being able to get back to it gives you a fresh start.  
 
-- The obvious goal of navigation is to find what we are looking for and tell us where we are.  Navigation can and should do more then making the hierarchy visible, it tells us what the sit contains. Navigation reveals content. 
+- The obvious goal of navigation is to find what we are looking for and tell us where we are.  Navigation can and should do more then making the hierarchy visible, it tells us what the site contains. Navigation reveals content. 
 
 - Done correctly, navigation gives us implicitly all the instructions we need (which is good because users will ignore other instructions, anyway).
 
@@ -322,7 +322,7 @@ That is, watch them use, not just listen to them talk.
 - If you want a great site you have to test, from the beginning. After working on the site for a few weeks you can't see it freshly anymore, you know too much. Watch other people try to use it. 
 - Testing one user early in the project is better than testing 50 near the end. 
 
-Tests can be elaborate and expensive in testing labs behind one-way mirrors followed by scientific and statistical reports one week later, or much simple in an inexpensive DYI fashion.  
+Tests can be elaborate and expensive in testing labs behind one-way mirrors followed by scientific and statistical reports one week later, or much simple in an inexpensive DIY fashion.  
 
 One way is to do usability testing one morning a month. Two or three participants. Debrief over lunch and decide what to fix before the next round of testing.  
 
@@ -535,7 +535,7 @@ A single mistake can empty it: A form with tons of fields may turn goodwill to z
 - Put effort into it. Like generating the information the user needs to solve any problems (e.g., knowledge database).
 - Know the likely questions and provide answers.  FAQ's are valuable if kept up to date to include the 
   latest most frequent questions.  
-- Creature comforts. Like printer friendly pages.  
+- Creature comforts, like printer friendly pages.  
 - Make it easy to recover from errors.  User testing should uncover most.  
 - When in doubt, apologize. 
 
