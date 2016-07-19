@@ -29,7 +29,7 @@ Joseph Suriol - July 2016 - jsuriol@tiglath.net
 
 - First Law of Usability (and the Average User's motto): 
 
-  ***DON'T MAKE ME THINK***
+  ***DON'T MAKE ME THINK.***
 
   Make things self-evident; obvious enough that your next door neighbor who has no interest in the subject can look 
   at a page and say, "That's a ____".  
@@ -59,7 +59,7 @@ Joseph Suriol - July 2016 - jsuriol@tiglath.net
 
 - Third Law of Usability: 
 
-  ***Omit ~~Needless~~ Words***
+  ***Omit ~~Needless~~ Words.***
 
   Get rid of half the words in a page, and then get rid of half of what's left. Be ruthless.  
 
@@ -72,7 +72,7 @@ Joseph Suriol - July 2016 - jsuriol@tiglath.net
 
 - Instructions  must die. Users don't read, they muddle through. 
 
-- Must get right: Navigation and Home Page
+- Must get right: Navigation and Home Page.
 
 - There is always a plausible rationale and good intentions behind every usability flaw. 
 
@@ -382,7 +382,7 @@ As many people as possible. Invite team members, stakeholders, managers, executi
 
 You need an observation room with a computer on the Internet, screen sharing software and speakers. 
 
-During the break after each session, observers need to write the problems observed to discuss later in the debriefing. Printing forms for the observes to fill after each test is a good idea.  
+During the break after each session, observers need to write the problems observed to discuss later in the debriefing. Printing forms for the observers to fill after each test is a good idea.  
 
 **What do you test and when do you test?**
 
@@ -416,15 +416,15 @@ A typical one-hour test can be broken into something like this:
 - Probing (5 minutes): After the test ask any questions about anything that happened during the test, or any questions from the observation room they would like to ask.  
 - Wrapup (5 minutes): Thank them for their help, pay them, and show them to the door.  
 
-**Typical Problems**
+**Typical Problems:**
 
 - They just don't get it. 
 - The words they look for aren't there. 
 - There is too much going on (Reduce page noise). 
 
-After the debriefing (really good pizza encourages attendance) make a collective list by asking each observes to submit the three most serious problems out of their list.  No discussion here, just list them. They have to be observed problems, things that happened during the test. 
+After the debriefing (really good pizza encourages attendance) make a collective list by asking each observer to submit the three most serious problems out of their list.  No discussion here, just list them. They have to be observed problems, things that happened during the test. 
 
-- Choose the ten worst problems rated 1 to 10. 
+- Choose the ten worst problems, rated 1 to 10. 
 - Make an ordered list, adding rough notes as to how to fix them, who is going to do it, and what resources will be needed. 
 - Focus ruthlessly on fixing the most serious problems first.  
 
@@ -434,12 +434,12 @@ Additionally, keep a list of low-hanging fruit.  Things that aren't serious but 
 - Take new feature requests with a grain of salt. Participants aren't designers.  
 - Ignore kayak problems: when participants flounder but they are able to right themselves again. 
 
-**Two other ways to do testing, with distinct advantages**
+**Two other ways to do testing, with distinct advantages:**
 
-- Remote testing. Participant do the test from their office or home, using screen sharing and a microphone. No travel facilitates recruiting. 
+- Remote testing. Participants do the test from their office or home, using screen sharing and a microphone. No travel facilitates recruiting. 
 - Unmoderated remote testing Services like Usertesting.com provide people who will record themselves doing tests. Send them the tasks, and shortly after watch the video of them doing the tasks and thinking aloud. 
 
-**How to fend off objections to testing** 
+**How to fend off objections to testing.** 
 
 Top plausible excuses not to test:
 
@@ -447,14 +447,14 @@ Top plausible excuses not to test:
 - Don't have the money (Remote testing by volunteers can be very affordable).
 - We don't have the expertise (Some people are better than others, but even the worst test produces useful results).
 
-**Constrains are not all bad**
+**Constrains are not all bad.**
 
 Having things pinned down can have a focusing effect, while a white canvas as well as freeing can be paralyzing. 
 
 
 ## The Mobile Platform <a name="Mobile"></a>
 
-**The tyranny of itty-bitty spaces** 
+**The tyranny of itty-bitty spaces.** 
 
 One way of making do with less space is to leave things out.  
 
@@ -526,7 +526,7 @@ make the user feel you are looking out for their best interests.
 
 A single mistake can empty it: A form with tons of fields may turn goodwill to zero.  
 
-**Things that diminish goodwill**
+**Things that diminish goodwill:**
 
 - Hiding information that I want. The most common: support phones and content metadata, like date of last update, and especially hiding costs or a pay wall at the end of a long trek.  
 - Format punishment. Some sites perversely forbid spaces in credit card numbers, or dashes in phone numbers,
@@ -534,13 +534,13 @@ A single mistake can empty it: A form with tons of fields may turn goodwill to z
 - Asking for more information than you really need for the task at hand.  
 - Jiving me: "Your call is important to us..."  "Due to high call volume..."   
 
-**Things that increase  goodwill**
+**Things that increase  goodwill:**
 
 - Know the main things people want to do in your site and make them obvious and easy. 
 - Tell me the things I want to know about. Be upfront and win candor points. 
 - Save me steps whenever you can. Like putting a link in my email receipt that submits the tracking number 
   to the shipper's site. Another Amazon first.  
-- Put effort into it. Like generating the information the user needs to solve any problems (e.g., knowledge database).
+- Put effort into it, like generating the information the user needs to solve any problems (e.g., knowledge database).
 - Know the likely questions and provide answers.  FAQ's are valuable if kept up to date to include the 
   latest most frequent questions.  
 - Creature comforts, like printer friendly pages.  
