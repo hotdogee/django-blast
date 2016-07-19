@@ -174,12 +174,12 @@ Brief, timely, unavoidable:
 
 Persistent Navigation elements: 
 
-- Site Id logo and tagline on every page (upper left corner), no exceptions. Users expect the Site Id logo to be a link to the home page. 
-- Sections (content hierarchy top level: e.g., Home, Products, Support, About).
-- Utilities (not part of content hierarchy: e.g., Sign in/Register, Account, Contact, Help). 
-- Search (text box and button with 'Search' or magnifying glass).
+- **Site Id logo** and tagline on every page (upper left corner), no exceptions. Users expect the Site Id logo to be a link to the home page. 
+- **Sections** (content hierarchy top level: e.g., Home, Products, Support, About).
+- **Utilities** (not part of content hierarchy: e.g., Sign in/Register, Account, Contact, Help). 
+- **Search** (text box and button with 'Search' or magnifying glass).
 
-Peersistent Navigation Do's:
+Persistent Navigation Do's:
 
 - Include navigation on pages at all levels, not only the first two or three levels.  
 - Utilities slightly less prominent that Sections and only about 4 or 5 most often used.  Leftovers belong in the small text links of the footer.  
@@ -270,7 +270,7 @@ One Size Fits All: The home page has to appeal to all who visit the site.
 
 The home page can't do it all: It involves compromise.  
 
-Don't lose this: Conveying the Big Picture. (It has to make clear what the site is).
+Don't lose this: Conveying the Big Picture (it has to make clear what the site is).
 
 Needs to answer four questions: 
 
@@ -352,7 +352,7 @@ You are not going to find all the problems, but with three users you will likely
 
 **Who do you choose as participants?**
 
-It is good to do testing with participants who reflect the target audience, but it is not essential, especially if it entails more work or having to test less; almost anyone will do, especially in the beginning when flaws may be glaring. And you can always make allowances between the participants and the target audience:
+It is good to do testing with participants who reflect the target audience, but it is not essential, especially if it entails more work or having to test less; almost anyone will do, particularly in the beginning when flaws may be glaring. And you can always make allowances between the participants and the target audience:
 
 "Would our users have this problem, or was it a problem only because they did not know what our users know?" 
 
