@@ -50,7 +50,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'django2_i5k',
+    'NAME': 'django',
     'USER': 'django',
     'PASSWORD': 'django1234',
     'HOST': 'localhost',
