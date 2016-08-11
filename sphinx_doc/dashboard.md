@@ -87,7 +87,7 @@ to the User's Properties. For example:
   
 ## Registration <a name="Registration"></a>
 
-Guests access the registration form from the *Register/Login* link in the top bar of the Home Page which is a persistent navigation element, found
+Guests access the Registration form from the *Register/Login* link in the top bar of the Home Page which is a persistent navigation element, found
 in most pages. 
 
 The Registration form contains the following text input fields: 
@@ -186,7 +186,7 @@ This page includes a *Close* button which when clicked returns the Guest to the 
 The *Store_Registration* function stores the *Registration Record* and sends an *Account Activation Email* to the Guest, 
 expecting the Guest to click the *Account Activation Link* it contains. 
 
-The *Account Activation Link* triggers a call to the Dashboard API funtion *Activate_Registration*, which creates a new User, the User's Properties, 
+The *Account Activation Link* triggers a call to the Dashboard API function *Activate_Registration*, which creates a new User, the User's Properties, 
 and registers the new User with the Authentication Subsystem by sending the User's Creds to CAS.  
 
 Prior to Account Activation, the Registration Record remains in the Dashboard and has an expiry date of one month, which once elapses, 
@@ -221,7 +221,7 @@ The Registration form sends the *Registration Record* to the Dashboard in JSON f
                     "password": "<password cleartext>",
                 }, 
                 "security_question": "<question number>",
-                "security_answser": "<answer>",
+                "security_answer": "<answer>",
                 "address": "<user IP address>",
             },
             "email": "<email address>", 
