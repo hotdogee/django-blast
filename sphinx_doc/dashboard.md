@@ -87,15 +87,155 @@ to the User's Properties. For example:
   
 ## Registration <a name="Registration"></a>
 
-- TBD
+Guests access the registration form from the *Register/Login* link in the top bar of the Home Page which is a persistent navigation element, found
+in most pages. 
 
-### Registration Steps
+The Registration form contains the following text input fields: 
 
-- TBD
++ Fist Name
++ Last name 
++ User name 
++ Email address
++ Password 
++ Confirm Password
++ Security question - Dropdown question selector widget.
++ Security Answer
++ Company or Institution 
++ Tell us what you do - Multiline field
++ Captcha compliant to USDA guidelines
 
-### Registration Page
+All above fields required. 
 
-- TBD
+Additionally: 
+
++ A check box for "I would like to receive email news from I5k."
++ A 'Terms of Use' link inside the phrase "By creating an account you agree to the Terms of Use." 
++ "Create account" submit button.  
++ A 'Log in' link to the login page.  
++ A '© 2016 I5k - All Rights Reserved' foot notice.  
+
+For example:
+---
+![alt text](img/Registration.png)
+---
+
+Upon loading the Registration form keyboard focus and cursor moves to the *First name* field. 
+
+### Form Validation 
+
+The Registration form validates each field on the spot (as each character arrives and on focus out event) 
+and submits registration data to the dashboard after validation passes and the *Create Account* button activates.  
+
+The *Create Account* button does not become enabled until validation passes. Until then, it should appear greyed-out. 
+
+For each field, when validation passes a green check mark appears to the right of the field 
+and a green glow frames the entire field.
+
+Example of validated Registration form:
+---
+![alt text](img/ValidatedRegistration.png)
+---
+
+When validation fails a red 'x' mark appears to the right of the field 
+and a red glow surrounds the entire field. If the field has help text the help text turns red.
+
+Example of invalid field with help text:
+---
+![alt text](img/InvalidRegistration1.png)
+---
+
+If the field has no help text, a callout appears with the appropriate caution. 
+
+Example of invalid field without help text:
+---
+![alt text](img/InvalidRegistration2.png)
+---
+
+After the Guest clicks *Create Account* an email confirmation dialog appears. If the Guest clicks *OK* registration proceeds, if *CANCEL*
+the Guest can edit the email entry and try again. 
+
+Example of Email Confirmation:
+---
+![alt text](img/EmailConfirmationRegistration.png)
+---
+
+Field Validation:
+
+Single-line fields accept no newline characters. All fields are single-line except 
+'*Tell us what you do*' which accepts more than one line. 
+
++ *First* and *Last Name* - Allow only alphabetical and special characters found in names. The following regular expression 
+allows for English and Englified names '/^[a-z ,.'-]+$/i', but not for international characters like Hungarian, Polish, accented letters, etc.
++ *User name* - Allow only 8-30 printing characters, no blanks. 
++ *Password* - Allow only 8-30 printing characters with at least one letter and one number. 
++ *Confirm Password* - Must match a valid *Password*.
++ *Security Answer* - Allow only up to 100 printing characters. 
++ *Company or Institution* - Allow only up to 100 printing characters. 
++ *Tell us what you do* - Allow a tweet - up to 140 printing characters. 
+
+Registration form data constitutes a *Registration Record*, which the Registration page sends to the Dashboard for storage, with the API function
+*Store_Registration*. Upon successful storage in the Dashboard, the Registration page replaces itself with a bare page informing the Guest of 
+the *Account Activation Email* they will receive soon, and showing the destination email (from the form), with instructions to click the 
+*Account Activation Link* in the email to complete the registration.
+
+If at that point the Guest discovers that the destination email is incorrect, they must restart the registration process. The stored Registration
+Record will expired and become garbage.  
+
+This page includes a *Close* button which when clicked returns the Guest to the Home Page.  
+
+The *Store_Registration* function stores the *Registration Record* and sends an *Account Activation Email* to the Guest, 
+expecting the Guest to click the *Account Activation Link* it contains. 
+
+The *Account Activation Link* triggers a call to the Dashboard API funtion *Activate_Registration*, which creates a new User, the User's Properties, 
+and registers the new User with the Authentication Subsystem by sending the User's Creds to CAS.  
+
+Prior to Account Activation, the Registration Record remains in the Dashboard and has an expiry date of one month, which once elapses, 
+absent activation, triggers the deletion of the Registration Record. 
+
+### Registration Steps 
+
+1. For each input field validate input until all fields pass validation. Keep *Create Account* button disabled.
+2. Validation completes -> Enable *Create Account* button.
+3. User clicks *Create Account* button -> Confirm email address is correct. If not correct goto #1 
+4. Call *Store_Registration* Dashboard API function to store form data in the Dashboard. 
+5. Inform Guest to expect *Account Activation Email* -> The dashboard sends *Account Activation Email* to Guest.
+6. Guest receives *Account Activation Email* and clicks *Account Activation link* in email. 
+7. *Account Activation Link* triggers *Activate_Registration* Dashboard API function.  
+8. Dashboard creates new User, User Properties, and registers User's Creds with CAS. 
+9. Dashboard present new User with the login page. 
+
+### Registration Record
+
+The Registration form sends the *Registration Record* to the Dashboard in JSON format, as follows: 
+
+    { 
+        "registration": {
+            "creation_date: "<date and time>",
+            "names": {
+                "first_name": "<first name>",
+                "last_name": "<last name>",
+            },
+            "security": {
+                "creds": {
+                    "user_name": "<user name>",
+                    "password": "<password cleartext>",
+                }, 
+                "security_question": "<question number>",
+                "security_answser": "<answer>",
+                "address": "<user IP address>",
+            },
+            "email": "<email address>", 
+            "affiliation": "<Company or Institution>",
+            "about_user": "<Tell us what you do>",
+            "email_subscribe": "<True or False>",
+        }
+    }
+    
+
+### CAS Registration
+
+- TBD 
+
 
 ## Login <a name="Login"></a>
 
