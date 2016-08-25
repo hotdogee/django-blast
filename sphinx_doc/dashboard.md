@@ -199,14 +199,14 @@ absent activation, triggers the deletion of the Registration Record.
 3. User clicks *Create Account* button -> Confirm email address is correct. If not correct goto #1 
 4. Call *Store_Registration* Dashboard API function to store form data in the Dashboard. 
 5. Inform Guest to expect *Account Activation Email* -> The dashboard sends *Account Activation Email* to Guest.
-6. Guest receives *Account Activation Email* and clicks *Account Activation link* in email. 
+6. Guest receives *Account Activation Email* and clicks *Account Activation Link* in email. 
 7. *Account Activation Link* triggers *Activate_Registration* Dashboard API function.  
 8. Dashboard creates new User, User Properties, and registers User's Creds with CAS. 
-9. Dashboard present new User with the login page. 
+9. Dashboard present new User with the Login page. 
 
 ### Registration Record
 
-The Registration form sends the *Registration Record* to the Dashboard in JSON format, as follows: 
+The Registration form data sent by the browser arrives at the Dashboard as a *Registration Record* in JSON format, as follows: 
 
     { 
         "registration": {
@@ -227,7 +227,7 @@ The Registration form sends the *Registration Record* to the Dashboard in JSON f
             "email": "<email address>", 
             "affiliation": "<Company or Institution>",
             "about_user": "<Tell us what you do>",
-            "email_subscribe": "<True or False>",
+            "email_subscribe": "<True or False>"
         }
     }
     
@@ -239,21 +239,123 @@ The Registration form sends the *Registration Record* to the Dashboard in JSON f
 
 ## Login <a name="Login"></a>
 
-- TBD
+The login clickable is part of the *Registration/Login* dual link in the permanent navigation mast at the top of the page, 
+as long as the User in not logged in. Upon a successful login, the browser loads the User Page. 
+
+If login fails, the User can ask for help to retrive their user name via email, or by requesting a new password. Beyond that, 
+if difficulties remain the User can send email explaining the issue, or call the helpdesk, when available. The following section shows 
+the login steps and examples of the screens shown.
+
+### Password Requirements
+Valid passwords contain at least eight characters, a letter, and a digit. 
 
 ### Login Steps
 
-- TBD
+#### Normal Login Flow
 
-### Login Page
+Upon clicking *Login* a pull-down dialog of appropriate size appears below the clickable.
 
-- TBD
+For example:
 
-### Password Requirements
+---
+![alt text](img/Login1First.png)
+---
+Pressing \<Enter\> after entering the Password, activates the Login submit button. 
+&nbsp;  
+&nbsp;  
+In all Login screeens and dialogs when clicking an input field to enter text a red glow appears around the field.
 
-- TBD
+![alt text](img/Login1FirstGlow.png)
+---
+&nbsp;  
+&nbsp;  
+
+A check box gives the option to show the password as is, otherwise password charactes show as asterisks. 
+
+---
+![alt text](img/Login1ShowPwd.png)
+---
+&nbsp;  
+&nbsp;  
+
+If the User Name and Password are correct, the User Page follows.  
+If the User Name is incorrect a prominent warning displays the error: 
+
+---
+![alt text](img/Login1BadUser.png)
+---
+&nbsp;  
+&nbsp;  
+
+If the Password is incorrect a prominent warning displays the error: 
+
+---
+![alt text](img/Login1BadPwd.png)
+---
+&nbsp; 
+&nbsp; 
+#### Login Help
+
+The User can ask for help to either get a reminder of their User Name, or receive a link to the page to change the Password. Both procedures 
+involve sending an email to the User. 
+
+Both procedures share the same page under the title of *Login Help*, which require the User to enter in two steps: (1) their email address and, 
+(2) answer the Security Question and complete a captcha.  
+
+For example, after clicking either *User Name* or *Password* on the *Login Help?* line the User must provide their email address. 
+
+---
+![alt text](img/LoginHelp1.png)
+---
+&nbsp; 
+&nbsp; 
+
+If the User cannot provide the email addres of an existing account, the only recourse is to contact us, for which we provide a link.  
+
+---
+![alt text](img/LoginHelp1EmailError.png)
+---
+&nbsp; 
+&nbsp; 
+
+If the email address the user enters correspond to that of an existing account, we proceed to the security page. For example:
+
+---
+![alt text](img/LoginHelp2.png)
+---
+&nbsp; 
+&nbsp; 
+
+If the security question and/or the captcha are incorrect we display a prominent warning:
+
+---
+![alt text](img/LoginHelp2Errors.png)
+---
+&nbsp; 
+&nbsp; 
+
+Upon completion of the security page, if the User requested a User Name reminder we send an email along these lines:
+
+    You requested a reminder of your I5k account user name:
+
+    Your user name is: creed
+
+If instead the User requested password help the email contains a link to the Enter New Password Page. For example:  
+
+---
+![alt text](img/NewPassword.png)
+---
+
+If the new password does not follow our password rules the help message turns red.  
+
+If the new password passes validation then we redirect the User to a Login Page.  
+
+&nbsp; 
+&nbsp; 
 
 ## Applications  <a name="Applications"></a>
+
+
 
 - TBD
 
@@ -268,6 +370,9 @@ The Registration form sends the *Registration Record* to the Dashboard in JSON f
 ---
 
 ## Programming Structure <a name="ProgrammingStructure"></a>
+The Dashboard APIs to both the front end and the Apps exchanges data in JSON format. If any sender is unable to do so, server side
+functions convert the incoming format to JSON before passing the data to the Dashboard.  For example, the server converts 
+form data from the browser from HTML request to a JSON object.   
 
 - TBD
 
