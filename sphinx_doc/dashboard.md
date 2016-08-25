@@ -370,7 +370,6 @@ If instead the User requested password help the email contains a link to the Ent
 </p>
 
 &nbsp;  
-&nbsp;  
 If the new password does not follow the password rules the help message turns red.  
 
 If the new password passes validation then we redirect the User to a Login Page.  
