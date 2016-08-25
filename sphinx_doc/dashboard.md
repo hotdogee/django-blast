@@ -64,9 +64,10 @@ Guests and Users access the Dashboard transparently and initially by the Home Pa
 
 In this Home Page example the Guest Dashboard would appear after clicking the "Explore I5k" blue button. 
 
----
-![alt text](img/HomePage0.png)
----
+<p align="center">
+    <img src="img//HomePage0.png">
+</p>
+
 
 ### Link Access
 
@@ -81,9 +82,9 @@ In this Home Page example the Guest Dashboard would appear after clicking the "E
 After the User logs in the Home Page turns into the User Dashboard, customized with the User's content and with navigation and features according 
 to the User's Properties. For example:
 
----
-![alt text](img/UserDash.png)
----
+<p align="center">
+    <img src="img/UserDash.png">
+</p>
   
 ## Registration <a name="Registration"></a>
 
@@ -118,9 +119,9 @@ Additionally:
 + A hidden honeypot security field.
 
 For example:
----
-![alt text](img/Registration.png)
----
+<p align="center">
+    <img src="img/Registration.png">
+</p>
 
 Upon loading the Registration form keyboard focus and cursor moves to the *First name* field. 
 
@@ -135,32 +136,32 @@ For each field, when validation passes a green check mark appears to the right o
 and a green glow frames the entire field.
 
 Example of validated Registration form:
----
-![alt text](img/ValidatedRegistration.png)
----
+<p align="center">
+    <img src="img/ValidatedRegistration.png">
+</p>
 
 When validation fails a red 'x' mark appears to the right of the field 
 and a red glow surrounds the entire field. If the field has help text the help text turns red.
 
 Example of invalid field with help text:
----
-![alt text](img/InvalidRegistration1.png)
----
+<p align="center">
+    <img src="img/InvalidRegistration1.png">
+</p>
 
 If the field has no help text, a callout appears with the appropriate caution. 
 
 Example of invalid field without help text:
----
-![alt text](img/InvalidRegistration2.png)
----
+<p align="center">
+    <img src="img/InvalidRegistration2.png">
+</p>
 
 After the Guest clicks *Create Account* an email confirmation dialog appears. If the Guest clicks *OK* registration proceeds, if *CANCEL*
 the Guest can edit the email entry and try again. 
 
 Example of Email Confirmation:
----
-![alt text](img/EmailConfirmationRegistration.png)
----
+<p align="center">
+    <img src="img/EmailConfirmationRegistration.png">
+</p>
 
 Field Validation:
 
@@ -263,41 +264,48 @@ Valid passwords contain at least eight characters, a letter, and a digit.
 
 Upon clicking *Login* a pull-down dialog of appropriate size appears below the clickable.
 
-For example:
+For example:  
 
----
-![alt text](img/Login1First.png)
----
+<p align="center">
+    <img src="img/Login1First.png"> 
+</p>
+
 Pressing \<Enter\> after entering the Password, activates the Login submit button. 
 &nbsp;  
-&nbsp;  
+
 In all Login screens and dialogs when clicking an input field to enter text a green glow appears around the field.  
 
-![alt text](img/Login1FirstGlow.png)
----
+<p align="center">
+    <img src="img/Login1FirstGlow.png"> 
+</p>
+
 &nbsp;  
 &nbsp;  
 A check box gives the option to show the password as is, otherwise password characters show as asterisks. 
+&nbsp;  
 
----
-![alt text](img/Login1ShowPwd.png)
----
+<p align="center">
+    <img src="img/Login1ShowPwd.png"> 
+</p>
+
 &nbsp;  
 &nbsp;  
 If the User Name and Password are correct, the User Page follows.  
 In all Login screens and dialogs a red glow appears around fields that fail validation.  
 If the User Name is incorrect a prominent warning displays the error: 
 
----
-![alt text](img/Login1BadUser.png)
----
+<p align="center">
+    <img src="img/Login1BadUser.png"> 
+</p>
+
 &nbsp;  
 &nbsp;  
 If the Password is incorrect a prominent warning displays the error: 
 
----
-![alt text](img/Login1BadPwd.png)
----
+<p align="center">
+    <img src="img/Login1BadPwd.png"> 
+</p>
+
 &nbsp;  
 &nbsp;  
 #### Login Help
@@ -310,38 +318,43 @@ Both procedures share the same page under the title of *Login Help*, which requi
 
 For example, after clicking either *User Name* or *Password* on the *Login Help?* line the User must provide their email address. 
 
----
-![alt text](img/LoginHelp1.png)
----
+<p align="center">
+    <img src="img/LoginHelp1.png"> 
+</p>
+
 &nbsp;  
 &nbsp;  
 If the User cannot provide the email address of an existing account, the only recourse is to contact us, for which we provide a link.  
 
----
-![alt text](img/LoginHelp1EmailError.png)
----
+<p align="center">
+    <img src="img/LoginHelp1EmailError.png"> 
+</p>
+
 &nbsp;  
 &nbsp;  
 If the email address the user enters correspond to that of an existing account, we proceed to the security page. For example:
 
----
-![alt text](img/LoginHelp2.png)
----
+<p align="center">
+    <img src="img/LoginHelp2.png"> 
+</p>
+
 &nbsp;  
 &nbsp;  
 If the security question and/or the captcha are incorrect we display a prominent warning:
 
----
-![alt text](img/LoginHelp2Errors.png)
----
+<p align="center">
+    <img src="img/LoginHelp2Errors.png"> 
+</p>
+
 &nbsp;  
 &nbsp;  
 
 Upon completion of the security page, we inform the user that we sent an email with the help information requested.
 
----
-![alt text](img/LoginHelp2EmailConfirmation.png)
----
+<p align="center">
+    <img src="img/LoginHelp2EmailConfirmation.png"> 
+</p>
+
 &nbsp;  
 &nbsp;  
 If the User requested a User Name reminder we send an email along these lines:
@@ -351,11 +364,13 @@ If the User requested a User Name reminder we send an email along these lines:
     Your user name is: creed
 
 If instead the User requested password help the email contains a link to the Enter New Password Page. For example:  
+&nbsp;  
+<p align="center">
+    <img src="img/NewPassword.png"> 
+</p>
 
----
-![alt text](img/NewPassword.png)
----
-
+&nbsp;  
+&nbsp;  
 If the new password does not follow the password rules the help message turns red.  
 
 If the new password passes validation then we redirect the User to a Login Page.  
@@ -363,40 +378,13 @@ If the new password passes validation then we redirect the User to a Login Page.
 Users experiencing unresolved difficulties can click the *Having trouble or sight impaired?* link to
 email us (or phone us when the helpdesk becomes available). For example:
 
----
-![alt text](img/LoginAccountHelp.png)
----
-&nbsp;  
-&nbsp;  
-&nbsp;  
-## Applications  <a name="Applications"></a>
-
-
-
-- TBD
-
-
-
-
-If the User requested a User Name reminder we send an email along these lines:
-
-    You requested a reminder of your I5k account user name:
-
-    Your user name is: creed
-
-If instead, the User requested password help the email contains a link to the Enter New Password Page. For example:  
-
----
-![alt text](img/NewPassword.png)
----
-
-If the new password does not follow the password rules the help message turns red.  
-
-If the new password passes validation then we redirect the User to a Login Page.  
+<p align="center">
+    <img src="img/LoginAccountHelp.png"> 
+</p>
 
 &nbsp;  
 &nbsp;  
-
+&nbsp;  
 ## Applications  <a name="Applications"></a>
 
 
@@ -434,9 +422,9 @@ Users' Creds. Apps relinquish the login operation to the Dashboard, and assume U
 The Authentication Subsystem keeps User Creds securely and centrally in a MySql database at the sole service of the CAS Server. The Login Handshake 
 Flow diagram shows the interactions between the browser (User), the Dashboard, and the CAS Server. 
 
----
-![alt text](img/CASlogin.png)
----
+<p align="center">
+    <img src="img/CASlogin.png"> 
+</p>
 
 - TBD
 
