@@ -87,6 +87,8 @@ to the User's Properties. For example:
   
 ## Registration <a name="Registration"></a>
 
+**Update: Omit copyright notice shown in examples** 
+
 Guests access the Registration form from the *Register/Login* link in the top bar of the Home Page which is a persistent navigation element, found
 in most pages. 
 
@@ -113,6 +115,7 @@ Additionally:
 + "Create account" submit button.  
 + A 'Log in' link to the login page.  
 + A '© 2016 I5k - All Rights Reserved' foot notice.  
++ A hidden honeypot security field.
 
 For example:
 ---
@@ -235,16 +238,20 @@ The Registration form data sent by the browser arrives at the Dashboard as a *Re
 ### CAS Registration
 
 - TBD 
-
-
+&nbsp;  
+&nbsp;  
+&nbsp;  
 ## Login <a name="Login"></a>
 
-The login clickable is part of the *Registration/Login* dual link in the permanent navigation mast at the top of the page, 
-as long as the User in not logged in. Upon a successful login, the browser loads the User Page. 
+The login clickable is part of the *Registration/Login* dual link in the persistent navigation mast at the top of the page,
+as long as the User in not logged in. Upon a successful login, the browser loads the User Page, where the greeting *Hello \<User's first name\>* 
+substitutes the *Registration/Login* link.
 
-If login fails, the User can ask for help to retrive their user name via email, or by requesting a new password. Beyond that, 
-if difficulties remain the User can send email explaining the issue, or call the helpdesk, when available. The following section shows 
+If login fails, the User can ask for help to retrieve their user name via email, or by requesting a new password. Beyond that,
+if difficulties remain the User can send email explaining the issue, or call the helpdesk, when available. The following sections show
 the login steps and examples of the screens shown.
+
+All Login pages and dialogs to be submitted to the server must include a hidden honeypot security field. 
 
 ### Password Requirements
 Valid passwords contain at least eight characters, a letter, and a digit. 
@@ -263,22 +270,21 @@ For example:
 Pressing \<Enter\> after entering the Password, activates the Login submit button. 
 &nbsp;  
 &nbsp;  
-In all Login screeens and dialogs when clicking an input field to enter text a red glow appears around the field.
+In all Login screens and dialogs when clicking an input field to enter text a green glow appears around the field.  
 
 ![alt text](img/Login1FirstGlow.png)
 ---
 &nbsp;  
 &nbsp;  
-
-A check box gives the option to show the password as is, otherwise password charactes show as asterisks. 
+A check box gives the option to show the password as is, otherwise password characters show as asterisks. 
 
 ---
 ![alt text](img/Login1ShowPwd.png)
 ---
 &nbsp;  
 &nbsp;  
-
 If the User Name and Password are correct, the User Page follows.  
+In all Login screens and dialogs a red glow appears around fields that fail validation.  
 If the User Name is incorrect a prominent warning displays the error: 
 
 ---
@@ -286,14 +292,13 @@ If the User Name is incorrect a prominent warning displays the error:
 ---
 &nbsp;  
 &nbsp;  
-
 If the Password is incorrect a prominent warning displays the error: 
 
 ---
 ![alt text](img/Login1BadPwd.png)
 ---
-&nbsp; 
-&nbsp; 
+&nbsp;  
+&nbsp;  
 #### Login Help
 
 The User can ask for help to either get a reminder of their User Name, or receive a link to the page to change the Password. Both procedures 
@@ -307,34 +312,38 @@ For example, after clicking either *User Name* or *Password* on the *Login Help?
 ---
 ![alt text](img/LoginHelp1.png)
 ---
-&nbsp; 
-&nbsp; 
-
-If the User cannot provide the email addres of an existing account, the only recourse is to contact us, for which we provide a link.  
+&nbsp;  
+&nbsp;  
+If the User cannot provide the email address of an existing account, the only recourse is to contact us, for which we provide a link.  
 
 ---
 ![alt text](img/LoginHelp1EmailError.png)
 ---
-&nbsp; 
-&nbsp; 
-
+&nbsp;  
+&nbsp;  
 If the email address the user enters correspond to that of an existing account, we proceed to the security page. For example:
 
 ---
 ![alt text](img/LoginHelp2.png)
 ---
-&nbsp; 
-&nbsp; 
-
+&nbsp;  
+&nbsp;  
 If the security question and/or the captcha are incorrect we display a prominent warning:
 
 ---
 ![alt text](img/LoginHelp2Errors.png)
 ---
-&nbsp; 
-&nbsp; 
+&nbsp;  
+&nbsp;  
 
-Upon completion of the security page, if the User requested a User Name reminder we send an email along these lines:
+Upon completion of the security page, we inform the user that we sent an email with the help information requested.
+
+---
+![alt text](img/LoginHelp2EmailConfirmation.png)
+---
+&nbsp;  
+&nbsp;  
+If the User requested a User Name reminder we send an email along these lines:
 
     You requested a reminder of your I5k account user name:
 
@@ -346,12 +355,46 @@ If instead the User requested password help the email contains a link to the Ent
 ![alt text](img/NewPassword.png)
 ---
 
-If the new password does not follow our password rules the help message turns red.  
+If the new password does not follow the password rules the help message turns red.  
 
 If the new password passes validation then we redirect the User to a Login Page.  
 
-&nbsp; 
-&nbsp; 
+Users experiencing unresolved difficulties can click the *Having trouble or sight impaired* link to
+email us (or phone us when the helpdesk becomes available). For example:
+
+---
+![alt text](img/LoginAccountHelp.png)
+---
+&nbsp;  
+&nbsp;  
+&nbsp;  
+## Applications  <a name="Applications"></a>
+
+
+
+- TBD
+
+
+
+
+If the User requested a User Name reminder we send an email along these lines:
+
+    You requested a reminder of your I5k account user name:
+
+    Your user name is: creed
+
+If instead, the User requested password help the email contains a link to the Enter New Password Page. For example:  
+
+---
+![alt text](img/NewPassword.png)
+---
+
+If the new password does not follow the password rules the help message turns red.  
+
+If the new password passes validation then we redirect the User to a Login Page.  
+
+&nbsp;  
+&nbsp;  
 
 ## Applications  <a name="Applications"></a>
 
