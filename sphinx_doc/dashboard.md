@@ -241,6 +241,7 @@ The Registration form data sent by the browser arrives at the Dashboard as a *Re
 &nbsp;  
 &nbsp;  
 &nbsp;  
+
 ## Login <a name="Login"></a>
 
 The login clickable is part of the *Registration/Login* dual link in the persistent navigation mast at the top of the page,
@@ -359,7 +360,7 @@ If the new password does not follow the password rules the help message turns re
 
 If the new password passes validation then we redirect the User to a Login Page.  
 
-Users experiencing unresolved difficulties can click the *Having trouble or sight impaired* link to
+Users experiencing unresolved difficulties can click the *Having trouble or sight impaired?* link to
 email us (or phone us when the helpdesk becomes available). For example:
 
 ---
