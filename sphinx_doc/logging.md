@@ -1,6 +1,8 @@
- I5K LOGGING  
+# I5K LOGGING  
 
 Short guide to I5K logging.  
+
+  -  J. Suriol September, 2016
 
 ## Table of Contents
 
@@ -22,7 +24,7 @@ For example:
 
     dash.error("Method not supported")  
 
-Output has various destinations according to the severity of the log and the configuration 
+Logging output has various destinations according to the severity of the log and the configuration 
 settings, including files, the console, and email. 
 
 A main attribute of a log entry is its severity level. This system supports five severity levels:
@@ -61,10 +63,10 @@ The configuration dictionary showing first-level entries only looks like this:
 After the version, for which '1' is the only valid value at present, we specify 
 to leave Django default loggers enabled.  
  
-Log messages are submitted by functions to a logger. The logger in turn 
-passes the log to a handler, through any filters specified which may modify 
-or suppress the log, and handlers render the log message according the the 
-formatter attached to them.
+Log messages are submitted by functions, like debug(), info(), etc., to a logger. The logger in turn 
+passes the message to one or more handlers, through any filters which may modify 
+or suppress the message, finally handlers render the message according the the 
+formatter attached to them and route it to the intended destination.
 
 This diagram shows the operational role of each component:
 
@@ -118,10 +120,10 @@ In our configuration we define only simple filters for handlers.
        },
     }
 
-The filter *'require_debug_false'* will send logs to its handler only if DEBUG == False in 
+The filter *'require_debug_false'* allows logs into its handler only if DEBUG == False in 
 the *settings.py* file.  
  
-Conversely, the  filter *'require_debug_true'* will send logs to its handler only if DEBUG == True in 
+Conversely, the  filter *'require_debug_true'* allows logs into its handler only if DEBUG == True in 
 the *settings.py* file.  
 
 ### Handlers
@@ -163,8 +165,8 @@ One to send email to the admins, two rotating file handlers, and a console handl
 Handlers can filter messages based on severity level or with one or more specialized filters.  
 
 The *'mail_admins'* handler sends logs of ERROR or CRITICAL severity only to the admins, by default, 
-or of the severity specified in the environment variable ADMIN_LOG_LEVEL if set, or higher.  
-The handler filter suppresses emailing logs the the admins if running in debug mode. 
+or of the severity specified in the environment variable ADMIN_LOG_LEVEL if set, or higher. The handler 
+filter suppresses emailing logs to the admins if running in debug mode. 
 
 The *'django_file'* handler sends logs to the '/var/log/django/django.log' file. 
 The *'i5k_file'* handler sends logs to the '/var/log/i5k/i5k.log' file. 
@@ -216,7 +218,7 @@ The Django loggers are arranged in a tree hierarchy with 'django' being the root
 logger. When 'propagate' is True logs submitted to sub-loggers are passed up to the 
 parent logger all the way up to the root.  
 
-Therefore 'django' is a catch-all logger and its handler will route logs from 
+Therefore 'django' is a catch-all logger and its handlers will route logs from 
 all its sub-loggers. 
 
 The 'level' attribute sets the logging threshold. That is the logger will log only 
@@ -240,10 +242,13 @@ From Django 1.8 docs:
 
     "You shouldn’t alter settings in your applications at runtime."
 
-Therefore the following changes to the logging settings require a Django server restart.  
+Changes to the logging configuration usually involve modifying the LOGGING dictionary in the
+settings.py file, but a few settings can be tweaked by changing the values of certain
+enviromental variables. 
 
-Logging behavior can change by changing the values of certain environmental variables, 
-as seen in the configuration.  Namely 
+Either way, for changes to take effect it requires a Django server restart. 
+
+These variables can alter the logging behavior: 
 
     Variable name       Default 
     ---------------------------
@@ -278,13 +283,13 @@ To log messages with the 'i5k' logger include these two modules in your program 
 and if possible adhere to the following conventions.  
 
     import misc.fileline as src 
-    from misc.logging import getLogger
+    from misc.logger import i5kLogger
 
-The fileline module provides functions to include the file name and the line number 
-of the call to the logger in the log message, similarly to the \_\_FILE\_\_ and \_\_LINE\_\_
+The *fileline* module provides functions to include the file name and the line number 
+of the call to the logger in the log message, similar to the \_\_FILE\_\_ and \_\_LINE\_\_
 macros in the C language.  
 
-The getLogger function is a wrapper for:
+The *i5kLogger()* function is a wrapper for:
 
     return logging.getLogger('i5k')
 
@@ -292,9 +297,9 @@ Here is an example showing the use of all logging methods.
 
     
     import misc.fileline as src 
-    from misc.logging import getLogger
+    from misc.logger import i5kLogger
 
-    blast = getLogger() 
+    blast = i5kLogger() 
 
     blast.debug("<debug message> (file: %s line: %s)" % (src.file(), src.line()))
 
@@ -315,10 +320,10 @@ The resulting debug log is for example:
 
 Log entries are usually a single line, except when you print the http request, if available.  
 
-To add the entire http request to the log message use the request() funtion in the fileline module. 
+To add the entire http request to the log message use the *request()* funtion of the *fileline* module. 
 
-In a view or any other function where the request is available, say in the variable 'request' you can 
-add the request to the log like this. 
+In a view or any other function where the request is available, say in the variable 'request', you can 
+add the request to the log like this:
 
     blast.error("<error message> (file: %s line: %s) %s" % (src.file(), src.line(), src.request(request)))
 
@@ -333,9 +338,9 @@ This produces a multiline log similar to this:
     COOKIES:{'csrftoken': 'lw03D5JjghuOzEFDsQE3uaREaHr1xUM2'},
     <other request fields> 
 
-The request makes the log file less readable but equally useful to text manipulation tools.  
-The call to 'src.request(request)' returns 'request:' in the first line, so there is no need to 
+The request data makes the log file less readable but equally useful to text manipulation tools.
+The call to *'src.request(request)'* returns the string 'request:' in the first line, so there is no need to 
 add it to the message format string. 
 
-Adding the file and line to each log call is a bit more laborious, but it provides invaluable information 
-to troubleshooters and developers when errors occur and it is a recommended practice that repays the time invested many times over
+Adding the file and line to each logging call is a bit laborious, but it provides invaluable information 
+to troubleshooters and developers when errors occur, and it is a recommended practice that repays the time invested many times over.
