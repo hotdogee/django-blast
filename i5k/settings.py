@@ -1,5 +1,7 @@
 # Django settings for i5k project.
 from os import path
+import sys
+import os
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
 DEBUG = True
@@ -32,7 +34,7 @@ TEMPLATES = [
                 'social.apps.django_app.context_processors.login_redirect',
                 'app.context_processors.is_login_enabled',
                 'app.context_processors.is_analytics_enabled',
-            ],           
+            ],
         },
     },
 ]
@@ -42,7 +44,7 @@ ALLOWED_HOSTS = (
 )
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('Joseph', 'vagrant'),
 )
 
 MANAGERS = ADMINS
@@ -150,6 +152,15 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+
+
+
+
+
+
+
+
+
 ROOT_URLCONF = 'i5k.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -194,8 +205,13 @@ INSTALLED_APPS = (
     'hmmer',
     'clustal',
     'webapollo_sso',
-    'drupal_sso'
+    'drupal_sso',
+    'django_cas_ng',
 )
+
+
+
+
 
 # deprecated in Django 1.8
 #from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
@@ -277,7 +293,7 @@ SUIT_CONFIG = {
         )},
         {'app': 'clustal', 'label': 'clustal', 'icon':'icon-leaf', 'models': (
             {'model': 'clustalqueryrecord'},
-        )},      
+        )},
         {'app': 'default', 'label': 'Social Auth', 'icon':'icon-leaf', 'models': (
             {'model': 'usersocialauth'},
             {'model': 'nonce'},
@@ -314,29 +330,69 @@ SUIT_CONFIG = {
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+
+#
+# Use default 'django' loger to a file in /var/log/django/django.log
+# and new log 'i5k' to /var/log/i5k/i5k.log
+# See logging.md doc for more details.
+#
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'normal': {
+            'format': '%(name)s %(levelname)s %(asctime)s %(process)d [%(message)s]'
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
-        }
+        },
+       'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
     },
     'handlers': {
         'mail_admins': {
-            'level': 'ERROR',
+            'level': os.getenv('ADMIN_LOG_LEVEL', 'ERROR'),
             'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'normal'
+        },
+        'django_file': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': '/var/log/django/django.log',
+            'when': 'midnight',
+            'backupCount': 60,
+            'formatter': 'normal'
+        },
+        'i5k_file': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': '/var/log/i5k/i5k.log',
+            'when': 'midnight',
+            'backupCount': 60,
+            'formatter': 'normal'
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+            'formatter': 'normal'
+        },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+        'django': {
+            'handlers': ['mail_admins', 'django_file', 'console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+        'i5k': {
+            'handlers': ['mail_admins', 'i5k_file', 'console'],
+            'level': os.getenv('I5K_LOG_LEVEL', 'INFO'),
             'propagate': True,
         },
     }
 }
+
 
 # Apollo SSO
 ROBOT_ID = 'R2D2'
@@ -359,7 +415,7 @@ CELERY_DEFAULT_QUEUE = 'i5k'
 CELERY_DEFAULT_EXCHANGE = 'i5k'
 CELERY_DEFAULT_EXCHANGE_TYPE = 'direct'
 CELERY_DEFAULT_ROUTING_KEY = 'i5k'
-CELERY_QUEUES = ( 
+CELERY_QUEUES = (
     Queue('i5k', Exchange('i5k'), routing_key='i5k'),
 )
 BROKER_URL = 'amqp://'
@@ -514,7 +570,7 @@ PIPELINE_JS = {
                 'webapollo_sso/scripts/sso-datatable.js',
         ),
         'output_filename': 'sso/scripts/sso-js.min.js',
-    },       
+    },
 }
 '''
 # django-pipeline 1.6
@@ -612,7 +668,7 @@ PIPELINE = {
                     'webapollo_sso/scripts/sso-datatable.js',
             ),
             'output_filename': 'sso/scripts/sso-js.min.js',
-        },       
+        },
     },
 }
 
@@ -627,6 +683,7 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
     'social.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'django_cas_ng.backends.CASBackend',
 )
 
 SOCIAL_AUTH_PIPELINE = (
@@ -648,14 +705,14 @@ SOCIAL_AUTH_FACEBOOK_KEY = ''
 SOCIAL_AUTH_FACEBOOK_SECRET = ''
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
-# captcha 
+# captcha
 CAPTCHA_LETTER_ROTATION = None
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
 CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
 
 # Email backend
 EMAIL_HOST = 'localhost'
-EMAIL_PORT = '1025'
+EMAIL_PORT = '25'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
@@ -673,3 +730,6 @@ ANALYTICS_ENABLED = False
 USE_PROD_SETTINGS = False
 if USE_PROD_SETTINGS:
     from settings_prod import *
+
+
+sys.path.append('%s/misc' % path.dirname(path.abspath(path.dirname(__file__))))
