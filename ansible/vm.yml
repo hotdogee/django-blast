@@ -1,0 +1,29 @@
+---
+- name: Run this play locally - Create CentOS 6.7 VM
+  hosts: localhost
+  connection: local
+  vars:
+  vars: 
+      ipaddr: "{{ addr | default('default') }}"
+  tasks:
+      - name: Remove Vagrant file if it exist
+        file: path=./Vagrantfile state=absent
+
+      - name: Create basic Vagrant file for a CentOS 6.7 VM
+        command: vagrant init bento/centos-6.7
+
+      - name: Specify a public network, vm name, and host public key in Vagrant file.
+        command: ./vagrantfix.sh {{ vm }} {{ ipaddr }}
+
+      - name: Create and start VM
+        command: vagrant up --provider virtualbox
+
+      - name: Clean known_hosts file
+        shell: ssh-keygen -R {{ vm }}; ssh-keygen -R {{ ipaddr }}; ssh-keygen -R {{ vm }},{{ ipaddr }}
+        ignore_errors: yes
+
+      - name: Add host key to known_hosts file
+        shell: ssh-keyscan -H {{ vm }}, {{ ipaddr }} >> ~/.ssh/known_hosts ; \
+               ssh-keyscan -H {{ vm }} >> ~/.ssh/known_hosts ; \
+               ssh-keyscan -H {{ ipaddr }} >> ~/.ssh/known_hosts
+

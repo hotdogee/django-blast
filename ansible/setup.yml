@@ -1,0 +1,332 @@
+---
+
+#################  CREATE  VM  #####################
+
+- include: vm.yml
+  when: vm is defined
+
+################  PROVISION VM  #####################
+#
+- name: Deploy dgango-blast project and dependencies
+  hosts: "{{ target }}"
+  user: "{{ user }}"
+  vars:
+      ipaddr: "{{ addr }}"
+  tasks:
+
+#-----------------   Python   -----------------------
+
+    - name: Install Linux 'Development tools' package group (long)
+      yum: name="@Development tools" state=present
+      become: True
+
+    - name: Install Python development tools
+      yum: name={{ item }} state=present
+      with_items:
+         - zlib-devel
+         - bzip2-devel
+         - openssl-devel
+         - ncurses-devel
+         - sqlite-devel
+         - readline-devel
+         - tk-devel
+         - gdbm-devel
+         - db4-devel
+         - libpcap-devel
+         - xz-devel
+         - python-devel
+         - libselinux-python
+      become: True
+
+    - name: Wget and untar Python 2.7
+      unarchive: src=http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tar.xz
+                 dest={{ ansible_env.HOME }} copy=no
+
+    - name: Configure Python 2.7 as a shared library
+      command: ./configure --prefix=/usr/local --enable-unicode=ucs4 --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib"
+               chdir="{{ ansible_env.HOME }}/Python-2.7.8"
+
+    - name: Make Python 2.7
+      command: make chdir="{{ ansible_env.HOME }}/Python-2.7.8"
+
+    - name: Make altinstall Python 2.7
+      command: make altinstall chdir="{{ ansible_env.HOME }}/Python-2.7.8"
+      become: True
+
+    - name: Get ez_setup.py
+      get_url: url=https://bootstrap.pypa.io/ez_setup.py 
+               dest={{ ansible_env.HOME }}
+
+    - name: Install ez_setup.py
+      command: /usr/local/bin/python2.7 ez_setup.py
+      become: True
+
+    - name: Get pip
+      get_url: url=https://bootstrap.pypa.io/get-pip.py 
+               dest={{ ansible_env.HOME }}
+
+    - name: Install pip
+      command: /usr/local/bin/python2.7 get-pip.py
+               chdir={{ ansible_env.HOME }}
+      become: True
+
+    - name: Install virtualenv
+      command: /usr/local/bin/pip2.7 install virtualenv
+               chdir={{ ansible_env.HOME }}
+      become: True
+
+    - name: Copy the django-blast repository
+      copy: src={{ repo }} 
+            dest={{ ansible_env.HOME }} 
+            owner={{ user }}
+      when: repo is defined
+
+    - name: Clone the django-blast repository
+      git: repo=https://github.com/NAL-i5K/django-blast
+           dest={{ ansible_env.HOME }}/django-blast
+      when: repo is not defined
+
+    - name: Create virtual environment, activate, and install packages
+      pip:
+          name={{ item.name }}
+          version={{ item.version | default(omit) }}
+          virtualenv="{{ ansible_env.HOME }}/django-blast/py2.7"
+          virtualenv_command=/usr/local/bin/virtualenv
+      with_items:
+          - name: django
+            version: 1.8.12
+          - name: markdown
+            version: 2.6.6
+          - name: cssmin
+            version: 0.2.0
+          - name: django-pipeline
+            version: 1.6.8
+          - name: djangorestframework
+            version: 2.3.4
+          - name: django-rest-swagger
+            version: 0.3.5
+          - name: django-suit
+            version: 0.2.18
+          - name: docutils
+            version: 0.12
+          - name: jsmin
+            version: 2.0.11
+          - name: pycrypto
+            version: 2.6.1
+          - name: python-memcached
+            version: 1.57
+          - name: python-social-auth
+            version: 0.2.16
+          - name: requests-oauthlib
+            version: 0.6.1
+          - name: wsgiref
+            version: 0.1.2
+          - name: pillow
+            version: 2.2.2
+          - name: django-simple-captcha
+            version: 0.4.5
+          - name: django-axes
+
+#---------------------  RabbitMQ  ----------------------------
+
+
+    - name: Wget RHEL/CentOS 6.8 64-Bit Epel rpm
+      get_url: url=https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+               dest={{ ansible_env.HOME }}
+
+    - name: Install RHEL/CentOS 6.8 64-Bit Epel rpm
+      yum: name="{{ ansible_env.HOME }}/epel-release-6-8.noarch.rpm" 
+           state=present
+      become: True
+
+    - name: Install Erlang
+      yum: name=erlang state=present
+      become: True
+
+    - name: Install RabbitMQ
+      yum: name=rabbitmq-server state=present
+      become: True
+
+    - name: Start RabbitMQ server and enable at boot
+      service: name=rabbitmq-server 
+               state=started 
+               enabled=yes
+      become: True
+
+#----------------------  Celery  ------------------------------
+
+    - name: Install Celery in the virtualenv
+      pip:
+          name=celery
+          version=3.1.23
+          virtualenv="{{ ansible_env.HOME }}/django-blast/py2.7"
+
+    - name: Configure celeryd
+      command: cp {{ ansible_env.HOME }}/django-blast/celeryd /etc/init.d
+      become: True
+
+    - name: Configure celerybeat
+      command: cp {{ ansible_env.HOME }}/django-blast/celerybeat /etc/init.d
+      become: True
+
+    - name: Edit 1 celeryd.sysconfig
+      lineinfile: dest="{{ ansible_env.HOME }}/django-blast/celeryd.sysconfig"
+                  line="CELERYD_CHDIR={{ ansible_env.HOME }}/django-blast"
+                  regexp='^CELERYD_CHDIR='
+
+    - name: Edit 2 celeryd.sysconfig
+      lineinfile: dest="{{ ansible_env.HOME }}/django-blast/celeryd.sysconfig"
+                  line="CELERYD_MULTI={{ ansible_env.HOME }}/django-blast/py2.7/bin/celery multi"
+                  regexp='^CELERYD_MULTI='
+
+    - name: Edit 3 celerybeat.sysconfig
+      lineinfile: dest="{{ ansible_env.HOME }}/django-blast/celerybeat.sysconfig"
+                  line="CELERYBEAT_CHDIR={{ ansible_env.HOME }}/django-blast"
+                  regexp='^CELERYBEAT_CHDIR='
+
+    - name: Edit 4 celerybeat.sysconfig
+      lineinfile: dest="{{ ansible_env.HOME }}/django-blast/celerybeat.sysconfig"
+                  line="CELERY_BIN={{ ansible_env.HOME }}/django-blast/py2.7/bin/celery"
+                  regexp='^CELERY_BIN='
+
+    - name: Configure celeryd.sysconfig
+      command: cp "{{ ansible_env.HOME }}/django-blast/celeryd.sysconfig" /etc/default/celeryd
+      become: True
+
+    - name: Configure celerybeat.sysconfig
+      command: cp "{{ ansible_env.HOME }}/django-blast/celerybeat.sysconfig" /etc/default/celerybeat
+      become: True
+
+    - name: Set celeryd and celerybeat as daemons
+      shell: chkconfig celeryd on; chkconfig celerybeat on
+      become: True
+
+#---------------------  Memcached  ----------------------------
+
+    - name: Install Memcached
+      yum: name=memcached 
+           state=present
+      become: True
+
+#--------------------  PostgreSQL  ----------------------------
+
+    - name: Add line to yum repository for PostgreSQL
+      lineinfile: dest=/etc/yum.repos.d/CentOS-Base.repo 
+                  line='exclude=postgresql*' 
+                  state=present
+      become: True
+
+    - name: Wget PostgreSQL Global Development Group (PGDG) rpm file
+      get_url: url=http://yum.postgresql.org/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm
+               dest={{ ansible_env.HOME }}
+      
+    - name: Install PostgreSQL Global Development Group (PGDG) rpm file
+      yum: name={{ ansible_env.HOME }}/pgdg-centos95-9.5-2.noarch.rpm 
+           state=present
+      become: True
+
+    - name: Install PostgreSQL server and associated packages
+      yum: name={{ item }} 
+           state=present
+      with_items:
+          - postgresql95-server
+          - postgresql95-contrib
+          - postgresql95-devel
+      become: True
+
+    - name: Initialize PostgreSQL (uses default data directory /var/lib/pgsql)
+      command: service postgresql-9.5 initdb
+      become: True
+
+    - name: Install pg_hba.conf file in /var/lib/pgsql/9.5/data (overwrites default file)
+      copy: src=./pg_hba.conf 
+            dest=/var/lib/pgsql/9.5/data
+            owner=postgres
+      become: True
+
+    - name: Start PostgreSQL server and enable at boot
+      service: name=postgresql-9.5 state=started enabled=yes
+      become: True
+
+    - name: Install psycopg2
+      shell: export PATH=/usr/pgsql-9.5/bin:$PATH; \
+             {{ ansible_env.HOME }}/django-blast/py2.7/bin/python -m pip install psycopg2==2.6
+
+    - name: Create django database
+      shell: psql -c 'create database django;'
+      become: True
+      become_user: postgres
+
+    - name: Create user django
+      shell: psql -c 'create user django;'
+      become: True
+      become_user: postgres
+    #
+    - name: Grant ALL privs to django user
+      shell: psql -c 'grant all on database django to django;'
+      become: True
+      become_user: postgres
+
+    - name: Create hstore extension
+      shell: psql django -c 'CREATE EXTENSION hstore;'
+      become: True
+      become_user: postgres
+
+#-------------   Migrate Django Database   -----------------
+
+    - name: Run python manage.py migrate
+      django_manage:
+          command=migrate
+          app_path={{ ansible_env.HOME }}/django-blast
+          virtualenv={{ ansible_env.HOME }}/django-blast/py2.7
+
+#---------------------  Apache  ----------------------------
+
+    - name: Install Apache
+      yum: name={{ item }} 
+           state=present
+      with_items:
+         - httpd
+         - httpd-devel
+         - mod_ssl
+      become: True
+
+    - name: Add this vm to /etc/hosts
+      lineinfile: dest=/etc/hosts line="{{ ipaddr }} {{ target }} {{ target }}.local"
+                  state=present
+      become: True
+
+    - name: Add ServerName to Apache config
+      lineinfile: dest=/etc/httpd/conf/httpd.conf line='ServerName {{ target }}.local:80' 
+                  state=present 
+                  insertafter='#ServerName www.example.com:80'
+      become: True
+
+    - name: Start Apache and enable it at boot
+      service: name=httpd 
+               state=started 
+               enabled=yes
+      become: True
+
+#--------------------  Clean up  ----------------------------
+
+    - name: Cleanup installation files
+      file: path={{ item }} state=absent
+      with_items:
+          - "{{ ansible_env.HOME }}/ez_setup.py"
+          - "{{ ansible_env.HOME }}/get-pip.py"
+          - "{{ ansible_env.HOME }}/epel-release-6-8.noarch.rpm"
+          - "{{ ansible_env.HOME }}/pgdg-centos95-9.5-2.noarch.rpm"
+          - "{{ ansible_env.HOME }}/Python-2.7.8"
+      become: True
+
+    - name: Cleanup setuptools current version
+      shell: rm -f {{ ansible_env.HOME }}/setuptools-*zip
+      become: True
+
+
+
+
+
+
+
