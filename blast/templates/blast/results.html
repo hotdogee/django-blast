@@ -25,6 +25,8 @@
     var results_data = {{ results_data|safe }};
     var results_info = {{ results_info|safe }};
     var task_id = '{{ task_id }}';
+    var media_url = {{ media_url|safe }}; // MEDIA_URL, made absolute with the host of this page
+    if (!/^(https?:)?\/\//.test(media_url)) media_url = location.protocol + '//' + location.host + media_url;
 </script>
 {% endblock %}
 

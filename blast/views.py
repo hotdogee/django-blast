@@ -203,6 +203,8 @@ def retrieve(request, task_id='1'):
                     'results_data': escape_json_for_script(results_data),
                     'results_info': escape_json_for_script(results_info),
                     'task_id': task_id,
+                    # result files, including the GFF3 files JBrowse loads
+                    'media_url': json_for_script(settings.MEDIA_URL),
                 })
         else: # if .csv file size is 0, no hits found
             return render(request, 'blast/results_not_existed.html',

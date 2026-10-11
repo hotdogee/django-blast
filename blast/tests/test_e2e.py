@@ -83,6 +83,9 @@ class EndToEndTest(TempMediaMixin, TestCase):
         response = self.client.get(location)
         self.assertContains(response, 'Query Coverage Graph')
         self.assertContains(response, task_id)
+        self.assertContains(response, 'var media_url = "/media/";')  # result files and GFF3 for JBrowse
+        with self.settings(MEDIA_URL='https://files.example.org/blast-media/'):
+            self.assertContains(self.client.get(location), 'var media_url = "https://files.example.org/blast-media/";')
         status = self.client.get(location + '/status').json()
         self.assertEqual(status['status'], 'done')
         # the downloadable files are served from MEDIA_URL

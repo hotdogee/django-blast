@@ -221,7 +221,8 @@ $(function () { // document ready
     // extra track. The hit itself (hit_start..hit_end) is highlighted (#26).
     function jbrowse_url(dbtitle, refseq, start_pos, end_pos, hit_start, hit_end) {
         var jbrowse = results_info['db_url'][dbtitle];
-        var gff_url = /^(https?:\/\/)/g.exec(jbrowse)[1] + /https?:\/\/(.*?)\/(?:blast)*/g.exec(document.URL)[1] + '/media/blast/task/' + task_id + '/' + encodeURIComponent(dbtitle) + '.gff';
+        // MEDIA_URL with the scheme of the JBrowse page (no mixed content)
+        var gff_url = (/^https?:/.exec(jbrowse) || [''])[0] + media_url.replace(/^https?:/, '') + 'blast/task/' + task_id + '/' + encodeURIComponent(dbtitle) + '.gff';
         var stores = { 'url': { 'type': 'JBrowse/Store/SeqFeature/GFF3', 'urlTemplate': gff_url } };
         var tracks = [{
             'label': 'BLAST+ Results', 'category': '0. Reference Assembly', 'type': 'WebApollo/View/Track/DraggableBLASTFeatures', 'store': 'url',
@@ -364,7 +365,7 @@ $(function () { // document ready
     ///////////////////
     // Download Menu //
     ///////////////////
-    var task_path = /(https?:\/\/.*?)\/(?:blast)*/g.exec(document.URL)[1] + '/media/blast/task/' + task_id + '/' + task_id;
+    var task_path = media_url + 'blast/task/' + task_id + '/' + task_id;
     $('.btn-download').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
 <span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>\
 </button>\
