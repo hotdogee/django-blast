@@ -172,10 +172,13 @@ class Sequence(models.Model):
     Contents of this table should be generated programmatically
     >gi|45478711|ref|NC_005816.1| Yersinia pestis biovar Microtus ... pPCP1, complete sequence
     SELECT [key], blast_db_id, id, length, seq_start_pos, seq_end_pos, modified_date FROM blast_sequence
+
+    The same id can exist in several BLAST databases (#19); it is only unique
+    together with blast_db.
     '''
     key = models.AutoField(primary_key=True)
     blast_db = models.ForeignKey(BlastDb, verbose_name='BLAST DB', on_delete=models.CASCADE) #
-    id = models.CharField(max_length=200, unique=True) # gi|45478711|ref|NC_005816.1|
+    id = models.CharField(max_length=200, db_index=True) # gi|45478711|ref|NC_005816.1|
     length = models.PositiveIntegerField() #
     seq_start_pos = models.BigIntegerField() # used for file.seek(offset), marks start of '>'
     seq_end_pos = models.BigIntegerField() # used to calculate file.read(size)

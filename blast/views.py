@@ -165,7 +165,9 @@ def create(request, iframe=False):
         with open(path.join(path.dirname(file_prefix), 'status.json'), 'w') as f:
             json.dump({'status': 'pending', 'seq_count': seq_count}, f)
 
-        run_blast_task.delay(task_id, args_list, file_prefix, blast_info)
+        # the titles of the searched databases disambiguate subject ids (#19)
+        task_blast_info = dict(blast_info, db_titles=[db.title for db in dbs])
+        run_blast_task.delay(task_id, args_list, file_prefix, task_blast_info)
 
         return redirect('blast:retrieve', task_id)
     else:

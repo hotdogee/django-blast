@@ -1,5 +1,8 @@
 from rest_framework import serializers
+from rest_framework.reverse import reverse
 from django.contrib.auth.models import User
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema_field
 from .models import Organism, SequenceType, BlastDb, Sequence, BlastQueryRecord
 
 class OrganismSerializer(serializers.HyperlinkedModelSerializer):
@@ -32,12 +35,17 @@ class BlastDbSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'organism', 'type', 'fasta_file', 'title', 'description', 'is_shown', 'fasta_file_exists', 'blast_db_files_exists', 'sequence_set_exists', 'db_ready', 'sequence_set', )
 
 class SequenceSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.SerializerMethodField(help_text='Unambiguous URL of this sequence')
     blast_db = serializers.HyperlinkedRelatedField(view_name='blast:blastdb-detail', lookup_field='title', read_only=True)
     fasta_seq = serializers.CharField(read_only=True)
 
     class Meta:
         model = Sequence
-        fields = ('blast_db', 'id', 'length', 'seq_start_pos', 'seq_end_pos', 'modified_date', 'fasta_seq', )
+        fields = ('url', 'blast_db', 'id', 'length', 'seq_start_pos', 'seq_end_pos', 'modified_date', 'fasta_seq', )
+
+    @extend_schema_field(OpenApiTypes.URI)
+    def get_url(self, obj):
+        return reverse('blast:blastdb-sequence-detail', kwargs={'title': obj.blast_db.title, 'seq_id': obj.id}, request=self.context.get('request'))
 
 class BlastQueryRecordSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='blast:blastqueryrecord-detail', lookup_field='task_id')

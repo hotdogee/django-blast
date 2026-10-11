@@ -32,6 +32,24 @@ def utcnow():
     return datetime.now(timezone.utc)
 
 
+def lookup_subject_databases(sseqids, db_titles=None):
+    '''Map each subject sequence id to the title of the BLAST database it came from.
+
+    The same id may exist in more than one database (#19), so only the
+    databases searched by this task are considered. If an id is still
+    ambiguous, the first database title in sorted order wins.
+    '''
+    sequences = Sequence.objects.filter(id__in=set(sseqids))
+    if db_titles:
+        sequences = sequences.filter(blast_db__title__in=set(db_titles))
+    sseqid_db = {}
+    for sseqid, title in sequences.order_by('-blast_db__title').values_list('id', 'blast_db__title'):
+        if sseqid in sseqid_db:
+            logger.warning('Sequence id %s exists in several searched databases (%s, %s); set a sequence ID prefix on the databases to disambiguate', sseqid, title, sseqid_db[sseqid])
+        sseqid_db[sseqid] = title
+    return sseqid_db
+
+
 @shared_task() # ignore_result=True
 def run_blast_task(task_id, args_list, file_prefix, blast_info):
     logger.info("blast_task_id: %s" % (task_id,))
@@ -90,9 +108,10 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
             basedir = path.dirname(csv_path)
             hsp_dict_list = build_hsp_dict_list(hsp_list, blast_info['col_names'])
             # build lookup tables from db
-            sseqid_db = dict(Sequence.objects.filter(id__in=set([hsp['sseqid'] for hsp in hsp_dict_list])).values_list('id', 'blast_db__title'))
-            db_organism = dict(BlastDb.objects.filter(title__in=set(sseqid_db.values())).values_list('title', 'organism__short_name'))
-            db_url = dict(JbrowseSetting.objects.filter(blast_db__title__in=set(sseqid_db.values())).values_list('blast_db__title', 'url'))
+            sseqid_db = lookup_subject_databases([hsp['sseqid'] for hsp in hsp_dict_list], blast_info.get('db_titles'))
+            db_titles = set(sseqid_db.values())
+            db_organism = dict(BlastDb.objects.filter(title__in=db_titles).values_list('title', 'organism__short_name'))
+            db_url = dict(JbrowseSetting.objects.filter(blast_db__title__in=db_titles).values_list('blast_db__title', 'url'))
             with open(path.join(basedir, 'info.json'), 'w') as f:
                 json.dump({'sseqid_db': sseqid_db, 'db_organism': db_organism, 'db_url': db_url, 'line_num_list': line_num_list}, f)
             with open(json_path, 'w') as f:

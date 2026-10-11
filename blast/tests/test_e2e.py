@@ -110,3 +110,15 @@ class EndToEndTest(TempMediaMixin, TestCase):
         task_id, location = self.submit(BLASTN_OPTIONS, '>q\n%s\n' % random_dna(300, 22), 'nohits.fa')
         self.assertEqual(BlastQueryRecord.objects.get(task_id=task_id).result_status, 'CSV_EMPTY')
         self.assertContains(self.client.get(location), 'No Hits Found')
+
+    def test_same_sequence_id_in_two_databases(self):
+        # #19: the hit is attributed to the database that was searched
+        shared = random_dna(1500, 31)
+        genome = create_blastdb('A_genome.fa', [('contig1', random_dna(1500, 32))], dataset_type='Genome Assembly')
+        transcripts = create_blastdb('B_transcripts.fna', [('contig1', shared)])
+        for db in (genome, transcripts):
+            self.assertEqual(db.makeblastdb()[0], 0)
+            self.assertEqual(db.index_fasta()[0], 0)
+        task_id, location = self.submit(BLASTN_OPTIONS, '>q\n%s\n' % shared[200:700], 'B_transcripts.fna')
+        self.assertEqual(BlastQueryRecord.objects.get(task_id=task_id).result_status, 'SUCCESS')
+        self.assertEqual(self.results(task_id)[0][:3], ['B_transcripts.fna', 'q', 'contig1'])

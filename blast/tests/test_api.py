@@ -1,6 +1,8 @@
 from django.core.management import call_command
 from django.test import TestCase
 
+from blast.models import Sequence
+
 from .helpers import TempMediaMixin, create_blastdb, random_dna
 
 
@@ -70,3 +72,57 @@ class ApiTest(TempMediaMixin, TestCase):
         import io
         out, err = io.StringIO(), io.StringIO()
         call_command('spectacular', '--validate', '--fail-on-warn', '--file', self.media_path('schema.yml'), stdout=out, stderr=err)
+
+
+class SharedSequenceIdTest(TempMediaMixin, TestCase):
+    '''#19: MultipleObjectsReturned from /blast/api/seq/<id>/ when two BLAST
+    databases contain the same sequence id (e.g. Mdes013216-RA).'''
+
+    def setUp(self):
+        super().setUp()
+        self.genome = create_blastdb('Mdes_genome.fa', [('Mdes013216-RA', 'ACGT' * 50)], dataset_type='Genome Assembly')
+        self.transcripts = create_blastdb('Mdes_transcripts.fna', [('Mdes013216-RA', 'TTGG' * 40), ('Mdes007966-RA', 'GGCC' * 10)])
+        for db in (self.genome, self.transcripts):
+            self.assertEqual(db.index_fasta()[0], 0)  # used to fail on the unique constraint
+
+    def test_same_id_in_two_databases(self):
+        self.assertEqual(Sequence.objects.filter(id='Mdes013216-RA').count(), 2)
+
+    def test_ambiguous_id_lists_the_choices(self):
+        response = self.client.get('/blast/api/seq/Mdes013216-RA/')
+        self.assertEqual(response.status_code, 300)
+        data = response.json()
+        self.assertIn('exists in 2 BLAST databases', data['detail'])
+        self.assertEqual(sorted(c['blast_db'] for c in data['choices']), ['Mdes_genome.fa', 'Mdes_transcripts.fna'])
+        for choice in data['choices']:
+            self.assertEqual(self.client.get(choice['url']).json()['blast_db'].rsplit('/', 2)[-2], choice['blast_db'])
+        fasta = self.client.get('/blast/api/seq/Mdes013216-RA/', {'format': 'fasta'})
+        self.assertEqual(fasta.status_code, 300)
+        self.assertIn('/blast/api/blastdb/Mdes_genome.fa/seq/Mdes013216-RA/', fasta.content.decode())
+
+    def test_choose_the_database(self):
+        response = self.client.get('/blast/api/seq/Mdes013216-RA/', {'blast_db': 'Mdes_transcripts.fna', 'format': 'fasta'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content.decode().replace('\n', ''), '>Mdes013216-RA' + 'TTGG' * 40)
+        response = self.client.get('/blast/api/blastdb/Mdes_genome.fa/seq/Mdes013216-RA/')
+        self.assertEqual(response.json()['length'], 200)
+        self.assertEqual(self.client.get('/blast/api/blastdb/Mdes_genome.fa/seq/Mdes007966-RA/').status_code, 404)
+        self.assertEqual(self.client.get('/blast/api/seq/Mdes013216-RA/', {'blast_db': 'other.fa'}).status_code, 404)
+
+    def test_unique_id_still_works_without_database(self):
+        response = self.client.get('/blast/api/seq/Mdes007966-RA/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()['url'].endswith('/blast/api/blastdb/Mdes_transcripts.fna/seq/Mdes007966-RA/'))
+
+    def test_filter_sequence_list(self):
+        data = self.client.get('/blast/api/seq/', {'id': 'Mdes013216-RA', 'blast_db': 'Mdes_genome.fa'}).json()
+        self.assertEqual(data['count'], 1)
+
+    def test_task_lookup_only_uses_searched_databases(self):
+        from blast.tasks import lookup_subject_databases
+        ids = ['Mdes013216-RA', 'Mdes007966-RA']
+        self.assertEqual(lookup_subject_databases(ids, ['Mdes_genome.fa']), {'Mdes013216-RA': 'Mdes_genome.fa'})
+        self.assertEqual(lookup_subject_databases(ids, ['Mdes_transcripts.fna']),
+                         {'Mdes013216-RA': 'Mdes_transcripts.fna', 'Mdes007966-RA': 'Mdes_transcripts.fna'})
+        # still ambiguous when both are searched: deterministic choice
+        self.assertEqual(lookup_subject_databases(ids, ['Mdes_genome.fa', 'Mdes_transcripts.fna'])['Mdes013216-RA'], 'Mdes_genome.fa')

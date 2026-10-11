@@ -153,18 +153,24 @@ $(function () { // document ready
     // Flag ongoing ajax calls
     var fasta_loading = {};
     var url_root = /(https?:\/\/.*(?:blast)*)\//g.exec(document.URL)[1];
-    function get_fasta(sseqid) {
+    function fasta_key(row_index) {
+        // The same sequence id can exist in several BLAST databases (#19)
+        return results_data[row_index][col_idx['blastdb']] + '\t' + results_data[row_index][col_idx['sseqid']];
+    }
+    function get_fasta(key) {
         // Returns a jqXHR or true if already in cache, for use with $.when
-        //http://localhost:8000/api/seq/gnl%7CLoxosceles_reclusa_transcript_v0.5.3%7CLREC000002-RA/?format=fasta
-        if (sseqid in fasta_cache)
+        //http://localhost:8000/api/seq/gnl%7CLoxosceles_reclusa_transcript_v0.5.3%7CLREC000002-RA/?format=fasta&blast_db=Lrec_transcripts.fna
+        if (key in fasta_cache)
             return true;
-        else if (sseqid in fasta_loading)
-            return fasta_loading[sseqid];
+        else if (key in fasta_loading)
+            return fasta_loading[key];
         else {
-            fasta_loading[sseqid] = $.get(url_root + '/api/seq/' + sseqid + '/?format=fasta', function (data) {
-                fasta_cache[sseqid] = data;
+            var dbtitle = key.split('\t')[0];
+            var sseqid = key.substring(dbtitle.length + 1);
+            fasta_loading[key] = $.get(url_root + '/api/seq/' + encodeURIComponent(sseqid) + '/', { 'format': 'fasta', 'blast_db': dbtitle }, function (data) {
+                fasta_cache[key] = data;
             });
-            return fasta_loading[sseqid];
+            return fasta_loading[key];
         }
     }
     s.on('change:hover', function (model, value, options) {
@@ -182,7 +188,7 @@ $(function () { // document ready
         if (options.set_by == this)
             return;
         if (row_indexes.length > 0) {
-            sseqids = _.uniq(row_indexes.map(function (row_index) { return results_data[row_index][col_idx['sseqid']]; }));
+            sseqids = _.uniq(row_indexes.map(fasta_key));
             $.when.apply(null, sseqids.map(get_fasta)).then(function () {
                 //check if row_indexes in fasta_cache, row_indexes might have already changed when this is called
                 if (sseqids.length > 0 && _.all(sseqids.map(function (sseqid) { return sseqid in fasta_cache; }))) {
