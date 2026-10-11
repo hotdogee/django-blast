@@ -217,8 +217,9 @@ $(function () { // document ready
         ' for (var i = 0; i < divs.length; i++) { var e = divs[i].subfeatureEdges; if (!e) continue;' +
         ' for (var j = 0; j < parts.length; j++) { if (parts[j].get("start") == e.s && parts[j].get("end") == e.e && parts[j].get("color")) divs[i].style.backgroundColor = parts[j].get("color"); } }' +
         ' } catch (err) {} }';
-    // Link to JBrowse / Web Apollo showing a hit with the BLAST results as an extra track
-    function jbrowse_url(dbtitle, refseq, start_pos, end_pos) {
+    // Link to JBrowse / Web Apollo showing a hit with the BLAST results as an
+    // extra track. The hit itself (hit_start..hit_end) is highlighted (#26).
+    function jbrowse_url(dbtitle, refseq, start_pos, end_pos, hit_start, hit_end) {
         var jbrowse = results_info['db_url'][dbtitle];
         var gff_url = /^(https?:\/\/)/g.exec(jbrowse)[1] + /https?:\/\/(.*?)\/(?:blast)*/g.exec(document.URL)[1] + '/media/blast/task/' + task_id + '/' + encodeURIComponent(dbtitle) + '.gff';
         var stores = { 'url': { 'type': 'JBrowse/Store/SeqFeature/GFF3', 'urlTemplate': gff_url } };
@@ -229,7 +230,8 @@ $(function () { // document ready
         }];
         return jbrowse + (jbrowse.indexOf('?') == -1 ? '?' : '&') + 'loc=' + encodeURIComponent(refseq + ':' + start_pos + '..' + end_pos) +
             '&addStores=' + encodeURIComponent(JSON.stringify(stores)) + '&addTracks=' + encodeURIComponent(JSON.stringify(tracks)) +
-            '&tracks=' + encodeURIComponent('BLAST+ Results');
+            '&tracks=' + encodeURIComponent('BLAST+ Results') +
+            (hit_start ? '&highlight=' + encodeURIComponent(refseq + ':' + hit_start + '..' + hit_end) : '');
     }
     var index_of_blastdb = col_idx['blastdb']; // -1 if not present
     var index_of_sseqid = col_idx['sseqid']; // -1 if not present
@@ -290,13 +292,14 @@ $(function () { // document ready
                             var end_pos = row[col_idx['send']];
                             if (end_pos < start_pos)
                                 end_pos = [start_pos, start_pos = end_pos][0];
+                            var hit_start = start_pos, hit_end = end_pos;
                             start_pos -= 200;
                             if (start_pos < 0)
                                 start_pos = 0;
                             end_pos += 200;
                             if (end_pos > row[col_idx['slen']])
                                 end_pos = row[col_idx['slen']];
-                            return '<a class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="right" data-container="body" title="' + dbtitle + '\nClick to view in genome browser" target="_blank" href="' + jbrowse_url(dbtitle, sseqid, start_pos, end_pos).replace(/&/g, '&amp;') + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + results_info['db_organism'][dbtitle] + '</a>';
+                            return '<a class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="right" data-container="body" title="' + dbtitle + '\nClick to view in genome browser" target="_blank" href="' + jbrowse_url(dbtitle, sseqid, start_pos, end_pos, hit_start, hit_end).replace(/&/g, '&amp;') + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + results_info['db_organism'][dbtitle] + '</a>';
                             //http://gmod-dev.nal.usda.gov:8080/anogla/jbrowse/?loc=Scaffold1:107901..161900&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://gmod-dev.nal.usda.gov/media/07b73d9a3dde4eac9faa9c4109f7cfb6/Agla_Btl03082013.genome_new_ids.fa.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"JBrowse/View/Track/CanvasFeatures","store":"url","glyph":"JBrowse/View/FeatureGlyph/ProcessedTranscript","subParts":"match_part","style":{"color":"blue","height":6,"connectorColor":"gray","connectorThickness":2}}]
                         } else {
                             return '<span data-toggle="tooltip" data-placement="right" title="' + dbtitle + '">' + results_info['db_organism'][dbtitle] + '</span>';
