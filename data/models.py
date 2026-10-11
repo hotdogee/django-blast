@@ -156,7 +156,10 @@ class File(models.Model):
                 # remove existing items
                 self.item_set.all().delete()
                 # parse file
-                fasta, count = fasta_file_to_dict(str(self.name.path_full))
+                # gff3 1.0.1 opens paths in binary mode, which breaks on
+                # Python 3; a text file object works
+                with open(self.name.path_full) as fasta_fp:
+                    fasta, count = fasta_file_to_dict(fasta_fp)
                 #seq_count = 0
                 item_list = []
                 item_relationship_list = []
