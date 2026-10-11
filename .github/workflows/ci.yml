@@ -108,6 +108,8 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     env:
+      # the default setup: a secret key generated on the data volume
+      DJANGO_SECRET_KEY: ""
       # the health check must not depend on 127.0.0.1 being an allowed host
       DJANGO_ALLOWED_HOSTS: blast.example.org,localhost
     steps:
@@ -126,6 +128,8 @@ jobs:
         run: docker compose up --detach --wait --wait-timeout 600
       - name: Submit a BLAST job to the running stack
         run: python3 docker/smoke_test.py http://localhost:8000
+      - name: Run a management command with docker compose exec
+        run: docker compose exec -T -e DJANGO_SUPERUSER_PASSWORD=ci-only-not-secret web python manage.py createsuperuser --noinput --username ci --email ci@example.org
       - name: Show logs
         if: failure()
         run: docker compose logs

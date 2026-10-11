@@ -153,6 +153,7 @@ Settings are read from environment variables, or from a `.env` file in the proje
 | Variable | Default | |
 | --- | --- | --- |
 | `DJANGO_SECRET_KEY` | (required unless `DJANGO_DEBUG=1`) | Django secret key |
+| `DJANGO_SECRET_KEY_FILE` | | File to read the secret key from when `DJANGO_SECRET_KEY` is empty (Docker: `/data/secret_key`) |
 | `DJANGO_DEBUG` | `0` | Debug mode, for development only |
 | `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,[::1]` | Host names the site is served at |
 | `DJANGO_CSRF_TRUSTED_ORIGINS` | | e.g. `https://blast.example.org` behind a proxy |

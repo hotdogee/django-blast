@@ -22,6 +22,7 @@ RUN DJANGO_SECRET_KEY=build-only python manage.py collectstatic --noinput --verb
     && chown -R django /data
 
 ENV DJANGO_MEDIA_ROOT=/data/media \
+    DJANGO_SECRET_KEY_FILE=/data/secret_key \
     BLAST_BIN_DIR=/usr/bin
 
 USER django

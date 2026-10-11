@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -144,6 +145,27 @@ class MediaPathFieldTest(SimpleTestCase):
         self.addCleanup(os.chmod, target, 0o755)
         with self.assertRaisesMessage(ValidationError, 'Permission denied'):
             self.field.clean(('', SimpleUploadedFile('denied.fa', b'>s\nACGT\n')))
+
+
+class SecretKeyTest(SimpleTestCase):
+    def secret_key(self, **environ):
+        env = dict(os.environ, DJANGO_SETTINGS_MODULE='i5k.settings', DJANGO_DEBUG='0', DJANGO_SECRET_KEY='')
+        env.update(environ)
+        code = 'from django.conf import settings; print(settings.SECRET_KEY)'
+        return subprocess.run([sys.executable, '-c', code], env=env, capture_output=True, text=True,
+                              cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+    def test_secret_key_file(self):
+        # the docker image generates a key file, so that `docker compose exec` works too
+        with tempfile.TemporaryDirectory() as tmp:
+            key_file = os.path.join(tmp, 'secret_key')
+            with open(key_file, 'w') as f:
+                f.write('key-from-file\n')
+            self.assertEqual(self.secret_key(DJANGO_SECRET_KEY_FILE=key_file).stdout.strip(), 'key-from-file')
+            self.assertEqual(self.secret_key(DJANGO_SECRET_KEY_FILE=key_file, DJANGO_SECRET_KEY='from-env').stdout.strip(), 'from-env')
+            missing = self.secret_key(DJANGO_SECRET_KEY_FILE=os.path.join(tmp, 'missing'))
+            self.assertNotEqual(missing.returncode, 0)
+            self.assertIn('ImproperlyConfigured', missing.stderr)
 
 
 class MigrationsTest(TestCase):

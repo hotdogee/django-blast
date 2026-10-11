@@ -22,11 +22,17 @@ DEBUG = env.bool('DJANGO_DEBUG', default=False)
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='')
+# or read it from a file, e.g. the one the docker image generates
+SECRET_KEY_FILE = env('DJANGO_SECRET_KEY_FILE', default='')
+if not SECRET_KEY and SECRET_KEY_FILE and os.path.isfile(SECRET_KEY_FILE):
+    with open(SECRET_KEY_FILE) as f:
+        SECRET_KEY = f.read().strip()
 if not SECRET_KEY:
     if DEBUG:
         SECRET_KEY = 'django-insecure-development-only-key'
     else:
-        raise ImproperlyConfigured('Set the DJANGO_SECRET_KEY environment variable (or DJANGO_DEBUG=1 for development).')
+        raise ImproperlyConfigured('Set the DJANGO_SECRET_KEY environment variable, or DJANGO_SECRET_KEY_FILE to a file containing '
+                                   'the key (or DJANGO_DEBUG=1 for development).')
 
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '[::1]'])
 CSRF_TRUSTED_ORIGINS = env.list('DJANGO_CSRF_TRUSTED_ORIGINS', default=[])

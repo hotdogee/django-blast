@@ -4,14 +4,16 @@
 set -e
 
 # Generate a persistent secret key on the data volume unless one is given.
+# settings.py reads it from DJANGO_SECRET_KEY_FILE, so that commands run with
+# `docker compose exec` use it too.
 if [ -z "$DJANGO_SECRET_KEY" ]; then
-    key_file=/data/secret_key
+    key_file=${DJANGO_SECRET_KEY_FILE:-/data/secret_key}
     if [ ! -s "$key_file" ]; then
         python -c 'import secrets; print(secrets.token_urlsafe(50))' > "$key_file"
         chmod 600 "$key_file"
     fi
-    DJANGO_SECRET_KEY=$(cat "$key_file")
-    export DJANGO_SECRET_KEY
+    DJANGO_SECRET_KEY_FILE=$key_file
+    export DJANGO_SECRET_KEY_FILE
 fi
 
 if [ "${DJANGO_MIGRATE:-0}" = "1" ]; then
