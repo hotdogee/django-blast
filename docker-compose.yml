@@ -46,7 +46,7 @@ services:
     ports:
       - "${DJANGO_PORT:-8000}:8000"
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/blast/', timeout=5)"]
+      test: ["CMD", "python", "/app/docker/healthcheck.py"]
       interval: 10s
       timeout: 10s
       retries: 30

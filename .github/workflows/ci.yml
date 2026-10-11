@@ -107,6 +107,9 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
+    env:
+      # the health check must not depend on 127.0.0.1 being an allowed host
+      DJANGO_ALLOWED_HOSTS: blast.example.org,localhost
     steps:
       - uses: actions/checkout@v7
       - uses: docker/setup-buildx-action@v4
