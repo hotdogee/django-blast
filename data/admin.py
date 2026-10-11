@@ -20,7 +20,7 @@ class FileAdmin(admin.ModelAdmin):
             else:
                 success_count += 1
         if success_count > 0:
-            self.message_user(request, "%d entries successfully ran makeblastdb." % success_count)
+            self.message_user(request, "%d files successfully processed." % success_count)
     process_file.short_description = 'Process File'
 
     class Media:

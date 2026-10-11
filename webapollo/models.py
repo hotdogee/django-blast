@@ -1,10 +1,19 @@
-import psycopg2
+import logging
 import random, string
+
+import psycopg
 from django.db import models
 from django.contrib.auth.models import User, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_delete, pre_save, post_save, m2m_changed
 from django.dispatch import receiver
+
+logger = logging.getLogger(__name__)
+
+
+def connect(species):
+    '''Connect to the PostgreSQL database of a Web Apollo instance.'''
+    return psycopg.connect(dbname=species.db_name, user=species.db_acct, host=species.host)
 
 class Species(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -18,7 +27,7 @@ class Species(models.Model):
     # properties
     def db_exists(self):
         try:
-            conn = psycopg2.connect('dbname=' + self.db_name + ' user=' + self.db_acct + ' host=' + self.host)
+            conn = connect(self)
             cur = conn.cursor()
             cur.close()
             conn.close()
@@ -28,7 +37,7 @@ class Species(models.Model):
     db_exists.boolean = True
     db_exists.short_description = 'Postgres DB exists'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     def save(self, *args, **kwargs):
@@ -41,19 +50,19 @@ class Species(models.Model):
         super(Species, self).save(*args, **kwargs)
 
 class SpeciesPassword(models.Model):
-    user = models.ForeignKey(User)
-    species = models.ForeignKey(Species)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    species = models.ForeignKey(Species, on_delete=models.CASCADE)
     pwd = models.CharField(max_length=64)
     
     class Meta:
         unique_together = ('user', 'species', 'pwd',)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.username + ' - ' + self.species.name
 
 class Registration(models.Model):
-    user = models.ForeignKey(User)
-    species = models.ForeignKey(Species)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    species = models.ForeignKey(Species, on_delete=models.CASCADE)
     submission_time = models.DateTimeField(auto_now_add=True)
     decision_time = models.DateTimeField(null=True, blank=True)
     submission_comment = models.TextField(blank=True, max_length=200)
@@ -70,7 +79,7 @@ class Registration(models.Model):
     class Meta:
         unique_together = ('user', 'species', 'submission_time',)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.username + ' for ' + self.species.name + ': ' + self.status
 
 @receiver(post_delete, sender=Species, weak=False)
@@ -82,7 +91,7 @@ def species_post_delete(sender, instance, **kwargs):
 def delete_species_permission(username, species_id):
     try:
         species = Species.objects.get(id=species_id)
-        conn = psycopg2.connect('dbname=' + species.db_name + ' user=' + species.db_acct + ' host=' + species.host)
+        conn = connect(species)
         cur = conn.cursor()
     
         cur.execute('SELECT user_id FROM users WHERE username=%s', (username,))
@@ -95,7 +104,7 @@ def delete_species_permission(username, species_id):
         cur.close()
         conn.close()
     except:
-        print 'Exception in delete_species_permission'
+        logger.exception('Exception in delete_species_permission')
         raise Exception('Exception in delete_species_permission')
 
 @receiver(post_save, sender=User)
@@ -143,13 +152,13 @@ def user_m2m_changed(instance, action, pk_set, **kwargs):
 def insert_species_permission(username, species_id, perm_value): 
     try:
         species = Species.objects.get(id=species_id)
-        conn = psycopg2.connect('dbname=' + species.db_name + ' user=' + species.db_acct + ' host=' + species.host)
+        conn = connect(species)
         cur = conn.cursor()
         
         cur.execute('SELECT user_id FROM users WHERE username = %s', (username,))
         rows = cur.fetchall()
         if not rows: 
-            pwd = ''.join(random.SystemRandom().choice(string.uppercase + string.digits) for _ in xrange(16))
+            pwd = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
             cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, pwd,))
             spe_pwd = SpeciesPassword()
             spe_pwd.user = User.objects.get(username=username)
@@ -171,7 +180,7 @@ def insert_species_permission(username, species_id, perm_value):
         cur.close()
         conn.close()
     except:
-        print 'Exception in insert_species_permission'
+        logger.exception('Exception in insert_species_permission')
         raise Exception('Exception in insert_species_permission')
 
 @receiver(post_delete, sender=User, weak=False)

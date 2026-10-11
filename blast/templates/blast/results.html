@@ -1,12 +1,23 @@
 {% extends "app/layout.html" %}
-{% load staticfiles %}
-{% load compressed %}
+{% load static %}
 
 {% block navbar%}
 <li><a href="./{{task_id}}">Results</a></li>
 {% endblock%}
 
-{% block head-scripts %}{% compressed_css 'blast-results' %}
+{% block head-scripts %}
+<link rel="stylesheet" type="text/css" href="{% static 'blast/css/codemirror.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/css/xq-light.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/css/kendo.common-bootstrap.core.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/css/kendo.bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/css/jquery-ui.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/jquery.dataTables.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.scroller.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.colReorder.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/dataTables/css/dataTables.bootstrap.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/css/bootstrap-select.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/css/bootstrap-switch.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'blast/css/blast-results.css' %}" />
 <script>
     var results_col_names = {{ results_col_names|safe }};
     var results_col_names_display = {{ results_col_names_display|safe }};
@@ -94,7 +105,23 @@
 </div>
 {% endblock %}
 
-{% block scripts %}{% compressed_js 'blast-results' %}
+{% block scripts %}
+<script src="{% static 'blast/scripts/chroma.min.js' %}"></script>
+<script src="{% static 'blast/scripts/codemirror-compressed.js' %}"></script>
+<script src="{% static 'blast/scripts/kendo-hotdogee.js' %}"></script>
+<script src="{% static 'blast/scripts/jquery-ui.min.js' %}"></script>
+<script src="{% static 'blast/scripts/dragscrollable.js' %}"></script>
+<script src="{% static 'blast/dataTables/js/jquery.dataTables-hotdogee.js' %}"></script>
+<script src="{% static 'blast/dataTables/js/dataTables.scroller.js' %}"></script>
+<script src="{% static 'blast/dataTables/js/dataTables.colReorder.min.js' %}"></script>
+<script src="{% static 'blast/dataTables/js/dataTables.tableTools.min.js' %}"></script>
+<script src="{% static 'blast/dataTables/js/dataTables.bootstrap.js' %}"></script>
+<script src="{% static 'blast/scripts/underscore-min.js' %}"></script>
+<script src="{% static 'blast/scripts/backbone-min.js' %}"></script>
+<script src="{% static 'blast/scripts/scribl.1.1.5-hotdogee.js' %}"></script>
+<script src="{% static 'blast/scripts/bootstrap-select-hotdogee.js' %}"></script>
+<script src="{% static 'blast/scripts/bootstrap-switch.min.js' %}"></script>
+<script src="{% static 'blast/scripts/blast-results.js' %}"></script>
 <!-- CDN Scripts -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js" charset="utf-8"></script>
 {% endblock %}

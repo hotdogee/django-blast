@@ -1,9 +1,13 @@
-from django.db import models
-from django.contrib.auth.models import User
-from filebrowser.fields import FileBrowseField
-from django.core.urlresolvers import reverse
 import os.path
-from django.conf import settings
+from subprocess import DEVNULL, PIPE, Popen
+
+from django.contrib.auth.models import User
+from django.db import models
+from django.urls import reverse
+
+from app.fields import MediaPathField
+from .utils import blast_bin
+
 
 class BlastQueryRecord(models.Model):
     task_id = models.CharField(max_length=32, primary_key=True) # ex. 128c8661c25d45b8-9ca7809a09619db9
@@ -11,10 +15,10 @@ class BlastQueryRecord(models.Model):
     dequeue_date = models.DateTimeField(null=True)
     result_date = models.DateTimeField(null=True)
     result_status = models.CharField(max_length=32, default='WAITING') # ex. WAITING, SUCCESS, NO_ASN, ASN_EMPTY, NO_CSV, CSV_EMPTY
-    user = models.ForeignKey(User, null=True, blank=True)
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     is_shown = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.task_id
 
     def get_absolute_url(self):
@@ -33,11 +37,11 @@ class Organism(models.Model):
     short_name = models.CharField(max_length=20, unique=True, help_text='This is used for file names and variable names in code') # used in code or filenames
     description = models.TextField(blank=True) # optional
     tax_id = models.PositiveIntegerField('NCBI Taxonomy ID', null=True, blank=True, help_text='This is passed into makeblast') # ncbi tax id
-    
+
     def natural_key(self):
         return (self.short_name,)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.display_name
 
 class SequenceTypeManager(models.Manager):
@@ -49,13 +53,13 @@ class SequenceType(models.Model):
     molecule_type = models.CharField(max_length=4, default='nucl', choices=(
         ('nucl', 'Nucleotide'),
         ('prot', 'Peptide'))) # makeblastdb -dbtype
-    dataset_type = models.CharField(max_length=50, unique=True) # 
-    
+    dataset_type = models.CharField(max_length=50, unique=True) #
+
     def natural_key(self):
         return (self.dataset_type,)
 
-    def __unicode__(self):
-        return u'%s - %s' % (self.get_molecule_type_display(), self.dataset_type)
+    def __str__(self):
+        return '%s - %s' % (self.get_molecule_type_display(), self.dataset_type)
 
     class Meta:
         verbose_name = 'sequence type'
@@ -66,26 +70,37 @@ class BlastDbManager(models.Manager):
 
 class BlastDb(models.Model):
     objects = BlastDbManager()
-    organism = models.ForeignKey(Organism) # 
-    type = models.ForeignKey(SequenceType) # 
-    #fasta_file = models.FileField(upload_to='blastdb') # upload file
-    fasta_file = FileBrowseField('FASTA file path', max_length=100, directory='blast/db/', extensions='FASTA', format='FASTA')
+    organism = models.ForeignKey(Organism, on_delete=models.CASCADE) #
+    type = models.ForeignKey(SequenceType, on_delete=models.CASCADE) #
+    fasta_file = MediaPathField('FASTA file path', max_length=100, directory='blast/db/', extensions='FASTA')
     title = models.CharField(max_length=200, unique=True, help_text='This is passed into makeblast -title') # makeblastdb -title
     description = models.TextField(blank=True) # shown in blast db selection ui
     is_shown = models.BooleanField(default=None, help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
-    #sequence_count = models.PositiveIntegerField(null=True, blank=True) # number of sequences in this fasta
-    
+
     # properties
     def fasta_file_exists(self):
         return os.path.isfile(self.fasta_file.path_full)
     fasta_file_exists.boolean = True
     fasta_file_exists.short_description = 'fasta file exists'
-    
+
+    def _blast_db_index_file(self):
+        '''The alias (.nal/.pal, multi-volume databases) or index (.nin/.pin) file, or None.
+
+        BLAST+ 2.10+ writes version 5 databases, which don't have all the files
+        that BLAST+ 2.2.29 created, so only check the files every version has.
+        '''
+        base = self.fasta_file.path_full + '.' + self.type.molecule_type[0]
+        if os.path.isfile(base + 'al'):
+            return base + 'al'
+        if all(os.path.isfile(base + ext) for ext in ('hr', 'in', 'sq')):
+            return base + 'in'
+        return None
+
     def blast_db_files_exists(self):
-        return all([os.path.isfile(self.fasta_file.path_full + '.' + self.type.molecule_type[0] + ext) for ext in  ['hd', 'hi', 'hr', 'in', 'og', 'sd', 'si', 'sq']])
+        return self._blast_db_index_file() is not None
     blast_db_files_exists.boolean = True
     blast_db_files_exists.short_description = 'blast db files exists'
-    
+
     def sequence_set_exists(self):
         return self.sequence_set.count() > 0
     sequence_set_exists.boolean = True
@@ -97,20 +112,17 @@ class BlastDb(models.Model):
     def makeblastdb(self):
         if not os.path.isfile(self.fasta_file.path_full):
             return 1, 'FASTA file not found', ''
-        from sys import platform
-        from subprocess import Popen, PIPE
-        bin_name = 'bin_linux'
-        if platform == 'win32':
-            bin_name = 'bin_win'
-        makeblastdb_path = os.path.join(settings.PROJECT_ROOT, 'blast', bin_name, 'makeblastdb')
-        args = [makeblastdb_path, '-in', self.fasta_file.path_full, '-dbtype', self.type.molecule_type, '-hash_index'] # , '-parse_seqids' TODO: make option
+        args = [blast_bin('makeblastdb'), '-in', self.fasta_file.path_full, '-dbtype', self.type.molecule_type, '-hash_index'] # , '-parse_seqids' TODO: make option
         if self.title:
             args += ['-title', self.title]
         if self.organism.tax_id:
             args += ['-taxid', str(self.organism.tax_id)]
-        p = Popen(args, stdout=PIPE, stderr=PIPE)
+        try:
+            p = Popen(args, stdin=DEVNULL, stdout=PIPE, stderr=PIPE)
+        except OSError as e:
+            return 1, 'Could not run makeblastdb (%s): %s' % (args[0], e), ''
         output, error = p.communicate()
-        return p.returncode, error, output
+        return p.returncode, error.decode('utf-8', 'replace'), output.decode('utf-8', 'replace')
 
     def index_fasta(self):
         if not os.path.isfile(self.fasta_file.path_full):
@@ -119,34 +131,28 @@ class BlastDb(models.Model):
             # remove existing sequences
             self.sequence_set.all().delete()
             # parse fasta
-            #seq_count = 0
             sequence_list = []
             with open(self.fasta_file.path_full, 'rb') as f:
                 offset = 0
                 id = ''
-                #header = ''
                 length = 0
                 seq_start_pos = 0
-                seq_end_pos = 0
                 for line in f:
                     stripped = line.strip()
                     if len(stripped) > 0:
-                        if stripped[0] == '>': # header
+                        if stripped[:1] == b'>': # header
                             if length > 0: # not first sequence, add previous sequence to db
                                 sequence_list.append(Sequence(blast_db=self, id=id, length=length, seq_start_pos=seq_start_pos, seq_end_pos=offset))
-                                #seq_count += 1
-                            seq_start_pos = offset + line.find('>') # white chars before '>'
-                            #header = stripped[1:] # exclue '>'
-                            id = stripped.split(None, 1)[0][1:]
+                            seq_start_pos = offset + line.find(b'>') # white chars before '>'
+                            id = stripped.split(None, 1)[0][1:].decode('utf-8', 'replace')
                             length = 0
                         else: # sequence
                             length += len(stripped)
                     offset += len(line)
                 if length > 0: # add last sequence
                     sequence_list.append(Sequence(blast_db=self, id=id, length=length, seq_start_pos=seq_start_pos, seq_end_pos=offset))
-                    #seq_count += 1
             if len(sequence_list) > 0:
-                Sequence.objects.bulk_create(sequence_list)
+                Sequence.objects.bulk_create(sequence_list, batch_size=5000)
             return 0, '', '%d sequences added.' % len(sequence_list)
         except Exception as e:
             return 1, str(e), ''
@@ -154,11 +160,12 @@ class BlastDb(models.Model):
     def natural_key(self):
         return (str(self.title),)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.title)
 
     class Meta:
         verbose_name = 'BLAST database'
+
 
 class Sequence(models.Model):
     '''
@@ -167,38 +174,42 @@ class Sequence(models.Model):
     SELECT [key], blast_db_id, id, length, seq_start_pos, seq_end_pos, modified_date FROM blast_sequence
     '''
     key = models.AutoField(primary_key=True)
-    blast_db = models.ForeignKey(BlastDb, verbose_name='BLAST DB') # 
+    blast_db = models.ForeignKey(BlastDb, verbose_name='BLAST DB', on_delete=models.CASCADE) #
     id = models.CharField(max_length=200, unique=True) # gi|45478711|ref|NC_005816.1|
-    length = models.PositiveIntegerField() # 
+    length = models.PositiveIntegerField() #
     seq_start_pos = models.BigIntegerField() # used for file.seek(offset), marks start of '>'
     seq_end_pos = models.BigIntegerField() # used to calculate file.read(size)
     modified_date = models.DateTimeField(auto_now_add=True)
 
-    def fasta_seq(self):
+    def _read_record(self):
         if not os.path.isfile(self.blast_db.fasta_file.path_full):
-            return 'FASTA file not found.'
+            return None
         with open(self.blast_db.fasta_file.path_full, 'rb') as f:
             f.seek(self.seq_start_pos)
-            seq = f.read(self.seq_end_pos - self.seq_start_pos)
-            if seq[-1] != '\n':
-                seq += '\n'
-            return seq
+            record = f.read(self.seq_end_pos - self.seq_start_pos)
+        return record.decode('utf-8', 'replace').replace('\r\n', '\n')
+
+    def fasta_seq(self):
+        seq = self._read_record()
+        if seq is None:
+            return 'FASTA file not found.'
+        if not seq.endswith('\n'):
+            seq += '\n'
+        return seq
 
     def get_sequence(self):
-        if not os.path.isfile(self.blast_db.fasta_file.path_full):
+        seq = self._read_record()
+        if seq is None:
             return 'FASTA file not found.'
-        with open(self.blast_db.fasta_file.path_full, 'rb') as f:
-            f.seek(self.seq_start_pos)
-            return f.read(self.seq_end_pos - self.seq_start_pos).split('\n', 1)[1]
+        return seq.split('\n', 1)[1] if '\n' in seq else ''
 
     def get_header(self):
-        if not os.path.isfile(self.blast_db.fasta_file.path_full):
+        seq = self._read_record()
+        if seq is None:
             return 'FASTA file not found.'
-        with open(self.blast_db.fasta_file.path_full, 'rb') as f:
-            f.seek(self.seq_start_pos)
-            return f.read(self.seq_end_pos - self.seq_start_pos).split('\n', 1)[0]
+        return seq.split('\n', 1)[0]
 
-    def __unicode__(self):
+    def __str__(self):
         return self.id
 
     class Meta:
@@ -206,8 +217,8 @@ class Sequence(models.Model):
 
 class JbrowseSetting(models.Model):
     'Used to link databases to Jbrowse'
-    blast_db = models.OneToOneField(BlastDb, verbose_name='reference', unique=True, help_text='The BLAST database used as the reference in Jbrowse') # 
+    blast_db = models.OneToOneField(BlastDb, verbose_name='reference', help_text='The BLAST database used as the reference in Jbrowse', on_delete=models.CASCADE) #
     url = models.URLField('Jbrowse URL', unique=True, help_text='The URL to Jbrowse using this reference')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.url

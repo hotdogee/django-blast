@@ -10,4 +10,4 @@ with open(TSV_FILENAME, 'rb') as f:
         display_name = display_name.lower().capitalize().replace(' ', '_')
         (head, tail) = path.split(fasta_filepath)
         (root, ext) = path.splitext(tail)
-        print '\t'.join([display_name, short_name, db_type, root + '_new_ids' + ext])
+        print('\t'.join([display_name, short_name, db_type, root + '_new_ids' + ext]))

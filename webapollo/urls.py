@@ -1,8 +1,9 @@
-from django.conf.urls import *
+from django.urls import re_path as url
 from . import views
 
+app_name = 'webapollo'
 
-urlpatterns = patterns('',
+urlpatterns = [
     #url(r'^$', views.index, name='index'),
     url(r'^panel$', views.panel, name='panel'),
     url(r'^admin/manage$', views.manage, name="manage"),
@@ -20,4 +21,4 @@ urlpatterns = patterns('',
     url(r'^remove$', views.remove, name='remove'),
     url(r'^eligible$', views.eligible, name='eligible'),
     url(r'^(?P<species_name>[a-z]{6})$', views.species, name="species"),
-)
+]

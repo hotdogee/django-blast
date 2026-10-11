@@ -377,7 +377,7 @@ def output_csv(in_csv_path='C:\\Users\\clee\\Desktop\\Works\\blast2gff3\\python\
         return 0
 
 ## For testing function here!
-print blast2gff3()
+print(blast2gff3())
 #print output_csv()
 
 

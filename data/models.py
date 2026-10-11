@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.postgres.fields import HStoreField
-from filebrowser.fields import FileBrowseField
-from file_types.gff3 import Gff3, fasta_file_to_dict
+from app.fields import MediaPathField
+from gff3 import Gff3
+from gff3.gff3 import fasta_file_to_dict
 import os
-import six
 import numbers
-from collections import MutableSet, OrderedDict
+from collections import OrderedDict
+from collections.abc import MutableSet
 
 class OrderedSet(MutableSet):
 
@@ -70,7 +71,7 @@ class File(models.Model):
     '''
     #id = models.AutoField(primary_key=True) # auto
     type = models.CharField(max_length=50, help_text='Specifies which parser to use on this file') # gi|45478711|ref|NC_005816.1|
-    name = FileBrowseField('File path', max_length=100, directory='data/')
+    name = MediaPathField('File path', max_length=100, directory='data/')
     hash = models.TextField(blank=True)
     processed_hash = models.TextField(blank=True)
     processed_date = models.DateTimeField(auto_now_add=True)
@@ -97,7 +98,7 @@ class File(models.Model):
                     attributes = {}
                     for k, v in line_data.items():
                         if v:
-                            if isinstance(v, six.string_types):
+                            if isinstance(v, str):
                                 attributes[k] = v
                             elif isinstance(v, numbers.Number):
                                 attributes[k] = str(v)
@@ -132,7 +133,7 @@ class File(models.Model):
                         # don't visit the same node twice in a path (don't allow loops)
                         if root_line['line_index'] not in path:
                             path[root_line['line_index']] = str(root_line_index + 1)
-                            accession_list.append(Accession(accession='{}/{}'.format(file_id, '/'.join(path.viewvalues())), item=item_list[root_line['line_index']]))
+                            accession_list.append(Accession(accession='{}/{}'.format(file_id, '/'.join(path.values())), item=item_list[root_line['line_index']]))
                             if root_line['children']:
                                 dfs(root_line['children'], path=path)
                             path.popitem()
@@ -179,41 +180,41 @@ class File(models.Model):
         else:
             return 1, 'File type not supported', ''
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.id)
 
 class FileRelationship(models.Model):
     '''source.type = target
     '''
-    source = models.ForeignKey(File, related_name='+')
+    source = models.ForeignKey(File, related_name='+', on_delete=models.CASCADE)
     type = models.CharField(max_length=50, help_text='Relationship Type')
-    target = models.ForeignKey(File, related_name='+')
+    target = models.ForeignKey(File, related_name='+', on_delete=models.CASCADE)
 
 class Item(models.Model):
     '''Accessions are assigned to Items.
     '''
     #key = models.AutoField(primary_key=True) # auto
-    file = models.ForeignKey(File)
+    file = models.ForeignKey(File, on_delete=models.CASCADE)
     index = models.PositiveIntegerField(null=True, blank=True) # unique index within a file
     text = models.TextField(blank=True)
     attributes = HStoreField(blank=True)
     related = models.ManyToManyField('self', through='ItemRelationship', through_fields=('source', 'target'), symmetrical=False, related_name='itemrelationship_set')
     
-    def __unicode__(self):
+    def __str__(self):
         return str(self.text)
 
 class ItemRelationship(models.Model):
     '''source.type = target
     '''
-    source = models.ForeignKey(Item, related_name='relationships_to')
+    source = models.ForeignKey(Item, related_name='relationships_to', on_delete=models.CASCADE)
     type = models.CharField(max_length=50, help_text='Relationship Type')
-    target = models.ForeignKey(Item, related_name='relationships_from')
+    target = models.ForeignKey(Item, related_name='relationships_from', on_delete=models.CASCADE)
 
 class Accession(models.Model):
     '''Accessions are assigned to Items.
     '''
     accession = models.TextField(primary_key=True)
-    item = models.ForeignKey(Item)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
     
-    def __unicode__(self):
+    def __str__(self):
         return str(self.accession)

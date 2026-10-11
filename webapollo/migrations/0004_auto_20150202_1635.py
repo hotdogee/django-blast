@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.db.models.deletion
 from django.conf import settings
 
 
@@ -21,9 +22,9 @@ class Migration(migrations.Migration):
                 ('decision_time', models.DateTimeField(null=True)),
                 ('submission_comment', models.TextField(max_length=300, blank=True)),
                 ('decision_comment', models.TextField(max_length=300, blank=True)),
-                ('status', models.CharField(default=b'PENDING', max_length=32)),
-                ('species', models.ForeignKey(to='webapollo.Species')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('status', models.CharField(default='PENDING', max_length=32)),
+                ('species', models.ForeignKey(to='webapollo.Species', on_delete=django.db.models.deletion.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
             },

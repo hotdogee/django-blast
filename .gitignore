@@ -160,3 +160,18 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+# =========================
+# django-blast
+# =========================
+
+# local configuration
+.env
+i5k/settings_local.py
+
+# Python
+__pycache__/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/

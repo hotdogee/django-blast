@@ -4,7 +4,7 @@ from .models import FileRelationship, File, ItemRelationship, Item, Accession
 class FileRelationshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = FileRelationship
-        #fields = ('type', )
+        fields = '__all__'
 
 class FileSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='data:api:file-detail')
@@ -12,7 +12,7 @@ class FileSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = File
-        #exclude = ('url', )
+        fields = '__all__'
 
 class ItemRelationshipSerializer(serializers.ModelSerializer):
     item = serializers.HyperlinkedRelatedField(source='target.accession_set', view_name='data:api:accession-detail', read_only=True, many=True)
@@ -28,7 +28,7 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Item
-        exclude = ('url', )
+        fields = ('file', 'index', 'text', 'attributes', 'related', )
 
 class AccessionSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='data:api:accession-detail')
@@ -37,3 +37,4 @@ class AccessionSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Accession
+        fields = '__all__'
