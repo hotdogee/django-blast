@@ -63,3 +63,9 @@ class Gff3Test(SimpleTestCase):
         rows = [hit('q1', 'Scaffold1', 1, 100, 1, 100), hit('q2', 'Scaffold1', 1, 100, 1, 100), hit('q1', 'Scaffold2', 1, 100, 1, 100)]
         features = gff(rows)
         self.assertEqual(sum(1 for f in features if f[2] == 'match'), 3)
+
+    def test_seqid_prefix_is_removed(self):
+        out = io.StringIO()
+        write_gff3(out, hsp_dict_list([hit('q1', 'Mdes_genome|Scaffold7', 1, 100, 1, 100)], COLS), 'blastn', 'Mdes_genome|')
+        self.assertEqual(out.getvalue().splitlines()[1].split('\t')[0], 'Scaffold7')
+        self.assertEqual(gff_seqid('genome_Scaffold1', 'genome_'), 'Scaffold1')

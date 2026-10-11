@@ -1,5 +1,6 @@
 import json
 import os
+import subprocess
 import time
 from datetime import timedelta
 
@@ -7,6 +8,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from blast.models import BlastDb, Organism, Sequence, SequenceType
+from blast.utils import blast_bin
 
 from .helpers import TempMediaMixin, create_blastdb, random_dna, requires_blast, write_fasta
 
@@ -238,3 +240,48 @@ class StaleDatabaseTest(TempMediaMixin, TestCase):
         self.assertTrue(self.db.blast_db_files_exists())
         self.assertTrue(self.db.sequence_set_exists())
         self.assertEqual(sorted(self.db.sequence_set.values_list('id', flat=True)), ['rebuilt1', 'rebuilt2'])
+
+
+class SeqidPrefixTest(TempMediaMixin, TestCase):
+    '''#9: an optional tag prepended to the sequence ids of a database.'''
+
+    def test_prefix_defline(self):
+        from blast.models import prefix_defline
+        self.assertEqual(prefix_defline(b'>seq1 desc\n', b'pre|'), b'>pre|seq1 desc\n')
+        self.assertEqual(prefix_defline(b'  >seq1\r\n', b'pre|'), b'  >pre|seq1\r\n')
+        self.assertEqual(prefix_defline(b'ACGT\n', b'pre|'), b'ACGT\n')
+
+    def test_index_and_fasta_use_the_prefix(self):
+        db = create_blastdb('pfx.fa', [('Mdes013216-RA cds', 'ACGT' * 5)], seqid_prefix='Mdes_cds|')
+        self.assertEqual(db.index_fasta()[0], 0)
+        seq = db.sequence_set.get()
+        self.assertEqual(seq.id, 'Mdes_cds|Mdes013216-RA')
+        self.assertEqual(seq.get_header(), '>Mdes_cds|Mdes013216-RA cds')
+        # the FASTA file on disk is not modified
+        with open(db.fasta_file.path_full) as f:
+            self.assertTrue(f.read().startswith('>Mdes013216-RA cds'))
+
+    def test_changing_the_prefix_requires_a_rebuild(self):
+        db = create_blastdb('pfx2.fa', [('s1', 'ACGT')])
+        db.index_fasta()
+        for ext in ('hr', 'in', 'sq'):
+            with open(db.fasta_file.path_full + '.n' + ext, 'w'):
+                pass
+        with open(db.makeblastdb_info_path(), 'w') as f:
+            json.dump({'fingerprint': db._fingerprint()}, f)
+        db = BlastDb.objects.get(pk=db.pk)
+        self.assertTrue(db.blast_db_files_exists())
+        db.seqid_prefix = 'x_'
+        db.save()
+        self.assertEqual(db.sequence_set.count(), 0)
+        self.assertFalse(db.blast_db_files_exists())
+
+    @requires_blast
+    def test_makeblastdb_with_prefix(self):
+        db = create_blastdb('pfx3.fa', [('contig1', random_dna(400, 51))], seqid_prefix='genome_')
+        returncode, error, output = db.makeblastdb()
+        self.assertEqual(returncode, 0, error)
+        self.assertIn("prefixed with 'genome_'", output)
+        self.assertTrue(db.blast_db_files_exists())
+        result = subprocess.run([blast_bin('blastdbcmd'), '-db', db.fasta_file.path_full, '-entry', 'all', '-outfmt', '%t'], capture_output=True, text=True)
+        self.assertEqual(result.stdout.split(), ['genome_contig1'])

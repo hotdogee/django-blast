@@ -2,7 +2,7 @@ import json
 import logging
 import os.path
 from datetime import datetime, timedelta, timezone as dt_timezone
-from subprocess import DEVNULL, STDOUT, Popen
+from subprocess import DEVNULL, PIPE, STDOUT, Popen
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -88,6 +88,9 @@ class BlastDb(models.Model):
     title = models.CharField(max_length=200, unique=True, help_text='This is passed into makeblast -title') # makeblastdb -title
     description = models.TextField(blank=True) # shown in blast db selection ui
     is_shown = models.BooleanField(default=None, help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
+    seqid_prefix = models.CharField('sequence ID prefix', max_length=50, blank=True, help_text=
+        'Optional tag prepended to every sequence ID (e.g. "Mdes_genome|") to avoid collisions with identical IDs in other '
+        'databases. Changing it requires re-running makeblastdb and re-populating the Sequences table (the "Rebuild" action).')
 
     @classmethod
     def from_db(cls, db, field_names, values):
@@ -97,7 +100,7 @@ class BlastDb(models.Model):
         return instance
 
     # the Sequences table depends on these fields
-    INDEX_FIELDS = ('fasta_file',)
+    INDEX_FIELDS = ('fasta_file', 'seqid_prefix')
 
     def _index_key(self):
         return tuple(str(getattr(self, name) or '') for name in self.INDEX_FIELDS)
@@ -107,11 +110,12 @@ class BlastDb(models.Model):
         index_changed = loaded_index_key is not None and self._index_key() != loaded_index_key
         super(BlastDb, self).save(*args, **kwargs)
         if index_changed:
-            # The indexed sequences point into the old FASTA file: drop them so
-            # that the admin shows the database needs to be rebuilt (#15).
+            # The indexed sequences point into the old FASTA file (or carry the
+            # old prefix): drop them so that the admin shows the database needs
+            # to be rebuilt (#15).
             deleted, _ = self.sequence_set.all().delete()
             if deleted:
-                logger.info('%s: the FASTA file changed, removed %d indexed sequences', self.title, deleted)
+                logger.info('%s: the FASTA file or sequence ID prefix changed, removed %d indexed sequences', self.title, deleted)
         self._loaded_index_key = self._index_key()
 
     def _fasta_stat(self):
@@ -127,6 +131,7 @@ class BlastDb(models.Model):
             'fasta_size': st.st_size if st else None,
             'fasta_mtime': int(st.st_mtime) if st else None,
             'dbtype': self.type.molecule_type,
+            'seqid_prefix': self.seqid_prefix,
         }
 
     def makeblastdb_info_path(self):
@@ -199,11 +204,16 @@ class BlastDb(models.Model):
         '''Run makeblastdb. Returns (returncode, error, output).
 
         The command line and its output are saved to <fasta file>.makeblastdb.log (#8).
+        With a sequence ID prefix (#9) the FASTA file is piped through stdin
+        with the prefix added to every defline; the file itself is unchanged.
         '''
         fasta_path = self.fasta_file.path_full
         if not os.path.isfile(fasta_path):
             return 1, 'FASTA file not found', ''
-        args = [blast_bin('makeblastdb'), '-in', fasta_path, '-dbtype', self.type.molecule_type, '-hash_index'] # , '-parse_seqids' TODO: make option
+        prefix = self.seqid_prefix.encode('utf-8')
+        args = [blast_bin('makeblastdb'), '-in', '-' if prefix else fasta_path, '-dbtype', self.type.molecule_type, '-hash_index'] # , '-parse_seqids' TODO: make option
+        if prefix:
+            args += ['-out', fasta_path]
         if self.title:
             args += ['-title', self.title]
         if self.organism.tax_id:
@@ -218,12 +228,26 @@ class BlastDb(models.Model):
             return 1, 'Could not write the makeblastdb log %s: %s' % (log_path, e), ''
         with log:
             log.write(('# %s\n# %s\n' % (timezone.now().isoformat(), ' '.join(args))).encode('utf-8'))
+            if prefix:
+                log.write(('# sequence IDs prefixed with %r, read from %s\n' % (self.seqid_prefix, fasta_path)).encode('utf-8'))
             log.flush()
             try:
-                p = Popen(args, stdin=DEVNULL, stdout=log, stderr=STDOUT)
+                p = Popen(args, stdin=PIPE if prefix else DEVNULL, stdout=log, stderr=STDOUT)
             except OSError as e:
                 log.write(('Could not run makeblastdb: %s\n' % e).encode('utf-8'))
                 return 1, 'Could not run makeblastdb (%s): %s' % (args[0], e), ''
+            if prefix:
+                try:
+                    with open(fasta_path, 'rb') as f:
+                        for line in f:
+                            p.stdin.write(prefix_defline(line, prefix))
+                except BrokenPipeError:
+                    pass  # makeblastdb exited early, its output tells why
+                finally:
+                    try:
+                        p.stdin.close()
+                    except BrokenPipeError:
+                        pass
             returncode = p.wait()
             log.write(('# exit code %d\n' % returncode).encode('utf-8'))
         output = self.makeblastdb_log()
@@ -245,6 +269,7 @@ class BlastDb(models.Model):
         try:
             # remove existing sequences
             self.sequence_set.all().delete()
+            prefix = self.seqid_prefix
             # parse fasta
             sequence_list = []
             with open(self.fasta_file.path_full, 'rb') as f:
@@ -259,7 +284,7 @@ class BlastDb(models.Model):
                             if length > 0: # not first sequence, add previous sequence to db
                                 sequence_list.append(Sequence(blast_db=self, id=id, length=length, seq_start_pos=seq_start_pos, seq_end_pos=offset))
                             seq_start_pos = offset + line.find(b'>') # white chars before '>'
-                            id = stripped.split(None, 1)[0][1:].decode('utf-8', 'replace')
+                            id = prefix + stripped.split(None, 1)[0][1:].decode('utf-8', 'replace')
                             length = 0
                         else: # sequence
                             length += len(stripped)
@@ -280,6 +305,14 @@ class BlastDb(models.Model):
 
     class Meta:
         verbose_name = 'BLAST database'
+
+
+def prefix_defline(line, prefix):
+    '''b'>seq1 desc' -> b'>' + prefix + b'seq1 desc'; other lines are unchanged (#9).'''
+    stripped = line.lstrip()
+    if stripped[:1] == b'>':
+        return line[:len(line) - len(stripped)] + b'>' + prefix + stripped[1:]
+    return line
 
 
 class Sequence(models.Model):
@@ -305,6 +338,8 @@ class Sequence(models.Model):
         with open(self.blast_db.fasta_file.path_full, 'rb') as f:
             f.seek(self.seq_start_pos)
             record = f.read(self.seq_end_pos - self.seq_start_pos)
+        if self.blast_db.seqid_prefix:
+            record = prefix_defline(record, self.blast_db.seqid_prefix.encode('utf-8'))
         return record.decode('utf-8', 'replace').replace('\r\n', '\n')
 
     def fasta_seq(self):

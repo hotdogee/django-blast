@@ -122,3 +122,22 @@ class EndToEndTest(TempMediaMixin, TestCase):
         task_id, location = self.submit(BLASTN_OPTIONS, '>q\n%s\n' % shared[200:700], 'B_transcripts.fna')
         self.assertEqual(BlastQueryRecord.objects.get(task_id=task_id).result_status, 'SUCCESS')
         self.assertEqual(self.results(task_id)[0][:3], ['B_transcripts.fna', 'q', 'contig1'])
+
+    def test_seqid_prefix_avoids_collisions(self):
+        # #9: with a prefix, identical ids in two databases stay distinguishable
+        a_seq, b_seq = random_dna(1500, 61), random_dna(1500, 62)
+        a = create_blastdb('A.fa', [('Scaffold1', a_seq)], dataset_type='Genome Assembly', seqid_prefix='A|')
+        b = create_blastdb('B.fa', [('Scaffold1', b_seq)], seqid_prefix='B|')
+        for db in (a, b):
+            self.assertEqual(db.makeblastdb()[0], 0)
+            self.assertEqual(db.index_fasta()[0], 0)
+        JbrowseSetting.objects.create(blast_db=a, url='https://jbrowse.example.org/a/')
+        task_id, location = self.submit(BLASTN_OPTIONS, '>qa\n%s\n>qb\n%s\n' % (a_seq[100:500], b_seq[100:500]), 'A.fa', 'B.fa')
+        self.assertEqual(BlastQueryRecord.objects.get(task_id=task_id).result_status, 'SUCCESS')
+        rows = {(row[1], row[2]): row[0] for row in self.results(task_id)}
+        self.assertEqual(rows[('qa', 'A|Scaffold1')], 'A.fa')
+        self.assertEqual(rows[('qb', 'B|Scaffold1')], 'B.fa')
+        with open(os.path.join(settings.MEDIA_ROOT, 'blast', 'task', task_id, 'A.fa.gff')) as f:
+            self.assertEqual(f.read().splitlines()[1].split('\t')[0], 'Scaffold1')
+        fasta = self.client.get('/blast/api/seq/B|Scaffold1/', {'format': 'fasta'}).content.decode()
+        self.assertTrue(fasta.startswith('>B|Scaffold1\n'))

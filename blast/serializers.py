@@ -32,7 +32,7 @@ class BlastDbSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = BlastDb
-        fields = ('url', 'organism', 'type', 'fasta_file', 'title', 'description', 'is_shown', 'fasta_file_exists', 'blast_db_files_exists', 'sequence_set_exists', 'db_ready', 'sequence_set', )
+        fields = ('url', 'organism', 'type', 'fasta_file', 'title', 'description', 'is_shown', 'seqid_prefix', 'fasta_file_exists', 'blast_db_files_exists', 'sequence_set_exists', 'db_ready', 'sequence_set', )
 
 class SequenceSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.SerializerMethodField(help_text='Unambiguous URL of this sequence')

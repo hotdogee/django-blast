@@ -252,6 +252,10 @@ $(function () { // document ready
                 col['render'] = function (dbtitle, type, row, meta) {
                     if (type == "display") {
                         var sseqid = row[index_of_sseqid];
+                        // the sequence ID prefix of the database is not part of the reference name (#9)
+                        var seqid_prefix = (results_info['db_seqid_prefix'] || {})[dbtitle] || '';
+                        if (seqid_prefix && sseqid.indexOf(seqid_prefix) == 0)
+                            sseqid = sseqid.substring(seqid_prefix.length);
                         if (/\|\w\w\w\w\w\w_([^|]+)$/g.exec(sseqid) != null)
                             //>gnl|Ceratitis_capitata|cercap_Scaffold1
                             sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];

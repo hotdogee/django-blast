@@ -111,16 +111,17 @@ def run_blast_task(task_id, args_list, file_prefix, blast_info):
             sseqid_db = lookup_subject_databases([hsp['sseqid'] for hsp in hsp_dict_list], blast_info.get('db_titles'))
             db_titles = set(sseqid_db.values())
             db_organism = dict(BlastDb.objects.filter(title__in=db_titles).values_list('title', 'organism__short_name'))
+            db_seqid_prefix = dict(BlastDb.objects.filter(title__in=db_titles).exclude(seqid_prefix='').values_list('title', 'seqid_prefix'))
             db_url = dict(JbrowseSetting.objects.filter(blast_db__title__in=db_titles).values_list('blast_db__title', 'url'))
             with open(path.join(basedir, 'info.json'), 'w') as f:
-                json.dump({'sseqid_db': sseqid_db, 'db_organism': db_organism, 'db_url': db_url, 'line_num_list': line_num_list}, f)
+                json.dump({'sseqid_db': sseqid_db, 'db_organism': db_organism, 'db_url': db_url, 'db_seqid_prefix': db_seqid_prefix, 'line_num_list': line_num_list}, f)
             with open(json_path, 'w') as f:
                 json.dump([[sseqid_db.get(hsp_dict_list[i]['sseqid'], '')] + hsp for i, hsp in enumerate(hsp_list)], f)
             # group hsps by database, need to sort before doing groupby
             sorted_hsp_dict_list = sorted([hsp for hsp in hsp_dict_list if sseqid_db.get(hsp['sseqid']) in db_url], key=lambda a: sseqid_db[a['sseqid']])
             for db_name, db_hsp_dict_list in groupby(sorted_hsp_dict_list, key=lambda a: sseqid_db[a['sseqid']]):
                 with open(path.join(basedir, db_name + '.gff'), 'w') as fgff:
-                    write_gff3(fgff, db_hsp_dict_list, blast_program)
+                    write_gff3(fgff, db_hsp_dict_list, blast_program, db_seqid_prefix.get(db_name, ''))
             result_status = 'SUCCESS'
         except Exception:
             logger.exception('Generating results of %s failed', task_id)

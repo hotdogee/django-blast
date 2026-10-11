@@ -18,8 +18,11 @@ def hsp_dict_list(hsp_list, col_names):
     return [dict(zip(HSP_DICT_COL_NAMES, [row[cid['qseqid']], row[cid['sseqid']], row[cid['evalue']], row[cid['bitscore']], row[cid['qlen']], row[cid['qstart']], row[cid['qend']], row[cid['sstart']], row[cid['send']], '-' if row[cid['qend']] - row[cid['qstart']] < 0 else '+', '-' if row[cid['send']] - row[cid['sstart']] < 0 else '+'])) for row in hsp_list]
 
 
-def gff_seqid(sseqid):
+def gff_seqid(sseqid, seqid_prefix=''):
     """The reference sequence name JBrowse knows for a BLAST subject id."""
+    # strip the database's sequence ID prefix (#9)
+    if seqid_prefix and sseqid.startswith(seqid_prefix):
+        sseqid = sseqid[len(seqid_prefix):]
     # seqid parsing currently customized for i5k
     original_seqid_tokens = sseqid.split('|')
     if len(original_seqid_tokens) < 2 or sseqid[:3] == 'gi|':
@@ -30,7 +33,7 @@ def gff_seqid(sseqid):
         return original_seqid_tokens[1]
 
 
-def gff3_lines(db_hsp_dict_list, blast_program):
+def gff3_lines(db_hsp_dict_list, blast_program, seqid_prefix=''):
     """Yield GFF3 lines (without the version pragma) for the HSPs of one database."""
     match_id = 1
     match_part_id = 1
@@ -38,7 +41,7 @@ def gff3_lines(db_hsp_dict_list, blast_program):
     sorted_db_hsp_dict_list = sorted(db_hsp_dict_list, key=lambda x: x['qseqid'] + x['sseqid'] + x['qstrand'] + x['sstrand'])
     # group hsps with the same key = qseqid + sseqid + qstrand + sstrand, sort groups asc on sstart or send according to sstrand
     for key_db_hsp_dict_list in [sorted(hsps, key=lambda h: (h['sstart'], h['send']) if h['sstrand'] == '+' else (h['send'], h['sstart'])) for _, hsps in groupby(sorted_db_hsp_dict_list, key=lambda x: x['qseqid'] + x['sseqid'] + x['qstrand'] + x['sstrand'])]:
-        seqid = gff_seqid(key_db_hsp_dict_list[0]['sseqid'])
+        seqid = gff_seqid(key_db_hsp_dict_list[0]['sseqid'], seqid_prefix)
         gff_item = {'seqid': seqid, 'source': blast_program}
         # cut if overlap length > overlap_cutoff
         spos, qpos, matches, matches_list = 0, 0, [], []
@@ -89,7 +92,7 @@ def gff3_lines(db_hsp_dict_list, blast_program):
             match_id += 1
 
 
-def write_gff3(fgff, db_hsp_dict_list, blast_program):
+def write_gff3(fgff, db_hsp_dict_list, blast_program, seqid_prefix=''):
     fgff.write('##gff-version 3\n')
-    for line in gff3_lines(db_hsp_dict_list, blast_program):
+    for line in gff3_lines(db_hsp_dict_list, blast_program, seqid_prefix):
         fgff.write(line)
