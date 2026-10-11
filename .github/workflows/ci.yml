@@ -25,8 +25,10 @@ jobs:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.0
       - name: Ruff (syntax errors and undefined names)
-        run: uvx ruff@0.17.0 check .
+        # the version pinned in requirements-dev.txt, which Dependabot updates
+        run: uvx "ruff@$(sed -n 's/^ruff==//p' requirements-dev.txt)" check .
       - name: actionlint
+        # not updated by Dependabot: bump the version by hand
         run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12 -color
 
   test:
