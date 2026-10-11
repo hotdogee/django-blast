@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib import messages
 from django.forms import ModelForm, Textarea
+from django.utils.html import format_html
 
 from blast.models import BlastDb, BlastQueryRecord, JbrowseSetting, Organism, Sequence, SequenceType
 
@@ -31,8 +32,17 @@ class BlastDbAdmin(admin.ModelAdmin):
     list_editable = ('is_shown',)
     list_filter = ('organism', 'type', 'is_shown',)
     search_fields = ('fasta_file','title',)
+    readonly_fields = ('makeblastdb_log_display',)
     actions_on_top = True
     actions_on_bottom = True
+
+    def makeblastdb_log_display(self, obj):
+        log = obj.makeblastdb_log() if obj.pk else ''
+        if not log:
+            return 'makeblastdb has not been run from this site yet.'
+        return format_html('<div>{}</div><pre style="max-height: 300px; overflow: auto; white-space: pre-wrap">{}</pre>', obj.makeblastdb_log_path(), log[-20000:])
+    makeblastdb_log_display.short_description = 'makeblastdb log'
+
     # file_exist
     # db_status
     # (re)makeblastdb - delete existing database files if exist

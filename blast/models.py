@@ -1,12 +1,19 @@
+import logging
 import os.path
-from subprocess import DEVNULL, PIPE, Popen
+from subprocess import DEVNULL, STDOUT, Popen
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from app.fields import MediaPathField
 from .utils import blast_bin
+
+logger = logging.getLogger(__name__)
+
+# Written next to the FASTA file by BlastDb.makeblastdb() (#8)
+MAKEBLASTDB_LOG_SUFFIX = '.makeblastdb.log'
 
 
 class BlastQueryRecord(models.Model):
@@ -109,20 +116,54 @@ class BlastDb(models.Model):
     def db_ready(self):
         return self.fasta_file_exists() and self.blast_db_files_exists() and self.sequence_set_exists()
 
+    def makeblastdb_log_path(self):
+        return self.fasta_file.path_full + MAKEBLASTDB_LOG_SUFFIX
+
+    def makeblastdb_log(self):
+        '''Output of the last makeblastdb run, '' if there is none.'''
+        try:
+            with open(self.makeblastdb_log_path(), encoding='utf-8', errors='replace') as f:
+                return f.read()
+        except OSError:
+            return ''
+
     def makeblastdb(self):
-        if not os.path.isfile(self.fasta_file.path_full):
+        '''Run makeblastdb. Returns (returncode, error, output).
+
+        The command line and its output are saved to <fasta file>.makeblastdb.log (#8).
+        '''
+        fasta_path = self.fasta_file.path_full
+        if not os.path.isfile(fasta_path):
             return 1, 'FASTA file not found', ''
-        args = [blast_bin('makeblastdb'), '-in', self.fasta_file.path_full, '-dbtype', self.type.molecule_type, '-hash_index'] # , '-parse_seqids' TODO: make option
+        args = [blast_bin('makeblastdb'), '-in', fasta_path, '-dbtype', self.type.molecule_type, '-hash_index'] # , '-parse_seqids' TODO: make option
         if self.title:
             args += ['-title', self.title]
         if self.organism.tax_id:
             args += ['-taxid', str(self.organism.tax_id)]
+        log_path = self.makeblastdb_log_path()
         try:
-            p = Popen(args, stdin=DEVNULL, stdout=PIPE, stderr=PIPE)
+            open(log_path, 'wb').close()
+            # makeblastdb writes to the same file: append so both end up in order
+            log = open(log_path, 'ab')
         except OSError as e:
-            return 1, 'Could not run makeblastdb (%s): %s' % (args[0], e), ''
-        output, error = p.communicate()
-        return p.returncode, error.decode('utf-8', 'replace'), output.decode('utf-8', 'replace')
+            return 1, 'Could not write the makeblastdb log %s: %s' % (log_path, e), ''
+        with log:
+            log.write(('# %s\n# %s\n' % (timezone.now().isoformat(), ' '.join(args))).encode('utf-8'))
+            log.flush()
+            try:
+                p = Popen(args, stdin=DEVNULL, stdout=log, stderr=STDOUT)
+            except OSError as e:
+                log.write(('Could not run makeblastdb: %s\n' % e).encode('utf-8'))
+                return 1, 'Could not run makeblastdb (%s): %s' % (args[0], e), ''
+            returncode = p.wait()
+            log.write(('# exit code %d\n' % returncode).encode('utf-8'))
+        output = self.makeblastdb_log()
+        if returncode == 0:
+            logger.info('makeblastdb succeeded for %s, log: %s', self.title, log_path)
+            return 0, '', output
+        logger.error('makeblastdb failed for %s (exit code %d), log: %s\n%s', self.title, returncode, log_path, output)
+        tail = ' '.join(line for line in output.splitlines()[-5:] if not line.startswith('#'))
+        return returncode, 'makeblastdb exited with code %d: %s (full log: %s)' % (returncode, tail.strip(), log_path), output
 
     def index_fasta(self):
         if not os.path.isfile(self.fasta_file.path_full):

@@ -113,3 +113,47 @@ class SequenceStrTest(TestCase):
         self.assertEqual(str(seq), 's1')
         self.assertEqual(db.fasta_file.path_relative, 'blast/db/x.fa')
         self.assertTrue(db.fasta_file.path_full.replace('\\', '/').endswith('blast/db/x.fa'))
+
+
+class MakeblastdbLogTest(TempMediaMixin, TestCase):
+    '''#8: the output of makeblastdb is saved in a log file.'''
+
+    @requires_blast
+    def test_log_is_written(self):
+        db = create_blastdb('log.fa', [('contig1', random_dna(500, 6))])
+        self.assertEqual(db.makeblastdb_log(), '')
+        self.assertEqual(db.makeblastdb()[0], 0)
+        log = db.makeblastdb_log()
+        self.assertEqual(db.makeblastdb_log_path(), db.fasta_file.path_full + '.makeblastdb.log')
+        lines = log.splitlines()
+        self.assertIn('makeblastdb', lines[1])
+        self.assertIn('-title log.fa', lines[1])
+        self.assertIn('Adding sequences from FASTA', log)
+        self.assertEqual(lines[-1], '# exit code 0')
+
+    @requires_blast
+    def test_failure_is_logged(self):
+        db = create_blastdb('broken.faa', [('p1', 'MKV')], molecule_type='prot')
+        with open(db.fasta_file.path_full, 'w') as f:
+            f.write('not FASTA\n')
+        returncode, error, output = db.makeblastdb()
+        self.assertNotEqual(returncode, 0)
+        self.assertIn('full log: ' + db.makeblastdb_log_path(), error)
+        self.assertNotIn('# exit code 0', db.makeblastdb_log())
+
+    def test_missing_executable_is_logged(self):
+        db = create_blastdb('noexe.fa', [('a', 'ACGT')])
+        with self.settings(BLAST_BIN_DIR=self.media_path('no-such-dir')):
+            returncode, error, output = db.makeblastdb()
+        self.assertEqual(returncode, 1)
+        self.assertIn('Could not run makeblastdb', error)
+        self.assertIn('Could not run makeblastdb', db.makeblastdb_log())
+
+    def test_admin_shows_the_log(self):
+        from django.contrib.auth.models import User
+        db = create_blastdb('admin.fa', [('a', 'ACGT')])
+        with open(db.makeblastdb_log_path(), 'w') as f:
+            f.write('# now\nAdding sequences from FASTA; added 1 sequences\n# exit code 0\n')
+        self.client.force_login(User.objects.create_superuser('admin', 'admin@example.org', 'x'))
+        response = self.client.get('/admin/blast/blastdb/%d/change/' % db.pk)
+        self.assertContains(response, 'Adding sequences from FASTA; added 1 sequences')
