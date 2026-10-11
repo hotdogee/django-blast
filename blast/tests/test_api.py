@@ -126,3 +126,22 @@ class SharedSequenceIdTest(TempMediaMixin, TestCase):
                          {'Mdes013216-RA': 'Mdes_transcripts.fna', 'Mdes007966-RA': 'Mdes_transcripts.fna'})
         # still ambiguous when both are searched: deterministic choice
         self.assertEqual(lookup_subject_databases(ids, ['Mdes_genome.fa', 'Mdes_transcripts.fna'])['Mdes013216-RA'], 'Mdes_genome.fa')
+
+
+class TaskApiPermissionTest(TestCase):
+    '''Result URLs are the only protection of BLAST results, so the task ids
+    of all users must not be listed publicly.'''
+
+    def test_task_and_user_listing_is_staff_only(self):
+        from django.contrib.auth.models import User
+        from blast.models import BlastQueryRecord
+        BlastQueryRecord.objects.create(task_id='d' * 32)
+        self.assertEqual(self.client.get('/blast/api/task/').status_code, 403)
+        self.assertEqual(self.client.get('/blast/api/user/').status_code, 403)
+        # a known task id can still be retrieved
+        self.assertEqual(self.client.get('/blast/api/task/%s/' % ('d' * 32)).json()['result_status'], 'WAITING')
+        self.client.force_login(User.objects.create_user('alice', password='x'))
+        self.assertEqual(self.client.get('/blast/api/task/').status_code, 403)
+        self.client.force_login(User.objects.create_user('staff', password='x', is_staff=True))
+        self.assertEqual(self.client.get('/blast/api/task/').json()['count'], 1)
+        self.assertEqual(self.client.get('/blast/api/user/').status_code, 200)

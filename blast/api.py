@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema, extend_schema_view
-from rest_framework import renderers, status, viewsets
+from rest_framework import permissions, renderers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import APIException, NotFound
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
@@ -148,16 +148,22 @@ class SequenceViewSet(viewsets.ReadOnlyModelViewSet):
 
 class BlastQueryRecordViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    Retrieve tasks.
+    Retrieve tasks. Anyone who knows a task id can retrieve it; listing all tasks is limited to staff.
     """
     queryset = BlastQueryRecord.objects.all().order_by('-enqueue_date')
     serializer_class = BlastQueryRecordSerializer
     lookup_field = 'task_id'
 
+    def get_permissions(self):
+        if self.action == 'list':
+            return [permissions.IsAdminUser()]
+        return super(BlastQueryRecordViewSet, self).get_permissions()
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    Retrieve users.
+    Retrieve users (staff only).
     """
     queryset = User.objects.all().order_by('pk')
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAdminUser]
     lookup_field = 'pk'

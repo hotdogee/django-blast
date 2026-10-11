@@ -8,6 +8,10 @@ addopts = "-ra"
 markers = [
     "blast: runs the NCBI BLAST+ executables (skipped when they are not available)",
 ]
+filterwarnings = [
+    "ignore:CAPTCHA_TEST_MODE is enabled:RuntimeWarning",
+    "ignore:defusedxml.cElementTree is deprecated:DeprecationWarning",
+]
 
 [tool.ruff]
 line-length = 160
