@@ -1,9 +1,12 @@
+import json
 import logging
 import os.path
+from datetime import datetime, timedelta, timezone as dt_timezone
 from subprocess import DEVNULL, STDOUT, Popen
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Max
 from django.urls import reverse
 from django.utils import timezone
 
@@ -12,8 +15,10 @@ from .utils import blast_bin
 
 logger = logging.getLogger(__name__)
 
-# Written next to the FASTA file by BlastDb.makeblastdb() (#8)
+# Written next to the FASTA file by BlastDb.makeblastdb(): its output (#8)
+# and what the database was built from (#15)
 MAKEBLASTDB_LOG_SUFFIX = '.makeblastdb.log'
+MAKEBLASTDB_INFO_SUFFIX = '.makeblastdb.json'
 
 
 class BlastQueryRecord(models.Model):
@@ -84,6 +89,49 @@ class BlastDb(models.Model):
     description = models.TextField(blank=True) # shown in blast db selection ui
     is_shown = models.BooleanField(default=None, help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
 
+    @classmethod
+    def from_db(cls, db, field_names, values):
+        instance = super(BlastDb, cls).from_db(db, field_names, values)
+        if all(name in instance.__dict__ for name in cls.INDEX_FIELDS):
+            instance._loaded_index_key = instance._index_key()
+        return instance
+
+    # the Sequences table depends on these fields
+    INDEX_FIELDS = ('fasta_file',)
+
+    def _index_key(self):
+        return tuple(str(getattr(self, name) or '') for name in self.INDEX_FIELDS)
+
+    def save(self, *args, **kwargs):
+        loaded_index_key = getattr(self, '_loaded_index_key', None)
+        index_changed = loaded_index_key is not None and self._index_key() != loaded_index_key
+        super(BlastDb, self).save(*args, **kwargs)
+        if index_changed:
+            # The indexed sequences point into the old FASTA file: drop them so
+            # that the admin shows the database needs to be rebuilt (#15).
+            deleted, _ = self.sequence_set.all().delete()
+            if deleted:
+                logger.info('%s: the FASTA file changed, removed %d indexed sequences', self.title, deleted)
+        self._loaded_index_key = self._index_key()
+
+    def _fasta_stat(self):
+        try:
+            return os.stat(self.fasta_file.path_full)
+        except (OSError, ValueError):
+            return None
+
+    def _fingerprint(self):
+        '''What the BLAST database files were built from.'''
+        st = self._fasta_stat()
+        return {
+            'fasta_size': st.st_size if st else None,
+            'fasta_mtime': int(st.st_mtime) if st else None,
+            'dbtype': self.type.molecule_type,
+        }
+
+    def makeblastdb_info_path(self):
+        return self.fasta_file.path_full + MAKEBLASTDB_INFO_SUFFIX
+
     # properties
     def fasta_file_exists(self):
         return os.path.isfile(self.fasta_file.path_full)
@@ -104,17 +152,37 @@ class BlastDb(models.Model):
         return None
 
     def blast_db_files_exists(self):
-        return self._blast_db_index_file() is not None
+        '''BLAST database files exist and were built from the current FASTA file (#15).'''
+        index_file = self._blast_db_index_file()
+        if not index_file:
+            return False
+        try:
+            with open(self.makeblastdb_info_path()) as f:
+                info = json.load(f)
+        except (OSError, ValueError):
+            info = None
+        if info is not None:
+            return info.get('fingerprint') == self._fingerprint()
+        # built before the info files were written, or outside this site: compare timestamps
+        st = self._fasta_stat()
+        return st is not None and st.st_mtime <= os.path.getmtime(index_file) + 1
     blast_db_files_exists.boolean = True
-    blast_db_files_exists.short_description = 'blast db files exists'
+    blast_db_files_exists.short_description = 'blast db files up to date'
 
     def sequence_set_exists(self):
-        return self.sequence_set.count() > 0
+        '''The Sequences table is populated and is not older than the FASTA file (#15).'''
+        latest = self.sequence_set.aggregate(latest=Max('modified_date'))['latest']
+        if latest is None:
+            return False
+        st = self._fasta_stat()
+        return st is not None and datetime.fromtimestamp(st.st_mtime, tz=dt_timezone.utc) <= latest + timedelta(seconds=1)
     sequence_set_exists.boolean = True
-    sequence_set_exists.short_description = 'sequence table populated'
+    sequence_set_exists.short_description = 'sequence table up to date'
 
     def db_ready(self):
-        return self.fasta_file_exists() and self.blast_db_files_exists() and self.sequence_set_exists()
+        '''Usable for BLAST searches. Unlike the status checks above, this
+        doesn't hide databases whose files merely look older than expected.'''
+        return self.fasta_file_exists() and self._blast_db_index_file() is not None and self.sequence_set.exists()
 
     def makeblastdb_log_path(self):
         return self.fasta_file.path_full + MAKEBLASTDB_LOG_SUFFIX
@@ -140,6 +208,7 @@ class BlastDb(models.Model):
             args += ['-title', self.title]
         if self.organism.tax_id:
             args += ['-taxid', str(self.organism.tax_id)]
+        fingerprint = self._fingerprint()
         log_path = self.makeblastdb_log_path()
         try:
             open(log_path, 'wb').close()
@@ -159,8 +228,13 @@ class BlastDb(models.Model):
             log.write(('# exit code %d\n' % returncode).encode('utf-8'))
         output = self.makeblastdb_log()
         if returncode == 0:
+            with open(self.makeblastdb_info_path(), 'w') as f:
+                json.dump({'fingerprint': fingerprint, 'command': args, 'date': timezone.now().isoformat()}, f)
             logger.info('makeblastdb succeeded for %s, log: %s', self.title, log_path)
             return 0, '', output
+        # the database files may be incomplete now
+        with open(self.makeblastdb_info_path(), 'w') as f:
+            json.dump({'fingerprint': None, 'command': args, 'date': timezone.now().isoformat(), 'exit_code': returncode}, f)
         logger.error('makeblastdb failed for %s (exit code %d), log: %s\n%s', self.title, returncode, log_path, output)
         tail = ' '.join(line for line in output.splitlines()[-5:] if not line.startswith('#'))
         return returncode, 'makeblastdb exited with code %d: %s (full log: %s)' % (returncode, tail.strip(), log_path), output

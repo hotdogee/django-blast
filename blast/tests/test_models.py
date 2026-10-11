@@ -1,6 +1,10 @@
+import json
 import os
+import time
+from datetime import timedelta
 
 from django.test import TestCase
+from django.utils import timezone
 
 from blast.models import BlastDb, Organism, Sequence, SequenceType
 
@@ -157,3 +161,80 @@ class MakeblastdbLogTest(TempMediaMixin, TestCase):
         self.client.force_login(User.objects.create_superuser('admin', 'admin@example.org', 'x'))
         response = self.client.get('/admin/blast/blastdb/%d/change/' % db.pk)
         self.assertContains(response, 'Adding sequences from FASTA; added 1 sequences')
+
+
+class StaleDatabaseTest(TempMediaMixin, TestCase):
+    '''#15: replacing the FASTA source of a BLAST database must show that the
+    database files and the Sequences table need to be rebuilt.'''
+
+    def setUp(self):
+        super().setUp()
+        self.db = create_blastdb('old.fa', [('old1', random_dna(100, 41))])
+        self.db.index_fasta()
+        self.fake_makeblastdb(self.db)
+
+    def fake_makeblastdb(self, db):
+        for ext in ('hr', 'in', 'sq'):
+            with open(db.fasta_file.path_full + '.n' + ext, 'w'):
+                pass
+        with open(db.makeblastdb_info_path(), 'w') as f:
+            json.dump({'fingerprint': db._fingerprint()}, f)
+
+    def test_up_to_date(self):
+        self.assertTrue(self.db.blast_db_files_exists())
+        self.assertTrue(self.db.sequence_set_exists())
+        self.assertTrue(self.db.db_ready())
+
+    def test_changing_the_fasta_file_clears_the_index(self):
+        write_fasta(self.media_path('blast', 'db', 'new.fa'), [('new1', 'ACGT')])
+        db = BlastDb.objects.get(pk=self.db.pk)
+        db.fasta_file = 'blast/db/new.fa'
+        db.save()
+        self.assertEqual(db.sequence_set.count(), 0)
+        self.assertFalse(db.blast_db_files_exists())
+        self.assertFalse(db.sequence_set_exists())
+        self.assertFalse(db.db_ready())
+        # other changes keep the index
+        db = BlastDb.objects.get(pk=self.db.pk)
+        db.index_fasta()
+        db.description = 'changed'
+        db.save()
+        self.assertEqual(db.sequence_set.count(), 1)
+
+    def test_replacing_the_file_contents_is_detected(self):
+        # the sequences were indexed a while ago, then the file was overwritten
+        self.db.sequence_set.update(modified_date=timezone.now() - timedelta(minutes=5))
+        write_fasta(self.db.fasta_file.path_full, [('replaced', random_dna(150, 42))])
+        self.assertFalse(self.db.blast_db_files_exists())
+        self.assertFalse(self.db.sequence_set_exists())
+        # still searchable until it is rebuilt
+        self.assertTrue(self.db.db_ready())
+
+    def test_databases_built_elsewhere_compare_timestamps(self):
+        os.remove(self.db.makeblastdb_info_path())
+        self.assertTrue(self.db.blast_db_files_exists())
+        past = time.time() - 3600
+        for ext in ('hr', 'in', 'sq'):
+            os.utime(self.db.fasta_file.path_full + '.n' + ext, (past, past))
+        self.assertFalse(self.db.blast_db_files_exists())
+
+    def test_admin_status_and_rebuild_action(self):
+        from django.contrib.auth.models import User
+        self.client.force_login(User.objects.create_superuser('admin', 'admin@example.org', 'x'))
+        os.remove(self.db.fasta_file.path_full + '.nin')
+        response = self.client.get('/admin/blast/blastdb/%d/change/' % self.db.pk)
+        self.assertContains(response, 'BLAST database files up to date: <strong>no - run the &quot;Rebuild&quot; action</strong>', html=False)
+        response = self.client.get('/admin/blast/blastdb/')
+        self.assertContains(response, 'Rebuild: run makeblastdb and populate the Sequences table')
+
+    @requires_blast
+    def test_rebuild(self):
+        write_fasta(self.db.fasta_file.path_full, [('rebuilt1', random_dna(300, 43)), ('rebuilt2', random_dna(300, 44))])
+        self.assertFalse(self.db.blast_db_files_exists())
+        from django.contrib.auth.models import User
+        self.client.force_login(User.objects.create_superuser('admin', 'admin@example.org', 'x'))
+        response = self.client.post('/admin/blast/blastdb/', {'action': 'rebuild', '_selected_action': [self.db.pk]}, follow=True)
+        self.assertContains(response, '1 entries successfully rebuilt.')
+        self.assertTrue(self.db.blast_db_files_exists())
+        self.assertTrue(self.db.sequence_set_exists())
+        self.assertEqual(sorted(self.db.sequence_set.values_list('id', flat=True)), ['rebuilt1', 'rebuilt2'])
