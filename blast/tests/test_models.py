@@ -204,6 +204,14 @@ class StaleDatabaseTest(TempMediaMixin, TestCase):
         db.save()
         self.assertEqual(db.sequence_set.count(), 1)
 
+    def test_path_saved_by_the_old_file_browser_is_the_same_file(self):
+        BlastDb.objects.filter(pk=self.db.pk).update(fasta_file='/media/blast/db/old.fa')
+        db = BlastDb.objects.get(pk=self.db.pk)
+        db.fasta_file = 'blast/db/old.fa'  # picked again in the new widget
+        db.save()
+        self.assertEqual(db.sequence_set.count(), 1)
+        self.assertTrue(db.db_ready())
+
     def test_replacing_the_file_contents_is_detected(self):
         # the sequences were indexed a while ago, then the file was overwritten
         self.db.sequence_set.update(modified_date=timezone.now() - timedelta(minutes=5))

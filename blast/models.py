@@ -11,7 +11,7 @@ from django.db.models import Max
 from django.urls import reverse
 from django.utils import timezone
 
-from app.fields import MediaPathField
+from app.fields import MediaFile, MediaPathField
 from .utils import blast_bin
 
 logger = logging.getLogger(__name__)
@@ -105,7 +105,8 @@ class BlastDb(models.Model):
     INDEX_FIELDS = ('fasta_file', 'seqid_prefix')
 
     def _index_key(self):
-        return tuple(str(getattr(self, name) or '') for name in self.INDEX_FIELDS)
+        # the normalized path: the old file browser stored /media/blast/db/x.fa for blast/db/x.fa
+        return (MediaFile(self.fasta_file or '').path_relative, str(self.seqid_prefix or ''))
 
     def save(self, *args, **kwargs):
         loaded_index_key = getattr(self, '_loaded_index_key', None)
