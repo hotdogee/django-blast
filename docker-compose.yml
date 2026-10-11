@@ -11,6 +11,10 @@
 x-app: &app
   image: django-blast:latest
   restart: unless-stopped
+  # Any setting from README.md "Configuration"; the entries below take precedence.
+  env_file:
+    - path: .env
+      required: false
   environment: &env
     DJANGO_DEBUG: ${DJANGO_DEBUG:-0}
     DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-}
@@ -24,6 +28,11 @@ x-app: &app
     LOGIN_ENABLED: ${LOGIN_ENABLED:-1}
     DJANGO_EMAIL_BACKEND: ${DJANGO_EMAIL_BACKEND:-django.core.mail.backends.console.EmailBackend}
     BLAST_NUM_THREADS: ${BLAST_NUM_THREADS:-2}
+    # locations inside the image
+    DJANGO_MEDIA_ROOT: /data/media
+    DJANGO_STATIC_ROOT: /app/static
+    DJANGO_SECRET_KEY_FILE: /data/secret_key
+    BLAST_BIN_DIR: /usr/bin
   volumes:
     - data:/data
   depends_on:

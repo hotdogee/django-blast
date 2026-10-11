@@ -97,7 +97,9 @@ docker compose exec web python manage.py createsuperuser
 ```
 
 or set `DJANGO_SUPERUSER_USERNAME` and `DJANGO_SUPERUSER_PASSWORD` before `docker compose up`. All settings in
-[Configuration](#configuration) can be passed the same way, or put in a `.env` file next to `docker-compose.yml`.
+[Configuration](#configuration) can be passed the same way, or put in a `.env` file next to `docker-compose.yml`,
+except the database, broker, cache and file locations, which `docker-compose.yml` sets. Note that a `.env` file made
+for a manual installation in the same directory (e.g. with `DJANGO_DEBUG=1`) applies to the containers too.
 A secret key is generated on the data volume unless `DJANGO_SECRET_KEY` is set. The PostgreSQL password
 (`POSTGRES_PASSWORD`, default `django`) only protects the database on the internal compose network; change it, and use
 HTTPS, before exposing an instance.
