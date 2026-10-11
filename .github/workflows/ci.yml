@@ -1,0 +1,140 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DJANGO_SECRET_KEY: ci-only-not-secret
+  # fail instead of skipping the end-to-end BLAST tests
+  BLAST_TESTS_REQUIRED: "1"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.0
+      - name: Ruff (syntax errors and undefined names)
+        # the version pinned in requirements-dev.txt, which Dependabot updates
+        run: uvx "ruff@$(sed -n 's/^ruff==//p' requirements-dev.txt)" check .
+      - name: actionlint
+        # not updated by Dependabot: bump the version by hand
+        run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12 -color
+
+  test:
+    name: test (Python ${{ matrix.python-version }}, SQLite)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: astral-sh/setup-uv@v10.3.0
+      - name: Install NCBI BLAST+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ncbi-blast+
+          blastn -version
+      - name: Install dependencies
+        run: uv pip install --system -r requirements-dev.txt
+      - name: Django system checks
+        run: python manage.py check --fail-level WARNING
+      - name: Migrations are up to date
+        run: python manage.py makemigrations --check --dry-run
+      - name: Tests
+        run: python -m pytest
+
+  postgres:
+    name: test (Python 3.13, PostgreSQL)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: django_i5k
+          POSTGRES_USER: django
+          POSTGRES_PASSWORD: django
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U django -d django_i5k"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgres://django:django@localhost:5432/django_i5k
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - uses: astral-sh/setup-uv@v10.3.0
+      - name: Install NCBI BLAST+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ncbi-blast+
+      - name: Install dependencies
+        run: uv pip install --system -r requirements-dev.txt
+      - name: Migrate an empty database
+        run: python manage.py migrate --noinput
+      - name: Deployment checks
+        env:
+          DJANGO_ALLOWED_HOSTS: blast.example.org
+          DJANGO_SECURE_SSL_REDIRECT: "1"
+          DJANGO_SESSION_COOKIE_SECURE: "1"
+          DJANGO_CSRF_COOKIE_SECURE: "1"
+          DJANGO_SECURE_HSTS_SECONDS: "31536000"
+          DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS: "1"
+          DJANGO_SECURE_HSTS_PRELOAD: "1"
+          DJANGO_X_FRAME_OPTIONS: DENY
+        run: |
+          DJANGO_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(50))')" \
+            python manage.py check --deploy --fail-level WARNING
+      - name: Tests
+        run: python -m pytest
+
+  docker:
+    runs-on: ubuntu-latest
+    env:
+      # the default setup: a secret key generated on the data volume
+      DJANGO_SECRET_KEY: ""
+      # the health check must not depend on 127.0.0.1 being an allowed host
+      DJANGO_ALLOWED_HOSTS: blast.example.org,localhost
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - name: Build the image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          load: true
+          tags: django-blast:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Start docker compose
+        run: docker compose up --detach --wait --wait-timeout 600
+      - name: Submit a BLAST job to the running stack
+        run: python3 docker/smoke_test.py http://localhost:8000
+      - name: Run a management command with docker compose exec
+        run: docker compose exec -T -e DJANGO_SUPERUSER_PASSWORD=ci-only-not-secret web python manage.py createsuperuser --noinput --username ci --email ci@example.org
+      - name: Show logs
+        if: failure()
+        run: docker compose logs
+      - name: Stop docker compose
+        if: always()
+        run: docker compose down --volumes

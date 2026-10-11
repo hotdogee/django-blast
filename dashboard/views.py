@@ -8,6 +8,9 @@ from app.views import checkOAuth
 @login_required
 def dashboard(request):
     species_list = []
+    pendings = []
+    interested_species_list = []
+    unauth_species_list = []
     if apps.is_installed('webapollo'):
         from webapollo.views import get_species
         from webapollo.models import Species, Registration

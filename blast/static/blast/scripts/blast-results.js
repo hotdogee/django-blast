@@ -153,18 +153,24 @@ $(function () { // document ready
     // Flag ongoing ajax calls
     var fasta_loading = {};
     var url_root = /(https?:\/\/.*(?:blast)*)\//g.exec(document.URL)[1];
-    function get_fasta(sseqid) {
+    function fasta_key(row_index) {
+        // The same sequence id can exist in several BLAST databases (#19)
+        return results_data[row_index][col_idx['blastdb']] + '\t' + results_data[row_index][col_idx['sseqid']];
+    }
+    function get_fasta(key) {
         // Returns a jqXHR or true if already in cache, for use with $.when
-        //http://localhost:8000/api/seq/gnl%7CLoxosceles_reclusa_transcript_v0.5.3%7CLREC000002-RA/?format=fasta
-        if (sseqid in fasta_cache)
+        //http://localhost:8000/api/seq/gnl%7CLoxosceles_reclusa_transcript_v0.5.3%7CLREC000002-RA/?format=fasta&blast_db=Lrec_transcripts.fna
+        if (key in fasta_cache)
             return true;
-        else if (sseqid in fasta_loading)
-            return fasta_loading[sseqid];
+        else if (key in fasta_loading)
+            return fasta_loading[key];
         else {
-            fasta_loading[sseqid] = $.get(url_root + '/api/seq/' + sseqid + '/?format=fasta', function (data) {
-                fasta_cache[sseqid] = data;
+            var dbtitle = key.split('\t')[0];
+            var sseqid = key.substring(dbtitle.length + 1);
+            fasta_loading[key] = $.get(url_root + '/api/seq/' + encodeURIComponent(sseqid) + '/', { 'format': 'fasta', 'blast_db': dbtitle }, function (data) {
+                fasta_cache[key] = data;
             });
-            return fasta_loading[sseqid];
+            return fasta_loading[key];
         }
     }
     s.on('change:hover', function (model, value, options) {
@@ -182,7 +188,7 @@ $(function () { // document ready
         if (options.set_by == this)
             return;
         if (row_indexes.length > 0) {
-            sseqids = _.uniq(row_indexes.map(function (row_index) { return results_data[row_index][col_idx['sseqid']]; }));
+            sseqids = _.uniq(row_indexes.map(fasta_key));
             $.when.apply(null, sseqids.map(get_fasta)).then(function () {
                 //check if row_indexes in fasta_cache, row_indexes might have already changed when this is called
                 if (sseqids.length > 0 && _.all(sseqids.map(function (sseqid) { return sseqid in fasta_cache; }))) {
@@ -202,6 +208,32 @@ $(function () { // document ready
     // Results Table //
     ///////////////////
     var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
+    // Colors the match_part features with the "color" attribute of the GFF3
+    // file, which follows the static color key of this page (#13). JBrowse
+    // evaluates function strings in track configurations; where it doesn't,
+    // the features keep the default color of the track.
+    var jbrowse_color_hook = 'function (track, feature, featDiv) { try {' +
+        ' var parts = feature.get("subfeatures") || [], divs = featDiv.getElementsByClassName("subfeature");' +
+        ' for (var i = 0; i < divs.length; i++) { var e = divs[i].subfeatureEdges; if (!e) continue;' +
+        ' for (var j = 0; j < parts.length; j++) { if (parts[j].get("start") == e.s && parts[j].get("end") == e.e && parts[j].get("color")) divs[i].style.backgroundColor = parts[j].get("color"); } }' +
+        ' } catch (err) {} }';
+    // Link to JBrowse / Web Apollo showing a hit with the BLAST results as an
+    // extra track. The hit itself (hit_start..hit_end) is highlighted (#26).
+    function jbrowse_url(dbtitle, refseq, start_pos, end_pos, hit_start, hit_end) {
+        var jbrowse = results_info['db_url'][dbtitle];
+        // MEDIA_URL with the scheme of the JBrowse page (no mixed content)
+        var gff_url = (/^https?:/.exec(jbrowse) || [''])[0] + media_url.replace(/^https?:/, '') + 'blast/task/' + task_id + '/' + encodeURIComponent(dbtitle) + '.gff';
+        var stores = { 'url': { 'type': 'JBrowse/Store/SeqFeature/GFF3', 'urlTemplate': gff_url } };
+        var tracks = [{
+            'label': 'BLAST+ Results', 'category': '0. Reference Assembly', 'type': 'WebApollo/View/Track/DraggableBLASTFeatures', 'store': 'url',
+            'style': { 'renderClassName': 'gray-center-10pct', 'subfeatureClasses': { 'match_part': 'blast-match_part' } },
+            'hooks': { 'modify': jbrowse_color_hook }
+        }];
+        return jbrowse + (jbrowse.indexOf('?') == -1 ? '?' : '&') + 'loc=' + encodeURIComponent(refseq + ':' + start_pos + '..' + end_pos) +
+            '&addStores=' + encodeURIComponent(JSON.stringify(stores)) + '&addTracks=' + encodeURIComponent(JSON.stringify(tracks)) +
+            '&tracks=' + encodeURIComponent('BLAST+ Results') +
+            (hit_start ? '&highlight=' + encodeURIComponent(refseq + ':' + hit_start + '..' + hit_end) : '');
+    }
     var index_of_blastdb = col_idx['blastdb']; // -1 if not present
     var index_of_sseqid = col_idx['sseqid']; // -1 if not present
     var fixedColumns = 2;
@@ -246,6 +278,10 @@ $(function () { // document ready
                 col['render'] = function (dbtitle, type, row, meta) {
                     if (type == "display") {
                         var sseqid = row[index_of_sseqid];
+                        // the sequence ID prefix of the database is not part of the reference name (#9)
+                        var seqid_prefix = (results_info['db_seqid_prefix'] || {})[dbtitle] || '';
+                        if (seqid_prefix && sseqid.indexOf(seqid_prefix) == 0)
+                            sseqid = sseqid.substring(seqid_prefix.length);
                         if (/\|\w\w\w\w\w\w_([^|]+)$/g.exec(sseqid) != null)
                             //>gnl|Ceratitis_capitata|cercap_Scaffold1
                             sseqid = /\|[^|_]+?_([^|]+)$/g.exec(sseqid)[1];
@@ -257,13 +293,14 @@ $(function () { // document ready
                             var end_pos = row[col_idx['send']];
                             if (end_pos < start_pos)
                                 end_pos = [start_pos, start_pos = end_pos][0];
+                            var hit_start = start_pos, hit_end = end_pos;
                             start_pos -= 200;
                             if (start_pos < 0)
                                 start_pos = 0;
                             end_pos += 200;
                             if (end_pos > row[col_idx['slen']])
                                 end_pos = row[col_idx['slen']];
-                            return '<a class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="right" data-container="body" title="' + dbtitle + '\nClick to view in genome browser" target="_blank" href=\'' + results_info['db_url'][dbtitle] + '?loc=' + sseqid + ':' + start_pos + '..' + end_pos + '&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"' + /^(https?:\/\/)/g.exec(results_info['db_url'][dbtitle])[1] + /https?:\/\/(.*?)\/(?:blast)*/g.exec(document.URL)[1] + '/media/blast/task/' + task_id + '/' + dbtitle + '.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"WebApollo/View/Track/DraggableBLASTFeatures","store":"url","style":{"renderClassName":"gray-center-10pct","subfeatureClasses":{"match_part":"blast-match_part"}}}]&tracks=BLAST+ Results\' role="button"><span class="glyphicon glyphicon-new-window"></span> ' + results_info['db_organism'][dbtitle] + '</a>';
+                            return '<a class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="right" data-container="body" title="' + dbtitle + '\nClick to view in genome browser" target="_blank" href="' + jbrowse_url(dbtitle, sseqid, start_pos, end_pos, hit_start, hit_end).replace(/&/g, '&amp;') + '" role="button"><span class="glyphicon glyphicon-new-window"></span> ' + results_info['db_organism'][dbtitle] + '</a>';
                             //http://gmod-dev.nal.usda.gov:8080/anogla/jbrowse/?loc=Scaffold1:107901..161900&addStores={"url":{"type":"JBrowse/Store/SeqFeature/GFF3","urlTemplate":"http://gmod-dev.nal.usda.gov/media/07b73d9a3dde4eac9faa9c4109f7cfb6/Agla_Btl03082013.genome_new_ids.fa.gff"}}&addTracks=[{"label":"BLAST+ Results","category":"0. Reference Assembly","type":"JBrowse/View/Track/CanvasFeatures","store":"url","glyph":"JBrowse/View/FeatureGlyph/ProcessedTranscript","subParts":"match_part","style":{"color":"blue","height":6,"connectorColor":"gray","connectorThickness":2}}]
                         } else {
                             return '<span data-toggle="tooltip" data-placement="right" title="' + dbtitle + '">' + results_info['db_organism'][dbtitle] + '</span>';
@@ -328,7 +365,7 @@ $(function () { // document ready
     ///////////////////
     // Download Menu //
     ///////////////////
-    var task_path = /(https?:\/\/.*?)\/(?:blast)*/g.exec(document.URL)[1] + '/media/blast/task/' + task_id + '/' + task_id;
+    var task_path = media_url + 'blast/task/' + task_id + '/' + task_id;
     $('.btn-download').html('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
 <span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>\
 </button>\

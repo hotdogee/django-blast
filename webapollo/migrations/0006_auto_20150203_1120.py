@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='registration',
             name='status',
-            field=models.CharField(default=b'Pending', max_length=32),
+            field=models.CharField(default='Pending', max_length=32),
         ),
     ]

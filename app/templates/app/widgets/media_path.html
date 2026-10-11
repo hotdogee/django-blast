@@ -1,0 +1,12 @@
+<div class="media-path-widget">
+  <input type="text" name="{{ widget.name }}" value="{{ widget.value }}" list="{{ widget.attrs.id }}_files" data-media-directory="{{ widget.directory }}"{% include "django/forms/widgets/attrs.html" %}>
+  <datalist id="{{ widget.attrs.id }}_files">{% for path in widget.choices %}
+    <option value="{{ path }}"></option>{% endfor %}
+  </datalist>
+  {% if widget.missing %}<ul class="errorlist"><li>File not found in the media directory.</li></ul>{% endif %}
+  <div class="help">
+    Pick one of the {{ widget.choices|length }} file{{ widget.choices|length|pluralize }} below <code>{{ widget.directory|default:"/" }}</code>,
+    type a path relative to the media directory, or upload a new file:
+    <input type="file" name="{{ widget.upload_name }}" id="{{ widget.attrs.id }}_upload"{% if widget.accept %} accept="{{ widget.accept }}"{% endif %} data-media-path-target="{{ widget.attrs.id }}">
+  </div>
+</div>

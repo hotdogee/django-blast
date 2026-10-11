@@ -15,4 +15,4 @@ with open(TSV_FILENAME, 'r') as f:
         if path.isfile(path.join(FROM_PATH, filename)):
             shutil.copy2(path.join(FROM_PATH, filename), TO_PATH)
         else:
-            print '%s not found' % filename
+            print('%s not found' % filename)

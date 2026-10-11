@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load admin_static %}{% load suit_tags %}{% load i18n %}
+{% load static %}{% load i18n %}
 
 
 {% block extrastyle %}
@@ -10,11 +10,11 @@
 
 
 {% block breadcrumbs %}
-  <ul class="breadcrumb">
-    <li><a href="{% url 'admin:index' %}">Home</a><span class="divider">&raquo;</span></li>
-    <li>Webapollo<span class="divider">&raquo;</span></li>
-    <li class="active">Management</li>
-  </ul>
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a>
+  &rsaquo; Webapollo
+  &rsaquo; Management
+</div>
 {% endblock %}
 
 
@@ -102,6 +102,7 @@
 
 {% block extrajs %}
   {{ block.super }}
+  <script src="{% static 'app/scripts/jquery-1.11.1.min.js' %}"></script>
   <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
   <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>

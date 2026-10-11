@@ -1,11 +1,11 @@
 # coding: utf-8
+import logging
 import requests, json, sys
-from datetime import datetime
-from pytz import timezone
+from zoneinfo import ZoneInfo
 from django.db import connection
 from django.db.models import Q
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User, Permission
@@ -13,14 +13,22 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.cache import cache
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
-from django.core.urlresolvers import reverse
+from django.urls import reverse
+from django.utils import timezone
 from django.utils import html
-from django.template import Context
 from django.template.loader import render_to_string, get_template
 from django.core.mail import EmailMessage
 from .models import Species, SpeciesPassword, Registration, insert_species_permission, delete_species_permission
 from app.models import Profile
-from app.views import checkOAuth, ajax_login_required
+from app.views import checkOAuth, ajax_login_required, is_ajax
+
+logger = logging.getLogger(__name__)
+EASTERN = ZoneInfo('US/Eastern')
+
+
+def site_url(url):
+    '''Absolute URL for e-mails; url is a URL name or path.'''
+    return settings.SITE_URL + resolve_url(url)
 
 
 @login_required
@@ -95,7 +103,7 @@ def index(request):
     return render(
         request,
         'webapollo/webapollo.html', {
-        'year': datetime.now().year,
+        'year': timezone.now().year,
         'title': 'Web Apollo',
         'species_list': species_list,
         'interested_species_list': interested_species_list,
@@ -109,7 +117,7 @@ def panel(request):
     return render(
         request,
         'webapollo/panel.html', {
-        'year': datetime.now().year,
+        'year': timezone.now().year,
         'title': 'Web Apollo Application',
         'species_list': species_list,
         'interested_species_list': interested_species_list,
@@ -118,7 +126,7 @@ def panel(request):
 
 @ajax_login_required
 def apply(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             comment = html.escape(request.POST['comment'])
             comment = comment[:200] if len(comment) > 200 else comment
@@ -144,14 +152,14 @@ def apply(request):
                         'first_name': owner.first_name,
                         'user_full_name': request.user.get_full_name(),
                         'species': _species.full_name,
-                        'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+                        'website': site_url(settings.LOGIN_REDIRECT_URL),
                     }
                     message = render_to_string('webapollo/email/new_annotator_request.txt', ctx)
                     EmailMessage(subject, message, to=to).send()
                 
-                return HttpResponse(json.dumps({'succeeded': True, 'submission_time': _registration.submission_time.astimezone(timezone('US/Eastern')).strftime('%b. %d, %Y, %I:%M %p'), 'comment': comment,}), content_type='application/json')
+                return HttpResponse(json.dumps({'succeeded': True, 'submission_time': _registration.submission_time.astimezone(EASTERN).strftime('%b. %d, %Y, %I:%M %p'), 'comment': comment,}), content_type='application/json')
             except: #ObjectDoesNotExist:
-                print 'Exception in webapollo_apply: ', sys.exc_info()[0]
+                logger.exception('Exception in webapollo_apply: ')
                 return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
@@ -163,8 +171,8 @@ def do_reject(sname, uname, comment, owner):
         _registration = Registration.objects.get(user=_user, species=_species, status='Pending')
         _registration.decision_comment = 'Reject by ' + owner
         if comment:
-            _registration.decision_comment = 'from ' + request.user.username + ': '+ comment
-        _registration.decision_time = datetime.now()
+            _registration.decision_comment = 'from ' + owner + ': '+ comment
+        _registration.decision_time = timezone.now()
         _registration.status = 'Rejected'
         _registration.save()
 
@@ -174,17 +182,18 @@ def do_reject(sname, uname, comment, owner):
         ctx = {
             'full_name': _user.get_full_name(),
             'species': _species.full_name,
-            'website': settings.HOSTNAME + reverse('webapollo:panel'),
+            'website': site_url('webapollo:panel'),
         }
         message = render_to_string('webapollo/email/rejection.txt', ctx)
         EmailMessage(subject, message, to=to).send()
         return True
-    except:
-        return False    
+    except Exception:
+        logger.exception('Exception in do_reject')
+        return False
 
 @ajax_login_required
 def reject(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':         
             comment = html.escape(request.POST['comment'])
             if comment:
@@ -193,17 +202,17 @@ def reject(request):
             if is_done:
                 return HttpResponse(json.dumps({'succeeded': True}), content_type='application/json')
             else: #ObjectDoesNotExist:
-                print 'Exception in webapollo_reject ', sys.exc_info()[0]
+                logger.error('webapollo_reject failed')
                 return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
                 
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
 @ajax_login_required
 def bulk_reject(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             num = request.POST.get('num')
-            for i in xrange(int(num)):
+            for i in range(int(num)):
                 uname = request.POST.get('user_species[' + str(i) + '][username]')
                 sname = request.POST.get('user_species[' + str(i) + '][species_name]')
                 is_done = do_reject(sname, uname, None, request.user.username)                
@@ -215,27 +224,27 @@ def bulk_reject(request):
 
 @ajax_login_required
 def history(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             try:
                 _registrations = Registration.objects.filter(user__username=request.POST['username'], species__name=request.POST['species_name']).order_by('-submission_time')
                 apply_records = []
                 for reg in _registrations:
                     apply_records.append({
-                        'submission_time': reg.submission_time.astimezone(timezone('US/Eastern')).strftime('%b. %d, %Y, %I:%M %p'),
+                        'submission_time': reg.submission_time.astimezone(EASTERN).strftime('%b. %d, %Y, %I:%M %p'),
                         'comment': reg.submission_comment,
                         'status': reg.status,
                         'msg': reg.decision_comment,
                     })
                 return HttpResponse(json.dumps({'succeeded': True, 'apply_records': apply_records,}), content_type='application/json')
             except: #ObjectDoesNotExist:
-                print 'Exception in webapollo_history ', sys.exc_info()[0]
+                logger.exception('Exception in webapollo_history ')
                 return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
 @ajax_login_required
 def eligible(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             try:
                 # selecte all users withour permissions, then remove users waiting for approval
@@ -257,7 +266,7 @@ def eligible(request):
                     })
                 return HttpResponse(json.dumps({'succeeded': True, 'users': users}), content_type='application/json')
             except: #ObjectDoesNotExist:
-                print 'Exception in webapollo_eligible ', sys.exc_info()[0]
+                logger.exception('Exception in webapollo_eligible ')
                 return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
@@ -275,7 +284,7 @@ def do_approve(_username, _species_name, owner):
             c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', [_user.id, Permission.objects.get(codename=_species_name + '_write').id])                    
         insert_species_permission(_username, _species.id, _perm_value)
         _registration.status = 'Approved'
-        _registration.decision_time = datetime.now()
+        _registration.decision_time = timezone.now()
         _registration.decision_comment = 'Approved by ' + owner
         _registration.save()
     
@@ -285,35 +294,36 @@ def do_approve(_username, _species_name, owner):
         ctx = {
             'full_name': _user.get_full_name(),
             'species': _species.full_name,
-            'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL,
+            'website': site_url(settings.LOGIN_REDIRECT_URL),
         }
         message = render_to_string('webapollo/email/approval.txt', ctx)
         EmailMessage(subject, message, to=to).send()
         return True
-    except:
+    except Exception:
+        logger.exception('Exception in do_approve')
         return False
 
 
 @ajax_login_required
 def approve(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             if request.user.has_perm('webapollo.' + request.POST['species_name'] + '_owner'):
                 is_done = do_approve(request.POST['username'], request.POST['species_name'], request.user.username)
                 if is_done:                    
                     return HttpResponse(json.dumps({'succeeded': True, }), content_type='application/json')
                 else:
-                    print 'Exception in webapollo_approve ', sys.exc_info()[0]
+                    logger.error('webapollo_approve failed')
                     return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
 
 @ajax_login_required
 def bulk_approve(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             num = request.POST.get('num')
-            for i in xrange(int(num)):
+            for i in range(int(num)):
                 uname = request.POST.get('user_species[' + str(i) + '][username]')
                 sname = request.POST.get('user_species[' + str(i) + '][species_name]')
                 is_done = do_approve(uname, sname, request.user.username)                
@@ -325,7 +335,7 @@ def bulk_approve(request):
 
 @ajax_login_required
 def adduser(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             if request.user.has_perm('webapollo.' + request.POST['species_name'] + '_owner'):
                 try:
@@ -342,17 +352,17 @@ def adduser(request):
                             c.execute('INSERT INTO auth_user_user_permissions (user_id, permission_id) VALUES (%s, %s)', 
                                 [u.id, Permission.objects.get(codename=_species_name + '_write').id])                    
                         insert_species_permission(u.username, _species.id, _perm_value)
-                        _registration = Registration(user=u, species=_species, decision_comment='Added by ' + request.user.username, status='Added', decision_time=datetime.now())
+                        _registration = Registration(user=u, species=_species, decision_comment='Added by ' + request.user.username, status='Added', decision_time=timezone.now())
                         _registration.save()
                     return HttpResponse(json.dumps({'succeeded': True, 'usernames': _usernames }), content_type='application/json')
                 except: #ObjectDoesNotExist:
-                    print 'Exception in webapollo_adduser ', sys.exc_info()[0]
+                    logger.exception('Exception in webapollo_adduser ')
                     return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
 @ajax_login_required
 def remove(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             if request.user.has_perm('webapollo.' + request.POST['species_name'] + '_owner'):
                 try:
@@ -366,11 +376,11 @@ def remove(request):
                         for perm in perms:
                             c.execute('DELETE FROM auth_user_user_permissions WHERE user_id=%s AND permission_id=%s', [_user.id, perm.id]) 
                     delete_species_permission( _username, _species.id)
-                    _registration = Registration(user=_user, species=_species, decision_comment='Removed by ' + request.user.username, status='Removed', decision_time=datetime.now())
+                    _registration = Registration(user=_user, species=_species, decision_comment='Removed by ' + request.user.username, status='Removed', decision_time=timezone.now())
                     _registration.save()
                     return HttpResponse(json.dumps({'succeeded': True, }), content_type='application/json')
                 except: #ObjectDoesNotExist:
-                    print 'Exception in webapollo_remove ', sys.exc_info()[0]
+                    logger.exception('Exception in webapollo_remove ')
                     return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
     return HttpResponse(json.dumps({ 'succeeded': False }), content_type='application/json')
 
@@ -387,7 +397,7 @@ def do_remind(sname):
             ctx = {
                 'first_name': owner.first_name,
                 'species': spe.full_name,
-                'website': settings.HOSTNAME + settings.LOGIN_REDIRECT_URL + '#pending_requests',
+                'website': site_url(settings.LOGIN_REDIRECT_URL) + '#pending_requests',
             }
             message = render_to_string('webapollo/email/reminder.txt', ctx)
             EmailMessage(subject, message, to=to).send()
@@ -398,7 +408,7 @@ def do_remind(sname):
 
 @ajax_login_required
 def remind(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             sname = request.POST.get('sname')
             is_done = do_remind(sname)
@@ -410,7 +420,7 @@ def remind(request):
 @staff_member_required
 @ajax_login_required
 def bulk_remind(request):
-    if request.is_ajax():
+    if is_ajax(request):
         if request.method == 'POST':
             snames = request.POST.getlist('snames[]')
             is_done = True
@@ -521,7 +531,7 @@ def species_user(request, species_name):
                         r.decision_comment = 'Added by ' + request.user.username + ' (admin)'
                         alert_text = 'Successfully Updated'
 
-                r.decision_time = datetime.now()
+                r.decision_time = timezone.now()
                 r.save()
             alert_success = True
         except:
@@ -595,7 +605,7 @@ def user_permission(request, user_id):
                 'species_list': species_list,
             }
         )
-    elif request.is_ajax() and request.method == 'POST':
+    elif is_ajax(request) and request.method == 'POST':
         s_perms = request.POST.get('species_permissions')
         s_perms = json.loads(s_perms)
         for s_perm in s_perms:
@@ -616,7 +626,7 @@ def user_permission(request, user_id):
                         r = Registration(user=u, species=s)
                     r.status = 'Removed'
                     r.decision_comment = 'Removed by ' + request.user.username + ' (admin)'
-                    r.decision_time = datetime.now()
+                    r.decision_time = timezone.now()
                     r.save()
                 else:
                     # using user_permissions.add() will trigger m2m_changed handler, which is undesirable, so write SQL directly to insert permissions
@@ -650,10 +660,10 @@ def user_permission(request, user_id):
                         r = Registration(user=u, species=s)
                     r.status = 'Added'
                     r.decision_comment = 'Added by ' + request.user.username + ' (admin)'
-                    r.decision_time = datetime.now()
+                    r.decision_time = timezone.now()
                     r.save()
             except:
-                print 'Exception in webapollo_user_permission ', sys.exc_info()[0]
+                logger.exception('Exception in webapollo_user_permission ')
                 return HttpResponse(json.dumps({'succeeded': False}), content_type='application/json')
         return HttpResponse(json.dumps({'succeeded': True}), content_type='application/json')
     else:
@@ -680,11 +690,11 @@ def species(request, species_name):
             s.post(login_url, json.dumps(user))
             for cookie in s.cookies:
                 if cookie.name == 'JSESSIONID':
-                    response.set_cookie(cookie.name, value=cookie.value, domain='.nal.usda.gov', path='/' + species_name + '/')
+                    response.set_cookie(cookie.name, value=cookie.value, domain=settings.WEBAPOLLO_COOKIE_DOMAIN, path='/' + species_name + '/')
                     cache.set( cache_id, {cookie.name: cookie.value}, 1800 ) # timeout = 30 mins
     else:
-        k, v = cache.get(cache_id).items()[0] # always only one dict in the cache
-        response.set_cookie(k, value=v, domain='.nal.usda.gov', path='/' + species_name + '/')
+        k, v = next(iter(cache.get(cache_id).items())) # always only one dict in the cache
+        response.set_cookie(k, value=v, domain=settings.WEBAPOLLO_COOKIE_DOMAIN, path='/' + species_name + '/')
                 
     return response
 
@@ -703,9 +713,9 @@ def logout_all_instances(request):
         #   {u'blast_admin_cercap_cookie': {'JSESSIONID': 'A56B4675E09E96CB4E30EA7931080CFB'}, 
         #    u'blast_admin_anogla_cookie': {'JSESSIONID': '48725B5463EC536C053973E56CFCB3F6'}}             
         if cached_cookies:
-            for cache_id, cache_value in cached_cookies.iteritems():
+            for cache_id, cache_value in cached_cookies.items():
                 sname = cache_id.split('_')[-2]
                 species = Species.objects.get(name=sname)
                 logout_url = species.url + '/Login?operation=logout'
                 requests.post(logout_url, cookies=cache_value)
-            cache.delete_many(cached_cookies.keys())
+            cache.delete_many(list(cached_cookies.keys()))

@@ -25,7 +25,7 @@ with open(path_full, 'rb') as f:
             if stripped[0] == '>': # header
                 if length > 0: # not first sequence, add previous sequence to db
                     #self.sequence_set.create(id=id, header=header, length=length, seq_start_pos=seq_start_pos, seq_end_pos=offset)
-                    print 'id=%s, header=%s, length=%d, seq_start_pos=%d, seq_end_pos=%d\n' % (id, header, length, seq_start_pos, offset)
+                    print('id=%s, header=%s, length=%d, seq_start_pos=%d, seq_end_pos=%d\n' % (id, header, length, seq_start_pos, offset))
                     sequence_set.append((id, header, length, seq_start_pos, offset))
                     seq_count += 1
                 seq_start_pos = offset + line.find('>') # white chars before '>'
@@ -37,7 +37,7 @@ with open(path_full, 'rb') as f:
         offset += len(line)
     if length > 0: # add last sequence
         #self.sequence_set.create(id=id, header=header, length=length, seq_start_pos=seq_start_pos, seq_end_pos=offset)
-        print 'id=%s, header=%s, length=%d, seq_start_pos=%d, seq_end_pos=%d\n' % (id, header, length, seq_start_pos, offset)
+        print('id=%s, header=%s, length=%d, seq_start_pos=%d, seq_end_pos=%d\n' % (id, header, length, seq_start_pos, offset))
         sequence_set.append((id, header, length, seq_start_pos, offset))
         seq_count += 1
 
@@ -46,4 +46,4 @@ with open(path_full, 'rb') as f:
     for seq in sequence_set:
         f.seek(seq[3])
         lines = f.read(seq[4] - seq[3])
-        print lines
+        print(lines)

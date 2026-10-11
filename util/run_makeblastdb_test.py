@@ -19,9 +19,9 @@ if tax_id:
     args += ['-taxid', tax_id]
 p = Popen(args, stdout=PIPE, stderr=PIPE)
 output, error = p.communicate()
-print 'output = %s\n' % output
-print 'error = %s\n' % error
-print 'returncode = %s\n' % p.returncode
+print('output = %s\n' % output)
+print('error = %s\n' % error)
+print('returncode = %s\n' % p.returncode)
 
 ''' Fail example
 output =

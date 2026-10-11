@@ -1,4 +1,5 @@
-﻿$(function () { // document ready
+﻿(function ($) {
+$(function () { // document ready
     // Suggest short name from display name
     // text change event
     $('#id_display_name').keyup(function () {
@@ -28,7 +29,7 @@
     $('#id_display_name').change(function () {
         var name = $('#id_display_name').val().toLowerCase().replace(/^\s+|\s+$/g, '');
         $.ajax({
-            url: 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi',
+            url: 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi',
             data: {
                 db: 'taxonomy',
                 term: name,
@@ -42,10 +43,10 @@
     // Get description from wikipedia
     $('#id_display_name').change(function () {
         var name = $('#id_display_name').val().toLowerCase().replace(/^\s+|\s+$/g, '');
-        $.getJSON('http://en.wikipedia.org/w/api.php?action=query&list=search&srprop=snippet&srlimit=1&format=json&callback=?&srsearch=' + name, function (data) {
+        $.getJSON('https://en.wikipedia.org/w/api.php?action=query&list=search&srprop=snippet&srlimit=1&format=json&callback=?&srsearch=' + name, function (data) {
             //console.log(data['query']['search']);
             if (data['query']['search'].length > 0) {
-                $.getJSON('http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=true&callback=?&titles=' + data['query']['search'][0]['title'], function (data) {
+                $.getJSON('https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=true&callback=?&titles=' + data['query']['search'][0]['title'], function (data) {
                     //console.log(data['query']['pages']);
                     var keys = Object.keys(data['query']['pages']);
                     if (keys.length > 0) {
@@ -88,3 +89,4 @@
         //});
     });
 });
+})((window.django && django.jQuery) || window.jQuery);

@@ -8,7 +8,7 @@ def use_new_blastdb_location(apps, schema_editor):
     # version than this migration expects. We use the historical version.
     BlastDb = apps.get_model("blast", "BlastDb")
     for blastdb in BlastDb.objects.all():
-        blastdb.fasta_file = blastdb.fasta_file.url_save.replace('blastdb/', 'blast/db/')
+        blastdb.fasta_file = str(blastdb.fasta_file).replace('blastdb/', 'blast/db/')
         blastdb.save()
 
 class Migration(migrations.Migration):
@@ -18,5 +18,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(use_new_blastdb_location),
+        migrations.RunPython(use_new_blastdb_location, migrations.RunPython.noop),
     ]

@@ -1,6 +1,8 @@
-from django.conf.urls import patterns, include, url
+from django.urls import re_path
 from .views import proxy_view
 
-urlpatterns = patterns('',
-    url(r'^(?P<url>.*)$', proxy_view, name='proxy_view'),
-)
+app_name = 'proxy'
+
+urlpatterns = [
+    re_path(r'^(?P<url>.*)$', proxy_view, name='proxy_view'),
+]

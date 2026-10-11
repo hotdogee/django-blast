@@ -61,3 +61,10 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+###############################################################################
+# Files used inside Linux containers keep Unix line endings on every checkout.
+###############################################################################
+*.sh            text eol=lf
+Dockerfile      text eol=lf
+.dockerignore   text eol=lf

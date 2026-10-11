@@ -1,7 +1,5 @@
-﻿$(function () { // document ready
-    window.id_file_change = function (value) {
-        $('#id_fasta_file').val(value).change();
-    }
+﻿(function ($) {
+$(function () { // document ready
     $('#id_fasta_file').change(function () {
         var file = $('#id_fasta_file').val().split('/').pop();
         //console.log(file);
@@ -17,3 +15,4 @@
         }
     });
 });
+})((window.django && django.jQuery) || window.jQuery);

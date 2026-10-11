@@ -219,10 +219,14 @@ $(function() { // document ready
 			$('.blastx').attr('disabled', 'disabled').addClass('disabled-radio');
 			$('.tblastx').attr('disabled', 'disabled').addClass('disabled-radio');
 		}
-		query_type = '';
-		// select first non disabled option
-		$('input.program:not([disabled])').first().prop('checked', true);
-		program_selected = $('input.program:not([disabled])').first().val();
+		// Keep the selected program if it is still allowed, otherwise select the
+		// first one that is. query_type used to be cleared here, so selecting the
+		// databases after entering the query reset the program to blastn (#16).
+		var $program = $('input.program:checked:not([disabled])');
+		if ($program.length == 0)
+			$program = $('input.program:not([disabled])').first();
+		$program.prop('checked', true);
+		program_selected = $program.val();
 		$('.' + program_selected).mouseover();
         add_blast_options(program_selected.toUpperCase());
 	}, 30);
@@ -490,6 +494,7 @@ MCDEDVAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDAYVGDEAQSKRGILTLKYPVEHGIITNW
     
     $('.btn_reset').click(function() {
         $('#query-textarea').val('');
+        setQueryType('');
         $('.all-organism-checkbox').prop("checked", false).attr("checked", false);
         $('.all-organism-checkbox').change();
         $('.program').attr('disabled', false).removeClass('disabled-radio');
