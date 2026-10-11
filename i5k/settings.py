@@ -354,7 +354,8 @@ try:
     HOSTNAME = socket.gethostname()
 except Exception:
     HOSTNAME = 'localhost'
-# Base URL used in e-mails, e.g. https://i5k.nal.usda.gov/webapp
+# Scheme and host for the links in e-mails, e.g. https://i5k.nal.usda.gov
+# (without the URL prefix the site is served at: the links already have it)
 SITE_URL = env('DJANGO_SITE_URL', default='http://' + HOSTNAME).rstrip('/')
 
 LOGIN_ENABLED = env.bool('LOGIN_ENABLED', default=True)

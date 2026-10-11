@@ -108,8 +108,8 @@ HTTPS, before exposing an instance.
 
 ## Manual installation
 
-Requirements: Python 3.12 - 3.14, NCBI BLAST+, a Celery broker (RabbitMQ or Redis) and preferably PostgreSQL
-(SQLite works for everything except the experimental `data` app).
+Requirements: Python 3.12 - 3.14, NCBI BLAST+, a Celery broker (RabbitMQ or Redis) and preferably PostgreSQL 14 or
+later (SQLite works for everything except the experimental `data` app).
 
 ```sh
 python3 -m venv .venv
@@ -137,7 +137,10 @@ In production, run `python manage.py collectstatic` and serve `i5k.wsgi:applicat
 (static files are served by [WhiteNoise](https://whitenoise.readthedocs.io/)). Let the web server serve `MEDIA_ROOT`
 at `MEDIA_URL` (or set `DJANGO_SERVE_MEDIA=1`): it holds the downloadable results and the GFF3 files that JBrowse
 loads, so it must allow cross-origin requests from the JBrowse host. The site can live below a URL prefix, e.g.
-`WSGIScriptAlias /webapp /path/to/django-blast/i5k/wsgi.py`.
+`WSGIScriptAlias /webapp /path/to/django-blast/i5k/wsgi.py`. WhiteNoise and `DJANGO_SERVE_MEDIA` only work when the site
+is at the root of the host, so with a prefix let the web server serve `STATIC_ROOT` at `STATIC_URL` and `MEDIA_ROOT` at
+`MEDIA_URL` (e.g. `Alias /static/` and `Alias /media/` as in [i5k.conf](i5k.conf)), and set `DJANGO_SITE_URL` to the
+scheme and host only.
 
 The deployment files from the original installation are kept for reference and need adjusting for Python 3 and
 the new settings: [i5k.conf](i5k.conf) (Apache + mod_wsgi), [celeryd](celeryd), [celerybeat](celerybeat) and their
@@ -160,13 +163,19 @@ Settings are read from environment variables, or from a `.env` file in the proje
 | `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,[::1]` | Host names the site is served at |
 | `DJANGO_CSRF_TRUSTED_ORIGINS` | | e.g. `https://blast.example.org` behind a proxy |
 | `DATABASE_URL` | `sqlite:///db.sqlite3` | e.g. `postgres://user:password@host:5432/name` |
+| `DATABASE_CONN_MAX_AGE` | `0` | Seconds to keep database connections open |
 | `DJANGO_MEDIA_ROOT`, `DJANGO_MEDIA_URL` | `media/`, `/media/` | BLAST databases (`blast/db/`) and results (`blast/task/`) |
+| `DJANGO_MEDIA_UPLOAD_MAX_SIZE` | `10737418240` (10 GB) | Largest FASTA file that can be uploaded in the admin, in bytes |
 | `DJANGO_STATIC_ROOT`, `DJANGO_STATIC_URL` | `static/`, `/static/` | Collected static files |
+| `DJANGO_STATICFILES_STORAGE` | `whitenoise.storage.CompressedStaticFilesStorage` | Storage class of the collected static files |
 | `DJANGO_SERVE_MEDIA` | `DJANGO_DEBUG` | Serve `MEDIA_ROOT` through Django |
 | `DJANGO_TIME_ZONE` | `America/New_York` | |
-| `DJANGO_SITE_URL` | `http://<hostname>` | Base URL used in e-mails |
+| `DJANGO_SITE_URL` | `http://<hostname>` | Scheme and host for the links in e-mails, e.g. `https://i5k.nal.usda.gov` (without the URL prefix) |
+| `DJANGO_LOGIN_URL`, `DJANGO_LOGIN_REDIRECT_URL` | `login`, `dashboard` | URL names or paths of the login page and the page shown after login |
 | `DJANGO_ADMINS` | | Comma separated e-mail addresses that receive error reports |
+| `DJANGO_LOG_LEVEL` | `WARNING` | Level of the console log (the BLAST app always logs `INFO`) |
 | `CELERY_BROKER_URL` | `amqp://` | e.g. `redis://localhost:6379/0` |
+| `CELERY_RESULT_BACKEND` | | Optional; the BLAST jobs don't use task results |
 | `CELERY_TASK_ALWAYS_EAGER` | `0` | Run BLAST jobs in the web process |
 | `BLAST_BIN_DIR` | | Directory with the BLAST+ executables (default: `PATH`, then `blast/bin_*`) |
 | `BLAST_NUM_THREADS` | `4` | `-num_threads` of each BLAST job |
@@ -174,12 +183,13 @@ Settings are read from environment variables, or from a `.env` file in the proje
 | `BLAST_REMOVE_EXPIRED_FILES` | `0` | Let the daily beat job delete expired results |
 | `USE_CACHE`, `CACHE_URL` | `0`, `locmemcache://` | Queue position on the results page; needs a shared cache such as `redis://localhost:6379/1` or `pymemcache://127.0.0.1:11211` |
 | `LOGIN_ENABLED` | `1` | Show the login links |
-| `SOCIAL_AUTH_GOOGLE_OAUTH2_KEY`, `..._SECRET` | | Google login |
-| `SOCIAL_AUTH_FACEBOOK_KEY`, `..._SECRET` | | Facebook login |
-| `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS`, `DEFAULT_FROM_EMAIL` | `localhost`, `1025` | Outgoing e-mail |
+| `SOCIAL_AUTH_GOOGLE_OAUTH2_KEY`, `SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET` | | Google login |
+| `SOCIAL_AUTH_FACEBOOK_KEY`, `SOCIAL_AUTH_FACEBOOK_SECRET` | | Facebook login |
+| `DJANGO_EMAIL_BACKEND` | `django.core.mail.backends.smtp.EmailBackend` | Docker: `django.core.mail.backends.console.EmailBackend` (e-mails are only logged) |
+| `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS`, `DEFAULT_FROM_EMAIL` | `localhost`, `1025` | Outgoing e-mail (SMTP) |
 | `ANALYTICS_ENABLED` | `0` | NAL web analytics |
 | `WEBAPOLLO_COOKIE_DOMAIN` | `.nal.usda.gov` | Domain of the Web Apollo single sign-on cookies |
-| `DJANGO_SECURE_PROXY_SSL_HEADER`, `DJANGO_SECURE_SSL_REDIRECT`, `DJANGO_SESSION_COOKIE_SECURE`, `DJANGO_CSRF_COOKIE_SECURE`, `DJANGO_SECURE_HSTS_SECONDS`, `DJANGO_X_FRAME_OPTIONS` | off, `SAMEORIGIN` | HTTPS hardening; `python manage.py check --deploy` reports what is missing |
+| `DJANGO_SECURE_PROXY_SSL_HEADER`, `DJANGO_SECURE_SSL_REDIRECT`, `DJANGO_SESSION_COOKIE_SECURE`, `DJANGO_CSRF_COOKIE_SECURE`, `DJANGO_SECURE_HSTS_SECONDS`, `DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS`, `DJANGO_SECURE_HSTS_PRELOAD`, `DJANGO_X_FRAME_OPTIONS` | off, `SAMEORIGIN` | HTTPS hardening; `python manage.py check --deploy` reports what is missing |
 
 ## Usage
 
@@ -249,7 +259,8 @@ and runs [docker/smoke_test.py](docker/smoke_test.py) against `docker compose`.
 
 The 2016 version ran on Python 2.7 and Django 1.8 with vendored copies of its dependencies. To upgrade:
 
-1. Back up the database and `MEDIA_ROOT`.
+1. Back up the database (`pg_dump`) and `MEDIA_ROOT`. Django 5.2 needs PostgreSQL 14 or later: upgrade an older
+   server first (`pg_upgrade`, or restore the dump into a new server), keeping the `hstore` extension.
 2. Move the settings to environment variables (see [Configuration](#configuration)) and use a new secret key.
 3. Install the requirements on Python 3.12+ and run `python manage.py migrate`. Notes:
    - `blast.0007` removes the unique constraint on sequence ids, if the database has one (#19).
