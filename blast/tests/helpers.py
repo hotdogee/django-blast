@@ -42,11 +42,15 @@ def blast_available():
 
 
 def requires_blast(test):
+    '''Skip the test when BLAST+ is not available, unless BLAST_TESTS_REQUIRED
+    is set (as in CI), in which case the test runs and fails.'''
     try:
         import pytest
         test = pytest.mark.blast(test)
     except ImportError:  # manage.py test without pytest installed
         pass
+    if os.environ.get('BLAST_TESTS_REQUIRED'):
+        return test
     return unittest.skipUnless(blast_available(), 'BLAST+ executables are not available (install ncbi-blast+ or set BLAST_BIN_DIR)')(test)
 
 
