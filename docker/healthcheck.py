@@ -12,7 +12,8 @@ hosts = [h.strip() for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(','
 host = hosts[0].lstrip('.') if hosts else 'localhost'
 try:
     connection = http.client.HTTPConnection('127.0.0.1', 8000, timeout=5)
-    # X-Forwarded-Proto is only trusted with DJANGO_SECURE_PROXY_SSL_HEADER=1
+    # gunicorn trusts X-Forwarded-Proto from 127.0.0.1 (forwarded_allow_ips), so with
+    # DJANGO_SECURE_SSL_REDIRECT the probe reaches the real view instead of the redirect
     connection.request('GET', '/blast/', headers={'Host': host, 'X-Forwarded-Proto': 'https'})
     status = connection.getresponse().status
 except (OSError, http.client.HTTPException) as e:

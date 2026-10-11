@@ -78,7 +78,8 @@ BLAST Results
 
 [docker-compose.yml](docker-compose.yml) runs the web application (gunicorn), a Celery worker and beat,
 PostgreSQL and Redis. NCBI BLAST+ is installed in the image, and two small sample databases are created on the first
-start: the i5k *Anoplophora glabripennis* proteins and a few of its transcripts.
+start: the i5k *Anoplophora glabripennis* proteins and a few of its transcripts. Docker Compose 2.24 or later is
+required.
 
 ```sh
 git clone https://github.com/hotdogee/django-blast.git
@@ -96,9 +97,12 @@ To use the admin at http://localhost:8000/admin/, create an account:
 docker compose exec web python manage.py createsuperuser
 ```
 
-or set `DJANGO_SUPERUSER_USERNAME` and `DJANGO_SUPERUSER_PASSWORD` before `docker compose up`. All settings in
-[Configuration](#configuration) can be passed the same way, or put in a `.env` file next to `docker-compose.yml`,
-except the database, broker, cache and file locations, which `docker-compose.yml` sets. Note that a `.env` file made
+or set `DJANGO_SUPERUSER_USERNAME` and `DJANGO_SUPERUSER_PASSWORD` before `docker compose up`. Other settings in
+[Configuration](#configuration) go in a `.env` file next to `docker-compose.yml`; only the variables that
+`docker-compose.yml` names (`DJANGO_DEBUG`, `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS`,
+`DJANGO_EMAIL_BACKEND`, `DJANGO_PORT`, `DJANGO_LOAD_SAMPLE_DATA`, `DJANGO_SUPERUSER_*`, `LOGIN_ENABLED`,
+`CELERY_CONCURRENCY`, `BLAST_NUM_THREADS` and `POSTGRES_PASSWORD`) are also read from the shell. The database, broker,
+cache, media serving and file locations are set by `docker-compose.yml` and can't be overridden. Note that a `.env` file made
 for a manual installation in the same directory (e.g. with `DJANGO_DEBUG=1`) applies to the containers too.
 A secret key is generated on the data volume unless `DJANGO_SECRET_KEY` is set. The PostgreSQL password
 (`POSTGRES_PASSWORD`, default `django`) only protects the database on the internal compose network; change it, and use
