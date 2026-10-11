@@ -1,0 +1,95 @@
+# A complete django-blast instance for evaluation and development:
+# web (gunicorn), Celery worker and beat, PostgreSQL and Redis, with sample
+# BLAST databases. Start it with
+#
+#     docker compose up --build
+#
+# and open http://localhost:8000/blast/. See README.md for the settings.
+# The passwords below only protect services on the internal compose network;
+# change them (and set DJANGO_SECRET_KEY) before exposing an instance.
+
+x-app: &app
+  image: django-blast:latest
+  restart: unless-stopped
+  environment: &env
+    DJANGO_DEBUG: ${DJANGO_DEBUG:-0}
+    DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-}
+    DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1,[::1]}
+    DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-}
+    DATABASE_URL: postgres://django:${POSTGRES_PASSWORD:-django}@db:5432/django_i5k
+    CELERY_BROKER_URL: redis://redis:6379/0
+    CACHE_URL: redis://redis:6379/1
+    USE_CACHE: "1"
+    DJANGO_SERVE_MEDIA: "1"
+    LOGIN_ENABLED: ${LOGIN_ENABLED:-1}
+    DJANGO_EMAIL_BACKEND: ${DJANGO_EMAIL_BACKEND:-django.core.mail.backends.console.EmailBackend}
+    BLAST_NUM_THREADS: ${BLAST_NUM_THREADS:-2}
+  volumes:
+    - data:/data
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  web:
+    <<: *app
+    build: .
+    environment:
+      <<: *env
+      DJANGO_MIGRATE: "1"
+      DJANGO_LOAD_SAMPLE_DATA: ${DJANGO_LOAD_SAMPLE_DATA:-1}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME:-}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD:-}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL:-}
+    ports:
+      - "${DJANGO_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/blast/', timeout=5)"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
+
+  worker:
+    <<: *app
+    command: ["celery", "-A", "i5k", "worker", "-Q", "i5k", "--loglevel=info", "--concurrency=${CELERY_CONCURRENCY:-2}"]
+    depends_on:
+      web:
+        condition: service_healthy
+
+  beat:
+    <<: *app
+    command: ["celery", "-A", "i5k", "beat", "--loglevel=info", "--schedule=/data/celerybeat-schedule"]
+    depends_on:
+      web:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: django_i5k
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-django}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U django -d django_i5k"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  data:
+  pgdata:

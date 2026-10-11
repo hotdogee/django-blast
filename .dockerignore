@@ -1,0 +1,24 @@
+# Keep the image small: no VCS data, old databases, bundled BLAST+ binaries
+# (the image installs ncbi-blast+ from Debian), local media or settings.
+.git
+.github
+**/__pycache__
+**/*.pyc
+.env
+.venv
+venv
+i5k/settings_local.py
+*.sqlite3
+*.sqlite3.zip
+blast2gff.zip
+i5k.json
+readme.mht
+i5k.pyproj
+i5k.sln
+blast/bin_linux
+blast/bin_win
+example/blastdb/*.faa.p*
+media/*
+!media/**/.gitignore
+static/*
+virtualenv
