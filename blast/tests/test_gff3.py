@@ -76,3 +76,12 @@ class Gff3Test(SimpleTestCase):
         part = attributes(features[1])
         self.assertEqual((part['Bitscore'], part['evalue'], part['pident']), ('187.3', '3.5e-42', '97.25'))
         self.assertEqual(features[1][5], '3.5e-42')
+
+    def test_features_are_colored_by_bit_score(self):
+        # #13: the static color key of the results page
+        from blast.gff3 import bitscore_color
+        self.assertEqual([bitscore_color(s) for s in (10, 40, 71.9, 72, 104, 150, 199, 200, 5000)],
+                         ['#5f5f5f', '#5f5f5f', '#5f5f5f', '#53749d', '#518f62', '#855f94', '#be4939', '#be4939', '#be4939'])
+        rows = [hit('q1', 'Scaffold1', 1, 100, 1001, 1100, bitscore=50), hit('q1', 'Scaffold1', 101, 200, 1201, 1300, bitscore=250)]
+        match, part1, part2 = [attributes(f)['color'] for f in gff(rows)]
+        self.assertEqual((match, part1, part2), ('#be4939', '#5f5f5f', '#be4939'))

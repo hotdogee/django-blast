@@ -9,6 +9,21 @@ GFF_COL_NAMES = 'seqid source type start end score strand phase attributes'.spli
 HSP_DICT_COL_NAMES = 'qseqid sseqid evalue bitscore pident qlen qstart qend sstart send qstrand sstrand'.split()
 OVERLAP_CUTOFF = 5
 
+# Static color key of the results page (blast-results.js): bit scores from 40
+# to 200 in 5 classes, colored grey, blue, green, purple and red. Each color is
+# the midpoint of the light/dark gradient used on the coverage graphs (#13).
+SCORE_COLOR_MIN = 40
+SCORE_COLOR_MAX = 200
+SCORE_COLORS = ['#5f5f5f', '#53749d', '#518f62', '#855f94', '#be4939']
+
+
+def bitscore_color(bitscore):
+    """Color of a bit score in the results page's static color key."""
+    classes = len(SCORE_COLORS)
+    step = (SCORE_COLOR_MAX - SCORE_COLOR_MIN) / float(classes)
+    index = int((bitscore - SCORE_COLOR_MIN) // step)
+    return SCORE_COLORS[max(0, min(classes - 1, index))]
+
 def hsp_dict_list(hsp_list, col_names):
     """Rows of typed BLAST tabular values -> dicts with strand information.
 
@@ -78,6 +93,8 @@ def gff3_lines(db_hsp_dict_list, blast_program, seqid_prefix=''):
             gff_item['strand'] = matches[0]['sstrand']
             gff_item['phase'] = '0' # for type CDS, this is not the frame
             gff_item['attributes'] = 'ID=match%05d;Name=%s;Target=%s %d %d %s' % (match_id, matches[0]['qseqid'], matches[0]['qseqid'], min(matches[0]['qstart'], matches[0]['qend'], matches[-1]['qstart'], matches[-1]['qend']), max(matches[0]['qstart'], matches[0]['qend'], matches[-1]['qstart'], matches[-1]['qend']), matches[0]['qstrand'])
+            # the color of the best HSP of the match (#13)
+            gff_item['attributes'] += ';color=%s' % bitscore_color(max(m['bitscore'] for m in matches))
             if len(matches) == 1:
                 gff_item['score'] = str(matches[0]['evalue'])
             yield '\t'.join([gff_item[c] for c in GFF_COL_NAMES]) + '\n'
@@ -89,6 +106,7 @@ def gff3_lines(db_hsp_dict_list, blast_program, seqid_prefix=''):
                 # Bitscore is kept as it was for existing consumers; the e-value
                 # (also in the score column) and percent identity were added for #12.
                 gff_item['attributes'] = 'ID=match_part%05d;Parent=match%05d;Target=%s %d %d %s;Bitscore=%g;evalue=%g;pident=%g' % (match_part_id, match_id, match_part['qseqid'], min(match_part['qstart'], match_part['qend']), max(match_part['qstart'], match_part['qend']), match_part['qstrand'], match_part['bitscore'], match_part['evalue'], match_part['pident'])
+                gff_item['attributes'] += ';color=%s' % bitscore_color(match_part['bitscore'])
                 yield '\t'.join([gff_item[c] for c in GFF_COL_NAMES]) + '\n'
                 match_part_id += 1
             match_id += 1
