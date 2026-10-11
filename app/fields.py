@@ -8,6 +8,7 @@ Upload problems (permissions, disk space, name clashes, ...) are reported as
 form errors instead of failing silently.
 """
 import os
+from urllib.parse import urlsplit
 
 from django import forms
 from django.conf import settings
@@ -18,6 +19,13 @@ from django.utils.encoding import iri_to_uri
 from django.utils.text import get_valid_filename
 
 MAX_LISTED_FILES = 2000
+
+
+def media_url_prefixes():
+    '''MEDIA_URL and, for an absolute MEDIA_URL, its path (longest first).'''
+    media_url = settings.MEDIA_URL or ''
+    prefixes = [media_url, urlsplit(media_url).path]
+    return [p for p in prefixes if p and p != '/']
 
 
 class MediaFile(str):
@@ -33,7 +41,13 @@ class MediaFile(str):
 
     @property
     def path_relative(self):
-        return self.replace('\\', '/').lstrip('/')
+        value = self.replace('\\', '/')
+        # FileBrowseField stored URLs (MEDIA_URL + path), e.g. /media/blast/db/x.fa
+        for prefix in media_url_prefixes():
+            if value.startswith(prefix):
+                value = value[len(prefix):]
+                break
+        return value.lstrip('/')
 
     @property
     def path_full(self):

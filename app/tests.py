@@ -98,6 +98,16 @@ class MediaPathFieldTest(SimpleTestCase):
         self.assertFalse(f.exists)
         self.assertTrue(MediaFile('blast/db/a.fa').exists)
 
+    def test_paths_stored_by_filebrowser(self):
+        # FileBrowseField stored MEDIA_URL + path; databases upgraded from the
+        # old version must keep pointing at their FASTA files
+        self.assertEqual(MediaFile('/media/blast/db/a.fa').path_relative, 'blast/db/a.fa')
+        self.assertTrue(MediaFile('/media/blast/db/a.fa').exists)
+        self.assertEqual(MediaFile('/blast/db/a.fa').path_relative, 'blast/db/a.fa')  # the shipped fixtures
+        with self.settings(MEDIA_URL='https://files.example.org/webapp/media/'):
+            for value in ('https://files.example.org/webapp/media/blast/db/a.fa', '/webapp/media/blast/db/a.fa', 'blast/db/a.fa'):
+                self.assertEqual(MediaFile(value).path_relative, 'blast/db/a.fa', value)
+
     def test_widget_lists_matching_files(self):
         context = MediaPathWidget('blast/db/', ['.fa', '.fasta']).get_context('fasta_file', 'blast/db/missing.fa', {'id': 'id_fasta_file'})
         self.assertEqual(context['widget']['choices'], ['blast/db/a.fa', 'blast/db/sub/c.FASTA'])
