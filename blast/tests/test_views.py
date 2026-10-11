@@ -74,6 +74,10 @@ class CreateViewTest(TempMediaMixin, TestCase):
             response = self.client.post('/blast/', data)
             self.assertEqual(response.status_code, 400, data)
             self.assertContains(response, 'Invalid Query', status_code=400)
+        # the reason is shown
+        response = self.client.post('/blast/', dict(BLASTN_OPTIONS, **{'query-sequence': 'ACGT', 'db-name': 'ready.fa', 'word_size': '11.0'}))
+        self.assertContains(response, 'Invalid value for the BLAST option &quot;word_size&quot;.', status_code=400)
+        self.assertNotContains(response, 'Please input query sequence', status_code=400)
         response = self.client.post('/blast/', dict(BLASTN_OPTIONS, **{'program': 'rm', 'query-sequence': 'ACGT', 'db-name': 'ready.fa'}))
         self.assertEqual(response.status_code, 404)
         delay.assert_not_called()
