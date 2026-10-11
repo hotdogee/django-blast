@@ -83,9 +83,13 @@ urlpatterns = [
     path('data/', include('data.urls', namespace='data')),
 ]
 
+
+def serve_media(request, path):
+    # read MEDIA_ROOT per request, so that it can be overridden in tests
+    return serve(request, path, document_root=settings.MEDIA_ROOT)
+
+
 if settings.SERVE_MEDIA:
     urlpatterns += [
-        re_path(r'^%s(?P<path>.*)$' % settings.MEDIA_URL.lstrip('/'), serve, {
-            'document_root': settings.MEDIA_ROOT,
-        }),
+        re_path(r'^%s(?P<path>.*)$' % settings.MEDIA_URL.lstrip('/'), serve_media),
     ]
