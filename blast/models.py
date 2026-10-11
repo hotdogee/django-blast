@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone as dt_timezone
 from subprocess import DEVNULL, PIPE, STDOUT, Popen
 
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Max
 from django.urls import reverse
@@ -88,7 +89,8 @@ class BlastDb(models.Model):
     title = models.CharField(max_length=200, unique=True, help_text='This is passed into makeblast -title') # makeblastdb -title
     description = models.TextField(blank=True) # shown in blast db selection ui
     is_shown = models.BooleanField(default=None, help_text='Display this database in the BLAST submit form') # to temporarily remove from blast db selection ui
-    seqid_prefix = models.CharField('sequence ID prefix', max_length=50, blank=True, help_text=
+    seqid_prefix = models.CharField('sequence ID prefix', max_length=50, blank=True, validators=[RegexValidator(
+        r'^[^\s>]*$', 'The prefix must not contain spaces or ">": BLAST ends a sequence ID at the first space.')], help_text=
         'Optional tag prepended to every sequence ID (e.g. "Mdes_genome|") to avoid collisions with identical IDs in other '
         'databases. Changing it requires re-running makeblastdb and re-populating the Sequences table (the "Rebuild" action).')
 

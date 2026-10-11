@@ -4,6 +4,7 @@ import subprocess
 import time
 from datetime import timedelta
 
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
 
@@ -275,6 +276,15 @@ class SeqidPrefixTest(TempMediaMixin, TestCase):
         db.save()
         self.assertEqual(db.sequence_set.count(), 0)
         self.assertFalse(db.blast_db_files_exists())
+
+    def test_prefix_without_spaces(self):
+        # BLAST ends the sequence id at the first space, so the hits would not match the Sequences table
+        db = create_blastdb('pfx4.fa', [('s1', 'ACGT')], seqid_prefix='Mdes_genome|')
+        db.full_clean()
+        for prefix in ('Mdes genome|', 'Mdes\t', '>Mdes'):
+            db.seqid_prefix = prefix
+            with self.assertRaisesMessage(ValidationError, 'must not contain spaces'):
+                db.full_clean()
 
     @requires_blast
     def test_makeblastdb_with_prefix(self):
