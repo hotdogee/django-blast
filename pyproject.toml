@@ -1,0 +1,19 @@
+# Tool configuration. Dependencies are listed in requirements*.txt.
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "i5k.settings_test"
+python_files = ["tests.py", "test_*.py"]
+norecursedirs = [".git", "media", "static", "example", "util", "blast/bin_linux", "blast/bin_win", "blast/static", "*.egg-info", ".venv", "venv"]
+addopts = "-ra"
+markers = [
+    "blast: runs the NCBI BLAST+ executables (skipped when they are not available)",
+]
+
+[tool.ruff]
+line-length = 160
+extend-exclude = ["blast/bin_linux", "blast/bin_win", "media", "static"]
+
+[tool.ruff.lint]
+# Syntax errors, undefined names and other mistakes that are bugs rather than
+# style. The legacy code base is not formatted to a style guide.
+select = ["E9", "F63", "F7", "F82"]
