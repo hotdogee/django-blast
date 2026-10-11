@@ -69,3 +69,10 @@ class Gff3Test(SimpleTestCase):
         write_gff3(out, hsp_dict_list([hit('q1', 'Mdes_genome|Scaffold7', 1, 100, 1, 100)], COLS), 'blastn', 'Mdes_genome|')
         self.assertEqual(out.getvalue().splitlines()[1].split('\t')[0], 'Scaffold7')
         self.assertEqual(gff_seqid('genome_Scaffold1', 'genome_'), 'Scaffold1')
+
+    def test_hit_statistics_are_exported(self):
+        # #12: bit score, e-value and percent identity of every HSP
+        features = gff([hit('q1', 'Scaffold1', 1, 100, 1001, 1100, evalue=3.5e-42, bitscore=187.3, pident=97.25)])
+        part = attributes(features[1])
+        self.assertEqual((part['Bitscore'], part['evalue'], part['pident']), ('187.3', '3.5e-42', '97.25'))
+        self.assertEqual(features[1][5], '3.5e-42')
