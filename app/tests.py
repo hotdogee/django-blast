@@ -128,6 +128,11 @@ class MediaPathFieldTest(SimpleTestCase):
             self.assertEqual(f.read(), b'>s\nACGT\n')
         # the same file again (e.g. after another field failed validation) is fine
         self.assertEqual(self.field.clean(('', SimpleUploadedFile('new genome.fa', b'>s\nACGT\n'))), 'blast/db/new_genome.fa')
+        # but a different file of the same size is not, and the existing file is kept
+        with self.assertRaisesMessage(ValidationError, 'already exists'):
+            self.field.clean(('', SimpleUploadedFile('new genome.fa', b'>s\nACGA\n')))
+        with open(os.path.join(self.media_root, 'blast', 'db', 'new_genome.fa'), 'rb') as f:
+            self.assertEqual(f.read(), b'>s\nACGT\n')
 
     def test_upload_errors_are_reported(self):
         with self.assertRaisesMessage(ValidationError, 'already exists'):

@@ -99,6 +99,17 @@ def resolve_extensions(extensions):
     return list(extensions or [])
 
 
+def same_content(path, upload):
+    """The file at ``path`` has the same content as the uploaded file."""
+    if os.path.getsize(path) != upload.size:
+        return False
+    with open(path, 'rb') as f:
+        for chunk in upload.chunks():
+            if f.read(len(chunk)) != chunk:
+                return False
+    return True
+
+
 class MediaPathWidget(forms.Widget):
     template_name = 'app/widgets/media_path.html'
     needs_multipart_form = True
@@ -182,7 +193,7 @@ class MediaPathFormField(forms.CharField):
         target = MediaFile(rel_path).path_full
         target_dir = os.path.dirname(target)
         if os.path.exists(target):
-            if os.path.isfile(target) and os.path.getsize(target) == upload.size:
+            if os.path.isfile(target) and same_content(target, upload):
                 return rel_path  # same file uploaded again, e.g. after another field failed validation
             raise ValidationError('"%s" was not uploaded: a different file with that name already exists in %s. '
                                   'Rename the file, or select the existing file instead.' % (filename, target_dir))
